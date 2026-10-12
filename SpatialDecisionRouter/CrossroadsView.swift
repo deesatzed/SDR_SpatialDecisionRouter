@@ -29,10 +29,10 @@ struct CrossroadsView: View {
             }
         }
         .gesture(SpatialTapGesture().targetedToAnyEntity().onEnded { v in store.pass(v.entity.name) })
-        .simultaneousGesture(LongPressGesture(minimumDuration: 0.4).targetedToAnyEntity().onEnded { v in
+        .simultaneousGesture(LongPressGesture(minimumDuration: 0.6).targetedToAnyEntity().onEnded { v in
             if let h = store.handoffs.first(where: { $0.id == v.entity.name }), h.link.answerType == .category { store.ringFor = h.id }
         })
-        .simultaneousGesture(DragGesture(minimumDistance: 20).targetedToAnyEntity().onEnded { v in store.flip(v.entity.name) })
+        .simultaneousGesture(DragGesture(minimumDistance: 60).targetedToAnyEntity().onEnded { v in store.flip(v.entity.name) })
         .task { while !Task.isCancelled { try? await Task.sleep(for: .milliseconds(50)); store.tick(0.05) } }
         .task {
             let a = ProcessInfo.processInfo.arguments
@@ -70,7 +70,7 @@ struct CrossroadsView: View {
             }
         }
         if let m = att.entity(for: "metrics") {
-            m.position = [-0.62, 1.18, -1.0]; m.components.set(BillboardComponent()); root.addChild(m)
+            m.position = [-0.85, 1.2, -1.15]; m.components.set(BillboardComponent()); root.addChild(m)
         }
         if let r = att.entity(for: "ring") { r.name = "ringAttachment"; r.isEnabled = false; root.addChild(r) }
     }
@@ -91,7 +91,7 @@ struct CrossroadsView: View {
                 m.name = h.id
                 m.components.set(InputTargetComponent()); m.components.set(HoverEffectComponent())
                 m.generateCollisionShapes(recursive: false)
-                card.position = [0, 0.13, 0]; card.scale = [0.75, 0.75, 0.75]
+                card.position = [0, 0.19, 0]; card.scale = [1.25, 1.25, 1.25]
                 card.components.set(BillboardComponent())
                 m.addChild(card)
                 root.addChild(m)
@@ -122,24 +122,35 @@ struct AgentCard: View {
 }
 
 struct HandoffCard: View {
+    @Environment(CrossroadsStore.self) private var store
     let h: Handoff; let routed: String?
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("\(h.link.source) → \(h.link.dest) · \(h.caseID)").font(.caption.bold()).foregroundStyle(.secondary)
-            Text(h.inputContext).font(.callout).lineLimit(2)
+        VStack(alignment: .leading, spacing: 8) {
+            Text("\(h.link.source) → \(h.link.dest) · \(h.caseID)").font(.headline).foregroundStyle(.secondary)
+            Text(h.inputContext).font(.title3).lineLimit(2)
             HStack {
-                Text(h.link.question).font(.callout)
+                Text(h.link.question).font(.title3)
                 Spacer()
                 if let r = routed, r != h.proposedAnswer {
-                    Text(h.proposedAnswer).strikethrough().font(.headline).foregroundStyle(.secondary)
-                    Text(r).font(.title3.bold()).foregroundStyle(.orange)
+                    Text(h.proposedAnswer).strikethrough().font(.title3).foregroundStyle(.secondary)
+                    Text(r).font(.title.bold()).foregroundStyle(.orange)
                 } else {
-                    Text(routed ?? h.proposedAnswer).font(.title3.bold())
+                    Text(routed ?? h.proposedAnswer).font(.title.bold())
                 }
-                Text("\(Int(h.confidence * 100))%").font(.caption.monospacedDigit())
+                Text("\(Int(h.confidence * 100))%").font(.headline.monospacedDigit())
+            }
+            if routed == nil {
+                HStack(spacing: 12) {
+                    Button("Pass ✓") { store.pass(h.id) }.tint(.green)
+                    if h.link.answerType == .binary {
+                        Button("Flip") { store.flip(h.id) }.tint(.orange)
+                    } else {
+                        Button("Change…") { store.openRing(h.id) }.tint(.blue)
+                    }
+                }.font(.title3.bold())
             }
         }
-        .frame(width: 380).padding(14).glassBackgroundEffect()
+        .frame(width: 440).padding(18).glassBackgroundEffect()
     }
 }
 
@@ -175,7 +186,7 @@ struct MetricsPanel: View {
                 Text(String(format: "Changed  %.0f%%", store.pctChanged * 100)).monospacedDigit()
                 Text(store.agreement.map { String(format: "Agree w/ GT  %.0f%%", $0 * 100) } ?? "Agree w/ GT  —").monospacedDigit()
                 if !store.lastAction.isEmpty { Text(store.lastAction).font(.caption).lineLimit(1) }
-                Text("pinch = pass · swipe = flip · hold = options").font(.caption2).foregroundStyle(.secondary)
+                Text("tap = pass · hold = options · drag = flip (binary)").font(.caption2).foregroundStyle(.secondary)
                 HStack { Button("Export") { store.export() }; Button("Close", action: onClose) }.font(.caption)
                 if !store.lastExport.isEmpty { Text(store.lastExport).font(.caption2) }
             }.frame(width: 280).padding(14).glassBackgroundEffect()

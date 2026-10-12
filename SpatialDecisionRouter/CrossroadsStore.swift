@@ -48,12 +48,12 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
     func agentIndex(_ id: String) -> Int { scenario?.agents.firstIndex { $0.id == id } ?? 0 }
     func agentPosition(_ id: String) -> SIMD3<Float> {
         let n = Float(scenario?.agents.count ?? 4)
-        let a = (-50 + 100 * Float(agentIndex(id)) / max(n - 1, 1)) * .pi / 180
+        let a = (-35 + 70 * Float(agentIndex(id)) / max(n - 1, 1)) * .pi / 180
         return [2.1 * sin(a), 1.55, -2.1 * cos(a)]
     }
     func slotPosition(_ k: Int) -> SIMD3<Float> {
-        let a = (-32 + 16 * Float(k)) * .pi / 180
-        return [1.05 * sin(a), 1.32 + Float(k % 2) * 0.18, -1.05 * cos(a)]
+        let a = (-40 + 20 * Float(k)) * .pi / 180
+        return [1.15 * sin(a), 1.12 + Float(k % 2) * 0.36, -1.15 * cos(a)]
     }
     func position(_ h: Handoff) -> SIMD3<Float> {
         let s = slotPosition(slot[h.id] ?? 0), t = progress[h.id] ?? 0
@@ -130,8 +130,9 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
         guard let h = handoffs.first(where: { $0.id == id }) else { return }
         if h.link.answerType == .binary {
             route(id, answer: h.link.options.first { $0 != h.proposedAnswer }, gesture: "flip")
-        } else { ringFor = id }   // swipe on a category item opens the ring instead
+        }   // drag on a category item is ignored (use long-press or "Change…")
     }
+    func openRing(_ id: String) { ringFor = id }
     func select(_ id: String, _ option: String) { ringFor = nil; route(id, answer: option, gesture: "select") }
 
     private func route(_ id: String, answer: String?, gesture: String) {
