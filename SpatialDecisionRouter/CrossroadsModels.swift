@@ -2,7 +2,7 @@ import Foundation
 
 enum AnswerType: String, Codable { case binary, category }
 
-struct AgentSpec: Codable, Hashable { let id: String; let name: String; var role: String? }
+struct AgentSpec: Codable, Hashable { let id: String; let name: String; var role: String?; var tier: Int? = nil }
 struct LinkSpec: Codable, Hashable { let source: String; let dest: String; let question: String; let answerType: AnswerType; let options: [String] }
 /// Deterministic simulated agent output for one stage: what it proposes depends on whether its input was correct.
 struct StageSpec: Codable, Hashable { let gt: String; let propOk: String; let propBad: String; let conf: Double }

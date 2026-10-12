@@ -19,12 +19,14 @@
 		7A33DA6D81FE8CF9387F4E32 /* ed_patient_flow.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D6BEA7B32BE7DA90BB02855 /* ed_patient_flow.json */; };
 		8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
 		A9192282B04DD27870E7E918 /* content_safety.json in Resources */ = {isa = PBXBuildFile; fileRef = DE04C81D731739102433A158 /* content_safety.json */; };
+		C7E6EB72E9A489FF61491B92 /* TriageGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AFBC7C1CCAC1DC785D7C0F /* TriageGenerator.swift */; };
 		C8758E953D7186F6537B7876 /* ClinicalEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB39190D6F8E8DE86503CAD8 /* ClinicalEnvironment.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		26072D49380EFB126E0692D6 /* robot_actions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = robot_actions.json; sourceTree = "<group>"; };
 		409462FAA6E78B75AAEC0A41 /* medical_imaging_outcomes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = medical_imaging_outcomes.json; sourceTree = "<group>"; };
+		47AFBC7C1CCAC1DC785D7C0F /* TriageGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriageGenerator.swift; sourceTree = "<group>"; };
 		482B4FEDC0C530AE63ED5D9A /* support_crossroads.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = support_crossroads.json; sourceTree = "<group>"; };
 		4D6BEA7B32BE7DA90BB02855 /* ed_patient_flow.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ed_patient_flow.json; sourceTree = "<group>"; };
 		629D37FBBC6A7FA39665F611 /* CrossroadsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossroadsStore.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				629D37FBBC6A7FA39665F611 /* CrossroadsStore.swift */,
 				7895E056CD0EAC6C9AAA4EC1 /* CrossroadsView.swift */,
 				9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */,
+				47AFBC7C1CCAC1DC785D7C0F /* TriageGenerator.swift */,
 				879F393EABB8D4118DE3EEB4 /* Resources */,
 			);
 			path = SpatialDecisionRouter;
@@ -163,6 +166,7 @@
 				6828B8C1C02F50E24216A983 /* CrossroadsStore.swift in Sources */,
 				2B81F468824269B0A53D942B /* CrossroadsView.swift in Sources */,
 				8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */,
+				C7E6EB72E9A489FF61491B92 /* TriageGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,7 +22,7 @@ struct CrossroadsView: View {
                 ForEach(sc.agents, id: \.id) { a in
                     Attachment(id: "agent-\(a.id)") { AgentCard(agent: a, inbox: store.inbox[a.id] ?? 0) }
                 }
-                Attachment(id: "board") { ResultsBoard()
+                Attachment(id: "board") { if store.isStream { TriageBoard() } else { ResultsBoard() }
                 }
             }
             ForEach(store.handoffs.filter { store.phase[$0.id] != .delivered }) { h in
@@ -76,14 +76,16 @@ struct CrossroadsView: View {
             root.addChild(node)
             root.addChild(line(p, hub, UIColor(white: 1, alpha: 0.5)))
             if let card = att.entity(for: "agent-\(a.id)") {
-                card.position = p + [0, 0.32, 0]; card.scale = [1.9, 1.9, 1.9]; card.components.set(BillboardComponent()); root.addChild(card)
+                card.position = p + [0, a.tier == 0 ? -0.3 : 0.32, 0]; card.scale = [1.9, 1.9, 1.9]; card.components.set(BillboardComponent()); root.addChild(card)
             }
         }
         if let m = att.entity(for: "metrics") {
-            m.position = [-1.05, 2.0, -1.6]; m.scale = [1.5, 1.5, 1.5]; m.components.set(BillboardComponent()); root.addChild(m)
+            m.position = [-1.05, 2.0, -1.6]; m.scale = [1.5, 1.5, 1.5]; m.components.set(BillboardComponent())
+            m.name = "metricsPanel"; m.isEnabled = !store.isStream; root.addChild(m)
         }
         if let b = att.entity(for: "board") {
-            b.position = [0, 2.2, -2.2]; b.scale = [1.7, 1.7, 1.7]; b.components.set(BillboardComponent()); root.addChild(b)
+            if store.isStream { b.position = [0, 2.08, -1.7]; b.scale = [1.2, 1.2, 1.2] }
+            else { b.position = [0, 2.2, -2.2]; b.scale = [1.7, 1.7, 1.7] }; b.components.set(BillboardComponent()); root.addChild(b)
         }
         if let r = att.entity(for: "ring") { r.name = "ringAttachment"; r.isEnabled = false; root.addChild(r) }
     }
@@ -104,7 +106,8 @@ struct CrossroadsView: View {
                 m.name = h.id
                 m.components.set(InputTargetComponent()); m.components.set(HoverEffectComponent())
                 m.generateCollisionShapes(recursive: false)
-                card.position = [0, 0.19, 0]; card.scale = [1.25, 1.25, 1.25]
+                let cs: Float = store.isStream ? 1.05 : 1.25
+                card.position = [0, store.isStream ? 0.17 : 0.19, 0]; card.scale = [cs, cs, cs]
                 card.components.set(BillboardComponent())
                 m.addChild(card)
                 root.addChild(m)
@@ -197,6 +200,75 @@ struct OptionRing: View {
             }
         }
         .frame(width: 400, height: 380)
+    }
+}
+
+struct TriageBoard: View {
+    @Environment(CrossroadsStore.self) private var store
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 1)) { _ in
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text("Triage Throughput").font(.largeTitle.bold())
+                    Text("SYNTHETIC stream").font(.headline).foregroundStyle(.yellow)
+                    Spacer()
+                    Text(String(format: "agent proposal error %.0f%%", store.agentErrorRate * 100)).font(.headline).foregroundStyle(.secondary)
+                }
+                HStack(spacing: 18) {
+                    stat("Triaged", "\(store.casesCompleted)"); stat("Decisions", "\(store.decisions.count)")
+                    stat("Alerts fired", "\(store.alertsFired)"); stat("Corrections", "\(store.corrections)")
+                    stat("Errors prevented", "\(store.errorsPrevented)"); stat("Misses", "\(store.misses)")
+                    stat("Median decision", String(format: "%.1fs", store.medianLatency))
+                }
+                HStack(spacing: 12) {
+                    ForEach(store.areaCounts, id: \.0) { a in
+                        Text("\(a.0): \(a.1)").font(.title3.bold()).padding(.horizontal, 10).padding(.vertical, 4)
+                            .background(.white.opacity(0.12), in: Capsule())
+                    }
+                }
+                Divider()
+                ForEach(recent, id: \.id) { r in
+                    HStack(spacing: 8) {
+                        Text(r.id).font(.title3.bold().monospaced()).frame(width: 70, alignment: .leading)
+                        Text(r.context).font(.title3).lineLimit(1).frame(width: 330, alignment: .leading)
+                        HStack(spacing: 4) {
+                            ForEach(Array(r.steps.enumerated()), id: \.offset) { _, s in
+                                Text(s.0).font(.headline)
+                                    .padding(.horizontal, 7).padding(.vertical, 2)
+                                    .background((s.1 ? Color.orange : Color.white.opacity(0.15)), in: Capsule())
+                                    .foregroundStyle(s.2 ? Color.primary : Color.red)
+                            }
+                        }.frame(width: 360, alignment: .leading)
+                        Text(label(r.status)).font(.headline).foregroundStyle(color(r.status))
+                    }
+                }
+                HStack(spacing: 14) {
+                    Text("tap = pass · hold = options · orange = human changed · red = wrong").font(.callout).foregroundStyle(.secondary)
+                    Spacer()
+                    Button("Next Pack") { store.nextPack() }
+                    Button("Export") { store.export() }
+                    @Bindable var st = store
+                    Toggle("Clinical env", isOn: $st.fullImmersion).frame(width: 190)
+                    Button("Close") { Task { openWindow(id: "main"); await dismissImmersiveSpace(); store.immersiveOpen = false } }
+                }.font(.callout)
+            }
+            .frame(width: 1000).padding(20).glassBackgroundEffect()
+        }
+    }
+    private var recent: [CrossroadsStore.BoardRow] {
+        let rows = store.boardRows
+        return Array(rows.suffix(6).reversed())
+    }
+    private func stat(_ t: String, _ v: String) -> some View {
+        VStack(spacing: 0) { Text(v).font(.title.bold().monospacedDigit()); Text(t).font(.callout) }
+    }
+    private func label(_ s: String) -> String {
+        switch s { case "correct": "✓ correct"; case "corrected": "✓ corrected"; case "missed": "✗ miss"; default: s }
+    }
+    private func color(_ s: String) -> Color {
+        switch s { case "correct": .green; case "corrected": .orange; case "missed": .red; default: .secondary }
     }
 }
 

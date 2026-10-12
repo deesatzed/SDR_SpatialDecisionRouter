@@ -27,16 +27,16 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
     var fullImmersion = !ProcessInfo.processInfo.arguments.contains("-mixed")
     private var nextCase = 0
     private var spawnTimer: Float = 0
-    static let maxActive = 5
+    var maxActive: Int { isStream ? 8 : 5 }
 
     var logURL: URL { FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("routing_log.jsonl") }
 
     init() {
         let a = ProcessInfo.processInfo.arguments
         if let i = a.firstIndex(of: "-speedup"), i + 1 < a.count, let v = Float(a[i + 1]) { speedup = v }
-        if let i = a.firstIndex(of: "-pack"), i + 1 < a.count { load(a[i + 1]) } else { load("ed_patient_flow") }
+        if let i = a.firstIndex(of: "-pack"), i + 1 < a.count { load(a[i + 1]) } else { load("triage_stream") }
     }
-    static let packs = ["ed_patient_flow", "support_crossroads"]
+    static let packs = ["triage_stream", "ed_patient_flow", "support_crossroads"]
     var packName = ""
     var packVersion = 0
     var lastDelivered: [String: Date] = [:]
@@ -47,10 +47,27 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
         load(Self.packs[i])
     }
 
+    var cases: [CaseSpec] = []
+    var isStream: Bool { packName == "triage_stream" }
+    var gen = TriageGenerator(seed: 2026)
+    var patients: [String: TriagePatient] = [:]
+    var routedByStage: [String: [Int: String]] = [:]
+    var deliveredStages: [String: Set<Int>] = [:]
+    var completedOrder: [String] = []
+
     func load(_ name: String) {
+        if name == "triage_stream" {
+            scenario = TriageGenerator.scenario; cases = []; patients = [:]; gen = TriageGenerator(seed: 2026)
+            resetState(name); return
+        }
         guard let u = Bundle.main.url(forResource: name, withExtension: "json"),
               let d = try? Data(contentsOf: u) else { loadError = "missing \(name).json"; return }
         do { scenario = try JSONDecoder().decode(Scenario.self, from: d) } catch { loadError = "\(error)"; return }
+        cases = scenario?.cases ?? []
+        resetState(name)
+    }
+    private func resetState(_ name: String) {
+        routedByStage = [:]; deliveredStages = [:]; completedOrder = []
         handoffs = []; phase = [:]; progress = [:]; slot = [:]; routed = [:]; upstream = [:]
         decisions = []; caseStatus = [:]; deliveries = 0; lastDelivered = [:]; ringFor = nil
         packName = name; packVersion += 1
@@ -61,11 +78,27 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
     // MARK: geometry
     func agentIndex(_ id: String) -> Int { scenario?.agents.firstIndex { $0.id == id } ?? 0 }
     func agentPosition(_ id: String) -> SIMD3<Float> {
+        if let sc = scenario, let ag = sc.agents.first(where: { $0.id == id }), let tier = ag.tier {
+            let peers = sc.agents.filter { $0.tier == tier }
+            let k = Float(peers.firstIndex { $0.id == id } ?? 0), m = Float(peers.count)
+            if tier == 0 {   // source agents: low tier, wide
+                let a = (-36 + 72 * k / max(m - 1, 1)) * .pi / 180
+                return [2.1 * sin(a), 0.95, -2.1 * cos(a)]
+            } else {         // destinations: high tier, split left/right of the board
+                let angs: [Float] = [-44, -27, 27, 44]
+                let a = angs[min(Int(k), 3)] * .pi / 180
+                return [2.5 * sin(a), 1.85, -2.5 * cos(a)]
+            }
+        }
         let n = Float(scenario?.agents.count ?? 4)
         let a = (-46 + 92 * Float(agentIndex(id)) / max(n - 1, 1)) * .pi / 180
         return [2.1 * sin(a), 1.55, -2.1 * cos(a)]
     }
     func slotPosition(_ k: Int) -> SIMD3<Float> {
+        if isStream {   // 4 columns x 2 rows
+            let a = (-36 + 24 * Float(k % 4)) * .pi / 180
+            return [1.45 * sin(a), 1.16 + Float(k / 4) * 0.36, -1.45 * cos(a)]
+        }
         let a = (-30 + 15 * Float(k)) * .pi / 180
         return [1.3 * sin(a), 1.2 + Float(k % 2) * 0.34, -1.3 * cos(a)]
     }
@@ -90,9 +123,16 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
         guard let sc = scenario else { return }
         let dt = dt0 * speedup
         spawnTimer += dt
-        if spawnTimer > 4, nextCase < sc.cases.count, active.count < Self.maxActive {
+        _ = sc
+        if isStream {
+            if spawnTimer > 3, active.count <= maxActive - 4 {
+                spawnTimer = 0
+                let (c, p) = gen.nextCase(); cases.append(c); patients[c.caseID] = p
+                for s in 0..<4 { emit(case: c, stage: s, upstreamCorrect: true) }   // parallel off the same intake
+            }
+        } else if spawnTimer > 4, nextCase < cases.count, active.count < maxActive {
             spawnTimer = 0
-            let c = sc.cases[nextCase]; nextCase += 1
+            let c = cases[nextCase]; nextCase += 1
             emit(case: c, stage: 0, upstreamCorrect: true)
         }
         for h in handoffs {
@@ -110,14 +150,14 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
 
     private func freeSlot() -> Int {
         let used = Set(active.compactMap { slot[$0.id] })
-        return (0..<Self.maxActive).first { !used.contains($0) } ?? 0
+        return (0..<maxActive).first { !used.contains($0) } ?? 0
     }
 
-    private func emit(case c: CaseSpec, stage: Int, upstreamCorrect: Bool) {
+    private func emit(case c: CaseSpec, stage: Int, upstreamCorrect: Bool, proposal: String? = nil) {
         guard let sc = scenario, stage < sc.links.count, stage < c.stages.count else { return }
         let st = c.stages[stage]
         let h = Handoff(id: "\(c.caseID)-s\(stage + 1)", caseID: c.caseID, stage: stage, link: sc.links[stage],
-                        inputContext: c.context, history: c.history ?? "none", proposedAnswer: upstreamCorrect ? st.propOk : st.propBad,
+                        inputContext: c.context, history: c.history ?? "none", proposedAnswer: proposal ?? (upstreamCorrect ? st.propOk : st.propBad),
                         confidence: st.conf, groundTruth: st.gt, createdAt: Date())
         slot[h.id] = freeSlot(); phase[h.id] = .incoming; progress[h.id] = 0
         handoffs.append(h)
@@ -128,8 +168,19 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
         inbox[h.link.dest, default: 0] += 1
         deliveries += 1
         lastDelivered[h.link.dest] = Date()
-        guard let sc = scenario, let c = sc.cases.first(where: { $0.caseID == h.caseID }) else { return }
+        guard let sc = scenario, let c = cases.first(where: { $0.caseID == h.caseID }) else { return }
         let correct = routed[h.id] == h.groundTruth
+        if isStream {
+            deliveredStages[h.caseID, default: []].insert(h.stage)
+            let d = deliveredStages[h.caseID]!
+            let r = routedByStage[h.caseID] ?? [:]
+            if h.stage < 4, d.isSuperset(of: [0, 1, 2]), !handoffs.contains(where: { $0.id == "\(h.caseID)-s5" }) {
+                let prop = gen.placementProposal(esi: r[0] ?? "3", sepsis: r[1] ?? "no", alert: r[2] ?? "none")
+                emit(case: c, stage: 4, upstreamCorrect: true, proposal: prop)
+            }
+            if d.count == 5 { finishCase(h.caseID) }
+            return
+        }
         if h.stage + 1 < sc.links.count {
             emit(case: c, stage: h.stage + 1, upstreamCorrect: correct)
         } else {
@@ -145,6 +196,32 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
             caseStatus[h.caseID] = anyWrong ? "missed" : (anyChanged ? "corrected" : "correct")
             rewriteLog()
         }
+    }
+
+    private func finishCase(_ id: String) {
+        let chain = decisions.indices.filter { decisions[$0].caseID == id }
+        let anyWrong = chain.contains { decisions[$0].agreesWithGroundTruth == false }
+        let anyChanged = chain.contains { decisions[$0].changed }
+        let outcome = anyWrong ? "triage-error-reached-floor" : (anyChanged ? "triaged-after-human-correction" : "triaged-correctly")
+        for k in chain { decisions[k].downstreamOutcome = outcome }
+        caseStatus[id] = anyWrong ? "missed" : (anyChanged ? "corrected" : "correct")
+        completedOrder.append(id)
+        rewriteLog()
+    }
+
+    // triage board stats
+    var areaCounts: [(String, Int)] {
+        let placed = decisions.filter { $0.stage == 5 && caseStatus[$0.caseID] != nil }
+        return ["resus", "main ED", "fast track", "waiting room"].map { a in (a, placed.filter { $0.routedAnswer == a }.count) }
+    }
+    var alertsFired: Int { decisions.filter { ($0.stage == 2 && $0.routedAnswer == "yes") || ($0.stage == 3 && $0.routedAnswer != "none") }.count }
+    var misses: Int { decisions.filter { $0.agreesWithGroundTruth == false }.count }
+    var medianLatency: Double {
+        let l = decisions.map(\.latency).sorted(); return l.isEmpty ? 0 : l[l.count / 2]
+    }
+    var agentErrorRate: Double {
+        let j = decisions.compactMap { d in d.groundTruth.map { $0 != d.proposedAnswer } }
+        return j.isEmpty ? 0 : Double(j.filter { $0 }.count) / Double(j.count)
     }
 
     // MARK: human routing
@@ -178,6 +255,7 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
         decisions.append(d)
         upstream[h.caseID, default: []].append("\(h.link.source)→\(h.link.dest): \(ans)")
         routed[id] = ans
+        routedByStage[h.caseID, default: [:]][h.stage] = ans
         if phase[id] == .incoming { progress[id] = 0 }   // snap to crossroads before leaving
         phase[id] = .outgoing; progress[id] = 0
         if ringFor == id { ringFor = nil }
@@ -199,11 +277,13 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
     struct BoardRow: Identifiable { let id: String; let context: String; let steps: [(String, Bool, Bool)]; let status: String }
     var boardRows: [BoardRow] {
         guard let sc = scenario else { return [] }
-        let started = sc.cases.filter { c in handoffs.contains { $0.caseID == c.caseID } }
+        let started = cases.filter { c in handoffs.contains { $0.caseID == c.caseID } }
         return started.map { c in
             let ds = decisions.filter { $0.caseID == c.caseID }.sorted { $0.stage < $1.stage }
             let steps = ds.map { ($0.routedAnswer, $0.changed, $0.agreesWithGroundTruth ?? true) }
-            return BoardRow(id: c.caseID, context: c.context.replacingOccurrences(of: "[SYNTHETIC] ", with: ""),
+            var ctx = c.context.replacingOccurrences(of: "[SYNTHETIC] ", with: "")
+            if isStream, let p = patients[c.caseID] { ctx = "\(p.age)\(p.sex) \(p.complaint.rawValue)" + (c.history == "none" ? "" : " · \(c.history ?? "")") }
+            return BoardRow(id: c.caseID, context: ctx,
                             steps: steps, status: caseStatus[c.caseID] ?? "in progress \(ds.count)/\(sc.links.count)")
         }
     }
