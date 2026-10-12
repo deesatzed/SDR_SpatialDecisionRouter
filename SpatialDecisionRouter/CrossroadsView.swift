@@ -70,7 +70,7 @@ struct CrossroadsView: View {
             }
         }
         if let m = att.entity(for: "metrics") {
-            m.position = [-0.85, 1.2, -1.15]; m.components.set(BillboardComponent()); root.addChild(m)
+            m.position = [-0.95, 1.95, -1.6]; m.components.set(BillboardComponent()); root.addChild(m)
         }
         if let r = att.entity(for: "ring") { r.name = "ringAttachment"; r.isEnabled = false; root.addChild(r) }
     }

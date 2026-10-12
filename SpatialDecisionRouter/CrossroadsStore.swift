@@ -52,8 +52,8 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
         return [2.1 * sin(a), 1.55, -2.1 * cos(a)]
     }
     func slotPosition(_ k: Int) -> SIMD3<Float> {
-        let a = (-40 + 20 * Float(k)) * .pi / 180
-        return [1.15 * sin(a), 1.12 + Float(k % 2) * 0.36, -1.15 * cos(a)]
+        let a = (-30 + 15 * Float(k)) * .pi / 180
+        return [1.3 * sin(a), 1.2 + Float(k % 2) * 0.34, -1.3 * cos(a)]
     }
     func position(_ h: Handoff) -> SIMD3<Float> {
         let s = slotPosition(slot[h.id] ?? 0), t = progress[h.id] ?? 0
