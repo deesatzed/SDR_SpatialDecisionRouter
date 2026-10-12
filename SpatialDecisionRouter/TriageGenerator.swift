@@ -147,10 +147,10 @@ struct TriageGenerator {
         }
         if rng.chance(0.05) { p.sbp = Int(rng.range(65, 82)) }              // occasional shock
         // history features (prevalence-ish)
-        p.anticoag = rng.chance(c == .fallHead ? 0.45 : 0.12)
-        p.immuno = rng.chance([.fever, .uri, .sob].contains(c) ? 0.3 : 0.06)
+        p.anticoag = rng.chance(c == .fallHead ? 0.5 : 0.2)
+        p.immuno = rng.chance([.fever, .uri, .sob].contains(c) ? 0.35 : 0.12)
         p.chf = rng.chance(0.12); p.ckd = rng.chance(0.1); p.priorStrokeMI = rng.chance(0.12)
-        p.mdro = rng.chance(0.12); p.bounceback72h = rng.chance(0.14); p.recentSurgery = rng.chance(0.07)
+        p.mdro = rng.chance(0.2); p.bounceback72h = rng.chance(0.2); p.recentSurgery = rng.chance(0.07)
         p.baselineAMS = p.age > 70 && rng.chance(0.25)
         if p.baselineAMS { p.gcs = Int(rng.range(13, 15)) }
         p.pregnant = p.sex == "F" && p.age < 45 && rng.chance(c == .abdPain ? 0.35 : 0.08)
@@ -164,11 +164,11 @@ struct TriageGenerator {
         let gtArea = TriageRules.area(esi: gtESI, alert: gtAlert, isolation: gtIso)
         // agent heuristics
         var aESI = TriageRules.esi(p, historyAware: false)
-        if rng.chance(0.08) { aESI = min(5, max(1, aESI + (rng.chance(0.5) ? 1 : -1))) }
-        var aSep = TriageRules.sepsis(p, historyAware: false); if rng.chance(0.05) { aSep.toggle() }
+        if rng.chance(0.12) { aESI = min(5, max(1, aESI + (rng.chance(0.5) ? 1 : -1))) }
+        var aSep = TriageRules.sepsis(p, historyAware: false); if rng.chance(0.08) { aSep.toggle() }
         var aAlert = TriageRules.alert(p)
-        if rng.chance(0.07) { aAlert = aAlert == "none" ? (p.complaint == .headache || p.complaint == .neuro ? "stroke" : "none") : "none" }
-        var aIso = TriageRules.isolation(p, historyAware: false); if rng.chance(0.04) { aIso.toggle() }
+        if rng.chance(0.1) { aAlert = aAlert == "none" ? (p.complaint == .headache || p.complaint == .neuro ? "stroke" : "none") : "none" }
+        var aIso = TriageRules.isolation(p, historyAware: false); if rng.chance(0.06) { aIso.toggle() }
         func st(_ gt: String, _ prop: String, _ conf: Double) -> StageSpec { StageSpec(gt: gt, propOk: prop, propBad: prop, conf: conf) }
         let yn: (Bool) -> String = { $0 ? "yes" : "no" }
         let stages = [st("\(gtESI)", "\(aESI)", rng.range(0.55, 0.95)), st(yn(gtSep), yn(aSep), rng.range(0.55, 0.95)),
@@ -184,7 +184,7 @@ struct TriageGenerator {
     mutating func placementProposal(esi: String, sepsis: String, alert: String) -> String {
         let e = Int(esi) ?? 3
         var a = TriageRules.area(esi: e, alert: alert, isolation: false)
-        if rng.chance(0.05) { a = rng.pick(["main ED", "fast track", "waiting room"]) }
+        if rng.chance(0.08) { a = rng.pick(["main ED", "fast track", "waiting room"]) }
         return a
     }
 }
