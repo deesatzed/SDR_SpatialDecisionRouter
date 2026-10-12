@@ -1,0 +1,539 @@
+{
+ "scenario": "ed_patient_flow",
+ "synthetic": true,
+ "agents": [
+  {
+   "id": "triage",
+   "name": "Triage Nurse Agent",
+   "role": "ESI acuity 1\u20135"
+  },
+  {
+   "id": "sepsis",
+   "name": "Sepsis Screen Agent",
+   "role": "sepsis alert yes/no"
+  },
+  {
+   "id": "workup",
+   "name": "Workup Orders Agent",
+   "role": "order set"
+  },
+  {
+   "id": "imaging",
+   "name": "Imaging Agent",
+   "role": "CT needed yes/no"
+  },
+  {
+   "id": "consult",
+   "name": "Consult Agent",
+   "role": "consult service"
+  },
+  {
+   "id": "dispo",
+   "name": "Disposition Agent",
+   "role": "admit/obs/dc/transfer"
+  },
+  {
+   "id": "board",
+   "name": "Patient Flow Board",
+   "role": "receives final disposition"
+  }
+ ],
+ "links": [
+  {
+   "source": "triage",
+   "dest": "sepsis",
+   "question": "ESI acuity?",
+   "answerType": "category",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+   ]
+  },
+  {
+   "source": "sepsis",
+   "dest": "workup",
+   "question": "Sepsis alert?",
+   "answerType": "binary",
+   "options": [
+    "yes",
+    "no"
+   ]
+  },
+  {
+   "source": "workup",
+   "dest": "imaging",
+   "question": "Order set?",
+   "answerType": "category",
+   "options": [
+    "chest-pain",
+    "abd-pain",
+    "sepsis",
+    "stroke",
+    "trauma",
+    "minor"
+   ]
+  },
+  {
+   "source": "imaging",
+   "dest": "consult",
+   "question": "CT needed?",
+   "answerType": "binary",
+   "options": [
+    "yes",
+    "no"
+   ]
+  },
+  {
+   "source": "consult",
+   "dest": "dispo",
+   "question": "Consult service?",
+   "answerType": "category",
+   "options": [
+    "cardiology",
+    "surgery",
+    "neurology",
+    "ICU",
+    "hospitalist",
+    "none"
+   ]
+  },
+  {
+   "source": "dispo",
+   "dest": "board",
+   "question": "Disposition?",
+   "answerType": "category",
+   "options": [
+    "admit",
+    "admit-ICU",
+    "obs",
+    "discharge",
+    "transfer"
+   ]
+  }
+ ],
+ "cases": [
+  {
+   "caseID": "pt01",
+   "context": "[SYNTHETIC] 58M chest pressure radiating to L arm x40 min, diaphoretic. HR 102, BP 158/94, RR 18, SpO2 96%, T 36.9. HTN, smoker.",
+   "stages": [
+    {
+     "gt": "2",
+     "propOk": "3",
+     "propBad": "1",
+     "conf": 0.71
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.83
+    },
+    {
+     "gt": "chest-pain",
+     "propOk": "chest-pain",
+     "propBad": "abd-pain",
+     "conf": 0.66
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.78
+    },
+    {
+     "gt": "cardiology",
+     "propOk": "cardiology",
+     "propBad": "surgery",
+     "conf": 0.62
+    },
+    {
+     "gt": "admit",
+     "propOk": "admit",
+     "propBad": "admit-ICU",
+     "conf": 0.74
+    }
+   ]
+  },
+  {
+   "caseID": "pt02",
+   "context": "[SYNTHETIC] 72F fever, new confusion. T 39.2, HR 118, BP 88/52, RR 24, SpO2 93%. Recurrent UTIs, diabetic.",
+   "stages": [
+    {
+     "gt": "2",
+     "propOk": "2",
+     "propBad": "1",
+     "conf": 0.83
+    },
+    {
+     "gt": "yes",
+     "propOk": "no",
+     "propBad": "no",
+     "conf": 0.66
+    },
+    {
+     "gt": "sepsis",
+     "propOk": "sepsis",
+     "propBad": "chest-pain",
+     "conf": 0.78
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.62
+    },
+    {
+     "gt": "ICU",
+     "propOk": "ICU",
+     "propBad": "cardiology",
+     "conf": 0.74
+    },
+    {
+     "gt": "admit-ICU",
+     "propOk": "admit-ICU",
+     "propBad": "admit",
+     "conf": 0.69
+    }
+   ]
+  },
+  {
+   "caseID": "pt03",
+   "context": "[SYNTHETIC] 24F RLQ pain 14 h, nausea, anorexia. T 38.1, HR 96, BP 122/78. Urine hCG negative.",
+   "stages": [
+    {
+     "gt": "3",
+     "propOk": "3",
+     "propBad": "1",
+     "conf": 0.66
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.78
+    },
+    {
+     "gt": "abd-pain",
+     "propOk": "abd-pain",
+     "propBad": "chest-pain",
+     "conf": 0.62
+    },
+    {
+     "gt": "yes",
+     "propOk": "no",
+     "propBad": "no",
+     "conf": 0.74
+    },
+    {
+     "gt": "surgery",
+     "propOk": "surgery",
+     "propBad": "cardiology",
+     "conf": 0.69
+    },
+    {
+     "gt": "admit",
+     "propOk": "admit",
+     "propBad": "admit-ICU",
+     "conf": 0.58
+    }
+   ]
+  },
+  {
+   "caseID": "pt04",
+   "context": "[SYNTHETIC] 31M ankle inversion playing soccer, able to bear weight 4 steps. Vitals normal. Lateral malleolus tender.",
+   "stages": [
+    {
+     "gt": "4",
+     "propOk": "4",
+     "propBad": "1",
+     "conf": 0.78
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.62
+    },
+    {
+     "gt": "minor",
+     "propOk": "minor",
+     "propBad": "chest-pain",
+     "conf": 0.74
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.69
+    },
+    {
+     "gt": "none",
+     "propOk": "none",
+     "propBad": "cardiology",
+     "conf": 0.58
+    },
+    {
+     "gt": "discharge",
+     "propOk": "obs",
+     "propBad": "admit",
+     "conf": 0.8
+    }
+   ]
+  },
+  {
+   "caseID": "pt05",
+   "context": "[SYNTHETIC] 67M sudden L arm weakness + slurred speech, last known well 50 min ago. BP 182/100, HR 88, glucose 132.",
+   "stages": [
+    {
+     "gt": "2",
+     "propOk": "2",
+     "propBad": "1",
+     "conf": 0.62
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.74
+    },
+    {
+     "gt": "stroke",
+     "propOk": "stroke",
+     "propBad": "chest-pain",
+     "conf": 0.69
+    },
+    {
+     "gt": "yes",
+     "propOk": "yes",
+     "propBad": "no",
+     "conf": 0.58
+    },
+    {
+     "gt": "neurology",
+     "propOk": "cardiology",
+     "propBad": "cardiology",
+     "conf": 0.8
+    },
+    {
+     "gt": "transfer",
+     "propOk": "transfer",
+     "propBad": "admit",
+     "conf": 0.65
+    }
+   ]
+  },
+  {
+   "caseID": "pt06",
+   "context": "[SYNTHETIC] 45F epigastric/RUQ pain after fatty meal, vomiting. T 38.4, HR 104, BP 130/80. Murphy sign +.",
+   "stages": [
+    {
+     "gt": "3",
+     "propOk": "4",
+     "propBad": "1",
+     "conf": 0.74
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.69
+    },
+    {
+     "gt": "abd-pain",
+     "propOk": "abd-pain",
+     "propBad": "chest-pain",
+     "conf": 0.58
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.8
+    },
+    {
+     "gt": "surgery",
+     "propOk": "surgery",
+     "propBad": "cardiology",
+     "conf": 0.65
+    },
+    {
+     "gt": "admit",
+     "propOk": "admit",
+     "propBad": "admit-ICU",
+     "conf": 0.71
+    }
+   ]
+  },
+  {
+   "caseID": "pt07",
+   "context": "[SYNTHETIC] 19M sore throat + cough x2 days. T 37.9, HR 84, BP 124/70, SpO2 99%. Tolerating fluids.",
+   "stages": [
+    {
+     "gt": "5",
+     "propOk": "5",
+     "propBad": "1",
+     "conf": 0.69
+    },
+    {
+     "gt": "no",
+     "propOk": "yes",
+     "propBad": "yes",
+     "conf": 0.58
+    },
+    {
+     "gt": "minor",
+     "propOk": "minor",
+     "propBad": "chest-pain",
+     "conf": 0.8
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.65
+    },
+    {
+     "gt": "none",
+     "propOk": "none",
+     "propBad": "cardiology",
+     "conf": 0.71
+    },
+    {
+     "gt": "discharge",
+     "propOk": "discharge",
+     "propBad": "admit",
+     "conf": 0.83
+    }
+   ]
+  },
+  {
+   "caseID": "pt08",
+   "context": "[SYNTHETIC] 80F mechanical fall, struck head, on apixaban. GCS 15, HR 78, BP 146/82. Small occipital hematoma.",
+   "stages": [
+    {
+     "gt": "2",
+     "propOk": "2",
+     "propBad": "1",
+     "conf": 0.58
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.8
+    },
+    {
+     "gt": "trauma",
+     "propOk": "trauma",
+     "propBad": "chest-pain",
+     "conf": 0.65
+    },
+    {
+     "gt": "yes",
+     "propOk": "no",
+     "propBad": "no",
+     "conf": 0.71
+    },
+    {
+     "gt": "none",
+     "propOk": "none",
+     "propBad": "cardiology",
+     "conf": 0.83
+    },
+    {
+     "gt": "obs",
+     "propOk": "obs",
+     "propBad": "admit",
+     "conf": 0.66
+    }
+   ]
+  },
+  {
+   "caseID": "pt09",
+   "context": "[SYNTHETIC] 52M cough, fever x3 days. T 38.8, HR 112, BP 104/66, RR 26, SpO2 89% RA. Crackles R base.",
+   "stages": [
+    {
+     "gt": "2",
+     "propOk": "2",
+     "propBad": "1",
+     "conf": 0.8
+    },
+    {
+     "gt": "yes",
+     "propOk": "yes",
+     "propBad": "no",
+     "conf": 0.65
+    },
+    {
+     "gt": "sepsis",
+     "propOk": "sepsis",
+     "propBad": "chest-pain",
+     "conf": 0.71
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.83
+    },
+    {
+     "gt": "hospitalist",
+     "propOk": "hospitalist",
+     "propBad": "cardiology",
+     "conf": 0.66
+    },
+    {
+     "gt": "admit",
+     "propOk": "discharge",
+     "propBad": "admit-ICU",
+     "conf": 0.78
+    }
+   ]
+  },
+  {
+   "caseID": "pt10",
+   "context": "[SYNTHETIC] 36F sudden palpitations, dizzy. HR 168 regular narrow-complex, BP 118/76, SpO2 98%. No chest pain.",
+   "stages": [
+    {
+     "gt": "2",
+     "propOk": "2",
+     "propBad": "1",
+     "conf": 0.65
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.71
+    },
+    {
+     "gt": "chest-pain",
+     "propOk": "minor",
+     "propBad": "abd-pain",
+     "conf": 0.83
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.66
+    },
+    {
+     "gt": "cardiology",
+     "propOk": "cardiology",
+     "propBad": "surgery",
+     "conf": 0.78
+    },
+    {
+     "gt": "obs",
+     "propOk": "obs",
+     "propBad": "admit",
+     "conf": 0.62
+    }
+   ]
+  }
+ ]
+}

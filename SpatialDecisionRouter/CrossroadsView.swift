@@ -7,17 +7,22 @@ struct CrossroadsView: View {
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @State private var root = Entity()
     @State private var built: Set<String> = []
+    @State private var builtVersion = -1
+    @State private var pulsed: [String: Date] = [:]
 
     var body: some View {
         RealityView { content, attachments in
             content.add(root)
             buildStatic(attachments)
         } update: { _, attachments in
+            if builtVersion != store.packVersion { buildStatic(attachments) }
             sync(attachments)
         } attachments: {
             if let sc = store.scenario {
                 ForEach(sc.agents, id: \.id) { a in
                     Attachment(id: "agent-\(a.id)") { AgentCard(agent: a, inbox: store.inbox[a.id] ?? 0) }
+                }
+                Attachment(id: "board") { ResultsBoard()
                 }
             }
             ForEach(store.handoffs.filter { store.phase[$0.id] != .delivered }) { h in
@@ -55,22 +60,29 @@ struct CrossroadsView: View {
 
     private func buildStatic(_ att: RealityViewAttachments) {
         guard let sc = store.scenario else { return }
-        let hub: SIMD3<Float> = [0, 1.4, -1.05]
+        guard sc.agents.allSatisfy({ att.entity(for: "agent-\($0.id)") != nil }) else { return }  // retry next update
+        for c in Array(root.children) { c.removeFromParent() }
+        let hub = CrossroadsStore.hub
+        let ver = store.packVersion
+        Task { @MainActor in builtVersion = ver; built = []; pulsed = [:] }
         let hubE = ModelEntity(mesh: .generateSphere(radius: 0.03), materials: [UnlitMaterial(color: .white)])
         hubE.position = hub; root.addChild(hubE)
         for (i, a) in sc.agents.enumerated() {
             let p = store.agentPosition(a.id)
             let node = ModelEntity(mesh: .generateSphere(radius: 0.11),
-                                   materials: [SimpleMaterial(color: UIColor(hue: CGFloat(i) / 4.5, saturation: 0.7, brightness: 0.95, alpha: 0.95), isMetallic: false)])
+                                   materials: [SimpleMaterial(color: UIColor(hue: CGFloat(i) / CGFloat(sc.agents.count + 1), saturation: 0.7, brightness: 0.95, alpha: 0.95), isMetallic: false)])
             node.position = p; node.name = "agent-\(a.id)"
             root.addChild(node)
             root.addChild(line(p, hub, UIColor(white: 1, alpha: 0.5)))
             if let card = att.entity(for: "agent-\(a.id)") {
-                card.position = p + [0, 0.24, 0]; card.components.set(BillboardComponent()); root.addChild(card)
+                card.position = p + [0, 0.27, 0]; card.scale = [1.3, 1.3, 1.3]; card.components.set(BillboardComponent()); root.addChild(card)
             }
         }
         if let m = att.entity(for: "metrics") {
-            m.position = [-0.95, 1.95, -1.6]; m.components.set(BillboardComponent()); root.addChild(m)
+            m.position = [-1.05, 2.0, -1.6]; m.scale = [1.5, 1.5, 1.5]; m.components.set(BillboardComponent()); root.addChild(m)
+        }
+        if let b = att.entity(for: "board") {
+            b.position = [1.1, 2.0, -1.6]; b.scale = [1.4, 1.4, 1.4]; b.components.set(BillboardComponent()); root.addChild(b)
         }
         if let r = att.entity(for: "ring") { r.name = "ringAttachment"; r.isEnabled = false; root.addChild(r) }
     }
@@ -85,7 +97,7 @@ struct CrossroadsView: View {
             var e = root.findEntity(named: h.id)
             if e == nil, !built.contains(h.id), let card = att.entity(for: h.id) {
                 let binary = h.link.answerType == .binary
-                let hue = CGFloat(h.stage) / 4.5
+                let hue = CGFloat(store.agentIndex(h.link.source)) / CGFloat((store.scenario?.agents.count ?? 4) + 1)
                 let m = ModelEntity(mesh: binary ? .generateBox(size: 0.1, cornerRadius: 0.02) : .generateSphere(radius: 0.065),
                                     materials: [SimpleMaterial(color: UIColor(hue: hue, saturation: 0.25 + 0.7 * CGFloat(h.confidence), brightness: 1, alpha: 0.85), isMetallic: false)])
                 m.name = h.id
@@ -99,6 +111,16 @@ struct CrossroadsView: View {
                 e = m
             }
             e?.position = store.position(h)
+        }
+        for (agent, t) in store.lastDelivered where pulsed[agent] != t {
+            if let n = root.findEntity(named: "agent-\(agent)") as? ModelEntity {
+                var big = n.transform; big.scale = [1.8, 1.8, 1.8]
+                n.move(to: big, relativeTo: root, duration: 0.18)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    var s = n.transform; s.scale = [1, 1, 1]; n.move(to: s, relativeTo: root, duration: 0.35)
+                }
+            }
+            Task { @MainActor in pulsed[agent] = t }
         }
         if let r = root.findEntity(named: "ringAttachment") {
             if let id = store.ringFor, let h = store.handoffs.first(where: { $0.id == id }) {
@@ -116,7 +138,8 @@ struct AgentCard: View {
     var body: some View {
         VStack(spacing: 2) {
             Text(agent.name).font(.title3.bold())
-            Text("inbox \(inbox)").font(.headline.monospacedDigit())
+            if let r = agent.role { Text(r).font(.callout).foregroundStyle(.secondary) }
+            Text("received \(inbox)").font(.headline.monospacedDigit())
         }.padding(12).glassBackgroundEffect()
     }
 }
@@ -127,7 +150,7 @@ struct HandoffCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("\(h.link.source) → \(h.link.dest) · \(h.caseID)").font(.headline).foregroundStyle(.secondary)
-            Text(h.inputContext).font(.title3).lineLimit(2)
+            Text(h.inputContext).font(.title3).lineLimit(3)
             HStack {
                 Text(h.link.question).font(.title3)
                 Spacer()
@@ -174,6 +197,47 @@ struct OptionRing: View {
     }
 }
 
+struct ResultsBoard: View {
+    @Environment(CrossroadsStore.self) private var store
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Patient Progress Board").font(.title2.bold())
+            Text("SYNTHETIC DATA — not real patients").font(.caption.bold()).foregroundStyle(.yellow)
+            HStack(spacing: 14) {
+                stat("Completed", store.casesCompleted); stat("Decisions", store.decisions.count)
+                stat("Corrections", store.corrections); stat("Errors prevented", store.errorsPrevented)
+                stat("Missed", store.missed); stat("Actions triggered", store.deliveries)
+            }
+            Divider()
+            ForEach(store.boardRows) { r in
+                HStack(alignment: .top, spacing: 6) {
+                    Text(r.id).font(.callout.bold().monospaced()).frame(width: 44, alignment: .leading)
+                    Text(r.context).font(.caption).lineLimit(1).frame(width: 220, alignment: .leading)
+                    HStack(spacing: 3) {
+                        ForEach(Array(r.steps.enumerated()), id: \.offset) { _, s in
+                            Text(s.0).font(.caption.bold())
+                                .padding(.horizontal, 5).padding(.vertical, 1)
+                                .background((s.1 ? Color.orange : Color.white.opacity(0.15)), in: Capsule())
+                                .foregroundStyle(s.2 ? Color.primary : Color.red)
+                        }
+                    }.frame(width: 330, alignment: .leading)
+                    Text(label(r.status)).font(.caption.bold()).foregroundStyle(color(r.status))
+                }
+            }
+        }
+        .frame(width: 800).padding(18).glassBackgroundEffect()
+    }
+    private func stat(_ t: String, _ n: Int) -> some View {
+        VStack { Text("\(n)").font(.title2.bold().monospacedDigit()); Text(t).font(.caption2) }
+    }
+    private func label(_ s: String) -> String {
+        switch s { case "correct": "✓ correct"; case "corrected": "✓ corrected by human"; case "missed": "✗ missed"; default: s }
+    }
+    private func color(_ s: String) -> Color {
+        switch s { case "correct": .green; case "corrected": .orange; case "missed": .red; default: .secondary }
+    }
+}
+
 struct MetricsPanel: View {
     @Environment(CrossroadsStore.self) private var store
     let onClose: () -> Void
@@ -187,6 +251,12 @@ struct MetricsPanel: View {
                 Text(store.agreement.map { String(format: "Agree w/ GT  %.0f%%", $0 * 100) } ?? "Agree w/ GT  —").monospacedDigit()
                 if !store.lastAction.isEmpty { Text(store.lastAction).font(.caption).lineLimit(1) }
                 Text("tap = pass · hold = options · drag = flip (binary)").font(.caption2).foregroundStyle(.secondary)
+                Divider()
+                Text("● sphere = category   ■ cube = yes/no").font(.caption)
+                Text("color = source agent · saturation = confidence").font(.caption)
+                Text("strikethrough + orange = human changed").font(.caption)
+                Text("Pack: \(store.packName)").font(.caption.bold())
+                Button("Next Pack") { store.nextPack() }.font(.caption)
                 HStack { Button("Export") { store.export() }; Button("Close", action: onClose) }.font(.caption)
                 if !store.lastExport.isEmpty { Text(store.lastExport).font(.caption2) }
             }.frame(width: 280).padding(14).glassBackgroundEffect()

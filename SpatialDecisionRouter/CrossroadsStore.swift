@@ -6,6 +6,7 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
 
 @MainActor @Observable final class CrossroadsStore {
     static let head: SIMD3<Float> = [0, 1.5, 0]
+    static let hub: SIMD3<Float> = [0, 1.4, -1.05]
     var scenario: Scenario?
     var handoffs: [Handoff] = []
     var phase: [String: Phase] = [:]
@@ -32,7 +33,17 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
     init() {
         let a = ProcessInfo.processInfo.arguments
         if let i = a.firstIndex(of: "-speedup"), i + 1 < a.count, let v = Float(a[i + 1]) { speedup = v }
-        load("support_crossroads")
+        if let i = a.firstIndex(of: "-pack"), i + 1 < a.count { load(a[i + 1]) } else { load("ed_patient_flow") }
+    }
+    static let packs = ["ed_patient_flow", "support_crossroads"]
+    var packName = ""
+    var packVersion = 0
+    var lastDelivered: [String: Date] = [:]
+    var caseStatus: [String: String] = [:]   // caseID -> correct | corrected | missed
+    var deliveries = 0
+    func nextPack() {
+        let i = ((Self.packs.firstIndex(of: packName) ?? 0) + 1) % Self.packs.count
+        load(Self.packs[i])
     }
 
     func load(_ name: String) {
@@ -40,6 +51,8 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
               let d = try? Data(contentsOf: u) else { loadError = "missing \(name).json"; return }
         do { scenario = try JSONDecoder().decode(Scenario.self, from: d) } catch { loadError = "\(error)"; return }
         handoffs = []; phase = [:]; progress = [:]; slot = [:]; routed = [:]; upstream = [:]
+        decisions = []; caseStatus = [:]; deliveries = 0; lastDelivered = [:]; ringFor = nil
+        packName = name; packVersion += 1
         inbox = Dictionary(uniqueKeysWithValues: (scenario?.agents ?? []).map { ($0.id, 0) })
         nextCase = 0; spawnTimer = 99; sessionStart = Date()
     }
@@ -48,7 +61,7 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
     func agentIndex(_ id: String) -> Int { scenario?.agents.firstIndex { $0.id == id } ?? 0 }
     func agentPosition(_ id: String) -> SIMD3<Float> {
         let n = Float(scenario?.agents.count ?? 4)
-        let a = (-35 + 70 * Float(agentIndex(id)) / max(n - 1, 1)) * .pi / 180
+        let a = (-42 + 84 * Float(agentIndex(id)) / max(n - 1, 1)) * .pi / 180
         return [2.1 * sin(a), 1.55, -2.1 * cos(a)]
     }
     func slotPosition(_ k: Int) -> SIMD3<Float> {
@@ -60,7 +73,10 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
         switch phase[h.id] ?? .incoming {
         case .incoming: return simd_mix(agentPosition(h.link.source), s, SIMD3(repeating: smooth(t)))
         case .waiting: return s
-        case .outgoing, .delivered: return simd_mix(s, agentPosition(h.link.dest), SIMD3(repeating: smooth(t)))
+        case .outgoing, .delivered:
+            let hub = Self.hub, d = agentPosition(h.link.dest)
+            return t < 0.3 ? simd_mix(s, hub, SIMD3(repeating: smooth(t / 0.3)))
+                           : simd_mix(hub, d, SIMD3(repeating: smooth((t - 0.3) / 0.7)))
         }
     }
     private func smooth(_ t: Float) -> Float { t * t * (3 - 2 * t) }
@@ -84,7 +100,7 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
                 let p = (progress[h.id] ?? 0) + dt / 3
                 if p >= 1 { phase[h.id] = .waiting; shownAt[h.id] = Date() } else { progress[h.id] = p }
             case .outgoing:
-                let p = (progress[h.id] ?? 0) + dt / 1.4
+                let p = (progress[h.id] ?? 0) + dt / 2.6
                 if p >= 1 { progress[h.id] = 1; phase[h.id] = .delivered; deliver(h) } else { progress[h.id] = p }
             default: break
             }
@@ -109,6 +125,8 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
     /// Destination agent consumes the routed answer and (deterministically) emits its own handoff.
     private func deliver(_ h: Handoff) {
         inbox[h.link.dest, default: 0] += 1
+        deliveries += 1
+        lastDelivered[h.link.dest] = Date()
         guard let sc = scenario, let c = sc.cases.first(where: { $0.caseID == h.caseID }) else { return }
         let correct = routed[h.id] == h.groundTruth
         if h.stage + 1 < sc.links.count {
@@ -117,9 +135,13 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
             // terminal agent acted: join outcome onto every decision in this chain
             let chain = decisions.indices.filter { decisions[$0].caseID == h.caseID }
             let allOK = chain.allSatisfy { decisions[$0].agreesWithGroundTruth == true }
-            let outcome = correct ? (allOK ? "resolved-correctly" : "resolved-after-correction")
+            let changedAny = chain.contains { decisions[$0].changed }
+            let outcome = correct ? (allOK ? (changedAny ? "resolved-after-human-correction" : "resolved-correctly") : "resolved-despite-upstream-error")
                                   : "misrouted:\(routed[h.id] ?? "?")≠\(h.groundTruth ?? "?")"
             for k in chain { decisions[k].downstreamOutcome = outcome }
+            let anyWrong = chain.contains { decisions[$0].agreesWithGroundTruth == false }
+            let anyChanged = chain.contains { decisions[$0].changed }
+            caseStatus[h.caseID] = anyWrong ? "missed" : (anyChanged ? "corrected" : "correct")
             rewriteLog()
         }
     }
@@ -172,6 +194,23 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
         return j.isEmpty ? nil : Double(j.filter { $0 }.count) / Double(j.count)
     }
 
+    // MARK: board
+    struct BoardRow: Identifiable { let id: String; let context: String; let steps: [(String, Bool, Bool)]; let status: String }
+    var boardRows: [BoardRow] {
+        guard let sc = scenario else { return [] }
+        let started = sc.cases.filter { c in handoffs.contains { $0.caseID == c.caseID } }
+        return started.map { c in
+            let ds = decisions.filter { $0.caseID == c.caseID }.sorted { $0.stage < $1.stage }
+            let steps = ds.map { ($0.routedAnswer, $0.changed, $0.agreesWithGroundTruth ?? true) }
+            return BoardRow(id: c.caseID, context: c.context.replacingOccurrences(of: "[SYNTHETIC] ", with: ""),
+                            steps: steps, status: caseStatus[c.caseID] ?? "in progress \(ds.count)/\(sc.links.count)")
+        }
+    }
+    var casesCompleted: Int { caseStatus.count }
+    var corrections: Int { decisions.filter(\.changed).count }
+    var errorsPrevented: Int { decisions.filter { $0.changed && $0.agreesWithGroundTruth == true }.count }
+    var missed: Int { caseStatus.values.filter { $0 == "missed" }.count }
+
     // MARK: logging / export
     private func enc() -> JSONEncoder { let e = JSONEncoder(); e.dateEncodingStrategy = .iso8601; e.outputFormatting = [.sortedKeys]; return e }
     private func appendLog(_ d: RoutingDecision) {
@@ -208,7 +247,7 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
         while k < n {
             try? await Task.sleep(for: .seconds(Double(1.6 / speedup)))
             guard let h = waiting.first else { continue }
-            if k % 6 == 5 { pass(h.id) }
+            if k % 9 == 8 { pass(h.id) }
             else if let gt = h.groundTruth, gt != h.proposedAnswer {
                 if h.link.answerType == .binary { flip(h.id) }
                 else { ringFor = h.id; try? await Task.sleep(for: .milliseconds(700)); select(h.id, gt) }

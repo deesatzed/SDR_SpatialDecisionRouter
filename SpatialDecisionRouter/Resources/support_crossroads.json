@@ -3,19 +3,23 @@
  "agents": [
   {
    "id": "intake",
-   "name": "Intake Classifier"
+   "name": "Intake Classifier",
+   "role": "issue type"
   },
   {
    "id": "triage",
-   "name": "Triage Severity"
+   "name": "Triage Severity",
+   "role": "escalate yes/no"
   },
   {
    "id": "specialist",
-   "name": "Specialist Router"
+   "name": "Specialist Router",
+   "role": "team routing"
   },
   {
    "id": "action",
-   "name": "Action Agent"
+   "name": "Action Agent",
+   "role": "executes the fix"
   }
  ],
  "links": [
