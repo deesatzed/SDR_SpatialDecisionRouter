@@ -35,8 +35,8 @@ struct ImmersiveRouterView: View {
             store.markShown(p.id)
         }
         if let panel = attachments.entity(for: "metrics") {
-            panel.position = [0, 0.8, -1.0]   // below the arc, tilted up toward the head
-            panel.orientation = simd_quatf(angle: -.pi / 5, axis: [1, 0, 0])
+            panel.position = [-0.5, 1.0, -0.75]   // low-left, closer than the 1.3 m stop so cards never overlap it
+            panel.components.set(BillboardComponent())
             root.addChild(panel)
         }
         guard found == store.proposals.count else { return }   // attachments not ready yet; retry next update

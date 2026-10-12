@@ -103,7 +103,11 @@ import simd
 
     private func clampOut(_ p: SIMD3<Float>) -> SIMD3<Float> {
         var v = p - Self.head
-        v.y = max(-0.45, min(0.75, v.y))
+        v.y = max(-0.3, min(0.75, v.y))
+        // keep within ±40° of forward so edge cards stay in view
+        let h = simd_length(SIMD2(v.x, v.z)), maxA: Float = 0.7
+        let a = atan2(v.x, -v.z)
+        if abs(a) > maxA { let c = a > 0 ? maxA : -maxA; v.x = h * sin(c); v.z = -h * cos(c) }
         let l = simd_length(v)
         return l < Self.stopDistance ? Self.head + v / l * Self.stopDistance : Self.head + v
     }
