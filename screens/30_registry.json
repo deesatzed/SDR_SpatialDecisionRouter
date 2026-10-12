@@ -1,0 +1,296 @@
+{
+  "entries" : {
+    "acuity" : [
+      {
+        "createdAt" : "2026-10-12T16:40:02Z",
+        "isBase" : true,
+        "lastUsedTick" : 81,
+        "name" : "1",
+        "outcomeSupport" : 0,
+        "outcomeTotal" : 0,
+        "reviewerAgree" : 0,
+        "reviewerTotal" : 0,
+        "tier" : "main",
+        "uses" : 1
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:02Z",
+        "isBase" : true,
+        "lastUsedTick" : 118,
+        "name" : "2",
+        "outcomeSupport" : 0,
+        "outcomeTotal" : 0,
+        "reviewerAgree" : 0,
+        "reviewerTotal" : 0,
+        "tier" : "main",
+        "uses" : 14
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:02Z",
+        "isBase" : true,
+        "lastUsedTick" : 105,
+        "name" : "3",
+        "outcomeSupport" : 0,
+        "outcomeTotal" : 0,
+        "reviewerAgree" : 0,
+        "reviewerTotal" : 0,
+        "tier" : "main",
+        "uses" : 7
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:02Z",
+        "isBase" : true,
+        "lastUsedTick" : 98,
+        "name" : "4",
+        "outcomeSupport" : 0,
+        "outcomeTotal" : 0,
+        "reviewerAgree" : 0,
+        "reviewerTotal" : 0,
+        "tier" : "main",
+        "uses" : 3
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:02Z",
+        "isBase" : true,
+        "lastUsedTick" : 0,
+        "name" : "5",
+        "outcomeSupport" : 0,
+        "outcomeTotal" : 0,
+        "reviewerAgree" : 0,
+        "reviewerTotal" : 0,
+        "tier" : "main",
+        "uses" : 0
+      }
+    ],
+    "alert" : [
+      {
+        "createdAt" : "2026-10-12T16:40:02Z",
+        "isBase" : true,
+        "lastUsedTick" : 117,
+        "name" : "none",
+        "outcomeSupport" : 0,
+        "outcomeTotal" : 0,
+        "reviewerAgree" : 0,
+        "reviewerTotal" : 0,
+        "tier" : "main",
+        "uses" : 17
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:02Z",
+        "isBase" : true,
+        "lastUsedTick" : 83,
+        "name" : "stroke",
+        "outcomeSupport" : 0,
+        "outcomeTotal" : 0,
+        "reviewerAgree" : 0,
+        "reviewerTotal" : 0,
+        "tier" : "main",
+        "uses" : 1
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:02Z",
+        "isBase" : true,
+        "lastUsedTick" : 38,
+        "name" : "STEMI",
+        "outcomeSupport" : 0,
+        "outcomeTotal" : 0,
+        "reviewerAgree" : 0,
+        "reviewerTotal" : 0,
+        "tier" : "main",
+        "uses" : 1
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:06Z",
+        "isBase" : false,
+        "lastUsedTick" : 103,
+        "name" : "sepsis-stroke mimic",
+        "outcomeSupport" : 6,
+        "outcomeTotal" : 6,
+        "reviewerAgree" : 5,
+        "reviewerTotal" : 6,
+        "tier" : "main",
+        "uses" : 6
+      }
+    ],
+    "placement" : [
+      {
+        "createdAt" : "2026-10-12T16:40:02Z",
+        "isBase" : true,
+        "lastUsedTick" : 90,
+        "name" : "resus",
+        "outcomeSupport" : 0,
+        "outcomeTotal" : 0,
+        "reviewerAgree" : 0,
+        "reviewerTotal" : 0,
+        "tier" : "main",
+        "uses" : 4
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:02Z",
+        "isBase" : true,
+        "lastUsedTick" : 114,
+        "name" : "main ED",
+        "outcomeSupport" : 0,
+        "outcomeTotal" : 0,
+        "reviewerAgree" : 0,
+        "reviewerTotal" : 0,
+        "tier" : "main",
+        "uses" : 9
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:02Z",
+        "isBase" : true,
+        "lastUsedTick" : 101,
+        "name" : "fast track",
+        "outcomeSupport" : 0,
+        "outcomeTotal" : 0,
+        "reviewerAgree" : 0,
+        "reviewerTotal" : 0,
+        "tier" : "main",
+        "uses" : 4
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:02Z",
+        "isBase" : true,
+        "lastUsedTick" : 119,
+        "name" : "waiting room",
+        "outcomeSupport" : 0,
+        "outcomeTotal" : 0,
+        "reviewerAgree" : 0,
+        "reviewerTotal" : 0,
+        "tier" : "main",
+        "uses" : 2
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:12Z",
+        "isBase" : false,
+        "lastUsedTick" : 55,
+        "name" : "hallway bed",
+        "outcomeSupport" : 3,
+        "outcomeTotal" : 3,
+        "reviewerAgree" : 3,
+        "reviewerTotal" : 3,
+        "tier" : "dormant",
+        "uses" : 3
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:18Z",
+        "isBase" : false,
+        "lastUsedTick" : 19,
+        "name" : "vert care",
+        "outcomeSupport" : 1,
+        "outcomeTotal" : 1,
+        "reviewerAgree" : 1,
+        "reviewerTotal" : 1,
+        "tier" : "dormant",
+        "uses" : 1
+      },
+      {
+        "createdAt" : "2026-10-12T16:40:30Z",
+        "isBase" : false,
+        "lastUsedTick" : 40,
+        "name" : "vertical care",
+        "outcomeSupport" : 1,
+        "outcomeTotal" : 1,
+        "reviewerAgree" : 2,
+        "reviewerTotal" : 2,
+        "tier" : "trial",
+        "uses" : 2
+      }
+    ]
+  },
+  "history" : [
+    {
+      "category" : "*",
+      "detail" : "base sets from domain config",
+      "linkId" : "*",
+      "op" : "seed",
+      "siteId" : "ED-A",
+      "time" : "2026-10-12T16:40:02Z",
+      "version" : 1
+    },
+    {
+      "category" : "sepsis-stroke mimic",
+      "detail" : "new trial category",
+      "linkId" : "alert",
+      "op" : "add",
+      "siteId" : "ED-A",
+      "time" : "2026-10-12T16:40:06Z",
+      "version" : 2
+    },
+    {
+      "category" : "hallway bed",
+      "detail" : "new trial category",
+      "linkId" : "placement",
+      "op" : "add",
+      "siteId" : "ED-A",
+      "time" : "2026-10-12T16:40:12Z",
+      "version" : 3
+    },
+    {
+      "category" : "vert care",
+      "detail" : "new trial category",
+      "linkId" : "placement",
+      "op" : "add",
+      "siteId" : "ED-A",
+      "time" : "2026-10-12T16:40:18Z",
+      "version" : 4
+    },
+    {
+      "category" : "vertical care",
+      "detail" : "new trial category",
+      "linkId" : "placement",
+      "op" : "add",
+      "siteId" : "ED-A",
+      "time" : "2026-10-12T16:40:30Z",
+      "version" : 5
+    },
+    {
+      "category" : "vert care",
+      "detail" : "merged into vertical care",
+      "linkId" : "placement",
+      "op" : "merge",
+      "siteId" : "ED-A",
+      "time" : "2026-10-12T16:40:30Z",
+      "version" : 6
+    },
+    {
+      "category" : "hallway bed",
+      "detail" : "uses 3, consistency 1.00, outcome support 2",
+      "linkId" : "placement",
+      "op" : "promote",
+      "siteId" : "ED-A",
+      "time" : "2026-10-12T16:40:39Z",
+      "version" : 7
+    },
+    {
+      "category" : "sepsis-stroke mimic",
+      "detail" : "uses 3, consistency 0.67, outcome support 2",
+      "linkId" : "alert",
+      "op" : "promote",
+      "siteId" : "ED-A",
+      "time" : "2026-10-12T16:40:45Z",
+      "version" : 8
+    },
+    {
+      "category" : "hallway bed",
+      "detail" : "idle 61 decisions",
+      "linkId" : "placement",
+      "op" : "relegate",
+      "siteId" : "ED-A",
+      "time" : "2026-10-12T16:41:15Z",
+      "version" : 9
+    }
+  ],
+  "siteId" : "ED-A",
+  "thresholds" : {
+    "dropAfterUses" : 6,
+    "dropBelowConsistency" : 0.34,
+    "promoteConsistency" : 0.6,
+    "promoteSupport" : 2,
+    "promoteUses" : 3,
+    "relegateIdleDecisions" : 60
+  },
+  "tickCount" : 120,
+  "version" : 9
+}
