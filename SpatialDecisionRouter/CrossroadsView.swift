@@ -75,14 +75,14 @@ struct CrossroadsView: View {
             root.addChild(node)
             root.addChild(line(p, hub, UIColor(white: 1, alpha: 0.5)))
             if let card = att.entity(for: "agent-\(a.id)") {
-                card.position = p + [0, 0.27, 0]; card.scale = [1.3, 1.3, 1.3]; card.components.set(BillboardComponent()); root.addChild(card)
+                card.position = p + [0, 0.32, 0]; card.scale = [1.9, 1.9, 1.9]; card.components.set(BillboardComponent()); root.addChild(card)
             }
         }
         if let m = att.entity(for: "metrics") {
             m.position = [-1.05, 2.0, -1.6]; m.scale = [1.5, 1.5, 1.5]; m.components.set(BillboardComponent()); root.addChild(m)
         }
         if let b = att.entity(for: "board") {
-            b.position = [1.1, 2.0, -1.6]; b.scale = [1.4, 1.4, 1.4]; b.components.set(BillboardComponent()); root.addChild(b)
+            b.position = [0, 2.2, -2.2]; b.scale = [1.7, 1.7, 1.7]; b.components.set(BillboardComponent()); root.addChild(b)
         }
         if let r = att.entity(for: "ring") { r.name = "ringAttachment"; r.isEnabled = false; root.addChild(r) }
     }
@@ -201,7 +201,7 @@ struct ResultsBoard: View {
     @Environment(CrossroadsStore.self) private var store
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text("Patient Progress Board").font(.title2.bold())
+            Text("Patient Progress Board").font(.largeTitle.bold())
             Text("SYNTHETIC DATA — not real patients").font(.caption.bold()).foregroundStyle(.yellow)
             HStack(spacing: 14) {
                 stat("Completed", store.casesCompleted); stat("Decisions", store.decisions.count)
@@ -212,23 +212,23 @@ struct ResultsBoard: View {
             ForEach(store.boardRows) { r in
                 HStack(alignment: .top, spacing: 6) {
                     Text(r.id).font(.callout.bold().monospaced()).frame(width: 44, alignment: .leading)
-                    Text(r.context).font(.caption).lineLimit(1).frame(width: 220, alignment: .leading)
+                    Text(r.context).font(.callout).lineLimit(1).frame(width: 300, alignment: .leading)
                     HStack(spacing: 3) {
                         ForEach(Array(r.steps.enumerated()), id: \.offset) { _, s in
-                            Text(s.0).font(.caption.bold())
+                            Text(s.0).font(.callout.bold())
                                 .padding(.horizontal, 5).padding(.vertical, 1)
                                 .background((s.1 ? Color.orange : Color.white.opacity(0.15)), in: Capsule())
                                 .foregroundStyle(s.2 ? Color.primary : Color.red)
                         }
-                    }.frame(width: 330, alignment: .leading)
-                    Text(label(r.status)).font(.caption.bold()).foregroundStyle(color(r.status))
+                    }.frame(width: 440, alignment: .leading)
+                    Text(label(r.status)).font(.callout.bold()).foregroundStyle(color(r.status))
                 }
             }
         }
-        .frame(width: 800).padding(18).glassBackgroundEffect()
+        .frame(width: 1080).padding(18).glassBackgroundEffect()
     }
     private func stat(_ t: String, _ n: Int) -> some View {
-        VStack { Text("\(n)").font(.title2.bold().monospacedDigit()); Text(t).font(.caption2) }
+        VStack { Text("\(n)").font(.title2.bold().monospacedDigit()); Text(t).font(.callout) }
     }
     private func label(_ s: String) -> String {
         switch s { case "correct": "✓ correct"; case "corrected": "✓ corrected by human"; case "missed": "✗ missed"; default: s }
