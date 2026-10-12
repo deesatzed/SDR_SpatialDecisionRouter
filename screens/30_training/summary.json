@@ -1,0 +1,23 @@
+{
+  "records": 120,
+  "examples": 120,
+  "by_kind": {
+    "pass_through": 88,
+    "trial_category": 8,
+    "override": 24,
+    "human_disagrees_gt": 4
+  },
+  "by_link": {
+    "alert": 25,
+    "sepsis": 24,
+    "acuity": 25,
+    "isolation": 22,
+    "placement": 24
+  },
+  "outcomes": {
+    "completed-after-human-correction": 70,
+    "error-reached-destination": 20,
+    "completed-correctly": 20,
+    "null": 10
+  }
+}
