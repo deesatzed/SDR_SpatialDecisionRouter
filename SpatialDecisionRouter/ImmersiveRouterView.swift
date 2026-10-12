@@ -35,8 +35,8 @@ struct ImmersiveRouterView: View {
             store.markShown(p.id)
         }
         if let panel = attachments.entity(for: "metrics") {
-            panel.position = [-0.55, 1.3, -1.1]
-            panel.orientation = simd_quatf(angle: .pi / 6, axis: [0, 1, 0])
+            panel.position = [0, 0.8, -1.0]   // below the arc, tilted up toward the head
+            panel.orientation = simd_quatf(angle: -.pi / 5, axis: [1, 0, 0])
             root.addChild(panel)
         }
         guard found == store.proposals.count else { return }   // attachments not ready yet; retry next update
@@ -100,6 +100,10 @@ struct ImmersiveRouterView: View {
         }
         .task {
             let args = ProcessInfo.processInfo.arguments
+            if args.contains("-testNextPack") {
+                try? await Task.sleep(for: .seconds(3))
+                store.nextPack()   // same call the Next Pack button makes
+            }
             if let i = args.firstIndex(of: "-autoResolve"), i + 1 < args.count, let n = Int(args[i + 1]) {
                 try? await Task.sleep(for: .seconds(3))
                 await store.autoResolve(n)
@@ -122,7 +126,7 @@ struct MetricsPanel: View {
         TimelineView(.periodic(from: .now, by: 1)) { _ in
             VStack(alignment: .leading, spacing: 8) {
                 Text("Router Metrics").font(.title3.bold())
-                Text("Resolved \(store.resolved.count)/\(store.proposals.count)").monospacedDigit()
+                Text("Resolved \(store.resolved.count)/\(store.proposals.count) · session \(store.sessionLogs.count)").monospacedDigit()
                 Text(String(format: "Decisions/min  %.1f", store.decisionsPerMinute)).monospacedDigit()
                 Text(store.accuracy.map { String(format: "Accuracy vs GT  %.0f%%", $0 * 100) } ?? "Accuracy vs GT  —").monospacedDigit()
                 if !store.lastAction.isEmpty { Text("Last: \(store.lastAction)").font(.caption).lineLimit(1) }

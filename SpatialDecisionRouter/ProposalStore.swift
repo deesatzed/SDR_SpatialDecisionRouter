@@ -51,12 +51,19 @@ import simd
 
     // MARK: metrics
     var decisionsPerMinute: Double {
-        guard let first = firstShown.values.min(), !logs.isEmpty else { return 0 }
-        return Double(logs.count) / max(Date().timeIntervalSince(first) / 60, 1.0 / 60)
+        guard let first = firstShown.values.min() else { return 0 }
+        let n = sessionLogs.count
+        return n == 0 ? 0 : Double(n) / max(Date().timeIntervalSince(first) / 60, 1.0 / 60)
     }
     var accuracy: Double? {
-        let judged = logs.compactMap(\.agreesWithGroundTruth)
+        let judged = sessionLogs.compactMap(\.agreesWithGroundTruth)
         return judged.isEmpty ? nil : Double(judged.filter { $0 }.count) / Double(judged.count)
+    }
+
+    /// Decisions in the current session: this pack, since its items were first rendered.
+    var sessionLogs: [DecisionLog] {
+        guard let first = firstShown.values.min() else { return [] }
+        return logs.filter { $0.stream == stream && $0.decidedAt >= first }
     }
 
     func rank(of id: String) -> Int? { proposals.firstIndex { $0.id == id } }

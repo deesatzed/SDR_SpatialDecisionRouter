@@ -8,7 +8,7 @@ enum Layout {
         let ring = rank / perRing
         let idx = rank % perRing
         let radius: Float = 1.6 + Float(ring) * 0.55
-        let spread: Float = .pi * 0.62
+        let spread: Float = .pi * 0.5
         let angle = -spread / 2 + spread * Float(idx) / Float(perRing - 1)
         let y: Float = 1.35 + Float(ring) * 0.3 + (idx % 2 == 0 ? 0 : 0.18)
         return [radius * sin(angle), y, -radius * cos(angle)]
