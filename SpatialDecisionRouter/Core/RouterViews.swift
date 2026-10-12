@@ -153,19 +153,39 @@ struct HandoffCard: View {
 
 struct OptionRing: View {
     @Environment(RouterEngine.self) private var engine
+    @State private var newName = ""
+    @State private var adding = false
     var body: some View {
         let h = engine.handoffs.first { $0.id == engine.ringFor }
         let opts = h.map { engine.registry.mainOptions($0.link) } ?? []
-        ZStack {
-            Circle().stroke(.white.opacity(0.4), lineWidth: 2).frame(width: 280, height: 280)
-            Text(h?.link.question ?? "").font(.headline)
-            ForEach(Array(opts.enumerated()), id: \.offset) { i, o in
-                let ang = Double(i) / Double(max(opts.count, 1)) * 2 * .pi - .pi / 2
-                Button(o) { if let h { engine.select(h.id, o) } }
-                    .font(.headline).tint(o == h?.proposal ? .gray : .blue)
-                    .offset(x: 140 * cos(ang), y: 140 * sin(ang))
+        let trials = h.map { engine.registry.trialOptions($0.link) } ?? []
+        VStack(spacing: 10) {
+            ZStack {
+                Circle().stroke(.white.opacity(0.4), lineWidth: 2).frame(width: 280, height: 280)
+                Text(h?.link.question ?? "").font(.headline)
+                ForEach(Array(opts.enumerated()), id: \.offset) { i, o in
+                    let ang = Double(i) / Double(max(opts.count, 1)) * 2 * .pi - .pi / 2
+                    Button(o) { if let h { engine.select(h.id, o) } }
+                        .font(.headline).tint(o == h?.proposal ? .gray : .blue)
+                        .offset(x: 140 * cos(ang), y: 140 * sin(ang))
+                }
+            }.frame(width: 440, height: 360)
+            if !trials.isEmpty {
+                HStack {
+                    Text("trial:").font(.callout).foregroundStyle(.purple)
+                    ForEach(trials, id: \.self) { t in Button(t) { if let h { engine.select(h.id, t) } }.tint(.purple).font(.callout) }
+                }
             }
-        }.frame(width: 440, height: 420)
+            if adding {
+                HStack {
+                    TextField("new category", text: $newName).textFieldStyle(.roundedBorder).frame(width: 220)
+                    Button("Add") { if let h, !newName.isEmpty { engine.selectNew(h.id, newName); newName = ""; adding = false } }
+                }
+                Text("trial categories are logged but never change routing or fire alerts until promoted").font(.caption2).foregroundStyle(.secondary)
+            } else {
+                Button("New…") { adding = true }.tint(.purple).font(.headline)
+            }
+        }.padding(12).glassBackgroundEffect()
     }
 }
 
@@ -235,11 +255,35 @@ struct BoardView: View {
     }
 }
 
-/// Compact categories panel (phase B fills in trial/dormant tiers).
+/// Categories panel: main / trial / dormant per category link, with scores.
 struct CategoriesStrip: View {
     @Environment(RouterEngine.self) private var engine
     var body: some View {
-        Text("Categories · registry v\(engine.registry.version)").font(.caption).foregroundStyle(.secondary)
+        let reg = engine.registry
+        VStack(alignment: .leading, spacing: 3) {
+            HStack {
+                Text("Categories · site \(reg.siteId) · registry v\(reg.version)").font(.callout.bold())
+                if let ev = reg.history.last(where: { $0.op != "seed" }) {
+                    Text("last: \(ev.op) “\(ev.category)” \(ev.detail)").font(.caption).foregroundStyle(.purple).lineLimit(1)
+                }
+            }
+            ForEach(engine.config.links.filter { $0.answerType == .category }, id: \.id) { l in
+                HStack(spacing: 6) {
+                    Text(l.shortLabel ?? l.id).font(.caption.bold()).frame(width: 44, alignment: .leading)
+                    ForEach(reg.list(l, .main).filter { !$0.isBase }, id: \.name) { e in chip("★ \(e.name)", .green) }
+                    ForEach(reg.list(l, .trial), id: \.name) { e in
+                        chip(String(format: "%@ · %du %.0f%% %d✓", e.name, e.uses, e.consistency * 100, e.outcomeSupport), .purple)
+                    }
+                    ForEach(reg.list(l, .dormant), id: \.name) { e in chip("⌀ \(e.name)", .gray) }
+                    if reg.list(l, .trial).isEmpty && reg.list(l, .dormant).isEmpty && reg.list(l, .main).allSatisfy(\.isBase) {
+                        Text("base set only").font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+            }
+        }
+    }
+    private func chip(_ t: String, _ c: Color) -> some View {
+        Text(t).font(.caption.bold()).padding(.horizontal, 6).padding(.vertical, 1).background(c.opacity(0.45), in: Capsule())
     }
 }
 

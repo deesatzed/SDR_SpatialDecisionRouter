@@ -58,6 +58,11 @@ struct Handoff: Identifiable, Hashable {
     private var spawnTimer: Float = 99
     let maxActive = 8
 
+    var registryEvents: [RegistryEvent] = []
+    private var reviewerRng = SplitMix64(s: 99)
+    private var testNameIdx = 0
+    var registryURL: URL { logURL.deletingLastPathComponent().appendingPathComponent("registry-\(config.id)-\(siteId).json") }
+    static func dec() -> JSONDecoder { let d = JSONDecoder(); d.dateDecodingStrategy = .iso8601; return d }
     var logURL: URL { FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("routing_log.jsonl") }
 
     init() {
@@ -74,6 +79,11 @@ struct Handoff: Identifiable, Hashable {
     func start(_ d: DomainModule) {
         domain = d; d.reset(seed: 2026)
         registry = CategoryRegistry(siteId: siteId, links: d.config.links)
+        if !ProcessInfo.processInfo.arguments.contains("-freshRegistry"),
+           let data = try? Data(contentsOf: registryURL), let p = try? Self.dec().decode(CategoryRegistry.self, from: data), p.siteId == siteId {
+            registry.merge(persisted: p)
+        }
+        reviewerRng = SplitMix64(s: 99); testNameIdx = 0
         items = [:]; itemOrder = []; handoffs = []; phase = [:]; progress = [:]; slot = [:]; shownAt = [:]
         routed = [:]; effective = [:]; delivered = [:]; itemStatus = [:]; decisions = []; alertsFired = 0; deliveries = 0
         inbox = Dictionary(uniqueKeysWithValues: d.config.agents.map { ($0.id, 0) })
@@ -190,7 +200,23 @@ struct Handoff: Identifiable, Hashable {
         rewriteLog()
     }
     /// hook for subclass-like extensions (category scoring)
-    func itemCompleted(_ item: DomainItem, ok: Bool) {}
+    func itemCompleted(_ item: DomainItem, ok: Bool) {
+        for d in decisions where d.itemId == item.id && !config.links.first(where: { $0.id == d.linkId })!.options.contains(d.routedAnswer) {
+            registry.recordOutcome(d.routedAnswer, linkId: d.linkId, ok: ok)
+        }
+        saveRegistry()
+    }
+    func saveRegistry() {
+        let e = JSONEncoder(); e.dateEncodingStrategy = .iso8601; e.outputFormatting = [.sortedKeys, .prettyPrinted]
+        try? e.encode(registry).write(to: registryURL)
+    }
+    func selectNew(_ id: String, _ name: String) { ringFor = nil; route(id, answer: name, gesture: "new", isNew: true) }
+    func mergeCategory(_ from: String, into: String, linkId: String) {
+        registry.merge(from, into: into, linkId: linkId); registryEvents.append(registry.history.last!); saveRegistry()
+    }
+    func splitCategory(_ name: String, into: [String], linkId: String) {
+        registry.split(name, into: into, linkId: linkId); registryEvents.append(registry.history.last!); saveRegistry()
+    }
 
     // MARK: human routing
     func pass(_ id: String) { route(id, answer: nil, gesture: "pass") }
@@ -204,12 +230,14 @@ struct Handoff: Identifiable, Hashable {
     func route(_ id: String, answer: String?, gesture: String, isNew: Bool = false) {
         guard let h = handoffs.first(where: { $0.id == id }), [.incoming, .waiting].contains(phase[id]),
               let item = items[h.itemId] else { return }
-        let ans = answer ?? h.proposal
+        var ans = answer ?? h.proposal
+        if isNew { ans = registry.add(ans, link: h.link) }
         let trial = registry.isTrial(ans, link: h.link)
+        let custom = !h.link.options.contains(ans)   // HITM-added category (trial or promoted)
         let eff = trial ? h.proposal : ans                 // guardrail: trial categories never change routing
         let pos = position(h), now = Date(), shown = shownAt[id] ?? h.createdAt
         let others = active.filter { $0.id != id }
-        let agrees: Bool? = trial ? nil : h.groundTruth.map { $0 == ans }
+        let agrees: Bool? = custom ? nil : h.groundTruth.map { $0 == ans }
         let d = RoutingDecision(
             domain: config.id, siteId: siteId, registryVersion: registry.version, itemId: item.id, linkId: h.link.id,
             sourceAgent: h.link.source, destAgent: h.link.dest, question: h.link.question,
@@ -223,12 +251,21 @@ struct Handoff: Identifiable, Hashable {
             neighbors: others.map(\.id), queueDepth: others.count,
             groundTruth: h.groundTruth, agreesWithGroundTruth: agrees, downstreamOutcome: nil)
         decisions.append(d)
+        if h.link.answerType == .category {
+            // simulated second reviewer (inter-rater consistency) for HITM-added categories
+            let agreeP = ans.count <= 9 ? 0.45 : 0.8
+            registry.recordUse(ans, link: h.link, reviewerAgrees: custom ? reviewerRng.chance(agreeP) : nil)
+        }
+        let ev = registry.evaluate()
+        registryEvents.append(contentsOf: ev)
+        if !ev.isEmpty || isNew { saveRegistry() }
         routed[id] = ans
         effective[item.id, default: [:]][h.link.id] = eff
         if h.link.firesAlert && !trial && !h.link.alertNegative.contains(eff) { alertsFired += 1; domain.alertFired(item: item, link: h.link) }
         phase[id] = .outgoing; progress[id] = 0
         if ringFor == id { ringFor = nil }
         lastAction = "\(gesture) \(id): \(h.proposal)\(d.changed ? " → \(ans)" : " ✓")\(trial ? " (trial)" : "")"
+            + (ev.last.map { " · \($0.op) \($0.category)" } ?? "")
         appendLog(d)
     }
 
@@ -285,7 +322,11 @@ struct Handoff: Identifiable, Hashable {
         exportExtras(ts: ts)
         lastExport = "Exported \(decisions.count) decisions"
     }
-    func exportExtras(ts: String) {}
+    func exportExtras(ts: String) {
+        let e = JSONEncoder(); e.dateEncodingStrategy = .iso8601; e.outputFormatting = [.sortedKeys, .prettyPrinted]
+        try? e.encode(registry.history).write(to: exportDir.appendingPathComponent("registry-history-\(siteId)-\(ts).json"))
+        try? e.encode(registry).write(to: exportDir.appendingPathComponent("registry-\(siteId)-\(ts).json"))
+    }
 
     // MARK: test driver
     /// Acts on waiting handoffs, highest priority first. Mostly routes to ground truth; every 9th is a blind pass.
@@ -294,7 +335,17 @@ struct Handoff: Identifiable, Hashable {
         while k < n {
             try? await Task.sleep(for: .seconds(Double(1.4 / speedup)))
             guard let h = waiting.first else { continue }
-            if k % 9 == 8 { pass(h.id) }
+            let testNew = ProcessInfo.processInfo.arguments.contains("-testNewCategories")
+            if testNew, h.link.answerType == .category, let names = config.testNewCategories[h.link.id], k % 3 == 1 {
+                let name = names[testNameIdx % names.count]; testNameIdx += 1
+                ringFor = h.id; try? await Task.sleep(for: .milliseconds(600))
+                if registry.exists(name, link: h.link) { select(h.id, name) } else { selectNew(h.id, name) }
+                // demonstrate a merge once a typo-variant exists
+                if registry.exists("vert care", link: h.link), registry.exists("vertical care", link: h.link) {
+                    mergeCategory("vert care", into: "vertical care", linkId: h.link.id)
+                }
+            }
+            else if k % 9 == 8 { pass(h.id) }
             else if let gt = h.groundTruth, gt != h.proposal {
                 if h.link.answerType == .binary { flip(h.id) }
                 else { ringFor = h.id; try? await Task.sleep(for: .milliseconds(600)); select(h.id, gt) }
