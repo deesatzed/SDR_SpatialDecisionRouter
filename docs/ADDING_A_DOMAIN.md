@@ -62,3 +62,38 @@ ED triage (`Domains/EDTriage/`) is the reference implementation. Example of a fu
   "links": [{"id": "severity", "source": "severity", "dest": "oncall", "question": "Severity?", "answerType": "category",
              "options": ["P1","P2","P3","P4"], "costWeight": 0.5}] }
 ```
+
+## Review queue, detail panel, glossary (all generic)
+
+The engine shows ONE large **Now** card (top of the queue), an **Up next** strip (next `review.upNextCount`),
+a per-source-agent queue badge, and a side panel for **details** or the **spot-check** queue. A domain supplies:
+
+### Config (`<domain>.domain.json`)
+```json
+"review": { "autoPassConfidence": 0.88, "autoPassMaxCost": 0.5, "spotCheckRate": 0.35, "waitWeight": 0.02, "upNextCount": 4 },
+"detailSections": ["History", "Attachments", "Capacity snapshot"],
+"glossary": { "confidence": "…", "trial category": "…", "History": "…", "my reason key": "…" },
+"links": [ { "id": "triage", "...": "...", "previews": { "*": "{dest}: receives {answer}", "urgent": "{dest}: pages on-call" } } ]
+```
+- **Priority** = `(1 − confidence)·(1 + costWeight) + waitWeight·waitMinutes + urgency(...)`. The Now card is sticky until decided; the human can pull any Up-next item forward.
+- **Auto-pass**: confidence ≥ `autoPassConfidence`, `costWeight ≤ autoPassMaxCost`, and no `.high` reason chip. A `spotCheckRate` sample is put in the spot-check queue. Logged `decidedBy: auto|human`, `spotCheckSampled`, `spotCheckResult`.
+- **Glossary**: every field, chip, section title and row label is looked up by key for its hover tooltip (`.gloss(key)`).
+- `"Capacity snapshot"` is a built-in section (it renders the capacity dict from emission time).
+
+### Hooks (optional `DomainModule` requirements; defaults in `Core/ReviewKit.swift`)
+```swift
+func reasons(item:link:proposal:upstream:) -> [ReasonChip]   // WHY queued (text, glossary key, severity info|warn|high)
+func urgency(item:link:proposal:) -> Double                  // extra priority from domain rules
+func downstreamPreview(item:link:answer:) -> String?         // WHAT HAPPENS NEXT; nil → link.previews template
+func detail(item:section:) -> [(String, String)]?            // rows for a detailSections title; nil → omitted
+```
+The engine always adds generic chips: `low confidence` (< 70%), `high error cost` (costWeight ≥ 0.7), and `waiting Nm` (or `alert waiting Nm`, which is high once ≥ 10 min).
+
+### Logged per decision
+`decidedBy`, `reasons`, `downstreamPreview`, `detailOpened`, `sectionsOpened`, `sectionDwell{section: s}`, `detailDwell`, `spotCheckSampled`, `spotCheckResult`.
+
+### Checklist additions
+- [ ] glossary covers each reason key, section title, and domain term shown on cards
+- [ ] reasons() flags rule conflicts as `.high` so they are never auto-passed
+- [ ] downstreamPreview() or `previews` gives a concrete effect for every option
+- [ ] auto-pass threshold tuned so the human sees the uncertain/costly items (check `decidedBy` mix in the log)

@@ -1,59 +1,275 @@
 {
-  "id": "ed_triage",
-  "title": "ED Triage Crossroads",
-  "synthetic": true,
-  "defaultSite": "ED-A",
-  "terminology": {
-    "itemNoun": "patient", "itemNounPlural": "patients", "boardTitle": "Triage Throughput",
-    "syntheticBanner": "SYNTHETIC stream — not real patients", "completedLabel": "Triaged",
-    "historyLabel": "Hx", "capacityLabel": "Census"
-  },
-  "theme": {
-    "skyTop": [0.80, 0.85, 0.90], "skyHorizon": [0.55, 0.63, 0.71], "skyBottom": [0.30, 0.36, 0.43],
-    "floor": [0.20, 0.24, 0.29], "grid": [0.42, 0.52, 0.60], "panel": [0.16, 0.20, 0.25], "trim": [0.35, 0.70, 0.80]
-  },
-  "agents": [
-    {"id": "acuity", "name": "Acuity Agent", "role": "ESI 1–5", "tier": 0},
-    {"id": "sepsis", "name": "Sepsis Screen", "role": "sepsis yes/no", "tier": 0},
-    {"id": "alert", "name": "Stroke/STEMI Alert", "role": "none/stroke/STEMI", "tier": 0},
-    {"id": "infection", "name": "Infection Control", "role": "isolation yes/no", "tier": 0},
-    {"id": "placement", "name": "Placement Agent", "role": "area (needs ESI + alerts)", "tier": 0},
-    {"id": "charge", "name": "Charge Nurse", "role": "receives acuity", "tier": 1},
-    {"id": "alertteam", "name": "Alert Team", "role": "sepsis / stroke / STEMI", "tier": 1},
-    {"id": "isodesk", "name": "Isolation Desk", "role": "isolation rooms", "tier": 1},
-    {"id": "bedboard", "name": "Bed Board", "role": "assigns area", "tier": 1}
+ "id": "ed_triage",
+ "title": "ED Triage Crossroads",
+ "synthetic": true,
+ "defaultSite": "ED-A",
+ "terminology": {
+  "itemNoun": "patient",
+  "itemNounPlural": "patients",
+  "boardTitle": "Triage Throughput",
+  "syntheticBanner": "SYNTHETIC stream — not real patients",
+  "completedLabel": "Triaged",
+  "historyLabel": "Hx",
+  "capacityLabel": "Census"
+ },
+ "theme": {
+  "skyTop": [
+   0.8,
+   0.85,
+   0.9
   ],
-  "links": [
-    {"id": "acuity", "source": "acuity", "dest": "charge", "question": "ESI?", "answerType": "category",
-     "options": ["1","2","3","4","5"], "costWeight": 0.5, "shortLabel": "ESI"},
-    {"id": "sepsis", "source": "sepsis", "dest": "alertteam", "question": "Sepsis alert?", "answerType": "binary",
-     "options": ["yes","no"], "firesAlert": true, "alertNegative": ["no"], "costWeight": 0.6, "shortLabel": "Sep"},
-    {"id": "alert", "source": "alert", "dest": "alertteam", "question": "Stroke/STEMI?", "answerType": "category",
-     "options": ["none","stroke","STEMI"], "firesAlert": true, "alertNegative": ["none"], "costWeight": 0.8, "shortLabel": "Alert"},
-    {"id": "isolation", "source": "infection", "dest": "isodesk", "question": "Isolation?", "answerType": "binary",
-     "options": ["yes","no"], "costWeight": 0.3, "shortLabel": "Iso"},
-    {"id": "placement", "source": "placement", "dest": "bedboard", "question": "Area?", "answerType": "category",
-     "options": ["resus","main ED","fast track","waiting room"], "dependsOn": ["acuity","sepsis","alert"], "costWeight": 0.35, "shortLabel": "Area"}
+  "skyHorizon": [
+   0.55,
+   0.63,
+   0.71
   ],
-  "rulesTable": [
-    "ESI 1: SBP<80 or SpO2<85 or GCS<9 or RR>35",
-    "ESI 2: stroke/STEMI alert, sepsis yes, SpO2<92, HR>130, chest pain age>=40, SI+, pregnant+abd pain, anticoag+head strike, immunosuppressed+fever, GCS<13 not explained by baseline AMS",
-    "ESI 3: chest pain/SOB/abd pain/fever/headache/neuro/psych default; fall age>=65; ESI 4: laceration, ankle, fall age<65; ESI 5: URI",
-    "72h bounceback: ESI one level more acute (min 2) for ESI 3-5",
-    "Sepsis yes: >=2 SIRS (T>=38.3 or <36, HR>90, RR>20) incl. temperature criterion with infection-type complaint; immunosuppressed + T>=38.0 -> yes",
-    "Stroke alert: neuro deficit with onset <=24 h; STEMI alert: chest pain + ECG STE",
-    "Isolation yes: MDRO history, or T>=38.0 with SOB/URI/fever",
-    "Area: ESI1 or stroke/STEMI -> resus; ESI2-3 -> main ED; ESI4 -> fast track (main ED if isolation); ESI5 -> waiting room (fast track if isolation)",
-    "Capacity: ESI2 with main ED full -> resus if a resus bay is free; ESI3 with main ED full -> waiting room; ESI4 with fast track full -> waiting room"
+  "skyBottom": [
+   0.3,
+   0.36,
+   0.43
   ],
-  "capacity": {
-    "resusRooms": 3, "mainRooms": 12, "fastRooms": 5, "isoRooms": 3,
-    "arrivalsPerHourBase": 9, "arrivalsPerHourAmp": 5, "startHour": 10,
-    "inpatientBedsPerHour": 2.5, "lwbsAfterMin": 120, "lwbsPerMin": 0.008,
-    "minutesPerSecond": 1.0
+  "floor": [
+   0.2,
+   0.24,
+   0.29
+  ],
+  "grid": [
+   0.42,
+   0.52,
+   0.6
+  ],
+  "panel": [
+   0.16,
+   0.2,
+   0.25
+  ],
+  "trim": [
+   0.35,
+   0.7,
+   0.8
+  ]
+ },
+ "agents": [
+  {
+   "id": "acuity",
+   "name": "Acuity Agent",
+   "role": "ESI 1–5",
+   "tier": 0
   },
-  "testNewCategories": {
-    "placement": ["hallway bed", "hallway bed", "vertical care", "vert care", "hallway bed", "vertical care", "hallway bed"],
-    "alert": ["sepsis-stroke mimic"]
+  {
+   "id": "sepsis",
+   "name": "Sepsis Screen",
+   "role": "sepsis yes/no",
+   "tier": 0
+  },
+  {
+   "id": "alert",
+   "name": "Stroke/STEMI Alert",
+   "role": "none/stroke/STEMI",
+   "tier": 0
+  },
+  {
+   "id": "infection",
+   "name": "Infection Control",
+   "role": "isolation yes/no",
+   "tier": 0
+  },
+  {
+   "id": "placement",
+   "name": "Placement Agent",
+   "role": "area (needs ESI + alerts)",
+   "tier": 0
+  },
+  {
+   "id": "charge",
+   "name": "Charge Nurse",
+   "role": "receives acuity",
+   "tier": 1
+  },
+  {
+   "id": "alertteam",
+   "name": "Alert Team",
+   "role": "sepsis / stroke / STEMI",
+   "tier": 1
+  },
+  {
+   "id": "isodesk",
+   "name": "Isolation Desk",
+   "role": "isolation rooms",
+   "tier": 1
+  },
+  {
+   "id": "bedboard",
+   "name": "Bed Board",
+   "role": "assigns area",
+   "tier": 1
   }
+ ],
+ "links": [
+  {
+   "id": "acuity",
+   "source": "acuity",
+   "dest": "charge",
+   "question": "ESI?",
+   "answerType": "category",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+   ],
+   "costWeight": 0.5,
+   "shortLabel": "ESI"
+  },
+  {
+   "id": "sepsis",
+   "source": "sepsis",
+   "dest": "alertteam",
+   "question": "Sepsis alert?",
+   "answerType": "binary",
+   "options": [
+    "yes",
+    "no"
+   ],
+   "firesAlert": true,
+   "alertNegative": [
+    "no"
+   ],
+   "costWeight": 0.6,
+   "shortLabel": "Sep"
+  },
+  {
+   "id": "alert",
+   "source": "alert",
+   "dest": "alertteam",
+   "question": "Stroke/STEMI?",
+   "answerType": "category",
+   "options": [
+    "none",
+    "stroke",
+    "STEMI"
+   ],
+   "firesAlert": true,
+   "alertNegative": [
+    "none"
+   ],
+   "costWeight": 0.8,
+   "shortLabel": "Alert"
+  },
+  {
+   "id": "isolation",
+   "source": "infection",
+   "dest": "isodesk",
+   "question": "Isolation?",
+   "answerType": "binary",
+   "options": [
+    "yes",
+    "no"
+   ],
+   "costWeight": 0.3,
+   "shortLabel": "Iso"
+  },
+  {
+   "id": "placement",
+   "source": "placement",
+   "dest": "bedboard",
+   "question": "Area?",
+   "answerType": "category",
+   "options": [
+    "resus",
+    "main ED",
+    "fast track",
+    "waiting room"
+   ],
+   "dependsOn": [
+    "acuity",
+    "sepsis",
+    "alert"
+   ],
+   "costWeight": 0.35,
+   "shortLabel": "Area"
+  }
+ ],
+ "rulesTable": [
+  "ESI 1: SBP<80 or SpO2<85 or GCS<9 or RR>35",
+  "ESI 2: stroke/STEMI alert, sepsis yes, SpO2<92, HR>130, chest pain age>=40, SI+, pregnant+abd pain, anticoag+head strike, immunosuppressed+fever, GCS<13 not explained by baseline AMS",
+  "ESI 3: chest pain/SOB/abd pain/fever/headache/neuro/psych default; fall age>=65; ESI 4: laceration, ankle, fall age<65; ESI 5: URI",
+  "72h bounceback: ESI one level more acute (min 2) for ESI 3-5",
+  "Sepsis yes: >=2 SIRS (T>=38.3 or <36, HR>90, RR>20) incl. temperature criterion with infection-type complaint; immunosuppressed + T>=38.0 -> yes",
+  "Stroke alert: neuro deficit with onset <=24 h; STEMI alert: chest pain + ECG STE",
+  "Isolation yes: MDRO history, or T>=38.0 with SOB/URI/fever",
+  "Area: ESI1 or stroke/STEMI -> resus; ESI2-3 -> main ED; ESI4 -> fast track (main ED if isolation); ESI5 -> waiting room (fast track if isolation)",
+  "Capacity: ESI2 with main ED full -> resus if a resus bay is free; ESI3 with main ED full -> waiting room; ESI4 with fast track full -> waiting room"
+ ],
+ "capacity": {
+  "resusRooms": 3,
+  "mainRooms": 12,
+  "fastRooms": 5,
+  "isoRooms": 3,
+  "arrivalsPerHourBase": 9,
+  "arrivalsPerHourAmp": 5,
+  "startHour": 10,
+  "inpatientBedsPerHour": 2.5,
+  "lwbsAfterMin": 120,
+  "lwbsPerMin": 0.008,
+  "minutesPerSecond": 1.0
+ },
+ "testNewCategories": {
+  "placement": [
+   "hallway bed",
+   "hallway bed",
+   "vertical care",
+   "vert care",
+   "hallway bed",
+   "vertical care",
+   "hallway bed"
+  ],
+  "alert": [
+   "sepsis-stroke mimic"
+  ]
+ },
+ "review": {
+  "autoPassConfidence": 0.8,
+  "autoPassMaxCost": 0.5,
+  "spotCheckRate": 0.5,
+  "waitWeight": 0.02,
+  "upNextCount": 4
+ },
+ "detailSections": [
+  "PMH",
+  "Meds",
+  "Allergies",
+  "Prior visits",
+  "Prior ESI",
+  "Vitals trend",
+  "Capacity snapshot"
+ ],
+ "glossary": {
+  "ESI": "Emergency Severity Index, 1 (resuscitation) to 5 (non-urgent). Sets placement tier and resource expectations.",
+  "confidence": "The narrow agent's self-reported probability that its proposal is right. Low confidence raises queue priority.",
+  "trial category": "A category a reviewer added with New…. It is logged and scored but never changes routing or fires alerts until promoted.",
+  "boarding": "Admitted patients still occupying an ED room because no inpatient bed is free.",
+  "LWBS": "Left without being seen: a waiting patient who leaves before evaluation.",
+  "door to room": "Minutes from arrival to being placed in a treatment room.",
+  "census": "Rooms occupied/total per area; (+n) = queued for that area; WR = waiting room.",
+  "priority": "Queue order: uncertainty × error cost + wait time + domain urgency rules.",
+  "history conflicts": "Agents are history-blind. A history rule (anticoag + head strike, immunosuppressed + fever, MDRO, 72h bounceback) gives a different answer than the proposal.",
+  "history relevant": "A history flag bears on this decision, but the proposal is already consistent with it.",
+  "abnormal vitals": "A vital sign is outside the safe triage range (SBP<90, SpO2<92, HR>120, RR>24, GCS<13).",
+  "capacity full": "The proposed area has no free room. Accepting it queues the patient for that area.",
+  "low confidence": "Agent confidence below 70%.",
+  "high error cost": "A wrong answer on this link is costly (missed alert, wrong page).",
+  "waiting": "Domain minutes this decision has waited. Alert decisions waiting ≥10 min are high severity.",
+  "auto-pass": "Confident, low-cost items without high-severity reasons are passed automatically; a sample goes to the spot-check queue.",
+  "spot-check": "A random sample of auto-passed items for human review. Agree/disagree is logged as a quality signal.",
+  "what happens next": "The downstream effect at the destination if you pass (or flip/change) this proposal.",
+  "PMH": "Past medical history flags from the synthetic chart.",
+  "Meds": "Active medications (synthetic).",
+  "Allergies": "Recorded allergies (synthetic).",
+  "Prior visits": "Visits in the last 12 months.",
+  "Prior ESI": "Acuity assigned at the last visit.",
+  "Vitals trend": "Triage vitals and repeats since arrival.",
+  "Capacity snapshot": "Census at the moment this decision was emitted."
+ }
 }

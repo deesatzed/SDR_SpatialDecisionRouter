@@ -14,12 +14,15 @@
 		73065D8A731BC61019FD26A2 /* EDCapacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */; };
 		8C13E8EBB20207BA6E8E9D6B /* EDTriageDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F5D70406C695E977446C41 /* EDTriageDomain.swift */; };
 		8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
+		9172DC73E2553E1ABCE1C702 /* ReviewKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */; };
 		91D916D0C39ABA5E80D5B212 /* RoutingDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6457ECA631420CFF502092D6 /* RoutingDecision.swift */; };
+		97503C591D86F58FC7ACC5D9 /* EDReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82719454E70FE69DE11B22E /* EDReview.swift */; };
 		B96343F7685B18726254CDDE /* DomainKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */; };
 		C4600DFA7C310450885D2493 /* RouterViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewKit.swift; sourceTree = "<group>"; };
 		36AC111D7362BC39421555D4 /* ed_triage.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ed_triage.domain.json; sourceTree = "<group>"; };
 		3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainKit.swift; sourceTree = "<group>"; };
 		6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDCapacity.swift; sourceTree = "<group>"; };
@@ -27,6 +30,7 @@
 		64DE7620E584197285B2ED27 /* CategoryRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRegistry.swift; sourceTree = "<group>"; };
 		67F5D70406C695E977446C41 /* EDTriageDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDTriageDomain.swift; sourceTree = "<group>"; };
 		9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialDecisionRouterApp.swift; sourceTree = "<group>"; };
+		A82719454E70FE69DE11B22E /* EDReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDReview.swift; sourceTree = "<group>"; };
 		D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceduralEnvironment.swift; sourceTree = "<group>"; };
 		D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterEngine.swift; sourceTree = "<group>"; };
 		F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,6 +52,7 @@
 				64DE7620E584197285B2ED27 /* CategoryRegistry.swift */,
 				3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */,
 				D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */,
+				1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */,
 				D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */,
 				F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */,
 				6457ECA631420CFF502092D6 /* RoutingDecision.swift */,
@@ -68,6 +73,7 @@
 			children = (
 				36AC111D7362BC39421555D4 /* ed_triage.domain.json */,
 				6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */,
+				A82719454E70FE69DE11B22E /* EDReview.swift */,
 				67F5D70406C695E977446C41 /* EDTriageDomain.swift */,
 			);
 			path = EDTriage;
@@ -161,8 +167,10 @@
 				667FA886A8D34AB8886D66D7 /* CategoryRegistry.swift in Sources */,
 				B96343F7685B18726254CDDE /* DomainKit.swift in Sources */,
 				73065D8A731BC61019FD26A2 /* EDCapacity.swift in Sources */,
+				97503C591D86F58FC7ACC5D9 /* EDReview.swift in Sources */,
 				8C13E8EBB20207BA6E8E9D6B /* EDTriageDomain.swift in Sources */,
 				2CE4C735CC81C5BCBBC882FB /* ProceduralEnvironment.swift in Sources */,
+				9172DC73E2553E1ABCE1C702 /* ReviewKit.swift in Sources */,
 				1B69FB0044A9F5DD4570F908 /* RouterEngine.swift in Sources */,
 				C4600DFA7C310450885D2493 /* RouterViews.swift in Sources */,
 				91D916D0C39ABA5E80D5B212 /* RoutingDecision.swift in Sources */,

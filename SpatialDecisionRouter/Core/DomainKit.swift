@@ -25,6 +25,8 @@ struct LinkSpec: Codable, Hashable {
     var alertNegative: [String] = [] // answers that do NOT count as an alert
     var costWeight: Double = 0       // error cost; drives priority surfacing
     var shortLabel: String?
+    /// downstream preview templates: answer → text ("*" = default); {dest} {answer} substituted
+    var previews: [String: String] = [:]
 }
 
 struct Terminology: Codable {
@@ -61,6 +63,11 @@ struct DomainConfig: Codable {
     var capacity: [String: Double] = [:]
     /// names the test driver uses to exercise "New…" categories, keyed by link id
     var testNewCategories: [String: [String]] = [:]
+    var review = ReviewSpec()
+    /// term → explanation, shown as hover tooltips on every field / chip
+    var glossary: [String: String] = [:]
+    /// ordered detail-panel section titles (content from ReviewHooks.detail; "Capacity snapshot" is built in)
+    var detailSections: [String] = []
 }
 
 // MARK: - Runtime item
@@ -111,6 +118,11 @@ struct EngineStats {
     func boardMetrics(_ s: EngineStats) -> [MetricValue]
     /// breakdown chips (e.g. counts by destination area)
     func breakdown() -> [(String, Int)]
+    // review hooks (defaults in ReviewKit.swift)
+    func reasons(item: DomainItem, link: LinkSpec, proposal: String, upstream: [String: String]) -> [ReasonChip]
+    func urgency(item: DomainItem, link: LinkSpec, proposal: String) -> Double
+    func downstreamPreview(item: DomainItem, link: LinkSpec, answer: String) -> String?
+    func detail(item: DomainItem, section: String) -> [(String, String)]?
 }
 
 enum DomainLoader {
@@ -155,6 +167,7 @@ extension LinkSpec {
         alertNegative = try c.decodeIfPresent([String].self, forKey: .alertNegative) ?? []
         costWeight = try c.decodeIfPresent(Double.self, forKey: .costWeight) ?? 0
         shortLabel = try c.decodeIfPresent(String.self, forKey: .shortLabel)
+        previews = try c.decodeIfPresent([String: String].self, forKey: .previews) ?? [:]
     }
 }
 extension Terminology {
@@ -193,5 +206,8 @@ extension DomainConfig {
         rulesTable = try c.decodeIfPresent([String].self, forKey: .rulesTable) ?? []
         capacity = try c.decodeIfPresent([String: Double].self, forKey: .capacity) ?? [:]
         testNewCategories = try c.decodeIfPresent([String: [String]].self, forKey: .testNewCategories) ?? [:]
+        review = try c.decodeIfPresent(ReviewSpec.self, forKey: .review) ?? ReviewSpec()
+        glossary = try c.decodeIfPresent([String: String].self, forKey: .glossary) ?? [:]
+        detailSections = try c.decodeIfPresent([String].self, forKey: .detailSections) ?? []
     }
 }

@@ -15,19 +15,14 @@ struct CrossroadsView: View {
             sync(att)
         } attachments: {
             ForEach(engine.config.agents, id: \.id) { a in
-                Attachment(id: "agent-\(a.id)") { AgentCard(agent: a, received: engine.inbox[a.id] ?? 0) }
+                Attachment(id: "agent-\(a.id)") { AgentCard(agent: a, received: engine.inbox[a.id] ?? 0, queued: engine.queueCount(a.id)) }
             }
-            ForEach(engine.handoffs.filter { engine.phase[$0.id] != .delivered }) { h in
-                Attachment(id: h.id) { HandoffCard(h: h) }
-            }
+            Attachment(id: "now") { NowCard() }
+            Attachment(id: "upnext") { UpNextStrip() }
+            Attachment(id: "side") { SidePanel() }
             Attachment(id: "ring") { OptionRing() }
             Attachment(id: "board") { BoardView() }
         }
-        .gesture(SpatialTapGesture().targetedToAnyEntity().onEnded { v in engine.pass(v.entity.name) })
-        .simultaneousGesture(LongPressGesture(minimumDuration: 0.6).targetedToAnyEntity().onEnded { v in
-            if let h = engine.handoffs.first(where: { $0.id == v.entity.name }), h.link.answerType == .category { engine.openRing(h.id) }
-        })
-        .simultaneousGesture(DragGesture(minimumDistance: 60).targetedToAnyEntity().onEnded { v in engine.flip(v.entity.name) })
         .task { while !Task.isCancelled { try? await Task.sleep(for: .milliseconds(50)); engine.tick(0.05) } }
         .task {
             let a = ProcessInfo.processInfo.arguments
@@ -39,8 +34,13 @@ struct CrossroadsView: View {
     }
 
     private func line(_ a: SIMD3<Float>, _ b: SIMD3<Float>) -> Entity {
-        let e = ModelEntity(mesh: .generateCylinder(height: simd_distance(a, b), radius: 0.004), materials: [UnlitMaterial(color: UIColor(white: 1, alpha: 0.5))])
+        let e = ModelEntity(mesh: .generateCylinder(height: simd_distance(a, b), radius: 0.003), materials: [UnlitMaterial(color: UIColor(white: 1, alpha: 0.22))])
         e.position = (a + b) / 2; e.orientation = simd_quatf(from: [0, 1, 0], to: simd_normalize(b - a)); return e
+    }
+
+    private func place(_ att: RealityViewAttachments, _ id: String, _ p: SIMD3<Float>, _ sc: Float) {
+        guard let e = att.entity(for: id) else { return }
+        e.name = "att-\(id)"; e.position = p; e.scale = [sc, sc, sc]; e.components.set(BillboardComponent()); root.addChild(e)
     }
 
     private func buildStatic(_ att: RealityViewAttachments) {
@@ -48,23 +48,25 @@ struct CrossroadsView: View {
         guard cfg.agents.allSatisfy({ att.entity(for: "agent-\($0.id)") != nil }) else { return }
         for c in Array(root.children) { c.removeFromParent() }
         let env = ProceduralEnvironment.make(cfg.theme); env.isEnabled = engine.fullImmersion; root.addChild(env)
-        let hub = ModelEntity(mesh: .generateSphere(radius: 0.025), materials: [UnlitMaterial(color: .white)])
+        let hub = ModelEntity(mesh: .generateSphere(radius: 0.02), materials: [UnlitMaterial(color: UIColor(white: 1, alpha: 0.6))])
         hub.position = RouterEngine.hub; root.addChild(hub)
         for (i, a) in cfg.agents.enumerated() {
             let p = engine.agentPosition(a.id)
-            let node = ModelEntity(mesh: .generateSphere(radius: a.tier == 0 ? 0.1 : 0.12),
-                                   materials: [SimpleMaterial(color: UIColor(hue: CGFloat(i) / CGFloat(cfg.agents.count + 1), saturation: 0.7, brightness: 0.95, alpha: 0.95), isMetallic: false)])
+            // context nodes: quieter (smaller, translucent)
+            let node = ModelEntity(mesh: .generateSphere(radius: a.tier == 0 ? 0.08 : 0.1),
+                                   materials: [SimpleMaterial(color: UIColor(hue: CGFloat(i) / CGFloat(cfg.agents.count + 1), saturation: 0.5, brightness: 0.9, alpha: 0.55), isMetallic: false)])
             node.position = p; node.name = "agent-\(a.id)"; root.addChild(node)
             root.addChild(line(p, RouterEngine.hub))
             if let card = att.entity(for: "agent-\(a.id)") {
-                card.position = p + [0, a.tier == 0 ? -0.24 : 0.28, 0]; card.scale = [1.7, 1.7, 1.7]
+                card.position = p + [0, a.tier == 0 ? -0.2 : 0.24, 0]; card.scale = [1.4, 1.4, 1.4]
                 card.components.set(BillboardComponent()); root.addChild(card)
             }
         }
-        if let b = att.entity(for: "board") {
-            b.position = [0, 1.93, -1.4]; b.components.set(BillboardComponent()); root.addChild(b)
-        }
-        if let r = att.entity(for: "ring") { r.name = "ringAttachment"; r.isEnabled = false; root.addChild(r) }
+        place(att, "board", [0, 2.45, -2.05], 1.3)
+        place(att, "now", RouterEngine.nowCard, 1.5)
+        place(att, "upnext", RouterEngine.upNextPos, 1.15)
+        place(att, "side", RouterEngine.sidePos, 1.15)
+        if let r = att.entity(for: "ring") { r.name = "ringAttachment"; r.isEnabled = false; r.position = [0, 1.45, -1.0]; r.components.set(BillboardComponent()); root.addChild(r) }
         let v = engine.packVersion
         Task { @MainActor in builtVersion = v; pulsed = [:] }
     }
@@ -74,16 +76,15 @@ struct CrossroadsView: View {
         for h in engine.handoffs {
             if engine.phase[h.id] == .delivered { root.findEntity(named: h.id)?.removeFromParent(); continue }
             var e = root.findEntity(named: h.id)
-            if e == nil, let card = att.entity(for: h.id) {
+            if e == nil {
                 let hue = CGFloat(engine.agentIndex(h.link.source)) / CGFloat(cfg.agents.count + 1)
-                let m = ModelEntity(mesh: h.link.answerType == .binary ? .generateBox(size: 0.09, cornerRadius: 0.02) : .generateSphere(radius: 0.06),
-                                    materials: [SimpleMaterial(color: UIColor(hue: hue, saturation: 0.25 + 0.7 * CGFloat(h.confidence), brightness: 1, alpha: 0.85), isMetallic: false)])
-                m.name = h.id
-                m.components.set(InputTargetComponent()); m.components.set(HoverEffectComponent()); m.generateCollisionShapes(recursive: false)
-                card.position = [0, 0.16, 0]; card.components.set(BillboardComponent()); m.addChild(card)
-                root.addChild(m); e = m
+                let m = ModelEntity(mesh: h.link.answerType == .binary ? .generateBox(size: 0.06, cornerRadius: 0.015) : .generateSphere(radius: 0.04),
+                                    materials: [SimpleMaterial(color: UIColor(hue: hue, saturation: 0.25 + 0.7 * CGFloat(h.confidence), brightness: 1, alpha: 0.9), isMetallic: false)])
+                m.name = h.id; root.addChild(m); e = m
             }
             e?.position = engine.position(h)
+            let s: Float = h.id == engine.nowId ? 1.6 : 1
+            e?.scale = [s, s, s]
         }
         for (agent, t) in engine.lastDelivered where pulsed[agent] != t {
             if let n = root.findEntity(named: "agent-\(agent)") {
@@ -93,61 +94,189 @@ struct CrossroadsView: View {
             Task { @MainActor in pulsed[agent] = t }
         }
         root.findEntity(named: "environment")?.isEnabled = engine.fullImmersion
-        if let r = root.findEntity(named: "ringAttachment") {
-            if let id = engine.ringFor, let h = engine.handoffs.first(where: { $0.id == id }) {
-                r.isEnabled = true
-                r.position = RouterEngine.head + simd_normalize(engine.position(h) - RouterEngine.head) * 0.75
-                r.components.set(BillboardComponent())
-            } else { r.isEnabled = false }
-        }
+        root.findEntity(named: "att-side")?.isEnabled = engine.detailOpen || engine.spotCheckOpen
+        root.findEntity(named: "ringAttachment")?.isEnabled = engine.ringFor != nil
+    }
+}
+
+/// Glossary-backed hover: highlight + tooltip.
+struct Gloss: ViewModifier {
+    @Environment(RouterEngine.self) private var engine
+    let key: String
+    func body(content: Content) -> some View {
+        content.contentShape(.hoverEffect, RoundedRectangle(cornerRadius: 8)).hoverEffect(.highlight)
+            .help(engine.config.glossary[key] ?? engine.config.glossary[key.lowercased()] ?? key)
+    }
+}
+extension View { func gloss(_ k: String) -> some View { modifier(Gloss(key: k)) } }
+
+struct Chip: View {
+    let r: ReasonChip
+    var body: some View {
+        let c: Color = r.severity == .high ? .red : r.severity == .warn ? .orange : .teal
+        Text(r.text).font(.callout.bold()).lineLimit(1).padding(.horizontal, 9).padding(.vertical, 3)
+            .background(c.opacity(0.5), in: Capsule()).gloss(r.key)
     }
 }
 
 struct AgentCard: View {
-    let agent: AgentSpec; let received: Int
+    let agent: AgentSpec; let received: Int; let queued: Int
     var body: some View {
-        VStack(spacing: 2) {
-            Text(agent.name).font(.title3.bold())
-            if let r = agent.role { Text(r).font(.callout).foregroundStyle(.secondary) }
-            if agent.tier == 1 { Text("received \(received)").font(.headline.monospacedDigit()) }
-        }.padding(10).glassBackgroundEffect()
+        HStack(spacing: 8) {
+            VStack(spacing: 1) {
+                Text(agent.name).font(.headline)
+                if let r = agent.role { Text(r).font(.caption).foregroundStyle(.secondary) }
+                if agent.tier == 1 { Text("received \(received)").font(.caption.monospacedDigit()) }
+            }
+            if agent.tier == 0 {
+                Text("\(queued)").font(.title3.bold().monospacedDigit()).frame(minWidth: 30).padding(4)
+                    .background(queued > 0 ? Color.orange.opacity(0.8) : Color.white.opacity(0.15), in: Circle()).help("items from this agent waiting in the review queue")
+            }
+        }.padding(8).glassBackgroundEffect().opacity(0.85)
     }
 }
 
-struct HandoffCard: View {
+/// The single large decision card (top of the review queue).
+struct NowCard: View {
     @Environment(RouterEngine.self) private var engine
-    let h: Handoff
     var body: some View {
-        let item = engine.items[h.itemId]
-        let routed = engine.routed[h.id]
-        let t = engine.config.terminology
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
-                Text("\(h.link.source) → \(h.link.dest) · \(h.itemId)").font(.headline).foregroundStyle(.secondary)
-                Spacer()
-                if h.priority >= 1.0 { Text("⚑ PRIORITY").font(.headline.bold()).foregroundStyle(.red) }
-            }
-            Text(item?.displayLine ?? "").font(.title3).lineLimit(3)
-            Text("\(t.historyLabel): \(item?.historyLine ?? "none")").font(.callout).foregroundStyle(.yellow).lineLimit(2)
-            Text("\(t.capacityLabel): \(h.capacityLine)").font(.callout).foregroundStyle(.cyan).lineLimit(1)
-            HStack {
-                Text(h.link.question).font(.title3)
-                Spacer()
-                if let r = routed, r != h.proposal {
-                    Text(h.proposal).strikethrough().font(.title3).foregroundStyle(.secondary)
-                    Text(r).font(.title.bold()).foregroundStyle(.orange)
-                } else { Text(routed ?? h.proposal).font(.title.bold()) }
-                Text("\(Int(h.confidence * 100))%").font(.headline.monospacedDigit())
-            }
-            if routed == nil {
-                HStack(spacing: 12) {
-                    Button("Pass ✓") { engine.pass(h.id) }.tint(.green)
-                    if h.link.answerType == .binary { Button("Flip") { engine.flip(h.id) }.tint(.orange) }
-                    else { Button("Change…") { engine.openRing(h.id) }.tint(.blue) }
-                }.font(.title3.bold())
+        TimelineView(.periodic(from: .now, by: 1)) { _ in
+            if let h = engine.nowHandoff { content(h) }
+            else {
+                Text("Queue clear · \(engine.autoPassed) auto-passed").font(.title).padding(30).frame(width: 880).glassBackgroundEffect()
             }
         }
-        .frame(width: 460).padding(16).glassBackgroundEffect()
+    }
+    @ViewBuilder func content(_ h: Handoff) -> some View {
+        let item = engine.items[h.itemId], t = engine.config.terminology
+        let src = engine.agent(h.link.source)?.name ?? h.link.source, dst = engine.agent(h.link.dest)?.name ?? h.link.dest
+        let reasons = engine.reasons(h)
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("NOW").font(.headline.bold()).padding(.horizontal, 8).background(.blue, in: Capsule())
+                Text("\(src) → \(dst) · \(h.itemId)").font(.title3).foregroundStyle(.secondary)
+                Spacer()
+                Text(String(format: "priority %.2f", engine.livePriority(h))).font(.headline.monospacedDigit()).gloss("priority")
+                if engine.livePriority(h) >= 1.0 { Text("⚑").font(.title2).foregroundStyle(.red).gloss("priority") }
+            }
+            Text(item?.displayLine ?? "").font(.title2).lineLimit(2).gloss("ESI")
+            Text("\(t.historyLabel): \(item?.historyLine ?? "none")").font(.title3).foregroundStyle(.yellow).lineLimit(1).gloss("PMH")
+            Text("\(t.capacityLabel): \(h.capacityLine)").font(.headline).foregroundStyle(.cyan).lineLimit(1).gloss("census")
+            if !reasons.isEmpty {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("WHY QUEUED").font(.caption.bold()).foregroundStyle(.secondary)
+                    ForEach(Array(stride(from: 0, to: reasons.count, by: 3)), id: \.self) { i in
+                        HStack(spacing: 6) { ForEach(reasons[i..<min(i + 3, reasons.count)], id: \.self) { Chip(r: $0) } }
+                    }
+                }
+            }
+            HStack(alignment: .firstTextBaseline) {
+                Text(h.link.question).font(.title)
+                Text(h.proposal).font(.extraLargeTitle2.bold())
+                Text("\(Int(h.confidence * 100))%").font(.title2.monospacedDigit()).foregroundStyle(h.confidence < 0.7 ? .orange : .secondary).gloss("confidence")
+                Spacer()
+            }
+            VStack(alignment: .leading, spacing: 3) {
+                Text("WHAT HAPPENS NEXT").font(.caption.bold()).foregroundStyle(.secondary).gloss("what happens next")
+                Text("Pass → \(h.preview)").font(.title3).foregroundStyle(.green)
+                if let alt = h.altPreview { Text("Flip → \(alt)").font(.title3).foregroundStyle(.orange) }
+                else if h.link.answerType == .category { Text("Change… → pick another \(h.link.shortLabel ?? "option") (preview on hover)").font(.headline).foregroundStyle(.blue) }
+            }
+            HStack(spacing: 14) {
+                Button("Pass ✓") { engine.pass(h.id) }.tint(.green)
+                if h.link.answerType == .binary { Button("Flip") { engine.flip(h.id) }.tint(.orange) }
+                else { Button("Change…") { engine.openRing(h.id) }.tint(.blue) }
+                Spacer()
+                Button(engine.detailOpen ? "ⓘ Hide details" : "ⓘ Details") { engine.toggleDetail() }.tint(.gray)
+            }.font(.title2.bold())
+        }
+        .frame(width: 880).padding(22).glassBackgroundEffect()
+    }
+}
+
+struct UpNextStrip: View {
+    @Environment(RouterEngine.self) private var engine
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 1)) { _ in
+            let q = engine.queue
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text("Up next").font(.title2.bold())
+                    Spacer()
+                    Text("\(q.count) queued").font(.headline.monospacedDigit()).gloss("priority")
+                }
+                HStack(spacing: 10) {
+                    Text("auto-passed \(engine.autoPassed)").gloss("auto-pass")
+                    Button("spot-check \(engine.pendingSpotChecks.count)") { engine.spotCheckOpen.toggle(); if engine.detailOpen { engine.toggleDetail() } }
+                        .gloss("spot-check")
+                }.font(.callout)
+                ForEach(q.prefix(engine.config.review.upNextCount)) { h in
+                    Button { engine.makeNow(h.id) } label: {
+                        VStack(alignment: .leading, spacing: 3) {
+                            HStack {
+                                Text("\(h.itemId) · \(h.link.shortLabel ?? h.link.id)").font(.headline)
+                                Spacer()
+                                Text("\(h.proposal) \(Int(h.confidence * 100))%").font(.headline.monospacedDigit())
+                                Text(String(format: "%.2f", engine.livePriority(h))).font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                            }
+                            if let r = engine.reasons(h).max(by: { $0.severity.rawValue < $1.severity.rawValue }) { Chip(r: r) }
+                        }.frame(maxWidth: .infinity, alignment: .leading)
+                    }.buttonStyle(.bordered)
+                }
+                if q.count > engine.config.review.upNextCount { Text("+\(q.count - engine.config.review.upNextCount) more").font(.callout).foregroundStyle(.secondary) }
+            }
+            .frame(width: 470).padding(16).glassBackgroundEffect()
+        }
+    }
+}
+
+/// Beside the Now card: detail sections, or the spot-check queue.
+struct SidePanel: View {
+    @Environment(RouterEngine.self) private var engine
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 1)) { _ in
+            Group {
+                if engine.spotCheckOpen { spot } else if let h = engine.nowHandoff { detail(h) } else { Text("—") }
+            }.frame(width: 540).padding(16).glassBackgroundEffect()
+        }
+    }
+    func detail(_ h: Handoff) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Details · \(h.itemId)").font(.title2.bold())
+            ForEach(engine.detailSections(h)) { s in
+                let open = engine.openSections[s.title] != nil
+                Button { engine.toggleSection(s.title) } label: {
+                    HStack { Text(open ? "▾" : "▸"); Text(s.title).font(.title3.bold()); Spacer(); Text("\(s.rows.count)").foregroundStyle(.secondary) }
+                }.buttonStyle(.plain).gloss(s.title)
+                if open {
+                    ForEach(Array(s.rows.enumerated()), id: \.offset) { _, r in
+                        HStack(alignment: .top) {
+                            Text(r.0).font(.callout.bold()).frame(width: 170, alignment: .leading).gloss(r.0)
+                            Text(r.1).font(.callout).foregroundStyle(.secondary)
+                        }
+                    }.padding(.leading, 18)
+                }
+            }
+            Text("sections opened + dwell are logged with the decision").font(.caption2).foregroundStyle(.secondary)
+        }
+    }
+    var spot: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack { Text("Spot-check queue").font(.title2.bold()).gloss("spot-check"); Spacer(); Button("Close") { engine.spotCheckOpen = false } }
+            let p = engine.pendingSpotChecks
+            if p.isEmpty { Text("nothing sampled yet").foregroundStyle(.secondary) }
+            ForEach(p.prefix(6)) { d in
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("\(d.itemId) · \(d.question) \(d.proposedAnswer) (\(Int(d.proposedConfidence * 100))%) · auto-passed").font(.headline)
+                    Text(d.displayLine).font(.caption).lineLimit(1).foregroundStyle(.secondary)
+                    Text("→ \(d.downstreamPreview ?? "")").font(.caption).foregroundStyle(.green)
+                    HStack { Button("Agree") { engine.reviewSpotCheck(d.id, agree: true) }.tint(.green)
+                             Button("Disagree") { engine.reviewSpotCheck(d.id, agree: false) }.tint(.red) }.font(.callout)
+                }
+            }
+            let done = engine.decisions.filter { $0.spotCheckResult != nil }
+            Text("reviewed \(done.count) · disagree \(done.filter { $0.spotCheckResult == "disagree" }.count)").font(.callout).foregroundStyle(.secondary)
+        }
     }
 }
 
@@ -166,6 +295,7 @@ struct OptionRing: View {
                 ForEach(Array(opts.enumerated()), id: \.offset) { i, o in
                     let ang = Double(i) / Double(max(opts.count, 1)) * 2 * .pi - .pi / 2
                     Button(o) { if let h { engine.select(h.id, o) } }
+                        .help(h.flatMap { hh in engine.items[hh.itemId].map { Review.preview(engine.domain, $0, hh.link, o, trial: false) } } ?? o)
                         .font(.headline).tint(o == h?.proposal ? .gray : .blue)
                         .offset(x: 140 * cos(ang), y: 140 * sin(ang))
                 }
@@ -207,7 +337,7 @@ struct BoardView: View {
                     stat(cfg.terminology.completedLabel, "\(s.completed)"); stat("Decisions", "\(s.decisions)")
                     stat("Alerts", "\(s.alertsFired)"); stat("Corrections", "\(s.corrections)")
                     stat("Prevented", "\(s.errorsPrevented)"); stat("Misses", "\(s.misses)")
-                    stat("Median dec.", String(format: "%.1fs", s.medianLatency))
+                    stat("Median dec.", String(format: "%.1fs", s.medianLatency)); stat("Auto-passed", "\(engine.autoPassed)")
                 }
                 HStack(spacing: 14) { ForEach(engine.domain.boardMetrics(s)) { m in stat(m.label, m.value) } }
                 HStack(spacing: 10) {
@@ -232,7 +362,7 @@ struct BoardView: View {
                 }
                 CategoriesStrip()
                 HStack(spacing: 12) {
-                    Text("tap = pass · hold = options · orange = changed · purple = trial · red = wrong").font(.caption).foregroundStyle(.secondary)
+                    Text("orange = changed · purple = trial · red = wrong · hover any field for its meaning").font(.caption).foregroundStyle(.secondary)
                     Spacer()
                     if DomainCatalog.all.count > 1 { Button("Next Domain") { engine.nextDomain() } }
                     Button("Export") { engine.export() }

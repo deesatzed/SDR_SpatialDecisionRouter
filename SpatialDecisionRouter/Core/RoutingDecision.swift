@@ -40,4 +40,14 @@ struct RoutingDecision: Codable, Identifiable {
     let groundTruth: String?
     let agreesWithGroundTruth: Bool?
     var downstreamOutcome: String?
+    // review-queue / detail telemetry (optional so older log lines still decode)
+    var decidedBy: String?                   // human | auto
+    var reasons: [String]?
+    var downstreamPreview: String?
+    var detailOpened: Bool?
+    var sectionsOpened: [String]?
+    var sectionDwell: [String: Double]?      // seconds per section
+    var detailDwell: Double?
+    var spotCheckSampled: Bool?
+    var spotCheckResult: String?             // agree | disagree (human review of an auto-pass)
 }

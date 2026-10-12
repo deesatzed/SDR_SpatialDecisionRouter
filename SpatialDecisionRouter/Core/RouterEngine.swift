@@ -15,8 +15,12 @@ struct Handoff: Identifiable, Hashable {
     let upstream: [String: String]
     let capacity: [String: String]
     let capacityLine: String
-    let priority: Double
+    let priority: Double          // base: (1-conf)(1+cost) + domain urgency; wait added live
     let createdAt: Date
+    var reasons: [ReasonChip] = []
+    var emittedAtMin: Double = 0  // domain clock
+    var preview: String = ""      // what happens if passed
+    var altPreview: String?       // what happens if flipped (binary)
     static func == (a: Handoff, b: Handoff) -> Bool { a.id == b.id }
     func hash(into h: inout Hasher) { h.combine(id) }
 }
@@ -24,7 +28,10 @@ struct Handoff: Identifiable, Hashable {
 /// Domain-agnostic crossroads engine: spatial queue, gestures → decisions, dependency graph, logging, export.
 @MainActor @Observable final class RouterEngine {
     static let head: SIMD3<Float> = [0, 1.5, 0]
-    static let hub: SIMD3<Float> = [0, 1.32, -1.0]
+    static let hub: SIMD3<Float> = [0, 0.85, -1.5]
+    static let nowCard: SIMD3<Float> = [0, 1.5, -1.4]
+    static let upNextPos: SIMD3<Float> = [0.86, 1.52, -1.24]
+    static let sidePos: SIMD3<Float> = [-0.86, 1.52, -1.24]
 
     private(set) var domain: DomainModule
     var config: DomainConfig { domain.config }
@@ -56,9 +63,23 @@ struct Handoff: Identifiable, Hashable {
     var packVersion = 0
     var sessionStart = Date()
     private var spawnTimer: Float = 99
-    let maxActive = 8
+    let maxActive = 14
+    var departFrom: [String: SIMD3<Float>] = [:]
 
     var registryEvents: [RegistryEvent] = []
+    // review queue
+    var nowId: String?
+    var detailOpen = false
+    var openSections: [String: Date] = [:]
+    private var sectionAcc: [String: Double] = [:]
+    private var sectionsSeen: [String] = []
+    private var detailOpenedAt: Date?
+    private var detailAcc = 0.0
+    private var detailUsed = false
+    var spotChecks: [UUID] = []
+    var spotCheckOpen = false
+    private var spotRng = SplitMix64(s: 4242)
+    var autoPassed = 0
     private var reviewerRng = SplitMix64(s: 99)
     private var testNameIdx = 0
     var registryURL: URL { logURL.deletingLastPathComponent().appendingPathComponent("registry-\(config.id)-\(siteId).json") }
@@ -83,7 +104,8 @@ struct Handoff: Identifiable, Hashable {
            let data = try? Data(contentsOf: registryURL), let p = try? Self.dec().decode(CategoryRegistry.self, from: data), p.siteId == siteId {
             registry.merge(persisted: p)
         }
-        reviewerRng = SplitMix64(s: 99); testNameIdx = 0
+        reviewerRng = SplitMix64(s: 99); testNameIdx = 0; spotRng = SplitMix64(s: 4242)
+        nowId = nil; spotChecks = []; autoPassed = 0; resetDetailTelemetry()
         items = [:]; itemOrder = []; handoffs = []; phase = [:]; progress = [:]; slot = [:]; shownAt = [:]
         routed = [:]; effective = [:]; delivered = [:]; itemStatus = [:]; decisions = []; alertsFired = 0; deliveries = 0
         inbox = Dictionary(uniqueKeysWithValues: d.config.agents.map { ($0.id, 0) })
@@ -120,13 +142,19 @@ struct Handoff: Identifiable, Hashable {
         let a = (-33 + 22 * Float(k % 4)) * .pi / 180
         return [1.45 * sin(a), 1.05 + Float(k / 4) * 0.34, -1.45 * cos(a)]
     }
+    /// queue rail above the Now card: index 0 = Now, then priority order
+    func railPosition(_ h: Handoff) -> SIMD3<Float> {
+        if h.id == nowId { return [-0.6, 2.0, -1.5] }
+        let i = Float(queue.firstIndex(of: h) ?? queue.count)
+        return [-0.42 + 0.095 * min(i, 9), 2.0, -1.5]
+    }
     func position(_ h: Handoff) -> SIMD3<Float> {
-        let s = slotPosition(slot[h.id] ?? 0), t = progress[h.id] ?? 0
+        let s = railPosition(h), t = progress[h.id] ?? 0
         switch phase[h.id] ?? .incoming {
         case .incoming: return simd_mix(agentPosition(h.link.source), s, SIMD3(repeating: smooth(t)))
         case .waiting: return s
         case .outgoing, .delivered:
-            let d = agentPosition(h.link.dest)
+            let d = agentPosition(h.link.dest), s = departFrom[h.id] ?? s
             return t < 0.3 ? simd_mix(s, Self.hub, SIMD3(repeating: smooth(t / 0.3)))
                            : simd_mix(Self.hub, d, SIMD3(repeating: smooth((t - 0.3) / 0.7)))
         }
@@ -134,7 +162,25 @@ struct Handoff: Identifiable, Hashable {
     private func smooth(_ t: Float) -> Float { t * t * (3 - 2 * t) }
 
     var active: [Handoff] { handoffs.filter { [.incoming, .waiting].contains(phase[$0.id]) } }
-    var waiting: [Handoff] { handoffs.filter { phase[$0.id] == .waiting }.sorted { $0.priority > $1.priority } }
+    var waiting: [Handoff] { handoffs.filter { phase[$0.id] == .waiting }.sorted { livePriority($0) > livePriority($1) } }
+    var nowHandoff: Handoff? { handoffs.first { $0.id == nowId } }
+    /// waiting items behind Now, priority order
+    var queue: [Handoff] { waiting.filter { $0.id != nowId } }
+    func waitMinutes(_ h: Handoff) -> Double { max(0, domain.now - h.emittedAtMin) }
+    func livePriority(_ h: Handoff) -> Double { h.priority + config.review.waitWeight * waitMinutes(h) }
+    func queueCount(_ agent: String) -> Int { waiting.filter { $0.link.source == agent }.count }
+    /// domain reasons + generic ones (confidence, cost, live wait)
+    func reasons(_ h: Handoff) -> [ReasonChip] {
+        var r = h.reasons
+        if h.confidence < 0.7 { r.append(ReasonChip(text: "low confidence \(Int(h.confidence * 100))%", key: "low confidence", severity: .warn)) }
+        if h.link.costWeight >= 0.7 { r.append(ReasonChip(text: "high error cost", key: "high error cost", severity: .warn)) }
+        let w = waitMinutes(h)
+        if w >= 5 {
+            let alert = h.link.firesAlert && !h.link.alertNegative.contains(h.proposal)
+            r.append(ReasonChip(text: "\(alert ? "alert " : "")waiting \(Int(w))m", key: "waiting", severity: alert && w >= 10 ? .high : .warn))
+        }
+        return r
+    }
     var rootLinks: [LinkSpec] { config.links.filter { $0.dependsOn.isEmpty } }
 
     // MARK: simulation
@@ -151,12 +197,55 @@ struct Handoff: Identifiable, Hashable {
             switch phase[h.id] {
             case .incoming:
                 let p = (progress[h.id] ?? 0) + dt / 3
-                if p >= 1 { phase[h.id] = .waiting; shownAt[h.id] = Date() } else { progress[h.id] = p }
+                if p >= 1 { phase[h.id] = .waiting; shownAt[h.id] = Date(); progress[h.id] = 1; maybeAutoPass(h) } else { progress[h.id] = p }
             case .outgoing:
                 let p = (progress[h.id] ?? 0) + dt / 2.6
                 if p >= 1 { progress[h.id] = 1; phase[h.id] = .delivered; deliver(h) } else { progress[h.id] = p }
             default: break
             }
+        }
+        if nowHandoff.map({ phase[$0.id] != .waiting }) ?? true {
+            nowId = waiting.first?.id; resetDetailTelemetry()
+            if nowId != nil { shownAt[nowId!] = Date() }   // latency counts from when it became Now
+        }
+    }
+
+    private func maybeAutoPass(_ h: Handoff) {
+        let r = config.review
+        guard h.confidence >= r.autoPassConfidence, h.link.costWeight <= r.autoPassMaxCost,
+              !reasons(h).contains(where: { $0.severity == .high }) else { return }
+        route(h.id, answer: nil, gesture: "auto-pass", by: "auto")
+        autoPassed += 1
+        if spotRng.chance(r.spotCheckRate), let d = decisions.last {
+            decisions[decisions.count - 1].spotCheckSampled = true; spotChecks.append(d.id)
+        }
+    }
+    func reviewSpotCheck(_ id: UUID, agree: Bool) {
+        guard let k = decisions.firstIndex(where: { $0.id == id }) else { return }
+        decisions[k].spotCheckResult = agree ? "agree" : "disagree"; rewriteLog()
+    }
+    var pendingSpotChecks: [RoutingDecision] { decisions.filter { spotChecks.contains($0.id) && $0.spotCheckResult == nil } }
+
+    // MARK: detail telemetry
+    func toggleDetail() {
+        detailOpen.toggle()
+        if detailOpen { detailOpenedAt = Date(); detailUsed = true }
+        else { flushDetail(); for k in Array(openSections.keys) { toggleSection(k) } }
+    }
+    func toggleSection(_ name: String) {
+        if let t = openSections.removeValue(forKey: name) { sectionAcc[name, default: 0] += Date().timeIntervalSince(t) }
+        else { openSections[name] = Date(); if !sectionsSeen.contains(name) { sectionsSeen.append(name) } }
+    }
+    private func flushDetail() { if let t = detailOpenedAt { detailAcc += Date().timeIntervalSince(t); detailOpenedAt = nil } }
+    private func resetDetailTelemetry() {
+        sectionAcc = [:]; sectionsSeen = []; detailAcc = 0; detailUsed = detailOpen
+        openSections = [:]; detailOpenedAt = detailOpen ? Date() : nil
+    }
+    func detailSections(_ h: Handoff) -> [DetailSection] {
+        guard let item = items[h.itemId] else { return [] }
+        return config.detailSections.compactMap { name in
+            if name == "Capacity snapshot" { return DetailSection(title: name, rows: h.capacity.sorted { $0.key < $1.key }.map { ($0.key, $0.value) }) }
+            return domain.detail(item: item, section: name).map { DetailSection(title: name, rows: $0) }
         }
     }
 
@@ -169,10 +258,14 @@ struct Handoff: Identifiable, Hashable {
         let up = effective[item.id] ?? [:]
         let p = domain.propose(item: item, link: link, routed: up)
         let gt = domain.groundTruth(item: item, link: link, routed: up)
-        let prio = (1 - p.confidence) + link.costWeight
+        let prio = (1 - p.confidence) * (1 + link.costWeight) + domain.urgency(item: item, link: link, proposal: p.answer)
+        let alt = link.answerType == .binary ? link.options.first { $0 != p.answer } : nil
         let h = Handoff(id: "\(item.id)-\(link.id)", itemId: item.id, link: link, proposal: p.answer, confidence: p.confidence,
                         groundTruth: gt, upstream: up, capacity: domain.capacitySnapshot(), capacityLine: domain.capacityLine(),
-                        priority: prio, createdAt: Date())
+                        priority: prio, createdAt: Date(),
+                        reasons: domain.reasons(item: item, link: link, proposal: p.answer, upstream: up), emittedAtMin: domain.now,
+                        preview: Review.preview(domain, item, link, p.answer, trial: false),
+                        altPreview: alt.map { Review.preview(domain, item, link, $0, trial: false) })
         slot[h.id] = freeSlot(); phase[h.id] = .incoming; progress[h.id] = 0
         handoffs.append(h)
     }
@@ -225,9 +318,11 @@ struct Handoff: Identifiable, Hashable {
         route(id, answer: h.link.options.first { $0 != h.proposal }, gesture: "flip")
     }
     func openRing(_ id: String) { ringFor = id }
+    /// human pulls an up-next item to the front
+    func makeNow(_ id: String) { guard phase[id] == .waiting else { return }; nowId = id; shownAt[id] = Date(); resetDetailTelemetry() }
     func select(_ id: String, _ option: String) { ringFor = nil; route(id, answer: option, gesture: "select") }
 
-    func route(_ id: String, answer: String?, gesture: String, isNew: Bool = false) {
+    func route(_ id: String, answer: String?, gesture: String, isNew: Bool = false, by: String = "human") {
         guard let h = handoffs.first(where: { $0.id == id }), [.incoming, .waiting].contains(phase[id]),
               let item = items[h.itemId] else { return }
         var ans = answer ?? h.proposal
@@ -250,7 +345,18 @@ struct Handoff: Identifiable, Hashable {
             position: Vec3(x: pos.x, y: pos.y, z: pos.z), distanceFromHead: simd_distance(pos, Self.head),
             neighbors: others.map(\.id), queueDepth: others.count,
             groundTruth: h.groundTruth, agreesWithGroundTruth: agrees, downstreamOutcome: nil)
-        decisions.append(d)
+        var dd = d
+        dd.decidedBy = by
+        dd.reasons = reasons(h).map(\.text)
+        dd.downstreamPreview = Review.preview(domain, item, h.link, eff, trial: trial)
+        if id == nowId && by == "human" {
+            flushDetail(); for k in Array(openSections.keys) { toggleSection(k) }
+            dd.detailOpened = detailUsed; dd.sectionsOpened = sectionsSeen
+            dd.sectionDwell = sectionAcc.mapValues { ($0 * 10).rounded() / 10 }; dd.detailDwell = (detailAcc * 10).rounded() / 10
+            if detailOpen { detailOpenedAt = Date() }
+        } else { dd.detailOpened = false; dd.sectionsOpened = []; dd.sectionDwell = [:]; dd.detailDwell = 0 }
+        dd.spotCheckSampled = false
+        decisions.append(dd)
         if h.link.answerType == .category {
             // simulated second reviewer (inter-rater consistency) for HITM-added categories
             let agreeP = ans.count <= 9 ? 0.45 : 0.8
@@ -262,11 +368,12 @@ struct Handoff: Identifiable, Hashable {
         routed[id] = ans
         effective[item.id, default: [:]][h.link.id] = eff
         if h.link.firesAlert && !trial && !h.link.alertNegative.contains(eff) { alertsFired += 1; domain.alertFired(item: item, link: h.link) }
+        departFrom[id] = pos
         phase[id] = .outgoing; progress[id] = 0
         if ringFor == id { ringFor = nil }
         lastAction = "\(gesture) \(id): \(h.proposal)\(d.changed ? " → \(ans)" : " ✓")\(trial ? " (trial)" : "")"
             + (ev.last.map { " · \($0.op) \($0.category)" } ?? "")
-        appendLog(d)
+        appendLog(dd)
     }
 
     // MARK: stats
@@ -329,12 +436,30 @@ struct Handoff: Identifiable, Hashable {
     }
 
     // MARK: test driver
+    /// -testReview: exercise detail panel sections + spot-check queue (with holds for screenshots)
+    func testReviewUI(_ k: Int) async {
+        guard ProcessInfo.processInfo.arguments.contains("-testReview"), let h = nowHandoff else { return }
+        let secs = detailSections(h).map(\.title)
+        if k % 5 == 2 && !secs.isEmpty {
+            if !detailOpen { toggleDetail() }
+            let pick = k == 12 ? secs : Array(secs.prefix(1 + k % 3))
+            for sct in pick { toggleSection(sct) }
+            try? await Task.sleep(for: .seconds(k == 12 ? 14 : 1.2))
+        } else if detailOpen { toggleDetail() }
+        if k == 30 && !pendingSpotChecks.isEmpty {
+            if detailOpen { toggleDetail() }
+            spotCheckOpen = true; try? await Task.sleep(for: .seconds(6))
+            for (i, d) in pendingSpotChecks.prefix(3).enumerated() { reviewSpotCheck(d.id, agree: i != 1); try? await Task.sleep(for: .seconds(1)) }
+            try? await Task.sleep(for: .seconds(6)); spotCheckOpen = false
+        }
+    }
     /// Acts on waiting handoffs, highest priority first. Mostly routes to ground truth; every 9th is a blind pass.
     func autoResolve(_ n: Int) async {
         var k = 0
         while k < n {
             try? await Task.sleep(for: .seconds(Double(1.4 / speedup)))
-            guard let h = waiting.first else { continue }
+            guard let h = nowHandoff, phase[h.id] == .waiting else { continue }
+            await testReviewUI(k)
             let testNew = ProcessInfo.processInfo.arguments.contains("-testNewCategories")
             if testNew, h.link.answerType == .category, let names = config.testNewCategories[h.link.id], k % 3 == 1 {
                 let name = names[testNameIdx % names.count]; testNameIdx += 1

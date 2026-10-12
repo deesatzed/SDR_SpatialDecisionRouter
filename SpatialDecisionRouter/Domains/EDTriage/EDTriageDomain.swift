@@ -94,7 +94,7 @@ enum EDRules {
     var minutesPerSecond: Double { config.capacity["minutesPerSecond"] ?? 1 }
     var patients: [String: EDPatient] = [:]
     private var arrivals: [EDPatient] = []
-    var capacity: EDCapacity
+    var capacity: EDCapacity   // internal so EDReview can read it
 
     init() {
         config = (try? DomainLoader.config(named: "ed_triage.domain")) ?? DomainConfig(id: "ed_triage", title: "ED (config missing)", agents: [], links: [])
