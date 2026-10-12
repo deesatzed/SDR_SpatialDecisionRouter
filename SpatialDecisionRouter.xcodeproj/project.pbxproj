@@ -8,32 +8,30 @@
 
 /* Begin PBXBuildFile section */
 		1CF7FCB2E9E92662F465F631 /* content_safety_outcomes.json in Resources */ = {isa = PBXBuildFile; fileRef = 8773D28910656B77200788F2 /* content_safety_outcomes.json */; };
-		28C5F5B784D480AD8D8BF017 /* ProposalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2ED0785B0A8EB065DA5F06 /* ProposalStore.swift */; };
+		2B198298CCA9E32C361A99C1 /* CrossroadsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1C332BAF429A128D3FAAC4 /* CrossroadsModels.swift */; };
+		2B81F468824269B0A53D942B /* CrossroadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7895E056CD0EAC6C9AAA4EC1 /* CrossroadsView.swift */; };
 		516A364A307DFAD9E057F1A4 /* robot_actions.json in Resources */ = {isa = PBXBuildFile; fileRef = 26072D49380EFB126E0692D6 /* robot_actions.json */; };
 		52615858496322522E3CD2C0 /* robot_actions_outcomes.json in Resources */ = {isa = PBXBuildFile; fileRef = 9E616AD084C0C496825688E1 /* robot_actions_outcomes.json */; };
+		641F22584EE39864BA06DBAE /* support_crossroads.json in Resources */ = {isa = PBXBuildFile; fileRef = 482B4FEDC0C530AE63ED5D9A /* support_crossroads.json */; };
 		6427CB9C312AFD4C48527DB4 /* medical_imaging.json in Resources */ = {isa = PBXBuildFile; fileRef = 8E2EDA5C816F0CD7F02F9656 /* medical_imaging.json */; };
 		66663F3B4A3D831498DD766C /* medical_imaging_outcomes.json in Resources */ = {isa = PBXBuildFile; fileRef = 409462FAA6E78B75AAEC0A41 /* medical_imaging_outcomes.json */; };
-		81011BCAED3C11624D334C2F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7481E795663EF24FE720525C /* Models.swift */; };
+		6828B8C1C02F50E24216A983 /* CrossroadsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629D37FBBC6A7FA39665F611 /* CrossroadsStore.swift */; };
 		8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
 		A9192282B04DD27870E7E918 /* content_safety.json in Resources */ = {isa = PBXBuildFile; fileRef = DE04C81D731739102433A158 /* content_safety.json */; };
-		B89869800A3C6D450461DC14 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C757BAD289D35AEEA29B665 /* ContentView.swift */; };
-		CCECA63FD413F94D91F4854E /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070109B948404C5F87C67B4 /* Layout.swift */; };
-		E3385644F153F6E42EF2D67B /* ImmersiveRouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19485ED4EF5592FB5A3A8E4F /* ImmersiveRouterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		19485ED4EF5592FB5A3A8E4F /* ImmersiveRouterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveRouterView.swift; sourceTree = "<group>"; };
 		26072D49380EFB126E0692D6 /* robot_actions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = robot_actions.json; sourceTree = "<group>"; };
 		409462FAA6E78B75AAEC0A41 /* medical_imaging_outcomes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = medical_imaging_outcomes.json; sourceTree = "<group>"; };
-		5C757BAD289D35AEEA29B665 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		7481E795663EF24FE720525C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
-		7E2ED0785B0A8EB065DA5F06 /* ProposalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProposalStore.swift; sourceTree = "<group>"; };
+		482B4FEDC0C530AE63ED5D9A /* support_crossroads.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = support_crossroads.json; sourceTree = "<group>"; };
+		629D37FBBC6A7FA39665F611 /* CrossroadsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossroadsStore.swift; sourceTree = "<group>"; };
+		7895E056CD0EAC6C9AAA4EC1 /* CrossroadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossroadsView.swift; sourceTree = "<group>"; };
 		8773D28910656B77200788F2 /* content_safety_outcomes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = content_safety_outcomes.json; sourceTree = "<group>"; };
 		8E2EDA5C816F0CD7F02F9656 /* medical_imaging.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = medical_imaging.json; sourceTree = "<group>"; };
-		9070109B948404C5F87C67B4 /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		9E616AD084C0C496825688E1 /* robot_actions_outcomes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = robot_actions_outcomes.json; sourceTree = "<group>"; };
 		9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialDecisionRouterApp.swift; sourceTree = "<group>"; };
 		DE04C81D731739102433A158 /* content_safety.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = content_safety.json; sourceTree = "<group>"; };
+		EC1C332BAF429A128D3FAAC4 /* CrossroadsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossroadsModels.swift; sourceTree = "<group>"; };
 		F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -55,6 +53,7 @@
 				8E2EDA5C816F0CD7F02F9656 /* medical_imaging.json */,
 				9E616AD084C0C496825688E1 /* robot_actions_outcomes.json */,
 				26072D49380EFB126E0692D6 /* robot_actions.json */,
+				482B4FEDC0C530AE63ED5D9A /* support_crossroads.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -62,11 +61,9 @@
 		DB3725A68F45F5D20377362B /* SpatialDecisionRouter */ = {
 			isa = PBXGroup;
 			children = (
-				5C757BAD289D35AEEA29B665 /* ContentView.swift */,
-				19485ED4EF5592FB5A3A8E4F /* ImmersiveRouterView.swift */,
-				9070109B948404C5F87C67B4 /* Layout.swift */,
-				7481E795663EF24FE720525C /* Models.swift */,
-				7E2ED0785B0A8EB065DA5F06 /* ProposalStore.swift */,
+				EC1C332BAF429A128D3FAAC4 /* CrossroadsModels.swift */,
+				629D37FBBC6A7FA39665F611 /* CrossroadsStore.swift */,
+				7895E056CD0EAC6C9AAA4EC1 /* CrossroadsView.swift */,
 				9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */,
 				879F393EABB8D4118DE3EEB4 /* Resources */,
 			);
@@ -143,6 +140,7 @@
 				66663F3B4A3D831498DD766C /* medical_imaging_outcomes.json in Resources */,
 				516A364A307DFAD9E057F1A4 /* robot_actions.json in Resources */,
 				52615858496322522E3CD2C0 /* robot_actions_outcomes.json in Resources */,
+				641F22584EE39864BA06DBAE /* support_crossroads.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,11 +151,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B89869800A3C6D450461DC14 /* ContentView.swift in Sources */,
-				E3385644F153F6E42EF2D67B /* ImmersiveRouterView.swift in Sources */,
-				CCECA63FD413F94D91F4854E /* Layout.swift in Sources */,
-				81011BCAED3C11624D334C2F /* Models.swift in Sources */,
-				28C5F5B784D480AD8D8BF017 /* ProposalStore.swift in Sources */,
+				2B198298CCA9E32C361A99C1 /* CrossroadsModels.swift in Sources */,
+				6828B8C1C02F50E24216A983 /* CrossroadsStore.swift in Sources */,
+				2B81F468824269B0A53D942B /* CrossroadsView.swift in Sources */,
 				8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

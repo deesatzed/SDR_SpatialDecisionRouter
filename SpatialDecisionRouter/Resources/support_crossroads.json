@@ -1,0 +1,348 @@
+{
+ "scenario": "support_crossroads",
+ "agents": [
+  {
+   "id": "intake",
+   "name": "Intake Classifier"
+  },
+  {
+   "id": "triage",
+   "name": "Triage Severity"
+  },
+  {
+   "id": "specialist",
+   "name": "Specialist Router"
+  },
+  {
+   "id": "action",
+   "name": "Action Agent"
+  }
+ ],
+ "links": [
+  {
+   "source": "intake",
+   "dest": "triage",
+   "question": "Issue type?",
+   "answerType": "category",
+   "options": [
+    "billing",
+    "technical",
+    "safety",
+    "account"
+   ]
+  },
+  {
+   "source": "triage",
+   "dest": "specialist",
+   "question": "Escalate?",
+   "answerType": "binary",
+   "options": [
+    "yes",
+    "no"
+   ]
+  },
+  {
+   "source": "specialist",
+   "dest": "action",
+   "question": "Route to team?",
+   "answerType": "category",
+   "options": [
+    "tier1",
+    "tier2",
+    "trust-safety",
+    "security",
+    "legal"
+   ]
+  }
+ ],
+ "cases": [
+  {
+   "caseID": "c01",
+   "context": "Customer charged twice for annual plan, wants refund",
+   "stages": [
+    {
+     "gt": "billing",
+     "propOk": "billing",
+     "propBad": "safety",
+     "conf": 0.93
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.66
+    },
+    {
+     "gt": "tier1",
+     "propOk": "tier1",
+     "propBad": "tier2",
+     "conf": 0.48
+    }
+   ]
+  },
+  {
+   "caseID": "c02",
+   "context": "App crashes on launch after update 4.2 on iPad",
+   "stages": [
+    {
+     "gt": "technical",
+     "propOk": "account",
+     "propBad": "account",
+     "conf": 0.54
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.73
+    },
+    {
+     "gt": "tier2",
+     "propOk": "tier2",
+     "propBad": "trust-safety",
+     "conf": 0.47
+    }
+   ]
+  },
+  {
+   "caseID": "c03",
+   "context": "User reports another account posting threats against them",
+   "stages": [
+    {
+     "gt": "safety",
+     "propOk": "safety",
+     "propBad": "technical",
+     "conf": 0.69
+    },
+    {
+     "gt": "yes",
+     "propOk": "no",
+     "propBad": "no",
+     "conf": 0.6
+    },
+    {
+     "gt": "trust-safety",
+     "propOk": "trust-safety",
+     "propBad": "legal",
+     "conf": 0.48
+    }
+   ]
+  },
+  {
+   "caseID": "c04",
+   "context": "Can't log in, suspects account takeover, 2FA changed",
+   "stages": [
+    {
+     "gt": "account",
+     "propOk": "account",
+     "propBad": "safety",
+     "conf": 0.56
+    },
+    {
+     "gt": "yes",
+     "propOk": "yes",
+     "propBad": "no",
+     "conf": 0.59
+    },
+    {
+     "gt": "security",
+     "propOk": "tier1",
+     "propBad": "tier1",
+     "conf": 0.71
+    }
+   ]
+  },
+  {
+   "caseID": "c05",
+   "context": "Invoice shows wrong VAT number for EU company",
+   "stages": [
+    {
+     "gt": "billing",
+     "propOk": "billing",
+     "propBad": "safety",
+     "conf": 0.52
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.59
+    },
+    {
+     "gt": "tier1",
+     "propOk": "tier1",
+     "propBad": "trust-safety",
+     "conf": 0.58
+    }
+   ]
+  },
+  {
+   "caseID": "c06",
+   "context": "Data export API returns 500 for large workspaces",
+   "stages": [
+    {
+     "gt": "technical",
+     "propOk": "billing",
+     "propBad": "billing",
+     "conf": 0.74
+    },
+    {
+     "gt": "yes",
+     "propOk": "no",
+     "propBad": "no",
+     "conf": 0.73
+    },
+    {
+     "gt": "tier2",
+     "propOk": "tier2",
+     "propBad": "trust-safety",
+     "conf": 0.5
+    }
+   ]
+  },
+  {
+   "caseID": "c07",
+   "context": "Minor appears to be sharing personal address publicly",
+   "stages": [
+    {
+     "gt": "safety",
+     "propOk": "safety",
+     "propBad": "account",
+     "conf": 0.79
+    },
+    {
+     "gt": "yes",
+     "propOk": "yes",
+     "propBad": "no",
+     "conf": 0.65
+    },
+    {
+     "gt": "trust-safety",
+     "propOk": "trust-safety",
+     "propBad": "tier1",
+     "conf": 0.7
+    }
+   ]
+  },
+  {
+   "caseID": "c08",
+   "context": "Requesting deletion of all personal data under GDPR",
+   "stages": [
+    {
+     "gt": "account",
+     "propOk": "account",
+     "propBad": "safety",
+     "conf": 0.59
+    },
+    {
+     "gt": "yes",
+     "propOk": "yes",
+     "propBad": "no",
+     "conf": 0.77
+    },
+    {
+     "gt": "legal",
+     "propOk": "legal",
+     "propBad": "security",
+     "conf": 0.8
+    }
+   ]
+  },
+  {
+   "caseID": "c09",
+   "context": "Promo code not applied at checkout",
+   "stages": [
+    {
+     "gt": "billing",
+     "propOk": "billing",
+     "propBad": "safety",
+     "conf": 0.76
+    },
+    {
+     "gt": "no",
+     "propOk": "yes",
+     "propBad": "yes",
+     "conf": 0.68
+    },
+    {
+     "gt": "tier1",
+     "propOk": "security",
+     "propBad": "security",
+     "conf": 0.56
+    }
+   ]
+  },
+  {
+   "caseID": "c10",
+   "context": "Sync conflicts wiping notes on two devices",
+   "stages": [
+    {
+     "gt": "technical",
+     "propOk": "billing",
+     "propBad": "billing",
+     "conf": 0.81
+    },
+    {
+     "gt": "yes",
+     "propOk": "yes",
+     "propBad": "no",
+     "conf": 0.6
+    },
+    {
+     "gt": "tier2",
+     "propOk": "tier2",
+     "propBad": "security",
+     "conf": 0.69
+    }
+   ]
+  },
+  {
+   "caseID": "c11",
+   "context": "Copyright holder sends takedown notice for user video",
+   "stages": [
+    {
+     "gt": "safety",
+     "propOk": "safety",
+     "propBad": "technical",
+     "conf": 0.83
+    },
+    {
+     "gt": "yes",
+     "propOk": "yes",
+     "propBad": "no",
+     "conf": 0.62
+    },
+    {
+     "gt": "legal",
+     "propOk": "legal",
+     "propBad": "tier1",
+     "conf": 0.5
+    }
+   ]
+  },
+  {
+   "caseID": "c12",
+   "context": "Forgot password, reset email never arrives",
+   "stages": [
+    {
+     "gt": "account",
+     "propOk": "account",
+     "propBad": "technical",
+     "conf": 0.57
+    },
+    {
+     "gt": "no",
+     "propOk": "yes",
+     "propBad": "yes",
+     "conf": 0.64
+    },
+    {
+     "gt": "tier1",
+     "propOk": "tier1",
+     "propBad": "legal",
+     "conf": 0.64
+    }
+   ]
+  }
+ ]
+}

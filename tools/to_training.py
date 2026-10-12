@@ -1,53 +1,51 @@
 #!/usr/bin/env python3
-"""Dry-run: convert a Spatial Decision Router export (JSONL or JSON) into a fine-tune dataset.
+"""Convert Crossroads routing logs (JSONL or JSON export) into chat-style fine-tune examples.
 
-accept (and label agrees with outcome/GT)      -> positive example for the recommending model
-reject/recategorize (human overrode the model) -> hard negative (rejected = model's rec) + corrected label
-needsMoreInfo / no label                       -> skipped (logged as uncertain for active learning)
+Each human routing decision becomes:
+  system:    crossroads router instructions
+  user:      case context + upstream routed answers + handoff (source, dest, question, options, proposal, confidence)
+  assistant: the human's routed answer (JSON: {"route": ..., "changed": bool})
+Changed decisions (overrides) are upweighted; downstream outcome is kept in metadata.
 
-Usage: python3 tools/to_training.py export.jsonl -o out_dir
+Usage: python3 tools/to_training.py routing.jsonl -o out_dir
 """
-import argparse, collections, json, os, sys
+import argparse, collections, json, os
 
-def load(path):
-    with open(path) as f:
-        text = f.read().strip()
-    return json.loads(text) if text.startswith("[") else [json.loads(l) for l in text.splitlines() if l.strip()]
+SYSTEM = ("You are the crossroads router between decision agents. For each handoff, decide whether to pass the "
+          "source agent's proposed answer through unchanged, flip it (binary), or select a different option "
+          "(categorical). Reply with JSON {\"route\": <answer>, \"changed\": <bool>}.")
+
+def load(p):
+    t = open(p).read().strip()
+    return json.loads(t) if t.startswith("[") else [json.loads(l) for l in t.splitlines() if l.strip()]
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("export"); ap.add_argument("-o", "--out", default="training_out")
+    ap = argparse.ArgumentParser(); ap.add_argument("log"); ap.add_argument("-o", "--out", default="training_out")
     a = ap.parse_args(); os.makedirs(a.out, exist_ok=True)
-    recs = load(a.export)
-    train, uncertain = [], []
-    stats = collections.Counter()
+    recs = load(a.log); out = []; st = collections.Counter()
     for r in recs:
-        p = r["proposal"]
-        label = r.get("chosenLabel")
-        target = r.get("outcome") or label          # delayed outcome wins when joined
-        if not label or not target:
-            uncertain.append({"id": p["id"], "model": p["modelID"], "evidence": p["evidence"]}); stats["skipped"] += 1; continue
-        prompt = (f"[{p['category']} | {p['type']}] options={p['options']}\n"
-                  f"Evidence: {p['evidence']}\nModel confidence: {p['confidence']:.2f}")
-        overrode = label != p["recommended"]
-        kind = "hard_negative" if overrode else "positive"
-        if target != label: kind += "+outcome_corrected"
-        stats[kind] += 1
-        train.append({
-            "model": p["modelID"], "kind": kind, "prompt": prompt, "completion": target,
-            "rejected": p["recommended"] if p["recommended"] != target else None,
-            "weight": 2.0 if overrode else 1.0,   # overrides are the high-value signal
-            "meta": {"proposal": p["id"], "action": r["action"], "latency_s": r.get("decisionLatency"),
-                     "inspected": r.get("inspected"), "distance_m": r["position"]["distance"],
-                     "neighbors": r.get("neighborProposalIDs"), "stream": r.get("stream")},
-        })
-    with open(os.path.join(a.out, "train.jsonl"), "w") as f:
-        for t in train: f.write(json.dumps(t) + "\n")
-    with open(os.path.join(a.out, "uncertain_for_active_learning.jsonl"), "w") as f:
-        for u in uncertain: f.write(json.dumps(u) + "\n")
-    per_model = collections.Counter(t["model"] for t in train)
-    summary = {"records": len(recs), "train_examples": len(train), "by_kind": dict(stats), "by_model": dict(per_model)}
-    json.dump(summary, open(os.path.join(a.out, "summary.json"), "w"), indent=2)
-    print(json.dumps(summary, indent=2))
+        user = (f"Case {r['caseID']}: {r['inputContext']}\n"
+                f"Upstream: {'; '.join(r.get('upstreamAnswers') or []) or 'none'}\n"
+                f"Handoff: {r['sourceAgent']} -> {r['destAgent']} | {r['question']} ({r['answerType']})\n"
+                f"Options: {', '.join(r['options'])}\n"
+                f"Proposed: {r['proposedAnswer']} (confidence {r['proposedConfidence']:.2f})\n"
+                f"Crossroads queue depth: {r.get('queueDepth', 0)}")
+        asst = json.dumps({"route": r["routedAnswer"], "changed": r["changed"]})
+        kind = "override" if r["changed"] else "pass_through"
+        st[kind] += 1
+        if r.get("agreesWithGroundTruth") is False: st["human_disagrees_gt"] += 1
+        out.append({"messages": [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user},
+                                 {"role": "assistant", "content": asst}],
+                    "weight": 2.0 if r["changed"] else 1.0,
+                    "metadata": {"gesture": r["gesture"], "latency_s": round(r["latency"], 3), "stage": r["stage"],
+                                 "groundTruth": r.get("groundTruth"), "downstreamOutcome": r.get("downstreamOutcome"),
+                                 "distance_m": r.get("distanceFromHead"), "neighbors": r.get("neighbors")}})
+    with open(os.path.join(a.out, "crossroads_chat.jsonl"), "w") as f:
+        for o in out: f.write(json.dumps(o, ensure_ascii=False) + "\n")
+    s = {"records": len(recs), "examples": len(out), "by_kind": dict(st),
+         "by_link": dict(collections.Counter(f"{r['sourceAgent']}->{r['destAgent']}" for r in recs)),
+         "outcomes": dict(collections.Counter(r.get("downstreamOutcome") for r in recs))}
+    json.dump(s, open(os.path.join(a.out, "summary.json"), "w"), indent=2); print(json.dumps(s, indent=2))
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
