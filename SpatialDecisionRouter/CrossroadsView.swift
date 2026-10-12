@@ -63,6 +63,7 @@ struct CrossroadsView: View {
         guard sc.agents.allSatisfy({ att.entity(for: "agent-\($0.id)") != nil }) else { return }  // retry next update
         for c in Array(root.children) { c.removeFromParent() }
         let hub = CrossroadsStore.hub
+        let envE = ClinicalEnvironment.make(); envE.isEnabled = store.fullImmersion; root.addChild(envE)
         let ver = store.packVersion
         Task { @MainActor in builtVersion = ver; built = []; pulsed = [:] }
         let hubE = ModelEntity(mesh: .generateSphere(radius: 0.03), materials: [UnlitMaterial(color: .white)])
@@ -122,6 +123,7 @@ struct CrossroadsView: View {
             }
             Task { @MainActor in pulsed[agent] = t }
         }
+        root.findEntity(named: "clinicalEnvironment")?.isEnabled = store.fullImmersion
         if let r = root.findEntity(named: "ringAttachment") {
             if let id = store.ringFor, let h = store.handoffs.first(where: { $0.id == id }) {
                 r.isEnabled = true
@@ -151,6 +153,7 @@ struct HandoffCard: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("\(h.link.source) → \(h.link.dest) · \(h.caseID)").font(.headline).foregroundStyle(.secondary)
             Text(h.inputContext).font(.title3).lineLimit(3)
+            Text("Hx: \(h.history)").font(.callout).foregroundStyle(.yellow).lineLimit(2)
             HStack {
                 Text(h.link.question).font(.title3)
                 Spacer()
@@ -257,6 +260,8 @@ struct MetricsPanel: View {
                 Text("strikethrough + orange = human changed").font(.caption)
                 Text("Pack: \(store.packName)").font(.caption.bold())
                 Button("Next Pack") { store.nextPack() }.font(.caption)
+                @Bindable var st = store
+                Toggle("Clinical environment (full)", isOn: $st.fullImmersion).font(.caption)
                 HStack { Button("Export") { store.export() }; Button("Close", action: onClose) }.font(.caption)
                 if !store.lastExport.isEmpty { Text(store.lastExport).font(.caption2) }
             }.frame(width: 280).padding(14).glassBackgroundEffect()

@@ -6,7 +6,7 @@ struct AgentSpec: Codable, Hashable { let id: String; let name: String; var role
 struct LinkSpec: Codable, Hashable { let source: String; let dest: String; let question: String; let answerType: AnswerType; let options: [String] }
 /// Deterministic simulated agent output for one stage: what it proposes depends on whether its input was correct.
 struct StageSpec: Codable, Hashable { let gt: String; let propOk: String; let propBad: String; let conf: Double }
-struct CaseSpec: Codable, Hashable { let caseID: String; let context: String; let stages: [StageSpec] }
+struct CaseSpec: Codable, Hashable { let caseID: String; let context: String; var history: String?; var rulesApplied: [String]?; let stages: [StageSpec] }
 struct Scenario: Codable { let scenario: String; let agents: [AgentSpec]; let links: [LinkSpec]; let cases: [CaseSpec] }
 
 /// One answer in flight from a source agent to a destination agent.
@@ -16,6 +16,7 @@ struct Handoff: Identifiable, Hashable {
     let stage: Int
     let link: LinkSpec
     let inputContext: String
+    let history: String
     let proposedAnswer: String
     let confidence: Double
     let groundTruth: String?
@@ -34,6 +35,7 @@ struct RoutingDecision: Codable, Identifiable {
     let destAgent: String
     let question: String
     let inputContext: String
+    let history: String
     let upstreamAnswers: [String]
     let proposedAnswer: String
     let proposedConfidence: Double

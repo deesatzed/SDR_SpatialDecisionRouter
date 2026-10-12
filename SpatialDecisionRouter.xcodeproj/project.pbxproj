@@ -19,6 +19,7 @@
 		7A33DA6D81FE8CF9387F4E32 /* ed_patient_flow.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D6BEA7B32BE7DA90BB02855 /* ed_patient_flow.json */; };
 		8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
 		A9192282B04DD27870E7E918 /* content_safety.json in Resources */ = {isa = PBXBuildFile; fileRef = DE04C81D731739102433A158 /* content_safety.json */; };
+		C8758E953D7186F6537B7876 /* ClinicalEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB39190D6F8E8DE86503CAD8 /* ClinicalEnvironment.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		9E616AD084C0C496825688E1 /* robot_actions_outcomes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = robot_actions_outcomes.json; sourceTree = "<group>"; };
 		9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialDecisionRouterApp.swift; sourceTree = "<group>"; };
 		DE04C81D731739102433A158 /* content_safety.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = content_safety.json; sourceTree = "<group>"; };
+		EB39190D6F8E8DE86503CAD8 /* ClinicalEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClinicalEnvironment.swift; sourceTree = "<group>"; };
 		EC1C332BAF429A128D3FAAC4 /* CrossroadsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossroadsModels.swift; sourceTree = "<group>"; };
 		F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -64,6 +66,7 @@
 		DB3725A68F45F5D20377362B /* SpatialDecisionRouter */ = {
 			isa = PBXGroup;
 			children = (
+				EB39190D6F8E8DE86503CAD8 /* ClinicalEnvironment.swift */,
 				EC1C332BAF429A128D3FAAC4 /* CrossroadsModels.swift */,
 				629D37FBBC6A7FA39665F611 /* CrossroadsStore.swift */,
 				7895E056CD0EAC6C9AAA4EC1 /* CrossroadsView.swift */,
@@ -155,6 +158,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8758E953D7186F6537B7876 /* ClinicalEnvironment.swift in Sources */,
 				2B198298CCA9E32C361A99C1 /* CrossroadsModels.swift in Sources */,
 				6828B8C1C02F50E24216A983 /* CrossroadsStore.swift in Sources */,
 				2B81F468824269B0A53D942B /* CrossroadsView.swift in Sources */,

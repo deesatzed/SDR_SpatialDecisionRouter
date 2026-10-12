@@ -13,7 +13,7 @@ import argparse, collections, json, os
 
 SYSTEM = ("You are the crossroads router between decision agents. For each handoff, decide whether to pass the "
           "source agent's proposed answer through unchanged, flip it (binary), or select a different option "
-          "(categorical). Reply with JSON {\"route\": <answer>, \"changed\": <bool>}.")
+          "(categorical). Weigh prior history (anticoagulation, immunosuppression, MDRO status, recent ED visits). Reply with JSON {\"route\": <answer>, \"changed\": <bool>}.")
 
 def load(p):
     t = open(p).read().strip()
@@ -25,6 +25,7 @@ def main():
     recs = load(a.log); out = []; st = collections.Counter()
     for r in recs:
         user = (f"Case {r['caseID']}: {r['inputContext']}\n"
+                f"History: {r.get('history', 'none')}\n"
                 f"Upstream: {'; '.join(r.get('upstreamAnswers') or []) or 'none'}\n"
                 f"Handoff: {r['sourceAgent']} -> {r['destAgent']} | {r['question']} ({r['answerType']})\n"
                 f"Options: {', '.join(r['options'])}\n"

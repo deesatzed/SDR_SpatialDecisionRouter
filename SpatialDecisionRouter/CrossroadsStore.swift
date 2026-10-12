@@ -24,6 +24,7 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
     var loadError: String?
     var immersiveOpen = false
     var speedup: Float = 1
+    var fullImmersion = !ProcessInfo.processInfo.arguments.contains("-mixed")
     private var nextCase = 0
     private var spawnTimer: Float = 0
     static let maxActive = 5
@@ -61,7 +62,7 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
     func agentIndex(_ id: String) -> Int { scenario?.agents.firstIndex { $0.id == id } ?? 0 }
     func agentPosition(_ id: String) -> SIMD3<Float> {
         let n = Float(scenario?.agents.count ?? 4)
-        let a = (-42 + 84 * Float(agentIndex(id)) / max(n - 1, 1)) * .pi / 180
+        let a = (-46 + 92 * Float(agentIndex(id)) / max(n - 1, 1)) * .pi / 180
         return [2.1 * sin(a), 1.55, -2.1 * cos(a)]
     }
     func slotPosition(_ k: Int) -> SIMD3<Float> {
@@ -116,7 +117,7 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
         guard let sc = scenario, stage < sc.links.count, stage < c.stages.count else { return }
         let st = c.stages[stage]
         let h = Handoff(id: "\(c.caseID)-s\(stage + 1)", caseID: c.caseID, stage: stage, link: sc.links[stage],
-                        inputContext: c.context, proposedAnswer: upstreamCorrect ? st.propOk : st.propBad,
+                        inputContext: c.context, history: c.history ?? "none", proposedAnswer: upstreamCorrect ? st.propOk : st.propBad,
                         confidence: st.conf, groundTruth: st.gt, createdAt: Date())
         slot[h.id] = freeSlot(); phase[h.id] = .incoming; progress[h.id] = 0
         handoffs.append(h)
@@ -165,7 +166,7 @@ enum Phase: Hashable { case incoming, waiting, outgoing, delivered }
         let d = RoutingDecision(
             scenario: scenario?.scenario ?? "", caseID: h.caseID, stage: h.stage + 1,
             sourceAgent: h.link.source, destAgent: h.link.dest, question: h.link.question,
-            inputContext: h.inputContext, upstreamAnswers: upstream[h.caseID] ?? [],
+            inputContext: h.inputContext, history: h.history, upstreamAnswers: upstream[h.caseID] ?? [],
             proposedAnswer: h.proposedAnswer, proposedConfidence: h.confidence,
             answerType: h.link.answerType, options: h.link.options,
             routedAnswer: ans, changed: ans != h.proposedAnswer, gesture: gesture,

@@ -1,11 +1,22 @@
 {
  "scenario": "ed_patient_flow",
  "synthetic": true,
+ "groundTruthRules": [
+  "anticoagulated + head strike -> ESI <= 2 and CT yes",
+  "immunosuppressed + fever (T>=38.0) -> sepsis alert yes, sepsis order set, ESI <= 2, hospitalist, obs",
+  "known MDRO or febrile respiratory illness -> isolation yes",
+  "ED visit within 72 h (bounceback) -> ESI one level more acute (min 2)"
+ ],
  "agents": [
   {
    "id": "triage",
    "name": "Triage Nurse Agent",
    "role": "ESI acuity 1\u20135"
+  },
+  {
+   "id": "infection",
+   "name": "Infection Control Agent",
+   "role": "isolation yes/no"
   },
   {
    "id": "sepsis",
@@ -41,7 +52,7 @@
  "links": [
   {
    "source": "triage",
-   "dest": "sepsis",
+   "dest": "infection",
    "question": "ESI acuity?",
    "answerType": "category",
    "options": [
@@ -50,6 +61,16 @@
     "3",
     "4",
     "5"
+   ]
+  },
+  {
+   "source": "infection",
+   "dest": "sepsis",
+   "question": "Isolation?",
+   "answerType": "binary",
+   "options": [
+    "yes",
+    "no"
    ]
   },
   {
@@ -117,241 +138,353 @@
  "cases": [
   {
    "caseID": "pt01",
-   "context": "[SYNTHETIC] 58M chest pressure radiating to L arm x40 min, diaphoretic. HR 102, BP 158/94, RR 18, SpO2 96%, T 36.9. HTN, smoker.",
+   "context": "[SYNTHETIC] 58M chest pressure radiating to L arm x40 min, diaphoretic. HR 102, BP 158/94, RR 18, SpO2 96%, T 36.9.",
+   "history": "PMH: HTN, smoker, prior MI 2022 (LAD stent) \u00b7 anticoag: aspirin+clopidogrel \u00b7 prior ESI 2",
+   "historyDetail": {
+    "pmh": "HTN, smoker, prior MI 2022 (LAD stent)",
+    "anticoag": "aspirin+clopidogrel",
+    "mdro": "none",
+    "immuno": false,
+    "recentED": "none",
+    "surgery": "none",
+    "baselineMS": "normal",
+    "priorESI": "2"
+   },
+   "rulesApplied": [],
    "stages": [
     {
      "gt": "2",
      "propOk": "3",
      "propBad": "1",
+     "conf": 0.55
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.58
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.61
+    },
+    {
+     "gt": "chest-pain",
+     "propOk": "chest-pain",
+     "propBad": "abd-pain",
+     "conf": 0.64
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.67
+    },
+    {
+     "gt": "cardiology",
+     "propOk": "cardiology",
+     "propBad": "surgery",
+     "conf": 0.7
+    },
+    {
+     "gt": "admit",
+     "propOk": "admit",
+     "propBad": "admit-ICU",
+     "conf": 0.73
+    }
+   ]
+  },
+  {
+   "caseID": "pt02",
+   "context": "[SYNTHETIC] 72F fever, new confusion. T 39.2, HR 118, BP 88/52, RR 24, SpO2 93%.",
+   "history": "PMH: DM2, recurrent UTI, mild dementia \u00b7 MDRO: ESBL E. coli urine 2025 \u00b7 baseline MS: oriented x2 (dementia) \u00b7 prior ESI 3",
+   "historyDetail": {
+    "pmh": "DM2, recurrent UTI, mild dementia",
+    "anticoag": "none",
+    "mdro": "ESBL E. coli urine 2025",
+    "immuno": false,
+    "recentED": "none",
+    "surgery": "none",
+    "baselineMS": "oriented x2 (dementia)",
+    "priorESI": "3"
+   },
+   "rulesApplied": [
+    "known MDRO or febrile respiratory illness -> isolation yes"
+   ],
+   "stages": [
+    {
+     "gt": "2",
+     "propOk": "2",
+     "propBad": "1",
+     "conf": 0.62
+    },
+    {
+     "gt": "yes",
+     "propOk": "no",
+     "propBad": "no",
+     "conf": 0.65
+    },
+    {
+     "gt": "yes",
+     "propOk": "no",
+     "propBad": "no",
+     "conf": 0.68
+    },
+    {
+     "gt": "sepsis",
+     "propOk": "sepsis",
+     "propBad": "chest-pain",
      "conf": 0.71
     },
     {
      "gt": "no",
      "propOk": "no",
      "propBad": "yes",
-     "conf": 0.83
-    },
-    {
-     "gt": "chest-pain",
-     "propOk": "chest-pain",
-     "propBad": "abd-pain",
-     "conf": 0.66
-    },
-    {
-     "gt": "no",
-     "propOk": "no",
-     "propBad": "yes",
-     "conf": 0.78
-    },
-    {
-     "gt": "cardiology",
-     "propOk": "cardiology",
-     "propBad": "surgery",
-     "conf": 0.62
-    },
-    {
-     "gt": "admit",
-     "propOk": "admit",
-     "propBad": "admit-ICU",
      "conf": 0.74
-    }
-   ]
-  },
-  {
-   "caseID": "pt02",
-   "context": "[SYNTHETIC] 72F fever, new confusion. T 39.2, HR 118, BP 88/52, RR 24, SpO2 93%. Recurrent UTIs, diabetic.",
-   "stages": [
-    {
-     "gt": "2",
-     "propOk": "2",
-     "propBad": "1",
-     "conf": 0.83
-    },
-    {
-     "gt": "yes",
-     "propOk": "no",
-     "propBad": "no",
-     "conf": 0.66
-    },
-    {
-     "gt": "sepsis",
-     "propOk": "sepsis",
-     "propBad": "chest-pain",
-     "conf": 0.78
-    },
-    {
-     "gt": "no",
-     "propOk": "no",
-     "propBad": "yes",
-     "conf": 0.62
     },
     {
      "gt": "ICU",
      "propOk": "ICU",
      "propBad": "cardiology",
-     "conf": 0.74
+     "conf": 0.77
     },
     {
      "gt": "admit-ICU",
      "propOk": "admit-ICU",
      "propBad": "admit",
-     "conf": 0.69
+     "conf": 0.8
     }
    ]
   },
   {
    "caseID": "pt03",
    "context": "[SYNTHETIC] 24F RLQ pain 14 h, nausea, anorexia. T 38.1, HR 96, BP 122/78. Urine hCG negative.",
+   "history": "PMH: none",
+   "historyDetail": {
+    "pmh": "none",
+    "anticoag": "none",
+    "mdro": "none",
+    "immuno": false,
+    "recentED": "none",
+    "surgery": "none",
+    "baselineMS": "normal",
+    "priorESI": null
+   },
+   "rulesApplied": [],
    "stages": [
     {
      "gt": "3",
      "propOk": "3",
      "propBad": "1",
-     "conf": 0.66
+     "conf": 0.69
     },
     {
      "gt": "no",
      "propOk": "no",
      "propBad": "yes",
-     "conf": 0.78
+     "conf": 0.72
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.75
     },
     {
      "gt": "abd-pain",
      "propOk": "abd-pain",
      "propBad": "chest-pain",
-     "conf": 0.62
+     "conf": 0.78
     },
     {
      "gt": "yes",
      "propOk": "no",
      "propBad": "no",
-     "conf": 0.74
+     "conf": 0.81
     },
     {
      "gt": "surgery",
      "propOk": "surgery",
      "propBad": "cardiology",
-     "conf": 0.69
+     "conf": 0.84
     },
     {
      "gt": "admit",
      "propOk": "admit",
      "propBad": "admit-ICU",
-     "conf": 0.58
+     "conf": 0.87
     }
    ]
   },
   {
    "caseID": "pt04",
    "context": "[SYNTHETIC] 31M ankle inversion playing soccer, able to bear weight 4 steps. Vitals normal. Lateral malleolus tender.",
+   "history": "PMH: none \u00b7 recent ED: ED 48 h ago same ankle, discharged \u00b7 prior ESI 4",
+   "historyDetail": {
+    "pmh": "none",
+    "anticoag": "none",
+    "mdro": "none",
+    "immuno": false,
+    "recentED": "ED 48 h ago same ankle, discharged",
+    "surgery": "none",
+    "baselineMS": "normal",
+    "priorESI": "4"
+   },
+   "rulesApplied": [
+    "ED visit within 72 h (bounceback) -> ESI one level more acute (min 2)"
+   ],
    "stages": [
     {
-     "gt": "4",
+     "gt": "3",
      "propOk": "4",
      "propBad": "1",
-     "conf": 0.78
+     "conf": 0.76
     },
     {
      "gt": "no",
      "propOk": "no",
      "propBad": "yes",
-     "conf": 0.62
+     "conf": 0.79
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.82
     },
     {
      "gt": "minor",
      "propOk": "minor",
      "propBad": "chest-pain",
-     "conf": 0.74
+     "conf": 0.85
     },
     {
      "gt": "no",
      "propOk": "no",
      "propBad": "yes",
-     "conf": 0.69
+     "conf": 0.88
     },
     {
      "gt": "none",
      "propOk": "none",
      "propBad": "cardiology",
-     "conf": 0.58
+     "conf": 0.91
     },
     {
      "gt": "discharge",
      "propOk": "obs",
      "propBad": "admit",
-     "conf": 0.8
+     "conf": 0.94
     }
    ]
   },
   {
    "caseID": "pt05",
-   "context": "[SYNTHETIC] 67M sudden L arm weakness + slurred speech, last known well 50 min ago. BP 182/100, HR 88, glucose 132.",
+   "context": "[SYNTHETIC] 67M sudden L arm weakness + slurred speech, LKW 50 min ago. BP 182/100, HR 88, glucose 132.",
+   "history": "PMH: prior TIA 2024, AFib, HTN \u00b7 anticoag: apixaban",
+   "historyDetail": {
+    "pmh": "prior TIA 2024, AFib, HTN",
+    "anticoag": "apixaban",
+    "mdro": "none",
+    "immuno": false,
+    "recentED": "none",
+    "surgery": "none",
+    "baselineMS": "normal",
+    "priorESI": null
+   },
+   "rulesApplied": [],
    "stages": [
     {
      "gt": "2",
      "propOk": "2",
      "propBad": "1",
-     "conf": 0.62
+     "conf": 0.83
     },
     {
      "gt": "no",
      "propOk": "no",
      "propBad": "yes",
-     "conf": 0.74
+     "conf": 0.86
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.89
     },
     {
      "gt": "stroke",
      "propOk": "stroke",
      "propBad": "chest-pain",
-     "conf": 0.69
+     "conf": 0.92
     },
     {
      "gt": "yes",
      "propOk": "yes",
      "propBad": "no",
-     "conf": 0.58
+     "conf": 0.55
     },
     {
      "gt": "neurology",
      "propOk": "cardiology",
      "propBad": "cardiology",
-     "conf": 0.8
+     "conf": 0.58
     },
     {
      "gt": "transfer",
      "propOk": "transfer",
      "propBad": "admit",
-     "conf": 0.65
+     "conf": 0.61
     }
    ]
   },
   {
    "caseID": "pt06",
    "context": "[SYNTHETIC] 45F epigastric/RUQ pain after fatty meal, vomiting. T 38.4, HR 104, BP 130/80. Murphy sign +.",
+   "history": "PMH: obesity \u00b7 recent surgery: lap hernia repair 10 days ago",
+   "historyDetail": {
+    "pmh": "obesity",
+    "anticoag": "none",
+    "mdro": "none",
+    "immuno": false,
+    "recentED": "none",
+    "surgery": "lap hernia repair 10 days ago",
+    "baselineMS": "normal",
+    "priorESI": null
+   },
+   "rulesApplied": [],
    "stages": [
     {
      "gt": "3",
      "propOk": "4",
      "propBad": "1",
-     "conf": 0.74
+     "conf": 0.9
     },
     {
      "gt": "no",
      "propOk": "no",
      "propBad": "yes",
-     "conf": 0.69
+     "conf": 0.93
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.56
     },
     {
      "gt": "abd-pain",
      "propOk": "abd-pain",
      "propBad": "chest-pain",
-     "conf": 0.58
+     "conf": 0.59
     },
     {
      "gt": "no",
      "propOk": "no",
      "propBad": "yes",
-     "conf": 0.8
+     "conf": 0.62
     },
     {
      "gt": "surgery",
@@ -363,115 +496,177 @@
      "gt": "admit",
      "propOk": "admit",
      "propBad": "admit-ICU",
-     "conf": 0.71
+     "conf": 0.68
     }
    ]
   },
   {
    "caseID": "pt07",
-   "context": "[SYNTHETIC] 19M sore throat + cough x2 days. T 37.9, HR 84, BP 124/70, SpO2 99%. Tolerating fluids.",
-   "stages": [
-    {
-     "gt": "5",
-     "propOk": "5",
-     "propBad": "1",
-     "conf": 0.69
-    },
-    {
-     "gt": "no",
-     "propOk": "yes",
-     "propBad": "yes",
-     "conf": 0.58
-    },
-    {
-     "gt": "minor",
-     "propOk": "minor",
-     "propBad": "chest-pain",
-     "conf": 0.8
-    },
-    {
-     "gt": "no",
-     "propOk": "no",
-     "propBad": "yes",
-     "conf": 0.65
-    },
-    {
-     "gt": "none",
-     "propOk": "none",
-     "propBad": "cardiology",
-     "conf": 0.71
-    },
-    {
-     "gt": "discharge",
-     "propOk": "discharge",
-     "propBad": "admit",
-     "conf": 0.83
-    }
-   ]
-  },
-  {
-   "caseID": "pt08",
-   "context": "[SYNTHETIC] 80F mechanical fall, struck head, on apixaban. GCS 15, HR 78, BP 146/82. Small occipital hematoma.",
+   "context": "[SYNTHETIC] 19M sore throat + cough x2 days. T 38.3, HR 98, BP 124/70, SpO2 98%.",
+   "history": "PMH: kidney transplant 2024 \u00b7 meds: tacrolimus, mycophenolate \u00b7 IMMUNOSUPPRESSED",
+   "historyDetail": {
+    "pmh": "kidney transplant 2024",
+    "anticoag": "none",
+    "mdro": "none",
+    "immuno": true,
+    "recentED": "none",
+    "surgery": "none",
+    "baselineMS": "normal",
+    "priorESI": null,
+    "meds": "tacrolimus, mycophenolate"
+   },
+   "rulesApplied": [
+    "immunosuppressed + fever (T>=38.0) -> sepsis alert yes, sepsis order set, ESI <= 2, hospitalist, obs",
+    "known MDRO or febrile respiratory illness -> isolation yes"
+   ],
    "stages": [
     {
      "gt": "2",
-     "propOk": "2",
+     "propOk": "4",
      "propBad": "1",
-     "conf": 0.58
+     "conf": 0.57
     },
     {
-     "gt": "no",
-     "propOk": "no",
-     "propBad": "yes",
-     "conf": 0.8
-    },
-    {
-     "gt": "trauma",
-     "propOk": "trauma",
-     "propBad": "chest-pain",
-     "conf": 0.65
+     "gt": "yes",
+     "propOk": "yes",
+     "propBad": "no",
+     "conf": 0.6
     },
     {
      "gt": "yes",
      "propOk": "no",
      "propBad": "no",
-     "conf": 0.71
+     "conf": 0.63
     },
     {
-     "gt": "none",
-     "propOk": "none",
+     "gt": "sepsis",
+     "propOk": "sepsis",
+     "propBad": "chest-pain",
+     "conf": 0.66
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.69
+    },
+    {
+     "gt": "hospitalist",
+     "propOk": "hospitalist",
      "propBad": "cardiology",
-     "conf": 0.83
+     "conf": 0.72
     },
     {
      "gt": "obs",
      "propOk": "obs",
      "propBad": "admit",
-     "conf": 0.66
+     "conf": 0.75
+    }
+   ]
+  },
+  {
+   "caseID": "pt08",
+   "context": "[SYNTHETIC] 80F mechanical fall, struck head. GCS 15, HR 78, BP 146/82. Small occipital hematoma.",
+   "history": "PMH: AFib, osteoporosis \u00b7 anticoag: apixaban",
+   "historyDetail": {
+    "pmh": "AFib, osteoporosis",
+    "anticoag": "apixaban",
+    "mdro": "none",
+    "immuno": false,
+    "recentED": "none",
+    "surgery": "none",
+    "baselineMS": "normal",
+    "priorESI": null
+   },
+   "rulesApplied": [
+    "anticoagulated + head strike -> ESI <= 2 and CT yes"
+   ],
+   "stages": [
+    {
+     "gt": "2",
+     "propOk": "3",
+     "propBad": "1",
+     "conf": 0.64
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.67
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.7
+    },
+    {
+     "gt": "trauma",
+     "propOk": "trauma",
+     "propBad": "chest-pain",
+     "conf": 0.73
+    },
+    {
+     "gt": "yes",
+     "propOk": "no",
+     "propBad": "no",
+     "conf": 0.76
+    },
+    {
+     "gt": "none",
+     "propOk": "none",
+     "propBad": "cardiology",
+     "conf": 0.79
+    },
+    {
+     "gt": "obs",
+     "propOk": "obs",
+     "propBad": "admit",
+     "conf": 0.82
     }
    ]
   },
   {
    "caseID": "pt09",
    "context": "[SYNTHETIC] 52M cough, fever x3 days. T 38.8, HR 112, BP 104/66, RR 26, SpO2 89% RA. Crackles R base.",
+   "history": "PMH: CHF (EF 30%), CKD 3 \u00b7 MDRO: MRSA nares 2025 \u00b7 prior ESI 3",
+   "historyDetail": {
+    "pmh": "CHF (EF 30%), CKD 3",
+    "anticoag": "none",
+    "mdro": "MRSA nares 2025",
+    "immuno": false,
+    "recentED": "none",
+    "surgery": "none",
+    "baselineMS": "normal",
+    "priorESI": "3"
+   },
+   "rulesApplied": [
+    "known MDRO or febrile respiratory illness -> isolation yes"
+   ],
    "stages": [
     {
      "gt": "2",
      "propOk": "2",
      "propBad": "1",
-     "conf": 0.8
+     "conf": 0.71
+    },
+    {
+     "gt": "yes",
+     "propOk": "no",
+     "propBad": "no",
+     "conf": 0.74
     },
     {
      "gt": "yes",
      "propOk": "yes",
      "propBad": "no",
-     "conf": 0.65
+     "conf": 0.77
     },
     {
      "gt": "sepsis",
      "propOk": "sepsis",
      "propBad": "chest-pain",
-     "conf": 0.71
+     "conf": 0.8
     },
     {
      "gt": "no",
@@ -483,55 +678,75 @@
      "gt": "hospitalist",
      "propOk": "hospitalist",
      "propBad": "cardiology",
-     "conf": 0.66
+     "conf": 0.86
     },
     {
      "gt": "admit",
      "propOk": "discharge",
      "propBad": "admit-ICU",
-     "conf": 0.78
+     "conf": 0.89
     }
    ]
   },
   {
    "caseID": "pt10",
    "context": "[SYNTHETIC] 36F sudden palpitations, dizzy. HR 168 regular narrow-complex, BP 118/76, SpO2 98%. No chest pain.",
+   "history": "PMH: SVT, ablation 2021 \u00b7 recent ED: ED 30 h ago palpitations, discharged \u00b7 prior ESI 3",
+   "historyDetail": {
+    "pmh": "SVT, ablation 2021",
+    "anticoag": "none",
+    "mdro": "none",
+    "immuno": false,
+    "recentED": "ED 30 h ago palpitations, discharged",
+    "surgery": "none",
+    "baselineMS": "normal",
+    "priorESI": "3"
+   },
+   "rulesApplied": [
+    "ED visit within 72 h (bounceback) -> ESI one level more acute (min 2)"
+   ],
    "stages": [
     {
      "gt": "2",
      "propOk": "2",
      "propBad": "1",
-     "conf": 0.65
+     "conf": 0.78
     },
     {
      "gt": "no",
      "propOk": "no",
      "propBad": "yes",
-     "conf": 0.71
+     "conf": 0.81
+    },
+    {
+     "gt": "no",
+     "propOk": "no",
+     "propBad": "yes",
+     "conf": 0.84
     },
     {
      "gt": "chest-pain",
      "propOk": "minor",
      "propBad": "abd-pain",
-     "conf": 0.83
+     "conf": 0.87
     },
     {
      "gt": "no",
      "propOk": "no",
      "propBad": "yes",
-     "conf": 0.66
+     "conf": 0.9
     },
     {
      "gt": "cardiology",
      "propOk": "cardiology",
      "propBad": "surgery",
-     "conf": 0.78
+     "conf": 0.93
     },
     {
      "gt": "obs",
      "propOk": "obs",
      "propBad": "admit",
-     "conf": 0.62
+     "conf": 0.56
     }
    ]
   }
