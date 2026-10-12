@@ -1,0 +1,16 @@
+name: SpatialDecisionRouter
+options:
+  bundleIdPrefix: com.wsatz
+targets:
+  SpatialDecisionRouter:
+    type: application
+    platform: visionOS
+    deploymentTarget: "27.0"
+    sources: [SpatialDecisionRouter]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.wsatz.SpatialDecisionRouter
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_VERSION: "5.0"
+        CODE_SIGNING_ALLOWED: NO
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES

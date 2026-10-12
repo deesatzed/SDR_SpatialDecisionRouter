@@ -1,0 +1,347 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1CF7FCB2E9E92662F465F631 /* content_safety_outcomes.json in Resources */ = {isa = PBXBuildFile; fileRef = 8773D28910656B77200788F2 /* content_safety_outcomes.json */; };
+		28C5F5B784D480AD8D8BF017 /* ProposalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2ED0785B0A8EB065DA5F06 /* ProposalStore.swift */; };
+		516A364A307DFAD9E057F1A4 /* robot_actions.json in Resources */ = {isa = PBXBuildFile; fileRef = 26072D49380EFB126E0692D6 /* robot_actions.json */; };
+		52615858496322522E3CD2C0 /* robot_actions_outcomes.json in Resources */ = {isa = PBXBuildFile; fileRef = 9E616AD084C0C496825688E1 /* robot_actions_outcomes.json */; };
+		6427CB9C312AFD4C48527DB4 /* medical_imaging.json in Resources */ = {isa = PBXBuildFile; fileRef = 8E2EDA5C816F0CD7F02F9656 /* medical_imaging.json */; };
+		66663F3B4A3D831498DD766C /* medical_imaging_outcomes.json in Resources */ = {isa = PBXBuildFile; fileRef = 409462FAA6E78B75AAEC0A41 /* medical_imaging_outcomes.json */; };
+		81011BCAED3C11624D334C2F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7481E795663EF24FE720525C /* Models.swift */; };
+		8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
+		A9192282B04DD27870E7E918 /* content_safety.json in Resources */ = {isa = PBXBuildFile; fileRef = DE04C81D731739102433A158 /* content_safety.json */; };
+		B89869800A3C6D450461DC14 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C757BAD289D35AEEA29B665 /* ContentView.swift */; };
+		CCECA63FD413F94D91F4854E /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070109B948404C5F87C67B4 /* Layout.swift */; };
+		E3385644F153F6E42EF2D67B /* ImmersiveRouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19485ED4EF5592FB5A3A8E4F /* ImmersiveRouterView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		19485ED4EF5592FB5A3A8E4F /* ImmersiveRouterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveRouterView.swift; sourceTree = "<group>"; };
+		26072D49380EFB126E0692D6 /* robot_actions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = robot_actions.json; sourceTree = "<group>"; };
+		409462FAA6E78B75AAEC0A41 /* medical_imaging_outcomes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = medical_imaging_outcomes.json; sourceTree = "<group>"; };
+		5C757BAD289D35AEEA29B665 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		7481E795663EF24FE720525C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		7E2ED0785B0A8EB065DA5F06 /* ProposalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProposalStore.swift; sourceTree = "<group>"; };
+		8773D28910656B77200788F2 /* content_safety_outcomes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = content_safety_outcomes.json; sourceTree = "<group>"; };
+		8E2EDA5C816F0CD7F02F9656 /* medical_imaging.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = medical_imaging.json; sourceTree = "<group>"; };
+		9070109B948404C5F87C67B4 /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
+		9E616AD084C0C496825688E1 /* robot_actions_outcomes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = robot_actions_outcomes.json; sourceTree = "<group>"; };
+		9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialDecisionRouterApp.swift; sourceTree = "<group>"; };
+		DE04C81D731739102433A158 /* content_safety.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = content_safety.json; sourceTree = "<group>"; };
+		F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		13AEE49A568B5C2826A2D767 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		879F393EABB8D4118DE3EEB4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8773D28910656B77200788F2 /* content_safety_outcomes.json */,
+				DE04C81D731739102433A158 /* content_safety.json */,
+				409462FAA6E78B75AAEC0A41 /* medical_imaging_outcomes.json */,
+				8E2EDA5C816F0CD7F02F9656 /* medical_imaging.json */,
+				9E616AD084C0C496825688E1 /* robot_actions_outcomes.json */,
+				26072D49380EFB126E0692D6 /* robot_actions.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		DB3725A68F45F5D20377362B /* SpatialDecisionRouter */ = {
+			isa = PBXGroup;
+			children = (
+				5C757BAD289D35AEEA29B665 /* ContentView.swift */,
+				19485ED4EF5592FB5A3A8E4F /* ImmersiveRouterView.swift */,
+				9070109B948404C5F87C67B4 /* Layout.swift */,
+				7481E795663EF24FE720525C /* Models.swift */,
+				7E2ED0785B0A8EB065DA5F06 /* ProposalStore.swift */,
+				9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */,
+				879F393EABB8D4118DE3EEB4 /* Resources */,
+			);
+			path = SpatialDecisionRouter;
+			sourceTree = "<group>";
+		};
+		F8444B4084C2AC5B9696D4ED = {
+			isa = PBXGroup;
+			children = (
+				DB3725A68F45F5D20377362B /* SpatialDecisionRouter */,
+				13AEE49A568B5C2826A2D767 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CF3B1F75727CBAC9985DDBB6 /* SpatialDecisionRouter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8DC6C26EBCF8B0782C9ABC3F /* Build configuration list for PBXNativeTarget "SpatialDecisionRouter" */;
+			buildPhases = (
+				0459FA4811F5D67981C14D5C /* Sources */,
+				13B3154B3A2BD1D65145165E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpatialDecisionRouter;
+			packageProductDependencies = (
+			);
+			productName = SpatialDecisionRouter;
+			productReference = F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B6BF46D74F81B52ACCD1415F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 21CD7DE5C915BE73BBA791F6 /* Build configuration list for PBXProject "SpatialDecisionRouter" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F8444B4084C2AC5B9696D4ED;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 13AEE49A568B5C2826A2D767 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CF3B1F75727CBAC9985DDBB6 /* SpatialDecisionRouter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		13B3154B3A2BD1D65145165E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9192282B04DD27870E7E918 /* content_safety.json in Resources */,
+				1CF7FCB2E9E92662F465F631 /* content_safety_outcomes.json in Resources */,
+				6427CB9C312AFD4C48527DB4 /* medical_imaging.json in Resources */,
+				66663F3B4A3D831498DD766C /* medical_imaging_outcomes.json in Resources */,
+				516A364A307DFAD9E057F1A4 /* robot_actions.json in Resources */,
+				52615858496322522E3CD2C0 /* robot_actions_outcomes.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0459FA4811F5D67981C14D5C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B89869800A3C6D450461DC14 /* ContentView.swift in Sources */,
+				E3385644F153F6E42EF2D67B /* ImmersiveRouterView.swift in Sources */,
+				CCECA63FD413F94D91F4854E /* Layout.swift in Sources */,
+				81011BCAED3C11624D334C2F /* Models.swift in Sources */,
+				28C5F5B784D480AD8D8BF017 /* ProposalStore.swift in Sources */,
+				8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		8AB223DCC69477F4B491290F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouter;
+				SDKROOT = xros;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 7;
+				XROS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Release;
+		};
+		ADDB195366C901D76B5E79D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouter;
+				SDKROOT = xros;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 7;
+				XROS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Debug;
+		};
+		CEAC8AAD4D519A663BEFE3FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		FDEA77D1C9D330F15C4BE303 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		21CD7DE5C915BE73BBA791F6 /* Build configuration list for PBXProject "SpatialDecisionRouter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FDEA77D1C9D330F15C4BE303 /* Debug */,
+				CEAC8AAD4D519A663BEFE3FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8DC6C26EBCF8B0782C9ABC3F /* Build configuration list for PBXNativeTarget "SpatialDecisionRouter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ADDB195366C901D76B5E79D6 /* Debug */,
+				8AB223DCC69477F4B491290F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B6BF46D74F81B52ACCD1415F /* Project object */;
+}
