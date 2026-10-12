@@ -1,0 +1,59 @@
+{
+  "id": "ed_triage",
+  "title": "ED Triage Crossroads",
+  "synthetic": true,
+  "defaultSite": "ED-A",
+  "terminology": {
+    "itemNoun": "patient", "itemNounPlural": "patients", "boardTitle": "Triage Throughput",
+    "syntheticBanner": "SYNTHETIC stream — not real patients", "completedLabel": "Triaged",
+    "historyLabel": "Hx", "capacityLabel": "Census"
+  },
+  "theme": {
+    "skyTop": [0.80, 0.85, 0.90], "skyHorizon": [0.55, 0.63, 0.71], "skyBottom": [0.30, 0.36, 0.43],
+    "floor": [0.20, 0.24, 0.29], "grid": [0.42, 0.52, 0.60], "panel": [0.16, 0.20, 0.25], "trim": [0.35, 0.70, 0.80]
+  },
+  "agents": [
+    {"id": "acuity", "name": "Acuity Agent", "role": "ESI 1–5", "tier": 0},
+    {"id": "sepsis", "name": "Sepsis Screen", "role": "sepsis yes/no", "tier": 0},
+    {"id": "alert", "name": "Stroke/STEMI Alert", "role": "none/stroke/STEMI", "tier": 0},
+    {"id": "infection", "name": "Infection Control", "role": "isolation yes/no", "tier": 0},
+    {"id": "placement", "name": "Placement Agent", "role": "area (needs ESI + alerts)", "tier": 0},
+    {"id": "charge", "name": "Charge Nurse", "role": "receives acuity", "tier": 1},
+    {"id": "alertteam", "name": "Alert Team", "role": "sepsis / stroke / STEMI", "tier": 1},
+    {"id": "isodesk", "name": "Isolation Desk", "role": "isolation rooms", "tier": 1},
+    {"id": "bedboard", "name": "Bed Board", "role": "assigns area", "tier": 1}
+  ],
+  "links": [
+    {"id": "acuity", "source": "acuity", "dest": "charge", "question": "ESI?", "answerType": "category",
+     "options": ["1","2","3","4","5"], "costWeight": 0.5, "shortLabel": "ESI"},
+    {"id": "sepsis", "source": "sepsis", "dest": "alertteam", "question": "Sepsis alert?", "answerType": "binary",
+     "options": ["yes","no"], "firesAlert": true, "alertNegative": ["no"], "costWeight": 0.6, "shortLabel": "Sep"},
+    {"id": "alert", "source": "alert", "dest": "alertteam", "question": "Stroke/STEMI?", "answerType": "category",
+     "options": ["none","stroke","STEMI"], "firesAlert": true, "alertNegative": ["none"], "costWeight": 0.8, "shortLabel": "Alert"},
+    {"id": "isolation", "source": "infection", "dest": "isodesk", "question": "Isolation?", "answerType": "binary",
+     "options": ["yes","no"], "costWeight": 0.3, "shortLabel": "Iso"},
+    {"id": "placement", "source": "placement", "dest": "bedboard", "question": "Area?", "answerType": "category",
+     "options": ["resus","main ED","fast track","waiting room"], "dependsOn": ["acuity","sepsis","alert"], "costWeight": 0.35, "shortLabel": "Area"}
+  ],
+  "rulesTable": [
+    "ESI 1: SBP<80 or SpO2<85 or GCS<9 or RR>35",
+    "ESI 2: stroke/STEMI alert, sepsis yes, SpO2<92, HR>130, chest pain age>=40, SI+, pregnant+abd pain, anticoag+head strike, immunosuppressed+fever, GCS<13 not explained by baseline AMS",
+    "ESI 3: chest pain/SOB/abd pain/fever/headache/neuro/psych default; fall age>=65; ESI 4: laceration, ankle, fall age<65; ESI 5: URI",
+    "72h bounceback: ESI one level more acute (min 2) for ESI 3-5",
+    "Sepsis yes: >=2 SIRS (T>=38.3 or <36, HR>90, RR>20) incl. temperature criterion with infection-type complaint; immunosuppressed + T>=38.0 -> yes",
+    "Stroke alert: neuro deficit with onset <=24 h; STEMI alert: chest pain + ECG STE",
+    "Isolation yes: MDRO history, or T>=38.0 with SOB/URI/fever",
+    "Area: ESI1 or stroke/STEMI -> resus; ESI2-3 -> main ED; ESI4 -> fast track (main ED if isolation); ESI5 -> waiting room (fast track if isolation)",
+    "Capacity: ESI2 with main ED full -> resus if a resus bay is free; ESI3 with main ED full -> waiting room; ESI4 with fast track full -> waiting room"
+  ],
+  "capacity": {
+    "resusRooms": 3, "mainRooms": 12, "fastRooms": 5, "isoRooms": 3,
+    "arrivalsPerHourBase": 9, "arrivalsPerHourAmp": 5, "startHour": 10,
+    "inpatientBedsPerHour": 2.5, "lwbsAfterMin": 120, "lwbsPerMin": 0.008,
+    "minutesPerSecond": 1.0
+  },
+  "testNewCategories": {
+    "placement": ["hallway bed", "hallway bed", "vertical care", "vert care", "hallway bed", "vertical care", "hallway bed"],
+    "alert": ["sepsis-stroke mimic"]
+  }
+}

@@ -2,13 +2,13 @@ import SwiftUI
 
 @main
 struct SpatialDecisionRouterApp: App {
-    @State private var store = CrossroadsStore()
+    @State private var engine = RouterEngine()
     var body: some Scene {
-        WindowGroup(id: "main") { LauncherView().environment(store) }
+        WindowGroup(id: "main") { LauncherView().environment(engine) }
             .defaultSize(width: 800, height: 360)
-        ImmersiveSpace(id: "Router") { CrossroadsView().environment(store) }
+        ImmersiveSpace(id: "Router") { CrossroadsView().environment(engine) }
             .immersionStyle(selection: Binding<any ImmersionStyle>(
-                get: { store.fullImmersion ? (FullImmersionStyle.full as any ImmersionStyle) : (MixedImmersionStyle.mixed as any ImmersionStyle) },
-                set: { store.fullImmersion = $0 is FullImmersionStyle }), in: .mixed, .full)
+                get: { engine.fullImmersion ? (FullImmersionStyle.full as any ImmersionStyle) : (MixedImmersionStyle.mixed as any ImmersionStyle) },
+                set: { engine.fullImmersion = $0 is FullImmersionStyle }), in: .mixed, .full)
     }
 }
