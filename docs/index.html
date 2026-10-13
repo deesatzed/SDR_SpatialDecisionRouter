@@ -1,0 +1,62 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spatial Decision Router — AI Doc Review on visionOS</title>
+<style>
+:root{--bg:#0b1220;--panel:#111a2e;--line:#1f2b45;--tx:#e6edf7;--mu:#93a4c3;--ac:#38bdf8;--ok:#34d399;--warn:#fbbf24;--bad:#f87171}
+*{box-sizing:border-box}body{margin:0;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;background:var(--bg);color:var(--tx)}
+a{color:var(--ac);text-decoration:none}.w{max-width:1120px;margin:0 auto;padding:0 24px}
+nav{position:sticky;top:0;background:#0b1220cc;backdrop-filter:blur(10px);border-bottom:1px solid var(--line);z-index:5}
+nav .w{display:flex;justify-content:space-between;align-items:center;height:58px}nav b{letter-spacing:.3px}nav a{margin-left:20px;color:var(--mu)}
+.hero{padding:84px 0 56px;background:radial-gradient(900px 400px at 70% 0,#0e3a5a55,transparent)}
+.tag{display:inline-block;border:1px solid var(--line);color:var(--mu);border-radius:99px;padding:4px 12px;font-size:13px}
+h1{font-size:clamp(34px,5vw,56px);line-height:1.1;margin:18px 0}h1 span{color:var(--ac)}h2{font-size:30px;margin:0 0 8px}
+.lead{color:var(--mu);font-size:19px;max-width:720px}.btn{display:inline-block;padding:12px 20px;border-radius:10px;background:var(--ac);color:#04121f;font-weight:600;margin:8px 10px 0 0}
+.btn.g{background:transparent;border:1px solid var(--line);color:var(--tx)}.shot{margin-top:40px;border-radius:16px;border:1px solid var(--line);width:100%;box-shadow:0 30px 80px #0008}
+section{padding:64px 0;border-top:1px solid var(--line)}.sub{color:var(--mu);margin:0 0 28px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}.c{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+.c h3{margin:0 0 6px;font-size:18px}.c p{margin:0;color:var(--mu)}.n{font-size:13px;color:var(--ac);font-weight:700}
+.chips span{display:inline-block;margin:4px 6px 0 0;padding:3px 10px;border-radius:99px;font-size:13px;border:1px solid}
+.r{color:var(--ok)}.ns{color:var(--warn)}.sw{color:var(--bad)}.sd{color:#c084fc}
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}figure{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+figure img{width:100%;display:block}figcaption{padding:12px 16px;color:var(--mu);font-size:14px}
+code{background:#0f1830;border:1px solid var(--line);padding:1px 6px;border-radius:6px;font-size:14px}
+.disc{background:#2a1a0a;border:1px solid #6b4513;color:#fcd9a8;border-radius:12px;padding:16px 20px}footer{padding:36px 0;color:var(--mu);border-top:1px solid var(--line);font-size:14px}
+</style></head><body>
+<nav><div class="w"><b>⟁ Spatial Decision Router</b><div><a href="#how">How it works</a><a href="#features">Features</a><a href="#gallery">Screens</a><a href="#tech">Tech</a><a href="https://github.com/deesatzed/SDR_SpatialDecisionRouter">GitHub</a></div></div></nav>
+<header class="hero"><div class="w">
+<span class="tag">visionOS 27 · research prototype · synthetic data</span>
+<h1>The physician stays in the middle of <span>AI-doctor</span> decisions.</h1>
+<p class="lead">One physician supervises many AI–patient encounters in an immersive crossroads. Each decision takes a single gesture: <b>Pass</b>, <b>Flip</b> or <b>Change</b>. The app shows what the patient didn't say, said wrong, or said differently on purpose. Every decision becomes unbiased fine-tune data.</p>
+<a class="btn" href="https://github.com/deesatzed/SDR_SpatialDecisionRouter">View on GitHub</a><a class="btn g" href="#gallery">See screenshots</a>
+<img class="shot" src="img/30_crossroads_live.jpg" alt="Immersive crossroads with review board">
+</div></header>
+<section id="how"><div class="w"><h2>How it works</h2><p class="sub">Supervision in real time, without typing</p><div class="g3">
+<div class="c"><div class="n">01</div><h3>AI agents hand off</h3><p>Narrow decision agents (history, differential, plan, disposition) send their proposals to the crossroads.</p></div>
+<div class="c"><div class="n">02</div><h3>The queue filters</h3><p>Confident, clean items auto-pass, and a sample goes to spot-check. Risky items are queued with "why-queued" chips.</p></div>
+<div class="c"><div class="n">03</div><h3>The physician decides</h3><p>Pass, Flip a binary, or Change to another category. The physician can add trial categories that later get promoted or relegated per site.</p></div>
+<div class="c"><div class="n">04</div><h3>Learning from the logs</h3><p>Each <code>RoutingDecision</code> is exported by <code>tools/to_training.py</code> as chat-style fine-tune data, with overrides upweighted.</p></div>
+</div></div></section>
+<section id="features"><div class="w"><h2>Explicit information risk</h2><p class="sub">Every field has a trust state</p><div class="g3">
+<div class="c"><h3>Four reliability states</h3><div class="chips"><span class="r">Reliable</span><span class="ns">Not said</span><span class="sw">Said wrong</span><span class="sd">Said differently on purpose</span></div><p style="margin-top:10px">Context such as a companion present, an interpreter, an adolescent, low literacy or an elderly patient living alone changes how much each field is trusted.</p></div>
+<div class="c"><h3>If-wrong risk ranges</h3><p>Shows the worst case if a field is false, for example an undisclosed pregnancy with a teratogen, methadone with a QT-prolonging drug, or a nitrate with a PDE5 inhibitor.</p></div>
+<div class="c"><h3>Value of information</h3><p>Ranks the next question by how much it lowers expected loss, so the AI asks before it declines.</p></div>
+<div class="c"><h3>Hard escalation triggers</h3><p>Only unambiguous MI/STEMI, stroke, unstable vitals or AMS force immediate escalation.</p></div>
+<div class="c"><h3>ED and outpatient presentations</h3><p>ED: chest pain, abdominal pain, head injury, infection. Outpatient: URI/antibiotics, refills (labs first), GLP-1, HRT, testosterone, erectile dysfunction (PDE5).</p></div>
+<div class="c"><h3>Queue theory</h3><p>An in-app discrete-event simulation of ED crowding, rooms and inpatient beds. Each decision records a capacity snapshot.</p></div>
+</div></div></section>
+<section id="gallery"><div class="w"><h2>Screens</h2><p class="sub">Captured from the visionOS 27 simulator</p><div class="gal">
+<figure><img src="img/36_card.jpg" alt=""><figcaption>Encounter card: the proposal, confidence and trust chips</figcaption></figure>
+<figure><img src="img/32_reliability_ifwrong.jpg" alt=""><figcaption>Reliability panel and if-wrong risk range</figcaption></figure>
+<figure><img src="img/32_ask_next.jpg" alt=""><figcaption>VOI-ranked "ask next" question</figcaption></figure>
+<figure><img src="img/32_hard_trigger.jpg" alt=""><figcaption>A hard trigger forces escalation</figcaption></figure>
+<figure><img src="img/36_board_enlarged.jpg" alt=""><figcaption>Enlarged Encounter Review board</figcaption></figure>
+<figure><img src="img/30_crossroads_live.jpg" alt=""><figcaption>The live crossroads in ImmersiveSpace</figcaption></figure>
+</div></div></section>
+<section id="tech"><div class="w"><h2>Tech stack</h2><p class="sub">A pluggable domain framework with a Bayesian sidecar</p><div class="g3">
+<div class="c"><h3>visionOS app</h3><p>SwiftUI, RealityKit and ImmersiveSpace, generated with xcodegen and tested with XCUITest.</p></div>
+<div class="c"><h3>Domain framework</h3><p><code>DomainKit</code>, <code>RouterEngine</code>, <code>CategoryRegistry</code> and <code>RoutingDecision</code>. A new domain plugs in without engine changes.</p></div>
+<div class="c"><h3>Bayesian risk engine</h3><p>pyAgrum BNs for each complaint, solved by exact inference. Serves <code>127.0.0.1:8765</code> with <code>/assess /voi /sample /health /params</code>. If it's offline, the app falls back to Swift heuristics.</p></div>
+<div class="c"><h3>Demo tooling</h3><p><code>tools/demo.sh --auto --record</code> runs a scripted 6-step demo and can record a backup video.</p></div>
+</div></div></section>
+<section><div class="w"><div class="disc"><b>Research prototype.</b> All encounters are synthetic. Every risk parameter is a placeholder (<code>source: placeholder</code>) that hasn't been clinically validated, so the numbers are only illustrative. Not for clinical use.</div></div></section>
+<footer><div class="w">Spatial Decision Router · <a href="https://github.com/deesatzed/SDR_SpatialDecisionRouter">github.com/deesatzed/SDR_SpatialDecisionRouter</a></div></footer>
+</body></html>
