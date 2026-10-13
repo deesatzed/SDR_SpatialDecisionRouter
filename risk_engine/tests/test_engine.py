@@ -154,3 +154,62 @@ def test_http_service():
 def test_known_truth_fixes_posterior():
     r = assess(tiny(), {"complaint": "tiny", "known": {"pregnant": "no"}})
     assert r["truths"][0]["posterior"] == 0.0 and r["dx"]["ectopic"]["p"] == 0.0
+
+# ---------- outpatient presentations (qualitative behaviour; params placeholder) ----------
+OUTPATIENT = ["uri_abx", "med_refill", "glp1_weight", "hrt_menopause", "testosterone", "erectile_dysfunction"]
+
+def test_outpatient_complaints_present():
+    p = load_params()
+    assert set(OUTPATIENT) <= set(p["complaints"])
+    for c in OUTPATIENT:
+        for d in p["complaints"][c]["dx"].values():
+            assert d["worst_miss"] and d["plan_change"] and d["mitigated_by"]
+
+def test_ed_nitrate_disclosed_is_hard_stop():
+    p = load_params()
+    r = assess(p, {"complaint": "erectile_dysfunction", "reports": {"nitrate_use": "yes"}})
+    assert r["dx"]["nitrate_hypotension"]["label"] == "likely" and r["best_action"] != "sign_off"
+
+def test_ed_hidden_nitrate_if_wrong_and_ask_reveals():
+    p = load_params()
+    base = {"complaint": "erectile_dysfunction", "context": {"companion": True}, "reports": {"nitrate_use": "neg"},
+            "signals": {"nitrate_use": {"record": True}}}
+    r = assess(p, base)
+    t = next(x for x in r["truths"] if x["truth"] == "nitrate_use")
+    assert t["state"] != "Reliable" and t["if_wrong"]["dx"] == "nitrate_hypotension" and t["if_wrong"]["high"] >= 0.5
+    r2 = assess(p, base | {"answers": {"nitrate_use": "pos"}})
+    assert next(x for x in r2["truths"] if x["truth"] == "nitrate_use")["posterior"] > 0.9
+
+def test_uri_methadone_qt_flag():
+    p = load_params()
+    r = assess(p, {"complaint": "uri_abx", "plan_flags": {"plan_qt_drug": True}, "reports": {"qt_med": "neg"}, "signals": {"qt_med": {"record": True}}})
+    t = next(x for x in r["truths"] if x["truth"] == "qt_med")
+    assert t["if_wrong"]["dx"] == "qt_event" and t["state"] != "Reliable"
+
+def test_testosterone_fertility_disclosed_changes_plan():
+    p = load_params()
+    r = assess(p, {"complaint": "testosterone", "reports": {"fertility_desire": "yes"}})
+    assert r["dx"]["infertility"]["label"] == "likely" and r["best_action"] == "modify"
+
+def test_glp1_mtc_hedge_raises_posterior():
+    p = load_params()
+    a = assess(p, {"complaint": "glp1_weight", "reports": {"mtc_men2": "neg"}})
+    b = assess(p, {"complaint": "glp1_weight", "reports": {"mtc_men2": "neg"}, "signals": {"mtc_men2": {"hedge": True}}})
+    pa = next(x for x in a["truths"] if x["truth"] == "mtc_men2")["posterior"]
+    pb = next(x for x in b["truths"] if x["truth"] == "mtc_men2")["posterior"]
+    assert pb > pa
+
+def test_escalation_ignores_risk_a_plan_change_fixes():
+    p = load_params()
+    # disclosed nitrate: critical miss is likely, but 'decline' (modify) mitigates it -> no escalation recommendation
+    r = assess(p, {"complaint": "erectile_dysfunction", "reports": {"nitrate_use": "yes"}})
+    assert r["p_critical"] > 0.5 and r["p_critical_needs_escalation"] < 0.05 and not r["escalation"]["recommend"]
+    # exertional chest pain disclosed: only escalation mitigates missed CAD -> recommend
+    r = assess(p, {"complaint": "erectile_dysfunction", "reports": {"exertional_cp": "yes"}})
+    assert r["escalation"]["recommend"] and r["best_action"] == "escalate"
+
+def test_stakes_aware_doubt_threshold():
+    t = tiny(prior=0.1)
+    t["thresholds"]["doubt_posterior_critical"] = E(0.02)
+    r = assess(t, REQ)    # posterior ~0.036: below 0.15 but above the critical threshold (ectopic severity 5)
+    assert 0.02 < r["truths"][0]["posterior"] < 0.15 and r["truths"][0]["state"] != "Reliable"

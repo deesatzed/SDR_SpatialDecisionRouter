@@ -22,6 +22,14 @@ enum RiskClient {
         c.timeoutIntervalForRequest = 0.8; c.timeoutIntervalForResource = 1.5
         return URLSession(configuration: c)
     }()
+    /// one-shot health ping (demo start): sidecar reachable?
+    static func checkHealth(_ done: @escaping @MainActor (Bool) -> Void) {
+        Task { @MainActor in
+            if ProcessInfo.processInfo.arguments.contains("-noSidecar") { done(false); return }
+            let ok = (try? await session.data(from: baseURL.appendingPathComponent("health"))).map { ($0.1 as? HTTPURLResponse)?.statusCode == 200 } ?? false
+            done(ok)
+        }
+    }
     static func assess(_ body: [String: Any]) async -> BNResult? {
         guard !ProcessInfo.processInfo.arguments.contains("-noSidecar"),
               let data = try? JSONSerialization.data(withJSONObject: body) else { return nil }
@@ -35,12 +43,20 @@ enum RiskClient {
 /// Swift field ↔ BN truth mapping.
 enum BNMap {
     static let complaint: [DRComplaint: String] = [.abdPain: "abdominal_pain", .chestPain: "chest_pain", .headInjury: "head_injury",
-                                                   .cough: "infection_abx", .uti: "infection_abx"]
+                                                   .cough: "infection_abx", .uti: "infection_abx",
+                                                   .uriAbx: "uri_abx", .refill: "med_refill", .glp1: "glp1_weight", .hrt: "hrt_menopause",
+                                                   .testosterone: "testosterone", .erectile: "erectile_dysfunction"]
     static let truths: [String: [String]] = ["abdominal_pain": ["pregnant", "substance", "minimized", "unsafe_home"],
                                              "chest_pain": ["substance", "minimized", "qt_med"], "head_injury": ["anticoag", "substance", "unsafe_home"],
-                                             "infection_abx": ["qt_med", "pregnant", "minimized"]]
+                                             "infection_abx": ["qt_med", "pregnant", "minimized"],
+                                             "uri_abx": ["qt_med", "pregnant", "pcn_allergy", "airway_red_flag"],
+                                             "med_refill": OPSpec.fields[.refill]!.map(\.key),
+                                             "glp1_weight": ["mtc_men2", "pancreatitis_hx", "gallbladder", "pregnant", "eating_disorder", "hypoglycemic_meds", "inflated_bmi"],
+                                             "hrt_menopause": OPSpec.fields[.hrt]!.map(\.key), "testosterone": OPSpec.fields[.testosterone]!.map(\.key),
+                                             "erectile_dysfunction": ["nitrate_use", "exertional_cp", "alpha_blocker", "recreational_drugs", "qt_med"]]
     static let field: [String: String] = ["pregnant": "pregnancy", "qt_med": "meds", "anticoag": "meds", "substance": "substance",
-                                          "unsafe_home": "safety", "minimized": "symptoms"]
+                                          "unsafe_home": "safety", "minimized": "symptoms", "pcn_allergy": "allergies"]
+        .merging(Dictionary(uniqueKeysWithValues: OPSpec.fields.values.joined().map { ($0.key, $0.key) })) { a, _ in a }
     static let hedgeTruths: Set<String> = ["pregnant", "substance", "unsafe_home", "minimized"]
 
     @MainActor static func request(_ e: DREncounter) -> [String: Any]? {
@@ -59,9 +75,11 @@ enum BNMap {
             case ("qt_med", let s): reports[t] = s == "methadone" ? "pos" : "neg"
             case ("anticoag", let s): reports[t] = s == "apixaban" ? "pos" : "neg"
             case ("substance", let s): reports[t] = s == "cocaine" ? "cocaine" : s == "heavy alcohol" ? "alcohol" : "neg"
-            case (_, let s): reports[t] = (s == fd.benign || s == "unsure") ? "neg" : "pos"
+            case (_, let s): reports[t] = (s == fd.benign || s == "unsure") ? "neg" : "yes"     // disclosed → truth fixed
             }
-            if let clue = fd.clue {
+            if let sig = OPSpec.field(t)?.signal { signals[t] = [sig: fd.clue != nil] }   // system checked record/transcript
+            if fd.confirmed && !e.asks.contains(fname) && fd.truth == fd.benign { known[t] = "no" }   // verified in record
+            else if let clue = fd.clue {
                 if hedgeTruths.contains(t) && (clue.hasPrefix("transcript") || clue.contains("answered")) { signals[t] = ["hedge": true] }
                 if (t == "qt_med" || t == "anticoag") { signals[t] = ["record": true] }
             }
@@ -73,8 +91,8 @@ enum BNMap {
         let p = e.aiPlan
         var flags: [String: Any] = [:]
         let flagNames: [String: [String]] = ["abdominal_pain": ["plan_teratogen"], "chest_pain": ["plan_qt_drug"], "head_injury": [],
-                                             "infection_abx": ["plan_qt_drug", "plan_teratogen"]]
-        for f in flagNames[c]! {
+                                             "infection_abx": ["plan_qt_drug", "plan_teratogen"], "uri_abx": ["plan_qt_drug", "plan_teratogen"]]
+        for f in flagNames[c] ?? [] {
             flags[f] = f == "plan_qt_drug" ? ["azithro", "levo", "cipro", "ondansetron"].contains { p.contains($0) }
                                            : ["cipro", "ibuprofen", "doxy"].contains { p.contains($0) }
         }

@@ -6,6 +6,10 @@ import Foundation
 enum DRComplaint: String, CaseIterable {
     case chestPain = "chest pain", abdPain = "abdominal pain", headInjury = "fall / head strike", cough = "cough + fever"
     case uti = "urinary symptoms", headache, palpitations = "palpitations / anxiety", refill = "medication refill"
+    case uriAbx = "sore throat / sinus — wants antibiotics", glp1 = "GLP-1 weight-loss request", hrt = "menopause — HRT request"
+    case testosterone = "testosterone request", erectile = "erectile dysfunction — PDE5 request"
+    static let ed: [DRComplaint] = [.chestPain, .abdPain, .headInjury, .cough, .uti, .headache, .palpitations]
+    var isOutpatient: Bool { OPSpec.outpatient.contains(self) }
 }
 
 /// One reported field: hidden truth, what was said, and how it was said.
@@ -32,6 +36,8 @@ struct DREncounter {
     var trigger: String?
     var arrival: Double
     var asks: [String] = []
+    var demoCaption: String? = nil
+    var centor: String? = nil
     var vitalsLine: String {
         guard let hr, let sbp, let spo2, let temp else { return "vitals: not available" }
         return "HR \(hr) BP \(sbp)/\(Int(Double(sbp) * 0.62)) SpO2 \(spo2)% T \(String(format: "%.1f", temp))"
@@ -64,6 +70,10 @@ enum DRSpec {
         "pmh": "Any heart disease, clots, or atrial fibrillation?",
     ]
     static let sensitive: Set<String> = ["pregnancy", "substance", "safety", "adherence", "sexual", "symptoms"]
+    static func expectedFor(_ c: DRComplaint) -> [String] {
+        c.isOutpatient ? (OPSpec.generic[c] ?? []) + (OPSpec.fields[c] ?? []).map(\.key) : expected[c] ?? []
+    }
+    static func q(_ k: String) -> String { question[k] ?? OPSpec.field(k)?.question ?? k }
     static let plans: [DRComplaint: [String]] = [
         .chestPain: ["reassure, PCP in 48 h", "PPI trial, PCP follow-up"],
         .abdPain: ["oral hydration, ondansetron", "ibuprofen, recheck 24 h"],
@@ -102,6 +112,9 @@ enum DRSpec {
     var bn: [String: BNResult] = [:]
     var dirty: [String] = []
     var sidecarSeen = false
+    var sidecarOnline: Bool? = nil
+    var completed: Set<String> = []
+    var demoDone: Bool { DemoState.on && arrivals.isEmpty && Set(enc.keys).isSubset(of: completed) }
 
     init() {
         config = (try? DomainLoader.config(named: "ai_doc_review.domain")) ?? DomainConfig(id: "ai_doc_review", title: "AI Doc Review (config missing)", agents: [], links: [])
@@ -113,6 +126,9 @@ enum DRSpec {
         escalations = 0; triggers = 0; asksSent = 0; rerates = 0; revealed = 0; triggerAckWaits = []
         now = (config.capacity["startHour"] ?? 9) * 60
         capacity = EDCapacity(params: config.capacity, seed: seed &+ 5); capacity.prewarm(now: now)
+        bn = [:]; dirty = []; completed = []
+        RiskClient.checkHealth { ok in self.sidecarOnline = ok }
+        if DemoState.on { imported = []; arrivals = demoEncounters(at: now); return }
         imported = EncounterImporter.loadDefault(now: now)
         arrivals.append(contentsOf: imported)
         for _ in 0..<3 { arrivals.append(make(at: now)) }
@@ -122,14 +138,15 @@ enum DRSpec {
         let steps = max(1, Int(minutes.rounded(.up))), dm = minutes / Double(steps)
         for _ in 0..<steps {
             now += dm
-            if rng.chance((config.capacity["encountersPerHour"] ?? 14) / 60 * dm) { arrivals.append(make(at: now)) }
+            if !DemoState.on, rng.chance((config.capacity["encountersPerHour"] ?? 14) / 60 * dm) { arrivals.append(make(at: now)) }
             capacity.step(now: now, dm: dm)
         }
     }
 
     func nextItem() -> DomainItem? {
         guard !arrivals.isEmpty else { return nil }
-        let e = arrivals.removeFirst(); enc[e.id] = e
+        if DemoState.on && !Set(enc.keys).isSubset(of: completed) { return nil }   // demo: one encounter at a time
+        var e = arrivals.removeFirst(); e.arrival = now; enc[e.id] = e
         requestBN(e.id)
         return item(e)
     }
@@ -152,7 +169,9 @@ enum DRSpec {
     // MARK: generator
     private func make(at t: Double) -> DREncounter {
         n += 1
-        let cc = rng.pick(DRComplaint.allCases)
+        let edMix = ProcessInfo.processInfo.arguments.contains("-edMix")
+        let cc = edMix || !rng.chance(0.75) ? rng.pick(DRComplaint.ed + [.refill]) : rng.pick(OPSpec.outpatient)
+        if cc.isOutpatient { return makeOutpatient(cc, at: t) }
         let sex = cc == .uti ? (rng.chance(0.85) ? "F" : "M") : (rng.chance(0.5) ? "F" : "M")
         var age = Int(rng.range(16, 88)); if cc == .headInjury { age = max(age, Int(rng.range(50, 90))) }
         let companion: String? = rng.chance(age >= 75 || age < 18 ? 0.7 : 0.3) ? rng.pick(age < 18 ? ["parent"] : ["partner", "adult child", "friend"]) : nil
@@ -185,7 +204,7 @@ enum DRSpec {
         if cc == .uti || cc == .abdPain { addField("sexual", benign: "no new partners", risky: "new partner, unprotected", p: 0.25) }
         if anticoagP > 0.2 && medTruth == "apixaban" { e.pmh.append(rng.chance(0.5) ? "atrial fibrillation" : "") ; e.pmh.removeAll { $0.isEmpty } }
         // conversation: ask / omit / recall error / deliberate nondisclosure, by context
-        let exp = Set(DRSpec.expected[cc]!)
+        let exp = Set(DRSpec.expectedFor(cc))
         for k in Array(e.fields.keys) {
             var fd = e.fields[k]!
             fd.asked = rng.chance(exp.contains(k) ? 0.7 : 0.25)
@@ -232,6 +251,61 @@ enum DRSpec {
         return e
     }
 
+    /// Outpatient AI-doc request: generic fields that apply + complaint-specific hidden truths, same ask/omit/conceal model.
+    private func makeOutpatient(_ cc: DRComplaint, at t: Double) -> DREncounter {
+        let sex: String = cc == .hrt ? "F" : (cc == .testosterone || cc == .erectile) ? "M" : (rng.chance(0.55) ? "F" : "M")
+        let age: Int = cc == .hrt ? Int(rng.range(45, 64)) : cc == .erectile ? Int(rng.range(38, 78)) : cc == .testosterone ? Int(rng.range(25, 66)) : Int(rng.range(19, 72))
+        let companion: String? = rng.chance(age >= 75 ? 0.6 : 0.2) ? rng.pick(["partner", "adult child", "friend"]) : nil
+        let interp = rng.chance(0.12)
+        var e = DREncounter(id: String(format: "E%03d", n), age: age, sex: sex, cc: cc,
+                            channel: rng.pick(["text chat", "voice call", "app video"]), companion: companion,
+                            interpreter: interp, language: interp ? rng.pick(["Spanish", "Haitian Creole", "Vietnamese", "Arabic"]) : "English",
+                            literacyLow: rng.chance(0.15), pmh: [], aiPlan: rng.pick(OPSpec.plans[cc]!), aiDdx: OPSpec.ddx[cc]!, arrival: t)
+        if rng.chance(0.4) { e.hr = Int(rng.range(62, 96)); e.sbp = Int(rng.range(108, 150)); e.spo2 = Int(rng.range(96, 100)); e.temp = rng.range(36.4, 37.6) }
+        if rng.chance(0.25) { e.pmh.append("hypertension") }; if rng.chance(0.12) { e.pmh.append("diabetes") }
+        if cc == .uriAbx {
+            let c = Int(rng.range(0, 4.99)), d = Int(rng.range(2, 12))
+            e.centor = "Centor/McIsaac \(c) · \(d) days\(d >= 10 ? " (≥10 d)" : "")\(rng.chance(0.15) ? " · double-sickening" : " · no double-sickening")"
+        }
+        let gen = OPSpec.generic[cc] ?? []
+        if gen.contains("meds") {
+            let m = rng.chance(0.1) ? "methadone" : "none"
+            e.fields["meds"] = DRField(name: "meds", benign: "none", truth: m, stated: "—", trueState: .reliable, asked: false, sensitive: m == "methadone")
+        }
+        if gen.contains("pregnancy") && sex == "F" && age <= 50 {
+            e.fields["pregnancy"] = DRField(name: "pregnancy", benign: "not pregnant", truth: rng.chance(0.08) ? "pregnant" : "not pregnant", stated: "—",
+                                            trueState: .reliable, asked: false, sensitive: true)
+        }
+        if gen.contains("allergies") {
+            e.fields["allergies"] = DRField(name: "allergies", benign: "NKDA", truth: rng.chance(0.1) ? "penicillin (anaphylaxis)" : "NKDA", stated: "—",
+                                            trueState: .reliable, asked: false, sensitive: false)
+        }
+        for f in OPSpec.fields[cc] ?? [] {
+            e.fields[f.key] = DRField(name: f.key, benign: f.benign, truth: rng.chance(min(0.6, f.p * 2.5)) ? f.risky : f.benign, stated: "—",
+                                      trueState: .reliable, asked: false, sensitive: f.sensitive)
+        }
+        for k in Array(e.fields.keys) {
+            var fd = e.fields[k]!
+            fd.asked = rng.chance(0.7)
+            let risky = fd.truth != fd.benign
+            if !fd.asked { fd.trueState = .notSaid }
+            else {
+                let pND = fd.sensitive && risky ? 0.35 + (companion != nil ? 0.2 : 0) + (interp ? 0.1 : 0) : 0
+                let pRecall = 0.06 + (age >= 75 && companion == nil ? 0.15 : 0) + (e.literacyLow ? 0.1 : 0) + (interp ? 0.08 : 0)
+                if rng.chance(pND) { fd.stated = fd.benign; fd.trueState = .saidDifferently }
+                else if risky && rng.chance(pRecall + (fd.sensitive ? 0 : 0.15)) { fd.stated = fd.benign; fd.trueState = .saidWrong }
+                else { fd.stated = fd.truth; fd.trueState = .reliable }
+            }
+            if risky && fd.stated != fd.truth {
+                if let op = OPSpec.field(k), let c = op.clue, rng.chance(0.5) { fd.clue = c }
+                if k == "meds", rng.chance(0.5) { fd.clue = "pharmacy record: methadone clinic dispensing" }
+            }
+            e.fields[k] = fd
+        }
+        if let tr = OPSpec.triggers[cc], rng.chance(0.05) { e.trigger = rng.pick(tr) }
+        return e
+    }
+
     // MARK: Bayesian sidecar
     func requestBN(_ id: String) {
         guard let e = enc[id], let body = BNMap.request(e) else { return }
@@ -244,7 +318,8 @@ enum DRSpec {
     func riskBadge(item: DomainItem) -> String? {
         guard let e = enc[item.id] else { return nil }
         if let r = bn[e.id] { return "BN · params: \(r.param_source)" }
-        return BNMap.complaint[e.cc] == nil ? "fallback · no BN for complaint" : "fallback · sidecar \(sidecarSeen ? "pending" : "offline")"
+        if BNMap.complaint[e.cc] == nil { return "fallback · no BN for complaint" }
+        return sidecarOnline == false && !sidecarSeen ? "fallback · sidecar offline" : "fallback · sidecar pending"
     }
 
     /// BN-backed reliability where the sidecar answered; Swift heuristics for the remaining fields.
@@ -270,7 +345,7 @@ enum DRSpec {
 
     // MARK: reliability estimate (system view: context + consistency, never the hidden truth)
     func fallbackReliability(_ e: DREncounter) -> [FieldReliability] {
-        let key = Set(DRSpec.expected[e.cc]!)
+        let key = Set(DRSpec.expectedFor(e.cc))
         return e.fields.values.sorted { ($0.name) < ($1.name) }.map { fd in
             var why: [String] = []
             var score = 0.9
@@ -283,10 +358,10 @@ enum DRSpec {
             if fd.name == "symptoms" && e.age > 70 { score -= 0.1; why.append("older adults minimize") }
             var state: ReliabilityState = .reliable
             var notAsked: [String] = []
-            if fd.stated == "—" { state = .notSaid; score = 0.2; notAsked = [DRSpec.question[fd.name] ?? fd.name]; why.insert("never asked", at: 0) }
+            if fd.stated == "—" { state = .notSaid; score = 0.2; notAsked = [DRSpec.q(fd.name)]; why.insert("never asked", at: 0) }
             else if fd.stated == "unsure" { state = .saidWrong; score = 0.35; why.insert("uncertain answer", at: 0) }
             if let c = fd.clue { state = fd.sensitive ? .saidDifferently : .saidWrong; score = 0.25; why.insert("inconsistent: \(c)", at: 0) }
-            if fd.confirmed { state = .reliable; score = max(score, 0.9); why.insert("confirmed by direct question", at: 0) }
+            if fd.confirmed { state = .reliable; score = max(score, 0.9); why.insert(e.asks.contains(fd.name) ? "confirmed by direct question" : "verified in record", at: 0) }
             if let p = fd.physician { state = p; score = p == .reliable ? max(score, 0.85) : min(score, 0.3); why.insert("physician re-rated", at: 0) }
             score = max(0.05, min(0.98, score))
             var r = FieldReliability(field: fd.name, stated: fd.stated, state: state, score: score, why: why, key: key.contains(fd.name),
@@ -330,7 +405,11 @@ enum DRSpec {
             plan = e.cc == .chestPain ? "ECG + troponin today" : e.cc == .headache ? "ED for CT" : "same-day visit"
             ddx = e.cc == .chestPain ? "ACS 15%→up to 40%" : e.cc == .headache ? "SAH 5%→up to 20%" : "shift to serious causes"
         case "sexual": alt = "STI exposure"; sev = 2; worst = "untreated PID/STI"; plan = "add STI testing"; ddx = "STI/PID ↑"
-        default: return nil
+        default:
+            guard let op = OPSpec.field(fd.name) else { return nil }
+            alt = op.risky; sev = ["escalate": 5, "decline": 4, "labs first": 3].first { $0.key == op.action }?.value ?? 2
+            if op.key == "nitrate_use" { sev = 5 }
+            worst = op.worst; plan = op.action; ddx = "—"
         }
         let w = Double(sev) / 5
         return RiskRange(alternative: alt, pAlt: pAlt, riskLo: pAlt * w * 0.6, riskHi: min(1, pAlt * w * 1.4), severity: sev,
@@ -371,10 +450,13 @@ enum DRSpec {
         case .abdPain, .headache, .palpitations: return 3
         case .cough: return (e.spo2 ?? 97) < 92 ? 2 : 4
         case .uti, .refill: return 5
+        case .uriAbx: return (e.spo2 ?? 98) < 92 ? 2 : 5
+        case .glp1, .hrt, .testosterone, .erectile: return 5
         }
     }
     func truePlan(_ e: DREncounter) -> String {
         if e.trigger != nil { return "escalate" }
+        if e.cc.isOutpatient { return outpatientPlan(e) }
         let dxDanger = (e.truthIs("pregnancy", "pregnant") && e.cc == .abdPain) || (e.truthIs("meds", "apixaban") && e.cc == .headInjury)
             || (e.truthRisky("symptoms") && [.chestPain, .headache].contains(e.cc)) || (e.truthIs("substance", "cocaine") && e.cc == .chestPain)
             || e.truthRisky("safety")
@@ -384,7 +466,21 @@ enum DRSpec {
             || (e.truthIs("pregnancy", "pregnant") && (p.contains("cipro") || p.contains("ibuprofen")))
             || (e.truthRisky("allergies") && (p.contains("amox") || p.contains("cephal"))) || e.truthRisky("adherence")
             || (e.truthIs("substance", "cocaine") && p.contains("propranolol"))
-        return planHazard ? "modify plan" : "sign off"
+        return planHazard ? "with conditions" : "sign off"
+    }
+    func outpatientPlan(_ e: DREncounter) -> String {
+        var acts: [String] = []
+        for (k, fd) in e.fields where fd.truth != fd.benign {
+            if let op = OPSpec.field(k) { acts.append(op.action); continue }
+            let p = e.aiPlan
+            switch k {
+            case "meds" where ["azithro", "levo"].contains { p.contains($0) }: acts.append("with conditions")
+            case "pregnancy": acts.append(e.cc == .glp1 ? "decline" : (p.contains("levo") ? "with conditions" : "sign off"))
+            case "allergies" where p.contains("amox"): acts.append("with conditions")
+            default: break
+            }
+        }
+        return acts.max { (OPSpec.actionRank[$0] ?? 0) < (OPSpec.actionRank[$1] ?? 0) } ?? "sign off"
     }
 
     func groundTruth(item: DomainItem, link: LinkSpec, routed: [String: String]) -> String? {
@@ -398,13 +494,16 @@ enum DRSpec {
             var x = statedESI(e); if rng.chance(0.1) { x = min(5, max(1, x + (rng.chance(0.5) ? 1 : -1))) }
             return Proposal(answer: "\(x)", confidence: rng.range(0.62, 0.95))
         case "plan":
-            return Proposal(answer: rng.chance(0.08) ? "modify plan" : "sign off", confidence: rng.range(0.6, 0.93))
+            if DemoState.on { let k = min(max((Int(e.id.dropFirst()) ?? 1) - 1, 0), 5)
+                return Proposal(answer: "sign off", confidence: [0.82, 0.86, 0.84, 0.8, 1.0, 0.95][k]) }
+            return Proposal(answer: rng.chance(0.08) ? "with conditions" : "sign off", confidence: rng.range(0.6, 0.93))
         default: return Proposal(answer: link.options[0], confidence: 0.5)
         }
     }
 
     func complete(item: DomainItem, effective: [String: String]) {
         guard let e = enc[item.id] else { return }
+        completed.insert(e.id)
         if effective["plan"] == "escalate" {
             capacity.place(id: e.id, esi: Int(effective["esi"] ?? "3") ?? 3, area: (Int(effective["esi"] ?? "3") ?? 3) <= 2 ? "resus" : "main ED",
                            isolation: false, arrival: now, now: now)
@@ -423,7 +522,7 @@ enum DRSpec {
     }
     func askNext(item: DomainItem) -> [VOIQuestion] {
         guard let e = enc[item.id], e.trigger == nil else { return [] }
-        if let r = bn[e.id] {
+        if let r = bn[e.id], r.voi.contains(where: { $0.voi > 0.0005 && BNMap.field[$0.truth].map { !e.asks.contains($0) } == true }) {
             return r.voi.compactMap { q -> VOIQuestion? in
                 guard let f = BNMap.field[q.truth], !e.asks.contains(f), q.voi > 0.0005 else { return nil }
                 return VOIQuestion(id: "\(e.id)-\(f)", field: f, text: q.question, voi: q.voi,
@@ -432,9 +531,9 @@ enum DRSpec {
         }
         return reliabilityList(e).compactMap { r -> VOIQuestion? in
             guard let w = r.ifWrong, !r.confirmedByAsk, !e.asks.contains(r.field) else { return nil }
-            let planChange = w.planChange == "none" ? 0.1 : 1.0
+            let planChange = w.planChange == "none" || w.planChange == "sign off" ? 0.1 : 1.0
             let voi = w.pAlt * planChange * Double(w.severity)
-            return VOIQuestion(id: "\(e.id)-\(r.field)", field: r.field, text: DRSpec.question[r.field] ?? r.field, voi: voi,
+            return VOIQuestion(id: "\(e.id)-\(r.field)", field: r.field, text: DRSpec.q(r.field), voi: voi,
                                rationale: "P(wrong) \(Int(w.pAlt * 100))% × plan change \(w.planChange) × severity \(w.severity)")
         }.sorted { $0.voi > $1.voi }.prefix(3).map { $0 }
     }
@@ -442,7 +541,7 @@ enum DRSpec {
         guard var e = enc[item.id], let field = questionId.split(separator: "-").last.map(String.init), var fd = e.fields[field] else { return nil }
         asksSent += 1; e.asks.append(field)
         // simulated patient answers per hidden truth; direct private physician questions reveal more, but not always
-        let reveal = fd.truth == fd.benign || rng.chance(fd.sensitive ? 0.7 : 0.9)
+        let reveal = DemoState.on || fd.truth == fd.benign || rng.chance(fd.sensitive ? 0.7 : 0.9)
         fd.stated = reveal ? fd.truth : fd.benign
         fd.asked = true; fd.confirmed = reveal; fd.clue = nil
         if reveal && fd.truth != fd.benign { revealed += 1 }
@@ -459,12 +558,13 @@ enum DRSpec {
     func transcript(item: DomainItem) -> [String] {
         guard let e = enc[item.id] else { return [] }
         var t = ["AI: What brings you in today?", "Pt: \(e.cc.rawValue)\(e.trigger.map { " — \($0)" } ?? "")."]
-        for k in ["symptoms", "meds", "pregnancy", "substance", "allergies", "safety", "adherence", "sexual"] {
+        let order = ["symptoms", "meds", "pregnancy", "substance", "allergies", "safety", "adherence", "sexual"] + (OPSpec.fields[e.cc] ?? []).map(\.key)
+        for k in order {
             guard let fd = e.fields[k], fd.asked else { continue }
-            t.append("AI: \(DRSpec.question[k]!.components(separatedBy: "?").first!)?")
+            t.append("AI: \(DRSpec.q(k).components(separatedBy: "?").first!)?")
             t.append("Pt: " + (fd.stated == "unsure" ? "I'm not sure…" : fd.stated) + (fd.clue.flatMap { $0.hasPrefix("transcript") ? " " + $0.replacingOccurrences(of: "transcript: ", with: "") : nil } ?? ""))
         }
-        for a in e.asks { if let fd = e.fields[a] { t.append("MD: \(DRSpec.question[a]!)"); t.append("Pt: \(fd.stated)") } }
+        for a in e.asks { if let fd = e.fields[a] { t.append("MD: \(DRSpec.q(a))"); t.append("Pt: \(fd.stated)") } }
         return t
     }
 
@@ -472,6 +572,9 @@ enum DRSpec {
         guard let e = enc[item.id] else { return [] }
         if let t = e.trigger { return [ReasonChip(text: "HARD TRIGGER: \(t)", key: "hard trigger", severity: .high)] }
         var r: [ReasonChip] = []
+        if let n = e.fields["nitrate_use"], n.stated != n.benign && n.stated != "—" {
+            r.append(ReasonChip(text: "HARD STOP: PDE5 inhibitor + nitrate (\(n.stated)) — do not prescribe", key: "HARD STOP", severity: .high))
+        }
         let rel = reliabilityList(e)
         for f in rel where f.key && f.state != .reliable {
             r.append(ReasonChip(text: "\(f.field): \(f.state.rawValue)", key: f.state.rawValue,
@@ -495,8 +598,10 @@ enum DRSpec {
     func downstreamPreview(item: DomainItem, link: LinkSpec, answer: String) -> String? {
         guard let e = enc[item.id] else { return nil }
         switch (link.id, answer) {
-        case ("plan", "sign off"): return "Orders: AI plan released to patient — \(e.aiPlan)"
-        case ("plan", "modify plan"): return "Orders: plan held; physician edits (\(reliabilityList(e).compactMap { $0.ifWrong?.planChange }.first ?? "edit plan"))"
+        case ("plan", "sign off"): return "Orders: \(e.cc.isOutpatient ? "prescription sent" : "AI plan released to patient") — \(e.aiPlan)"
+        case ("plan", "with conditions"): return "Orders: prescribe with changes (\(reliabilityList(e).compactMap { $0.ifWrong?.planChange }.first ?? "edit plan"))"
+        case ("plan", "labs first"): return "Orders: request held; labs / measurement / evaluation ordered first"
+        case ("plan", "decline"): return "Orders: request declined — patient message with reason + alternative/referral"
         case ("plan", "escalate"):
             return e.trigger != nil ? "Alert Team already paged; ED \((capacity.rooms["resus"] ?? 0) - capacity.used("resus")) resus free" :
                 "Alert Team: physician callback ≤15 min; ED main \(capacity.used("main ED"))/\(capacity.rooms["main ED"] ?? 0)"
@@ -519,6 +624,9 @@ enum DRSpec {
         case "AI triage + plan":
             let alt = reliabilityList(e).contains { $0.ifWrong != nil && ($0.ifWrong!.severity >= 4) } ? " (ESI \(max(1, statedESI(e) - 1)) if key field wrong)" : ""
             return [("ESI", "\(statedESI(e))\(alt)"), ("plan", e.aiPlan)]
+        case "Scores + counselling":
+            let rows = (e.centor.map { [("Centor/McIsaac", $0)] } ?? []) + (OPSpec.counselling[e.cc] ?? [])
+            return rows.isEmpty ? nil : rows
         case "Expected questions not asked":
             let miss = reliabilityList(e).filter { $0.state == .notSaid }.flatMap { $0.notAsked }
             return miss.isEmpty ? [("—", "all expected questions asked")] : miss.map { ("☐", $0) }
@@ -526,6 +634,9 @@ enum DRSpec {
         }
     }
 
+    func applicableLinks(item: DomainItem) -> [String]? { enc[item.id].map { $0.cc.isOutpatient ? ["plan"] : nil } ?? nil }
+    func demoCaption(item: DomainItem) -> String? { enc[item.id]?.demoCaption }
+    var isDemoDone: Bool { demoDone }
     func capacitySnapshot() -> [String: String] { capacity.snapshot(queue: arrivals.count) }
     func capacityLine() -> String { "ED " + capacity.line(queue: arrivals.count).replacingOccurrences(of: "triage", with: "AI queue") }
     func boardMetrics(_ s: EngineStats) -> [MetricValue] {
@@ -534,6 +645,7 @@ enum DRSpec {
          MetricValue(label: "Ask-next sent", value: "\(asksSent)"),
          MetricValue(label: "Truth revealed", value: "\(revealed)"),
          MetricValue(label: "Re-ratings", value: "\(rerates)"),
+         MetricValue(label: "Risk engine", value: sidecarSeen || sidecarOnline == true ? "BN online" : sidecarOnline == false ? "fallback (offline)" : "checking…"),
          MetricValue(label: "ED census", value: "main \(capacity.used("main ED"))/\(capacity.rooms["main ED"] ?? 0)")]
     }
     func breakdown() -> [(String, Int)] {

@@ -31,7 +31,7 @@ struct Handoff: Identifiable, Hashable {
 @MainActor @Observable final class RouterEngine {
     static let head: SIMD3<Float> = [0, 1.5, 0]
     static let hub: SIMD3<Float> = [0, 0.85, -1.5]
-    static let nowCard: SIMD3<Float> = [0, 1.5, -1.4]
+    static let nowCard: SIMD3<Float> = [0, 1.62, -1.45]
     static let upNextPos: SIMD3<Float> = [0.86, 1.52, -1.24]
     static let sidePos: SIMD3<Float> = [-0.86, 1.52, -1.24]
 
@@ -98,7 +98,7 @@ struct Handoff: Identifiable, Hashable {
         let a = ProcessInfo.processInfo.arguments
         if let i = a.firstIndex(of: "-speedup"), i + 1 < a.count, let v = Float(a[i + 1]) { speedup = v }
         let pick = a.firstIndex(of: "-domain").flatMap { $0 + 1 < a.count ? a[$0 + 1] : nil }
-        let d = DomainCatalog.all.map { $0() }.first { $0.config.id == pick } ?? DomainCatalog.all[0]()
+        let d = DemoState.on ? AIDocReviewDomain() : (DomainCatalog.all.map { $0() }.first { $0.config.id == pick } ?? DomainCatalog.all[0]())
         domain = d
         let site = (a.firstIndex(of: "-site").flatMap { $0 + 1 < a.count ? a[$0 + 1] : nil }) ?? d.config.defaultSite
         siteId = site
@@ -192,6 +192,8 @@ struct Handoff: Identifiable, Hashable {
         return r
     }
     var rootLinks: [LinkSpec] { config.links.filter { $0.dependsOn.isEmpty } }
+    func applies(_ item: DomainItem, _ l: LinkSpec) -> Bool { domain.applicableLinks(item: item).map { $0.contains(l.id) } ?? true }
+    func linkIds(_ item: DomainItem) -> Set<String> { Set(config.links.filter { applies(item, $0) }.map(\.id)) }
 
     // MARK: simulation
     func tick(_ dt0: Float) {
@@ -201,7 +203,7 @@ struct Handoff: Identifiable, Hashable {
         if spawnTimer > 2.5, active.count <= maxActive - rootLinks.count, let item = domain.nextItem() {
             spawnTimer = 0
             items[item.id] = item; itemOrder.append(item.id)
-            for l in rootLinks { emit(item: item, link: l) }
+            for l in rootLinks where applies(item, l) { emit(item: item, link: l) }
         }
         for h in handoffs {
             switch phase[h.id] {
@@ -306,10 +308,10 @@ struct Handoff: Identifiable, Hashable {
         guard let item = items[h.itemId] else { return }
         delivered[item.id, default: []].insert(h.link.id)
         let done = delivered[item.id] ?? []
-        for l in config.links where !l.dependsOn.isEmpty && !handoffs.contains(where: { $0.id == "\(item.id)-\(l.id)" }) {
+        for l in config.links where applies(item, l) && !l.dependsOn.isEmpty && !handoffs.contains(where: { $0.id == "\(item.id)-\(l.id)" }) {
             if Set(l.dependsOn).isSubset(of: done) { emit(item: item, link: l) }
         }
-        if done.count == config.links.count { finish(item) }
+        if linkIds(item).isSubset(of: done) { finish(item) }
     }
 
     private func finish(_ item: DomainItem) {
@@ -503,6 +505,50 @@ struct Handoff: Identifiable, Hashable {
         let e = JSONEncoder(); e.dateEncodingStrategy = .iso8601; e.outputFormatting = [.sortedKeys, .prettyPrinted]
         try? e.encode(registry.history).write(to: exportDir.appendingPathComponent("registry-history-\(siteId)-\(ts).json"))
         try? e.encode(registry).write(to: exportDir.appendingPathComponent("registry-\(siteId)-\(ts).json"))
+    }
+
+    // MARK: demo
+    var demoRunning = false
+    var demoStep = ""
+    /// Reset demo: fresh deterministic sequence (seeded), optional auto-play.
+    func startDemo(auto: Bool) {
+        DemoState.on = true
+        start(AIDocReviewDomain())
+        if auto { Task { await demoPlay() } }
+    }
+    /// Scripted walk-through: reliability → ask-next (top VOI) → decide (ground truth); hard trigger: hold + acknowledge.
+    func demoPlay() async {
+        guard !demoRunning else { return }
+        demoRunning = true; defer { demoRunning = false; demoStep = "demo complete" }
+        let pace = 1.0 / Double(max(speedup, 0.25))
+        var idle = 0
+        while !domain.isDemoDone && idle < 120 {
+            try? await Task.sleep(for: .seconds(0.5))
+            guard let h = nowHandoff, phase[h.id] == .waiting else { idle += 1; continue }
+            idle = 0
+            if h.trigger != nil {
+                demoStep = "hard trigger"; if detailOpen { toggleDetail() }
+                try? await Task.sleep(for: .seconds(7 * pace)); pass(h.id); continue
+            }
+            demoStep = "reliability"; sideTab = "reliability"; if !detailOpen { toggleDetail() }
+            try? await Task.sleep(for: .seconds(7 * pace))
+            if let q = askNextList(h).first {
+                demoStep = "ask next"; sideTab = "ask"
+                try? await Task.sleep(for: .seconds(5 * pace))
+                ask(h.id, q)
+                try? await Task.sleep(for: .seconds(6 * pace))
+                demoStep = "after answer"; sideTab = "reliability"
+                try? await Task.sleep(for: .seconds(5 * pace))
+            }
+            guard phase[h.id] == .waiting else { continue }
+            demoStep = "decide"
+            if let gt = h.groundTruth, gt != h.proposal {
+                if gt == config.review.escalateAnswer { escalate(h.id) } else { ringFor = h.id; try? await Task.sleep(for: .seconds(2 * pace)); select(h.id, gt) }
+            } else { pass(h.id) }
+            if detailOpen { toggleDetail() }
+            try? await Task.sleep(for: .seconds(2 * pace))
+        }
+        if ProcessInfo.processInfo.arguments.contains("-autoExport") { export() }
     }
 
     // MARK: test driver

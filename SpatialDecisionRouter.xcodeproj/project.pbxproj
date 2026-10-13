@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03402F7FC2C6B531D9A11462 /* OutpatientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */; };
 		1465DFFC8F8791B37C1ED521 /* ai_doc_review.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */; };
 		1AB6C6774A4D482CD2B42974 /* AIDocReviewDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */; };
 		1B69FB0044A9F5DD4570F908 /* RouterEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */; };
@@ -31,6 +32,7 @@
 		317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ai_doc_review.domain.json; sourceTree = "<group>"; };
 		36AC111D7362BC39421555D4 /* ed_triage.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ed_triage.domain.json; sourceTree = "<group>"; };
 		3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainKit.swift; sourceTree = "<group>"; };
+		529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutpatientSpec.swift; sourceTree = "<group>"; };
 		6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDCapacity.swift; sourceTree = "<group>"; };
 		6457ECA631420CFF502092D6 /* RoutingDecision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingDecision.swift; sourceTree = "<group>"; };
 		64DE7620E584197285B2ED27 /* CategoryRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRegistry.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */,
 				A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */,
 				B04144225277F2C1929F0B76 /* EncounterImporter.swift */,
+				529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */,
 				E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */,
 			);
 			path = AIDocReview;
@@ -197,6 +200,7 @@
 				97503C591D86F58FC7ACC5D9 /* EDReview.swift in Sources */,
 				8C13E8EBB20207BA6E8E9D6B /* EDTriageDomain.swift in Sources */,
 				A8E53AF7B06879027699BE32 /* EncounterImporter.swift in Sources */,
+				03402F7FC2C6B531D9A11462 /* OutpatientSpec.swift in Sources */,
 				2CE4C735CC81C5BCBBC882FB /* ProceduralEnvironment.swift in Sources */,
 				BDAEA020D7D88A68A4098DD4 /* ReliabilityKit.swift in Sources */,
 				9172DC73E2553E1ABCE1C702 /* ReviewKit.swift in Sources */,

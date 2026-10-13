@@ -103,6 +103,9 @@ class RiskModel:
             self.dx[dname] = d
         crit = ["dx_" + k for k, d in self.dx.items() if d["severity"] >= self.crit_sev]
         self._node("critical", YN, crit, lambda a: [0.0, 1.0] if any(a[x] == "yes" for x in crit) else [1.0, 0.0])
+        # critical misses that a plan change cannot mitigate (only escalation does) -> drives the escalation recommendation
+        crit_esc = [x for x in crit if "modify" not in self.dx[x[3:]].get("mitigated_by", [])]
+        self._node("critical_esc", YN, crit_esc, lambda a, ce=crit_esc: [0.0, 1.0] if any(a[x] == "yes" for x in ce) else [1.0, 0.0])
 
     # ---- evidence ----
     def evidence(self, req):
@@ -173,7 +176,7 @@ class RiskModel:
         return 1.0 - self.post(ev, [t])[t][0]
 
     def p_dx(self, ev):
-        names = ["dx_" + d for d in self.dx] + ["critical"]
+        names = ["dx_" + d for d in self.dx] + ["critical", "critical_esc"]
         r = self.post(ev, names)
         return {k: r[k][1] for k in names}
 
@@ -182,7 +185,8 @@ class RiskModel:
         res = v(L["residual_after_mitigation"])
         out = {}
         for a in ("sign_off", "modify", "escalate"):
-            tot = v(L["modify_cost"]) if a == "modify" else v(L["escalate_cost"]) if a == "escalate" else 0.0
+            mc = v(self.c["modify_cost"]) if "modify_cost" in self.c else v(L["modify_cost"])   # per-complaint override
+            tot = mc if a == "modify" else v(L["escalate_cost"]) if a == "escalate" else 0.0
             for d, spec in self.dx.items():
                 cost = pdx["dx_" + d] * miss[int(spec["severity"])]
                 tot += cost * (res if a in spec.get("mitigated_by", []) else 1.0)
@@ -217,6 +221,7 @@ def assess(params, req):
     ev = m.evidence(req)
     th = params["thresholds"]
     doubt, crit_thr, min_ro = v(th["doubt_posterior"]), v(th["critical_escalate"]), v(th["min_ruleout"])
+    doubt_crit = v(th["doubt_posterior_critical"]) if "doubt_posterior_critical" in th else doubt
     pdx = m.p_dx(ev)
     el = m.expected_losses(pdx)
     best = min(el, key=el.get)
@@ -228,7 +233,7 @@ def assess(params, req):
             state, why = "Reliable", "disclosed"
         elif rep is None and ans is None:
             state, why = "Not said", "no report (never asked)"
-        elif pr < doubt:
+        elif pr < (doubt_crit if any(t in d["parents"] and d["severity"] >= m.crit_sev for d in m.dx.values()) else doubt):
             state, why = "Reliable", "negative report consistent with context"
         else:
             # which path explains a false negative here: deliberate concealment vs recall/understanding error
@@ -260,17 +265,18 @@ def assess(params, req):
         truths.append({"truth": t, "posterior": pr, "label": m.label(pr), "state": state, "why": why,
                        "report": rep, "answer": ans, "sensitive": bool(T.get("sensitive")), "if_wrong": iw})
     voi = voi_list(m, params, ev, el, crit_thr)
-    p_crit = pdx["critical"]
+    p_crit, p_esc = pdx["critical"], pdx["critical_esc"]
     best_ro = max([q["p_ruleout"] for q in voi], default=0.0)
-    recommend = p_crit > crit_thr and best_ro < min_ro
+    recommend = p_esc > crit_thr and best_ro < min_ro
     return {"complaint": m.name, "engine": "bn", "inference": "exact (pyAgrum LazyPropagation)",
             "param_source": source_summary(params), "param_version": params.get("meta", {}).get("version"),
             "truths": truths,
             "dx": {k[3:]: {"p": pdx[k], "label": m.label(pdx[k]), "severity": int(m.dx[k[3:]]["severity"])} for k in pdx if k.startswith("dx_")},
             "p_critical": p_crit, "p_critical_label": m.label(p_crit),
+            "p_critical_needs_escalation": p_esc, "p_critical_needs_escalation_label": m.label(p_esc),
             "expected_loss": el, "best_action": best, "voi": voi,
-            "escalation": {"recommend": recommend, "p_critical": p_crit, "threshold": crit_thr, "best_question_ruleout": best_ro,
-                           "reason": (f"P(critical miss) {m.label(p_crit)} ({p_crit:.2f}) > {crit_thr} and no question rules it out with P >= {min_ro}"
+            "escalation": {"recommend": recommend, "p_critical": p_esc, "threshold": crit_thr, "best_question_ruleout": best_ro,
+                           "reason": (f"P(critical miss a plan change cannot fix) {m.label(p_esc)} ({p_esc:.2f}) > {crit_thr} and no question rules it out with P >= {min_ro}"
                                       if recommend else "")}}
 
 
@@ -289,7 +295,7 @@ def voi_list(m, params, ev, el_now, crit_thr):
                 continue
             pdx = m.p_dx(ev | {n: a})
             exp_best += pa_ * min(m.expected_losses(pdx).values())
-            if pdx["critical"] < crit_thr:
+            if pdx["critical_esc"] < crit_thr:
                 ro += pa_
         out.append({"truth": t, "question": params["truths"][t]["question"], "voi": max(0.0, best_now - exp_best),
                     "p_answer_pos": pa[1], "p_ruleout": ro})

@@ -141,6 +141,11 @@ struct EngineStats {
     func riskBadge(item: DomainItem) -> String?
     /// item ids whose analysis changed asynchronously (engine re-scores their handoffs)
     func takeDirty() -> [String]
+    /// link ids that apply to this item (nil = all links)
+    func applicableLinks(item: DomainItem) -> [String]?
+    /// demo: caption for the Now card; demo finished
+    func demoCaption(item: DomainItem) -> String?
+    var isDemoDone: Bool { get }
 }
 
 enum DomainLoader {

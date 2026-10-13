@@ -63,4 +63,7 @@ extension DomainModule {
     func transcript(item: DomainItem) -> [String] { [] }
     func riskBadge(item: DomainItem) -> String? { nil }
     func takeDirty() -> [String] { [] }
+    func applicableLinks(item: DomainItem) -> [String]? { nil }
+    func demoCaption(item: DomainItem) -> String? { nil }
+    var isDemoDone: Bool { false }
 }

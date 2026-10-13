@@ -26,6 +26,7 @@ struct CrossroadsView: View {
         .task { while !Task.isCancelled { try? await Task.sleep(for: .milliseconds(50)); engine.tick(0.05) } }
         .task {
             let a = ProcessInfo.processInfo.arguments
+            if DemoState.on && DemoState.auto { try? await Task.sleep(for: .seconds(3)); await engine.demoPlay(); return }
             if let i = a.firstIndex(of: "-autoResolve"), i + 1 < a.count, let n = Int(a[i + 1]) {
                 try? await Task.sleep(for: .seconds(2)); await engine.autoResolve(n)
                 if a.contains("-autoExport") { engine.export() }
@@ -143,7 +144,7 @@ struct NowCard: View {
         TimelineView(.periodic(from: .now, by: 1)) { _ in
             if let h = engine.nowHandoff { content(h) }
             else {
-                Text("Queue clear · \(engine.autoPassed) auto-passed").font(.title).padding(30).frame(width: 880).glassBackgroundEffect()
+                Text(DemoState.on && engine.domain.isDemoDone ? "Demo complete · \(engine.autoPassed) auto-passed · Reset demo to replay" : "Queue clear · \(engine.autoPassed) auto-passed").font(.title).padding(30).frame(width: 880).glassBackgroundEffect()
             }
         }
     }
@@ -153,6 +154,10 @@ struct NowCard: View {
         let reasons = engine.reasons(h)
         let rel = engine.reliability(h)
         VStack(alignment: .leading, spacing: 10) {
+            if DemoState.on, let item, let cap = engine.domain.demoCaption(item: item) {
+                Text("DEMO \(cap)").font(.title3.bold()).foregroundStyle(.black).padding(.horizontal, 10).padding(.vertical, 4)
+                    .background(.yellow, in: RoundedRectangle(cornerRadius: 8)).gloss("DEMO")
+            }
             if let t = h.trigger {
                 HStack {
                     Text("⚠ HARD ESCALATION — \(t)").font(.title2.bold()).foregroundStyle(.white)
@@ -245,7 +250,10 @@ struct ReliabilityPanel: View {
         VStack(alignment: .leading, spacing: 7) {
             HStack { Text("Reliability · \(h.itemId)").font(.title2.bold()).gloss("reliability score"); Spacer()
                      Text("R N W D = re-rate").font(.caption).foregroundStyle(.secondary).gloss("re-rate") }
-            ForEach(engine.reliability(h)) { r in
+            let rl = engine.reliability(h).sorted { ($0.state == .reliable ? 1 : 0, $0.key ? 0 : 1) < ($1.state == .reliable ? 1 : 0, $1.key ? 0 : 1) }
+            let shown = rl.filter { $0.state != .reliable || $0.ifWrong != nil }
+            let hidden = rl.count - shown.count
+            ForEach(shown) { r in
                 VStack(alignment: .leading, spacing: 2) {
                     HStack {
                         Text(r.field + (r.key ? " ★" : "")).font(.headline).frame(width: 110, alignment: .leading)
@@ -256,18 +264,21 @@ struct ReliabilityPanel: View {
                                 .font(.caption.bold()).tint(r.state == st ? relColor(st) : .gray.opacity(0.4)).gloss(st.rawValue)
                         }
                     }
-                    Text(r.state.rawValue + " · " + r.why.prefix(3).joined(separator: " · ")).font(.caption).foregroundStyle(relColor(r.state))
-                    if !r.notAsked.isEmpty { Text("☐ not asked: " + r.notAsked.joined(separator: "; ")).font(.caption).foregroundStyle(.secondary) }
+                    Text(r.state.rawValue + " · " + r.why.prefix(3).joined(separator: " · ")).font(.callout).foregroundStyle(relColor(r.state))
+                    if !r.notAsked.isEmpty { Text("☐ not asked: " + r.notAsked.joined(separator: "; ")).font(.callout).foregroundStyle(.secondary) }
                     if let w = r.ifWrong {
                         Text("if wrong → \(w.alternative): risk \(Int((w.riskLo * 100).rounded()))–\(Int((w.riskHi * 100).rounded()))% · worst \(w.worstMiss) · \(w.planChange) · ddx \(w.ddxShift)")
-                            .font(.caption.bold()).foregroundStyle(.pink).gloss("if wrong")
+                            .font(.callout.bold()).foregroundStyle(.pink).gloss("if wrong")
                     }
                 }
             }
+            if hidden > 0 { Text("+ \(hidden) reliable field\(hidden == 1 ? "" : "s") (no if-wrong risk): " + rl.filter { $0.state == .reliable && $0.ifWrong == nil }.map(\.field).joined(separator: ", "))
+                .font(.callout).foregroundStyle(.green) }
         }
     }
 }
 
+/// (reliable fields without if-wrong risk are collapsed into one line)
 /// Top-3 value-of-information questions; send one.
 struct AskNextPanel: View {
     @Environment(RouterEngine.self) private var engine
@@ -286,7 +297,7 @@ struct AskNextPanel: View {
                         Button("Send") { engine.ask(h.id, q) }.tint(.teal)
                     }
                     Text(q.text).font(.callout)
-                    Text(q.rationale).font(.caption).foregroundStyle(.secondary)
+                    Text(q.rationale).font(.callout).foregroundStyle(.secondary)
                 }
             }
             ForEach(Array((engine.itemAsks[h.itemId] ?? []).enumerated()), id: \.offset) { _, a in
@@ -341,14 +352,15 @@ struct SidePanel: View {
     @Environment(RouterEngine.self) private var engine
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { _ in
-            Group {
+            ScrollView(.vertical) { Group {
                 if engine.spotCheckOpen { spot }
                 else if let h = engine.nowHandoff {
                     if engine.sideTab == "reliability" && !engine.reliability(h).isEmpty { ReliabilityPanel(h: h) }
                     else if engine.sideTab == "ask" && !engine.reliability(h).isEmpty { AskNextPanel(h: h) }
                     else { detail(h) }
                 } else { Text("—") }
-            }.frame(width: 540).padding(16).glassBackgroundEffect()
+            }.frame(maxWidth: .infinity, alignment: .leading) }
+            .frame(width: 560).frame(maxHeight: 640).fixedSize(horizontal: false, vertical: true).padding(16).glassBackgroundEffect()
         }
     }
     func detail(_ h: Handoff) -> some View {
@@ -475,7 +487,11 @@ struct BoardView: View {
                 HStack(spacing: 12) {
                     Text("orange = changed · purple = trial · red = wrong · hover any field for its meaning").font(.caption).foregroundStyle(.secondary)
                     Spacer()
-                    if DomainCatalog.all.count > 1 { Button("Next Domain") { engine.nextDomain() } }
+                    if DemoState.on {
+                        Text(engine.demoRunning ? "▶ \(engine.demoStep)" : engine.demoStep).foregroundStyle(.yellow)
+                        Button("Reset demo") { engine.startDemo(auto: false) }.tint(.yellow)
+                        Button("Auto-play") { engine.startDemo(auto: true) }.tint(.yellow).disabled(engine.demoRunning)
+                    } else if DomainCatalog.all.count > 1 { Button("Next Domain") { engine.nextDomain() } }
                     Button("Export") { engine.export() }
                     @Bindable var e = engine
                     Toggle("Environment", isOn: $e.fullImmersion).frame(width: 170)
@@ -537,10 +553,15 @@ struct LauncherView: View {
             Text(engine.config.title).font(.extraLargeTitle2)
             Text(engine.config.agents.filter { $0.tier == 0 }.map(\.name).joined(separator: " · "))
             if engine.config.synthetic { Text(engine.config.terminology.syntheticBanner).foregroundStyle(.yellow) }
-            Button("Enter Crossroads") { Task { await open() } }.font(.title2)
+            HStack(spacing: 20) {
+                Button("Enter Crossroads") { DemoState.on = false; Task { await open() } }
+                Button("Demo") { engine.startDemo(auto: false); Task { await open() } }.tint(.yellow)
+                Button("Demo (auto-play)") { engine.startDemo(auto: true); Task { await open() } }.tint(.orange)
+            }.font(.title2)
+            Text("Demo: 6 scripted SYNTHETIC encounters · needs risk_engine sidecar for BN (else fallback badge)").font(.callout).foregroundStyle(.secondary)
         }
         .padding(40)
-        .task { if ProcessInfo.processInfo.arguments.contains("-autoOpenImmersive") { await open() } }
+        .task { if ProcessInfo.processInfo.arguments.contains("-autoOpenImmersive") || DemoState.on { await open() } }
     }
     private func open() async {
         if case .opened = await openImmersiveSpace(id: "Router") { engine.immersiveOpen = true; dismissWindow(id: "main") }

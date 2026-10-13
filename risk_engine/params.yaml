@@ -1,5 +1,5 @@
 meta:
-  version: 1
+  version: 2
   note: 'ALL numbers are placeholders pending expert review (Wayne). source: placeholder | expert_estimate | literature (citation required only
     for literature).'
 thresholds:
@@ -8,6 +8,11 @@ thresholds:
     source: placeholder
     citation: ''
     note: posterior P(risky) at/above which a negative report is not Reliable
+  doubt_posterior_critical:
+    value: 0.05
+    source: placeholder
+    citation: ''
+    note: lower doubt threshold for truths that can cause a critical miss (stakes-aware reliability)
   critical_severity:
     value: 4
     source: placeholder
@@ -79,6 +84,14 @@ truths:
         source: placeholder
         citation: ''
         note: F 14-50 only
+      uri_abx:
+        value: 0.05
+        source: placeholder
+        citation: ''
+      glp1_weight:
+        value: 0.04
+        source: placeholder
+        citation: ''
     report:
       false_positive:
         value: 0.01
@@ -142,6 +155,14 @@ truths:
         citation: ''
       chest_pain:
         value: 0.03
+        source: placeholder
+        citation: ''
+      uri_abx:
+        value: 0.04
+        source: placeholder
+        citation: ''
+      erectile_dysfunction:
+        value: 0.02
         source: placeholder
         citation: ''
     report:
@@ -475,6 +496,1787 @@ truths:
         value: 0.05
         source: placeholder
         citation: ''
+  pcn_allergy:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Any reaction ever to penicillin or other antibiotics? What happened?
+    prior:
+      uri_abx:
+        value: 0.1
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.15
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.02
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.01
+          source: placeholder
+          citation: ''
+  airway_red_flag:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: Any trouble swallowing your saliva, drooling, muffled voice, can't open your mouth, or short of breath?
+    prior:
+      uri_abx:
+        value: 0.02
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.15
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.1
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.9
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      hedge:
+        p_if_true:
+          value: 0.3
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.03
+          source: placeholder
+          citation: ''
+  nonadherent:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: How many doses did you miss in the last week? (no judgement)
+    prior:
+      med_refill:
+        value: 0.3
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.08
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.35
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.01
+          source: placeholder
+          citation: ''
+  overdue_monitoring:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: When were your last blood tests for this medicine (potassium/kidney, TSH, A1c, INR)?
+    prior:
+      med_refill:
+        value: 0.3
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.3
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.05
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.01
+          source: placeholder
+          citation: ''
+  controlled_misuse:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: 'Asked privately: taking more than prescribed, or getting it elsewhere?'
+    prior:
+      med_refill:
+        value: 0.06
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.08
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.5
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.01
+          source: placeholder
+          citation: ''
+  new_interaction:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Any new medicines, supplements or prescriptions from another doctor?
+    prior:
+      med_refill:
+        value: 0.12
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.25
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.05
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+  masked_symptom:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: Any new symptoms since your last visit — swelling, chest pain, palpitations, weight change?
+    prior:
+      med_refill:
+        value: 0.1
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.08
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.3
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      hedge:
+        p_if_true:
+          value: 0.3
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.03
+          source: placeholder
+          citation: ''
+  mtc_men2:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Anyone in your family with medullary thyroid cancer or MEN2? Any thyroid lumps?
+    prior:
+      glp1_weight:
+        value: 0.02
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.35
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.05
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      hedge:
+        p_if_true:
+          value: 0.4
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.02
+          source: placeholder
+          citation: ''
+  pancreatitis_hx:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Ever had pancreatitis?
+    prior:
+      glp1_weight:
+        value: 0.02
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.15
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.05
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.01
+          source: placeholder
+          citation: ''
+  gallbladder:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Any gallbladder problems or gallstones?
+    prior:
+      glp1_weight:
+        value: 0.08
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.2
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.03
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+  eating_disorder:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: 'Asked privately: ever had an eating disorder, purging or restricting?'
+    prior:
+      glp1_weight:
+        value: 0.06
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.08
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.5
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      hedge:
+        p_if_true:
+          value: 0.3
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.03
+          source: placeholder
+          citation: ''
+  hypoglycemic_meds:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Do you take insulin or a sulfonylurea (glipizide, glyburide)?
+    prior:
+      glp1_weight:
+        value: 0.1
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.15
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.02
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.01
+          source: placeholder
+          citation: ''
+  inflated_bmi:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: Can we confirm weight/height on a measured scale (photo or clinic)?
+    prior:
+      glp1_weight:
+        value: 0.1
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.08
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.4
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      hedge:
+        p_if_true:
+          value: 0.3
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.03
+          source: placeholder
+          citation: ''
+  hormone_cancer:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Any history of breast or endometrial cancer?
+    prior:
+      hrt_menopause:
+        value: 0.03
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.05
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.05
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.01
+          source: placeholder
+          citation: ''
+  vte_stroke_hx:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Any blood clots, stroke or heart attack, ever?
+    prior:
+      hrt_menopause:
+        value: 0.04
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.15
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.05
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.01
+          source: placeholder
+          citation: ''
+  smoker:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: Do you smoke or vape nicotine?
+    prior:
+      hrt_menopause:
+        value: 0.15
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.08
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.3
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      hedge:
+        p_if_true:
+          value: 0.3
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.03
+          source: placeholder
+          citation: ''
+  unexplained_bleeding:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: Any vaginal bleeding after your periods stopped?
+    prior:
+      hrt_menopause:
+        value: 0.06
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.08
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.3
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      hedge:
+        p_if_true:
+          value: 0.3
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.03
+          source: placeholder
+          citation: ''
+  migraine_aura:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Do your migraines come with visual changes or numbness (aura)?
+    prior:
+      hrt_menopause:
+        value: 0.06
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.3
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.02
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+  liver_disease:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Any liver disease?
+    prior:
+      hrt_menopause:
+        value: 0.02
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.15
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.05
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.01
+          source: placeholder
+          citation: ''
+  late_start:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: When was your last period, and what is your age? (>10 y since menopause or ≥60?)
+    prior:
+      hrt_menopause:
+        value: 0.15
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.2
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.02
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+  fertility_desire:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Are you hoping to have children in the next year or two?
+    prior:
+      testosterone:
+        value: 0.25
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.05
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.05
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.95
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+  high_hct:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Recent blood count (hematocrit)?
+    prior:
+      testosterone:
+        value: 0.08
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.3
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.02
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.01
+          source: placeholder
+          citation: ''
+  untreated_osa:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Snoring, stopped breathing at night, daytime sleepiness?
+    prior:
+      testosterone:
+        value: 0.2
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.3
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.05
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      hedge:
+        p_if_true:
+          value: 0.3
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.03
+          source: placeholder
+          citation: ''
+  prostate_issue:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Any prostate problems, raised PSA, urinary symptoms?
+    prior:
+      testosterone:
+        value: 0.08
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.2
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.1
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.01
+          source: placeholder
+          citation: ''
+  cv_risk_high:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: Any heart attack, stroke, or chest pain on exertion?
+    prior:
+      testosterone:
+        value: 0.1
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.1
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.15
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      hedge:
+        p_if_true:
+          value: 0.3
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.03
+          source: placeholder
+          citation: ''
+  not_confirmed_low:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: 'Two early-morning testosterone levels confirmed low? Main goal: symptoms vs gym/performance?'
+    prior:
+      testosterone:
+        value: 0.4
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.08
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.35
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      hedge:
+        p_if_true:
+          value: 0.3
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.03
+          source: placeholder
+          citation: ''
+  nitrate_use:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: 'Asked privately: any nitroglycerin, isosorbide, or ''poppers'' (amyl nitrite)?'
+    prior:
+      erectile_dysfunction:
+        value: 0.04
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.1
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.4
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.9
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.1
+          source: placeholder
+          citation: ''
+          note: record can be stale (old/stopped prescription)
+  exertional_cp:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: Any chest pain or breathlessness with exertion or during sex?
+    prior:
+      erectile_dysfunction:
+        value: 0.06
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.08
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.3
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      hedge:
+        p_if_true:
+          value: 0.3
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.03
+          source: placeholder
+          citation: ''
+  alpha_blocker:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: false
+    question: Taking tamsulosin, doxazosin or other prostate/BP pills?
+    prior:
+      erectile_dysfunction:
+        value: 0.1
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.2
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.02
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      record:
+        p_if_true:
+          value: 0.5
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.01
+          source: placeholder
+          citation: ''
+  recreational_drugs:
+    states:
+    - 'no'
+    - 'yes'
+    sensitive: true
+    question: 'Asked privately: any recreational drugs (cocaine, meth) with sex?'
+    prior:
+      erectile_dysfunction:
+        value: 0.08
+        source: placeholder
+        citation: ''
+    report:
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+      recall_miss:
+        value: 0.08
+        source: placeholder
+        citation: ''
+      conceal_base:
+        value: 0.5
+        source: placeholder
+        citation: ''
+      conceal_context:
+        companion:
+          value: 0.2
+          source: placeholder
+          citation: ''
+        interpreter:
+          value: 0.1
+          source: placeholder
+          citation: ''
+      recall_context:
+        low_literacy:
+          value: 0.1
+          source: placeholder
+          citation: ''
+        elderly_alone:
+          value: 0.15
+          source: placeholder
+          citation: ''
+    ask:
+      reveal:
+        value: 0.8
+        source: placeholder
+        citation: ''
+      false_positive:
+        value: 0.01
+        source: placeholder
+        citation: ''
+    signals:
+      hedge:
+        p_if_true:
+          value: 0.3
+          source: placeholder
+          citation: ''
+        p_if_false:
+          value: 0.03
+          source: placeholder
+          citation: ''
 complaints:
   abdominal_pain:
     truths:
@@ -944,6 +2746,894 @@ complaints:
             value: 0.08
             source: placeholder
             citation: ''
+  uri_abx:
+    truths:
+    - qt_med
+    - pregnant
+    - pcn_allergy
+    - airway_red_flag
+    context:
+    - companion
+    - interpreter
+    - adolescent
+    - low_literacy
+    - elderly_alone
+    plan_flags:
+    - plan_qt_drug
+    - plan_teratogen
+    dx:
+      qt_event:
+        parents:
+        - qt_med
+        - plan_qt_drug
+        severity: 4
+        worst_miss: QT prolongation / torsades (macrolide/FQ + methadone)
+        plan_change: avoid azithro/FQ; ECG for QTc or choose amoxicillin/no abx
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            qt_med: 'no'
+            plan_qt_drug: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            qt_med: 'no'
+            plan_qt_drug: 'yes'
+          p:
+            value: 0.002
+            source: placeholder
+            citation: ''
+        - when:
+            qt_med: 'yes'
+            plan_qt_drug: 'no'
+          p:
+            value: 0.003
+            source: placeholder
+            citation: ''
+        - when:
+            qt_med: 'yes'
+            plan_qt_drug: 'yes'
+          p:
+            value: 0.08
+            source: placeholder
+            citation: ''
+      teratogen_exposure:
+        parents:
+        - pregnant
+        - plan_teratogen
+        severity: 3
+        worst_miss: teratogenic antibiotic (doxy/FQ)
+        plan_change: pregnancy test; pregnancy-safe choice
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            pregnant: 'no'
+            plan_teratogen: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            pregnant: 'no'
+            plan_teratogen: 'yes'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            pregnant: 'yes'
+            plan_teratogen: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            pregnant: 'yes'
+            plan_teratogen: 'yes'
+          p:
+            value: 0.6
+            source: placeholder
+            citation: ''
+      anaphylaxis:
+        parents:
+        - pcn_allergy
+        severity: 5
+        worst_miss: anaphylaxis to beta-lactam
+        plan_change: non-beta-lactam or no antibiotic
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            pcn_allergy: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            pcn_allergy: 'yes'
+          p:
+            value: 0.05
+            source: placeholder
+            citation: ''
+      deep_neck_infection:
+        parents:
+        - airway_red_flag
+        severity: 5
+        worst_miss: epiglottitis / peritonsillar abscess
+        plan_change: ED now (airway)
+        mitigated_by:
+        - escalate
+        cpt:
+        - when:
+            airway_red_flag: 'no'
+          p:
+            value: 0.002
+            source: placeholder
+            citation: ''
+        - when:
+            airway_red_flag: 'yes'
+          p:
+            value: 0.5
+            source: placeholder
+            citation: ''
+    modify_cost:
+      value: 2.0
+      source: placeholder
+      citation: ''
+      note: cost of declining / conditioning / delaying an appropriate request (overrides loss.modify_cost)
+  med_refill:
+    truths:
+    - nonadherent
+    - overdue_monitoring
+    - controlled_misuse
+    - new_interaction
+    - masked_symptom
+    context:
+    - companion
+    - interpreter
+    - adolescent
+    - low_literacy
+    - elderly_alone
+    plan_flags: []
+    dx:
+      unmonitored_toxicity:
+        parents:
+        - overdue_monitoring
+        severity: 4
+        worst_miss: hyperkalemia/AKI on ACEi, INR out of range on warfarin
+        plan_change: labs first (K/Cr, TSH, A1c, INR) before refill
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            overdue_monitoring: 'no'
+          p:
+            value: 0.005
+            source: placeholder
+            citation: ''
+        - when:
+            overdue_monitoring: 'yes'
+          p:
+            value: 0.1
+            source: placeholder
+            citation: ''
+      decompensation:
+        parents:
+        - nonadherent
+        severity: 3
+        worst_miss: uncontrolled disease / decompensation
+        plan_change: adherence plan; reassess dose before refill
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            nonadherent: 'no'
+          p:
+            value: 0.01
+            source: placeholder
+            citation: ''
+        - when:
+            nonadherent: 'yes'
+          p:
+            value: 0.15
+            source: placeholder
+            citation: ''
+      overdose_diversion:
+        parents:
+        - controlled_misuse
+        severity: 5
+        worst_miss: overdose / diversion of controlled substance
+        plan_change: PDMP check; decline early refill; in-person visit
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            controlled_misuse: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            controlled_misuse: 'yes'
+          p:
+            value: 0.2
+            source: placeholder
+            citation: ''
+      interaction_harm:
+        parents:
+        - new_interaction
+        severity: 3
+        worst_miss: new drug interaction
+        plan_change: med reconciliation; adjust
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            new_interaction: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            new_interaction: 'yes'
+          p:
+            value: 0.2
+            source: placeholder
+            citation: ''
+      missed_new_dx:
+        parents:
+        - masked_symptom
+        severity: 4
+        worst_miss: refill masks new problem (e.g. HF, arrhythmia)
+        plan_change: visit before refill
+        mitigated_by:
+        - escalate
+        cpt:
+        - when:
+            masked_symptom: 'no'
+          p:
+            value: 0.002
+            source: placeholder
+            citation: ''
+        - when:
+            masked_symptom: 'yes'
+          p:
+            value: 0.25
+            source: placeholder
+            citation: ''
+    modify_cost:
+      value: 4.0
+      source: placeholder
+      citation: ''
+      note: cost of declining / conditioning / delaying an appropriate request (overrides loss.modify_cost)
+  glp1_weight:
+    truths:
+    - mtc_men2
+    - pancreatitis_hx
+    - gallbladder
+    - pregnant
+    - eating_disorder
+    - hypoglycemic_meds
+    - inflated_bmi
+    context:
+    - companion
+    - interpreter
+    - adolescent
+    - low_literacy
+    - elderly_alone
+    plan_flags: []
+    dx:
+      mtc_contraindication:
+        parents:
+        - mtc_men2
+        severity: 4
+        worst_miss: GLP-1 in MTC/MEN2 family (boxed warning)
+        plan_change: decline GLP-1; alternatives
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            mtc_men2: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            mtc_men2: 'yes'
+          p:
+            value: 0.9
+            source: placeholder
+            citation: ''
+      recurrent_pancreatitis:
+        parents:
+        - pancreatitis_hx
+        severity: 4
+        worst_miss: recurrent pancreatitis
+        plan_change: avoid GLP-1 or specialist review
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            pancreatitis_hx: 'no'
+          p:
+            value: 0.002
+            source: placeholder
+            citation: ''
+        - when:
+            pancreatitis_hx: 'yes'
+          p:
+            value: 0.1
+            source: placeholder
+            citation: ''
+      cholecystitis:
+        parents:
+        - gallbladder
+        severity: 3
+        worst_miss: cholecystitis
+        plan_change: counsel; consider alternative
+        mitigated_by:
+        - modify
+        cpt:
+        - when:
+            gallbladder: 'no'
+          p:
+            value: 0.005
+            source: placeholder
+            citation: ''
+        - when:
+            gallbladder: 'yes'
+          p:
+            value: 0.06
+            source: placeholder
+            citation: ''
+      fetal_exposure:
+        parents:
+        - pregnant
+        severity: 4
+        worst_miss: GLP-1 exposure in pregnancy
+        plan_change: pregnancy test; contraception plan; stop 2 mo before conception
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            pregnant: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            pregnant: 'yes'
+          p:
+            value: 0.9
+            source: placeholder
+            citation: ''
+      ed_relapse:
+        parents:
+        - eating_disorder
+        severity: 4
+        worst_miss: eating-disorder relapse
+        plan_change: decline; behavioral health
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            eating_disorder: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            eating_disorder: 'yes'
+          p:
+            value: 0.4
+            source: placeholder
+            citation: ''
+      hypoglycemia:
+        parents:
+        - hypoglycemic_meds
+        severity: 4
+        worst_miss: hypoglycemia with insulin/SU
+        plan_change: reduce insulin/SU; glucose monitoring
+        mitigated_by:
+        - modify
+        cpt:
+        - when:
+            hypoglycemic_meds: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            hypoglycemic_meds: 'yes'
+          p:
+            value: 0.15
+            source: placeholder
+            citation: ''
+      inappropriate_rx:
+        parents:
+        - inflated_bmi
+        severity: 2
+        worst_miss: prescribed below indication threshold
+        plan_change: verified weight before prescribing
+        mitigated_by:
+        - modify
+        cpt:
+        - when:
+            inflated_bmi: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            inflated_bmi: 'yes'
+          p:
+            value: 0.8
+            source: placeholder
+            citation: ''
+    modify_cost:
+      value: 6.0
+      source: placeholder
+      citation: ''
+      note: cost of declining / conditioning / delaying an appropriate request (overrides loss.modify_cost)
+  hrt_menopause:
+    truths:
+    - hormone_cancer
+    - vte_stroke_hx
+    - smoker
+    - unexplained_bleeding
+    - migraine_aura
+    - liver_disease
+    - late_start
+    context:
+    - companion
+    - interpreter
+    - adolescent
+    - low_literacy
+    - elderly_alone
+    plan_flags: []
+    dx:
+      cancer_progression:
+        parents:
+        - hormone_cancer
+        severity: 5
+        worst_miss: estrogen in hormone-sensitive cancer
+        plan_change: decline systemic HRT; oncology
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            hormone_cancer: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            hormone_cancer: 'yes'
+          p:
+            value: 0.5
+            source: placeholder
+            citation: ''
+      vte_stroke:
+        parents:
+        - vte_stroke_hx
+        - smoker
+        severity: 5
+        worst_miss: VTE / stroke on oral estrogen
+        plan_change: transdermal or non-hormonal; specialist
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            vte_stroke_hx: 'no'
+            smoker: 'no'
+          p:
+            value: 0.002
+            source: placeholder
+            citation: ''
+        - when:
+            vte_stroke_hx: 'no'
+            smoker: 'yes'
+          p:
+            value: 0.006
+            source: placeholder
+            citation: ''
+        - when:
+            vte_stroke_hx: 'yes'
+            smoker: 'no'
+          p:
+            value: 0.08
+            source: placeholder
+            citation: ''
+        - when:
+            vte_stroke_hx: 'yes'
+            smoker: 'yes'
+          p:
+            value: 0.15
+            source: placeholder
+            citation: ''
+      missed_endometrial_ca:
+        parents:
+        - unexplained_bleeding
+        severity: 5
+        worst_miss: undiagnosed endometrial cancer
+        plan_change: evaluate bleeding (US/biopsy) first
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            unexplained_bleeding: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            unexplained_bleeding: 'yes'
+          p:
+            value: 0.1
+            source: placeholder
+            citation: ''
+      aura_stroke:
+        parents:
+        - migraine_aura
+        severity: 4
+        worst_miss: stroke in migraine with aura
+        plan_change: transdermal low-dose; avoid oral
+        mitigated_by:
+        - modify
+        cpt:
+        - when:
+            migraine_aura: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            migraine_aura: 'yes'
+          p:
+            value: 0.02
+            source: placeholder
+            citation: ''
+      hepatotoxicity:
+        parents:
+        - liver_disease
+        severity: 3
+        worst_miss: hepatic decompensation
+        plan_change: LFTs; avoid oral
+        mitigated_by:
+        - modify
+        cpt:
+        - when:
+            liver_disease: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            liver_disease: 'yes'
+          p:
+            value: 0.2
+            source: placeholder
+            citation: ''
+      late_start_cv:
+        parents:
+        - late_start
+        severity: 3
+        worst_miss: CV events starting HRT late
+        plan_change: shared decision; non-hormonal options
+        mitigated_by:
+        - modify
+        cpt:
+        - when:
+            late_start: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            late_start: 'yes'
+          p:
+            value: 0.05
+            source: placeholder
+            citation: ''
+    modify_cost:
+      value: 6.0
+      source: placeholder
+      citation: ''
+      note: cost of declining / conditioning / delaying an appropriate request (overrides loss.modify_cost)
+  testosterone:
+    truths:
+    - fertility_desire
+    - high_hct
+    - untreated_osa
+    - prostate_issue
+    - cv_risk_high
+    - not_confirmed_low
+    context:
+    - companion
+    - interpreter
+    - adolescent
+    - low_literacy
+    - elderly_alone
+    plan_flags: []
+    dx:
+      infertility:
+        parents:
+        - fertility_desire
+        severity: 4
+        worst_miss: testosterone suppresses spermatogenesis
+        plan_change: 'decline TRT; refer (hCG/clomiphene) '
+        mitigated_by:
+        - modify
+        cpt:
+        - when:
+            fertility_desire: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            fertility_desire: 'yes'
+          p:
+            value: 0.9
+            source: placeholder
+            citation: ''
+      polycythemia_thrombosis:
+        parents:
+        - high_hct
+        severity: 4
+        worst_miss: erythrocytosis / thrombosis
+        plan_change: CBC first; hold if Hct >50%
+        mitigated_by:
+        - modify
+        cpt:
+        - when:
+            high_hct: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            high_hct: 'yes'
+          p:
+            value: 0.15
+            source: placeholder
+            citation: ''
+      osa_worsening:
+        parents:
+        - untreated_osa
+        severity: 3
+        worst_miss: worsened untreated OSA
+        plan_change: sleep study first
+        mitigated_by:
+        - modify
+        cpt:
+        - when:
+            untreated_osa: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            untreated_osa: 'yes'
+          p:
+            value: 0.2
+            source: placeholder
+            citation: ''
+      prostate_progression:
+        parents:
+        - prostate_issue
+        severity: 4
+        worst_miss: unrecognized prostate cancer
+        plan_change: PSA/DRE first
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            prostate_issue: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            prostate_issue: 'yes'
+          p:
+            value: 0.08
+            source: placeholder
+            citation: ''
+      cv_event:
+        parents:
+        - cv_risk_high
+        severity: 4
+        worst_miss: CV event
+        plan_change: cardiology review before TRT
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            cv_risk_high: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            cv_risk_high: 'yes'
+          p:
+            value: 0.08
+            source: placeholder
+            citation: ''
+      inappropriate_rx:
+        parents:
+        - not_confirmed_low
+        severity: 2
+        worst_miss: TRT without confirmed hypogonadism
+        plan_change: two AM total T levels first
+        mitigated_by:
+        - modify
+        cpt:
+        - when:
+            not_confirmed_low: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            not_confirmed_low: 'yes'
+          p:
+            value: 0.9
+            source: placeholder
+            citation: ''
+    modify_cost:
+      value: 6.0
+      source: placeholder
+      citation: ''
+      note: cost of declining / conditioning / delaying an appropriate request (overrides loss.modify_cost)
+  erectile_dysfunction:
+    truths:
+    - nitrate_use
+    - exertional_cp
+    - alpha_blocker
+    - recreational_drugs
+    - qt_med
+    context:
+    - companion
+    - interpreter
+    - adolescent
+    - low_literacy
+    - elderly_alone
+    plan_flags: []
+    dx:
+      nitrate_hypotension:
+        parents:
+        - nitrate_use
+        severity: 5
+        worst_miss: 'PDE5 + nitrate: profound hypotension (HARD STOP)'
+        plan_change: do not prescribe PDE5i
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            nitrate_use: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            nitrate_use: 'yes'
+          p:
+            value: 0.6
+            source: placeholder
+            citation: ''
+      missed_cad:
+        parents:
+        - exertional_cp
+        severity: 5
+        worst_miss: 'ED as CV marker: missed CAD'
+        plan_change: cardiac evaluation before PDE5i
+        mitigated_by:
+        - escalate
+        cpt:
+        - when:
+            exertional_cp: 'no'
+          p:
+            value: 0.005
+            source: placeholder
+            citation: ''
+        - when:
+            exertional_cp: 'yes'
+          p:
+            value: 0.3
+            source: placeholder
+            citation: ''
+      orthostatic_syncope:
+        parents:
+        - alpha_blocker
+        severity: 3
+        worst_miss: orthostatic hypotension / syncope
+        plan_change: start low dose, separate timing
+        mitigated_by:
+        - modify
+        cpt:
+        - when:
+            alpha_blocker: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            alpha_blocker: 'yes'
+          p:
+            value: 0.1
+            source: placeholder
+            citation: ''
+      stimulant_event:
+        parents:
+        - recreational_drugs
+        severity: 4
+        worst_miss: stimulant + PDE5 CV event
+        plan_change: counsel; private screen
+        mitigated_by:
+        - modify
+        - escalate
+        cpt:
+        - when:
+            recreational_drugs: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            recreational_drugs: 'yes'
+          p:
+            value: 0.05
+            source: placeholder
+            citation: ''
+      qt_event:
+        parents:
+        - qt_med
+        severity: 2
+        worst_miss: QT interaction (vardenafil)
+        plan_change: choose sildenafil/tadalafil
+        mitigated_by:
+        - modify
+        cpt:
+        - when:
+            qt_med: 'no'
+          p:
+            value: 0.0
+            source: placeholder
+            citation: ''
+        - when:
+            qt_med: 'yes'
+          p:
+            value: 0.05
+            source: placeholder
+            citation: ''
+    modify_cost:
+      value: 4.0
+      source: placeholder
+      citation: ''
+      note: cost of declining / conditioning / delaying an appropriate request (overrides loss.modify_cost)
 loss:
   miss_cost_by_severity:
     '1':

@@ -54,7 +54,7 @@ def validate(p):
             raise ParamError(f"missing section {key}")
     for path, e in iter_entries(p):
         kind = "prob"
-        if path.startswith("loss.miss_cost_by_severity") or path in ("loss.modify_cost", "loss.escalate_cost"):
+        if path.startswith("loss.miss_cost_by_severity") or path in ("loss.modify_cost", "loss.escalate_cost") or (path.startswith("complaints.") and path.endswith(".modify_cost")):
             kind = "cost"
         if path == "thresholds.critical_severity":
             kind = "severity"
