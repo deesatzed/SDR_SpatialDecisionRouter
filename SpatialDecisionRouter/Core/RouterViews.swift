@@ -151,7 +151,15 @@ struct NowCard: View {
         let item = engine.items[h.itemId], t = engine.config.terminology
         let src = engine.agent(h.link.source)?.name ?? h.link.source, dst = engine.agent(h.link.dest)?.name ?? h.link.dest
         let reasons = engine.reasons(h)
+        let rel = engine.reliability(h)
         VStack(alignment: .leading, spacing: 10) {
+            if let t = h.trigger {
+                HStack {
+                    Text("⚠ HARD ESCALATION — \(t)").font(.title2.bold()).foregroundStyle(.white)
+                    Spacer()
+                    Text("fired \(h.firedAt.map { Int(Date().timeIntervalSince($0)) } ?? 0)s ago · reliability analysis bypassed").font(.headline)
+                }.padding(10).background(.red, in: RoundedRectangle(cornerRadius: 10)).gloss("hard trigger")
+            }
             HStack {
                 Text("NOW").font(.headline.bold()).padding(.horizontal, 8).background(.blue, in: Capsule())
                 Text("\(src) → \(dst) · \(h.itemId)").font(.title3).foregroundStyle(.secondary)
@@ -170,6 +178,19 @@ struct NowCard: View {
                     }
                 }
             }
+            if !rel.isEmpty {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("RELIABILITY (key fields)").font(.caption.bold()).foregroundStyle(.secondary).gloss("reliability score")
+                    HStack(spacing: 6) {
+                        ForEach(rel.filter(\.key).prefix(6)) { r in RelChip(r: r) }
+                    }
+                    if let w = rel.compactMap({ f in f.ifWrong.map { (f, $0) } }).max(by: { $0.1.riskHi < $1.1.riskHi }) {
+                        Text("IF WRONG · \(w.0.field): “\(w.0.stated)” → \(w.1.alternative): risk +\(Int(w.1.riskLo * 100))–\(Int(w.1.riskHi * 100))% · worst: \(w.1.worstMiss) · plan: \(w.1.planChange)")
+                            .font(.headline).foregroundStyle(.pink).lineLimit(2).gloss("if wrong")
+                    }
+                    if let a = engine.lastAnswer[h.itemId] { Text("last answer · \(a)").font(.headline).foregroundStyle(.mint) }
+                }
+            }
             HStack(alignment: .firstTextBaseline) {
                 Text(h.link.question).font(.title)
                 Text(h.proposal).font(.extraLargeTitle2.bold())
@@ -183,14 +204,94 @@ struct NowCard: View {
                 else if h.link.answerType == .category { Text("Change… → pick another \(h.link.shortLabel ?? "option") (preview on hover)").font(.headline).foregroundStyle(.blue) }
             }
             HStack(spacing: 14) {
-                Button("Pass ✓") { engine.pass(h.id) }.tint(.green)
+                Button(h.trigger != nil ? "Acknowledge ✓" : (h.link.id == engine.config.review.escalationLink ? "Sign off ✓" : "Pass ✓")) { engine.pass(h.id) }.tint(.green)
                 if h.link.answerType == .binary { Button("Flip") { engine.flip(h.id) }.tint(.orange) }
-                else { Button("Change…") { engine.openRing(h.id) }.tint(.blue) }
+                else if h.trigger == nil { Button("Modify…") { engine.openRing(h.id) }.tint(.blue) }
+                if h.trigger == nil && h.link.id == engine.config.review.escalationLink {
+                    Button("Escalate") { engine.escalate(h.id) }.tint(.red)
+                }
                 Spacer()
-                Button(engine.detailOpen ? "ⓘ Hide details" : "ⓘ Details") { engine.toggleDetail() }.tint(.gray)
+                if !rel.isEmpty {
+                    Button("Reliability") { engine.sideTab = "reliability"; if !engine.detailOpen { engine.toggleDetail() } }.tint(.purple)
+                    Button("Ask next") { engine.sideTab = "ask"; if !engine.detailOpen { engine.toggleDetail() } }.tint(.teal)
+                }
+                Button(engine.detailOpen ? "ⓘ Hide" : "ⓘ Details") { engine.sideTab = "details"; engine.toggleDetail() }.tint(.gray)
             }.font(.title2.bold())
         }
         .frame(width: 880).padding(22).glassBackgroundEffect()
+    }
+}
+
+func relColor(_ s: ReliabilityState) -> Color {
+    switch s { case .reliable: .green; case .notSaid: .gray; case .saidWrong: .orange; case .saidDifferently: .purple }
+}
+struct RelChip: View {
+    let r: FieldReliability
+    var body: some View {
+        Text("\(r.field) \(r.state.short) \(Int(r.score * 100))%").font(.callout.bold()).padding(.horizontal, 8).padding(.vertical, 3)
+            .background(relColor(r.state).opacity(0.55), in: Capsule()).gloss(r.state.rawValue)
+    }
+}
+
+/// Per-field reliability with 4-state re-rating and if-wrong risk.
+struct ReliabilityPanel: View {
+    @Environment(RouterEngine.self) private var engine
+    let h: Handoff
+    var body: some View {
+        VStack(alignment: .leading, spacing: 7) {
+            HStack { Text("Reliability · \(h.itemId)").font(.title2.bold()).gloss("reliability score"); Spacer()
+                     Text("R N W D = re-rate").font(.caption).foregroundStyle(.secondary).gloss("re-rate") }
+            ForEach(engine.reliability(h)) { r in
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack {
+                        Text(r.field + (r.key ? " ★" : "")).font(.headline).frame(width: 110, alignment: .leading)
+                        Text("“\(r.stated)”").font(.callout).lineLimit(1).frame(width: 130, alignment: .leading)
+                        Text("\(Int(r.score * 100))%").font(.callout.monospacedDigit()).frame(width: 44)
+                        ForEach(ReliabilityState.allCases, id: \.self) { st in
+                            Button(st.short) { engine.rerate(h.id, field: r.field, to: st) }
+                                .font(.caption.bold()).tint(r.state == st ? relColor(st) : .gray.opacity(0.4)).gloss(st.rawValue)
+                        }
+                    }
+                    Text(r.state.rawValue + " · " + r.why.prefix(3).joined(separator: " · ")).font(.caption).foregroundStyle(relColor(r.state))
+                    if !r.notAsked.isEmpty { Text("☐ not asked: " + r.notAsked.joined(separator: "; ")).font(.caption).foregroundStyle(.secondary) }
+                    if let w = r.ifWrong {
+                        Text("if wrong → \(w.alternative): risk +\(Int(w.riskLo * 100))–\(Int(w.riskHi * 100))% · worst \(w.worstMiss) · \(w.planChange) · ddx \(w.ddxShift)")
+                            .font(.caption.bold()).foregroundStyle(.pink).gloss("if wrong")
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// Top-3 value-of-information questions; send one.
+struct AskNextPanel: View {
+    @Environment(RouterEngine.self) private var engine
+    let h: Handoff
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Ask next · \(h.itemId)").font(.title2.bold()).gloss("ask next")
+            let qs = engine.askNextList(h)
+            if qs.isEmpty { Text("no high-value questions left").foregroundStyle(.secondary) }
+            ForEach(qs) { q in
+                VStack(alignment: .leading, spacing: 3) {
+                    HStack {
+                        Text(String(format: "VOI %.2f", q.voi)).font(.headline.monospacedDigit()).foregroundStyle(.teal).gloss("VOI")
+                        Text(q.field).font(.headline)
+                        Spacer()
+                        Button("Send") { engine.ask(h.id, q) }.tint(.teal)
+                    }
+                    Text(q.text).font(.callout)
+                    Text(q.rationale).font(.caption).foregroundStyle(.secondary)
+                }
+            }
+            ForEach(Array((engine.itemAsks[h.itemId] ?? []).enumerated()), id: \.offset) { _, a in
+                Text("✉ \(a.field) → \(a.answer)").font(.callout).foregroundStyle(.mint)
+            }
+            if engine.reasons(h).contains(where: { $0.key == "recommend escalation" }) {
+                Text("Critical miss not excluded and info unreliable → recommend Escalate").font(.headline).foregroundStyle(.red).gloss("recommend escalation")
+            }
+        }
     }
 }
 
@@ -214,6 +315,7 @@ struct UpNextStrip: View {
                     Button { engine.makeNow(h.id) } label: {
                         VStack(alignment: .leading, spacing: 3) {
                             HStack {
+                                if h.trigger != nil { Text("⚠").foregroundStyle(.red).font(.headline) }
                                 Text("\(h.itemId) · \(h.link.shortLabel ?? h.link.id)").font(.headline)
                                 Spacer()
                                 Text("\(h.proposal) \(Int(h.confidence * 100))%").font(.headline.monospacedDigit())
@@ -236,7 +338,12 @@ struct SidePanel: View {
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { _ in
             Group {
-                if engine.spotCheckOpen { spot } else if let h = engine.nowHandoff { detail(h) } else { Text("—") }
+                if engine.spotCheckOpen { spot }
+                else if let h = engine.nowHandoff {
+                    if engine.sideTab == "reliability" && !engine.reliability(h).isEmpty { ReliabilityPanel(h: h) }
+                    else if engine.sideTab == "ask" && !engine.reliability(h).isEmpty { AskNextPanel(h: h) }
+                    else { detail(h) }
+                } else { Text("—") }
             }.frame(width: 540).padding(16).glassBackgroundEffect()
         }
     }

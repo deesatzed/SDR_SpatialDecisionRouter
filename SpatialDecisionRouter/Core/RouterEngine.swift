@@ -21,6 +21,8 @@ struct Handoff: Identifiable, Hashable {
     var emittedAtMin: Double = 0  // domain clock
     var preview: String = ""      // what happens if passed
     var altPreview: String?       // what happens if flipped (binary)
+    var trigger: String?          // hard escalation trigger (bypasses reliability analysis)
+    var firedAt: Date?
     static func == (a: Handoff, b: Handoff) -> Bool { a.id == b.id }
     func hash(into h: inout Hasher) { h.combine(id) }
 }
@@ -80,6 +82,12 @@ struct Handoff: Identifiable, Hashable {
     var spotCheckOpen = false
     private var spotRng = SplitMix64(s: 4242)
     var autoPassed = 0
+    // reliability layer
+    var sideTab = "details"                    // details | reliability | ask
+    var itemReRatings: [String: [ReRating]] = [:]
+    var itemAsks: [String: [AskEvent]] = [:]
+    var lastAnswer: [String: String] = [:]     // item id -> last simulated answer
+    var destFor: [String: String] = [:]        // handoff id -> actual destination (alertDest when fired)
     private var reviewerRng = SplitMix64(s: 99)
     private var testNameIdx = 0
     var registryURL: URL { logURL.deletingLastPathComponent().appendingPathComponent("registry-\(config.id)-\(siteId).json") }
@@ -89,7 +97,8 @@ struct Handoff: Identifiable, Hashable {
     init() {
         let a = ProcessInfo.processInfo.arguments
         if let i = a.firstIndex(of: "-speedup"), i + 1 < a.count, let v = Float(a[i + 1]) { speedup = v }
-        let d = DomainCatalog.all[0]()
+        let pick = a.firstIndex(of: "-domain").flatMap { $0 + 1 < a.count ? a[$0 + 1] : nil }
+        let d = DomainCatalog.all.map { $0() }.first { $0.config.id == pick } ?? DomainCatalog.all[0]()
         domain = d
         let site = (a.firstIndex(of: "-site").flatMap { $0 + 1 < a.count ? a[$0 + 1] : nil }) ?? d.config.defaultSite
         siteId = site
@@ -106,6 +115,7 @@ struct Handoff: Identifiable, Hashable {
         }
         reviewerRng = SplitMix64(s: 99); testNameIdx = 0; spotRng = SplitMix64(s: 4242)
         nowId = nil; spotChecks = []; autoPassed = 0; resetDetailTelemetry()
+        itemReRatings = [:]; itemAsks = [:]; lastAnswer = [:]; destFor = [:]; sideTab = "details"
         items = [:]; itemOrder = []; handoffs = []; phase = [:]; progress = [:]; slot = [:]; shownAt = [:]
         routed = [:]; effective = [:]; delivered = [:]; itemStatus = [:]; decisions = []; alertsFired = 0; deliveries = 0
         inbox = Dictionary(uniqueKeysWithValues: d.config.agents.map { ($0.id, 0) })
@@ -154,7 +164,7 @@ struct Handoff: Identifiable, Hashable {
         case .incoming: return simd_mix(agentPosition(h.link.source), s, SIMD3(repeating: smooth(t)))
         case .waiting: return s
         case .outgoing, .delivered:
-            let d = agentPosition(h.link.dest), s = departFrom[h.id] ?? s
+            let d = agentPosition(destFor[h.id] ?? h.link.dest), s = departFrom[h.id] ?? s
             return t < 0.3 ? simd_mix(s, Self.hub, SIMD3(repeating: smooth(t / 0.3)))
                            : simd_mix(Self.hub, d, SIMD3(repeating: smooth((t - 0.3) / 0.7)))
         }
@@ -203,6 +213,10 @@ struct Handoff: Identifiable, Hashable {
                 if p >= 1 { progress[h.id] = 1; phase[h.id] = .delivered; deliver(h) } else { progress[h.id] = p }
             default: break
             }
+        }
+        // hard triggers pre-empt the Now card
+        if let t = waiting.first(where: { $0.trigger != nil }), nowHandoff?.trigger == nil, nowId != t.id {
+            nowId = t.id; shownAt[t.id] = Date(); resetDetailTelemetry()
         }
         if nowHandoff.map({ phase[$0.id] != .waiting }) ?? true {
             nowId = waiting.first?.id; resetDetailTelemetry()
@@ -256,22 +270,38 @@ struct Handoff: Identifiable, Hashable {
 
     private func emit(item: DomainItem, link: LinkSpec) {
         let up = effective[item.id] ?? [:]
-        let p = domain.propose(item: item, link: link, routed: up)
+        var p = domain.propose(item: item, link: link, routed: up)
+        let trig = link.id == config.review.escalationLink ? domain.hardTrigger(item: item) : nil
+        if trig != nil { p = Proposal(answer: config.review.escalateAnswer, confidence: 1.0) }
         let gt = domain.groundTruth(item: item, link: link, routed: up)
         let prio = (1 - p.confidence) * (1 + link.costWeight) + domain.urgency(item: item, link: link, proposal: p.answer)
         let alt = link.answerType == .binary ? link.options.first { $0 != p.answer } : nil
-        let h = Handoff(id: "\(item.id)-\(link.id)", itemId: item.id, link: link, proposal: p.answer, confidence: p.confidence,
+        let h0 = Handoff(id: "\(item.id)-\(link.id)", itemId: item.id, link: link, proposal: p.answer, confidence: p.confidence,
                         groundTruth: gt, upstream: up, capacity: domain.capacitySnapshot(), capacityLine: domain.capacityLine(),
                         priority: prio, createdAt: Date(),
                         reasons: domain.reasons(item: item, link: link, proposal: p.answer, upstream: up), emittedAtMin: domain.now,
                         preview: Review.preview(domain, item, link, p.answer, trial: false),
                         altPreview: alt.map { Review.preview(domain, item, link, $0, trial: false) })
-        slot[h.id] = freeSlot(); phase[h.id] = .incoming; progress[h.id] = 0
-        handoffs.append(h)
+        let h = h0
+        var hh = h
+        if let t = trig {
+            // HARD TRIGGER: bypass reliability analysis, fire escalation now, jump to top of queue
+            hh = Handoff(id: h.id, itemId: h.itemId, link: h.link, proposal: h.proposal, confidence: 1, groundTruth: h.groundTruth,
+                         upstream: h.upstream, capacity: h.capacity, capacityLine: h.capacityLine, priority: 100 + h.priority, createdAt: h.createdAt,
+                         reasons: [ReasonChip(text: "HARD TRIGGER: \(t)", key: "hard trigger", severity: .high)], emittedAtMin: h.emittedAtMin,
+                         preview: "ESCALATED at emission — Alert Team paged; acknowledge", altPreview: nil, trigger: t, firedAt: Date())
+            alertsFired += 1; domain.alertFired(item: item, link: link)
+            if let ad = link.alertDest { destFor[h.id] = ad; lastDelivered[ad] = Date() }
+            lastAction = "⚠ hard trigger \(item.id): \(t) — escalated"
+        }
+        let hfinal = hh
+        slot[hfinal.id] = freeSlot(); phase[hfinal.id] = .incoming; progress[hfinal.id] = 0
+        handoffs.append(hfinal)
     }
 
     private func deliver(_ h: Handoff) {
-        inbox[h.link.dest, default: 0] += 1; deliveries += 1; lastDelivered[h.link.dest] = Date()
+        let dst = destFor[h.id] ?? h.link.dest
+        inbox[dst, default: 0] += 1; deliveries += 1; lastDelivered[dst] = Date()
         guard let item = items[h.itemId] else { return }
         delivered[item.id, default: []].insert(h.link.id)
         let done = delivered[item.id] ?? []
@@ -318,6 +348,36 @@ struct Handoff: Identifiable, Hashable {
         route(id, answer: h.link.options.first { $0 != h.proposal }, gesture: "flip")
     }
     func openRing(_ id: String) { ringFor = id }
+    // MARK: reliability actions (generic)
+    func reliability(_ h: Handoff) -> [FieldReliability] { h.trigger != nil ? [] : (items[h.itemId].map { domain.reliability(item: $0) } ?? []) }
+    func askNextList(_ h: Handoff) -> [VOIQuestion] { h.trigger != nil ? [] : (items[h.itemId].map { domain.askNext(item: $0) } ?? []) }
+    func rerate(_ hid: String, field: String, to state: ReliabilityState) {
+        guard let h = handoffs.first(where: { $0.id == hid }), let item = items[h.itemId] else { return }
+        let from = domain.reliability(item: item).first { $0.field == field }?.state.rawValue ?? "?"
+        domain.rerate(item: item, field: field, state: state)
+        itemReRatings[item.id, default: []].append(ReRating(field: field, from: from, to: state.rawValue, at: Date()))
+        lastAction = "re-rated \(item.id).\(field): \(from) → \(state.rawValue)"
+        refreshItem(item.id)
+    }
+    func ask(_ hid: String, _ q: VOIQuestion) {
+        guard let h = handoffs.first(where: { $0.id == hid }), let item = items[h.itemId],
+              let ans = domain.ask(item: item, questionId: q.id) else { return }
+        itemAsks[item.id, default: []].append(AskEvent(questionId: q.id, field: q.field, question: q.text, voi: q.voi, answer: ans, at: Date()))
+        lastAnswer[item.id] = "\(q.field): \(ans)"; lastAction = "asked \(item.id) \(q.field) (VOI \(String(format: "%.2f", q.voi))) → \(ans)"
+        refreshItem(item.id)
+    }
+    /// re-score an item's waiting handoffs after new information
+    private func refreshItem(_ itemId: String) {
+        guard let old = items[itemId] else { return }
+        let item = domain.refreshed(item: old) ?? old; items[itemId] = item
+        for k in handoffs.indices where handoffs[k].itemId == itemId && [.incoming, .waiting].contains(phase[handoffs[k].id]) && handoffs[k].trigger == nil {
+            let h = handoffs[k]
+            handoffs[k].reasons = domain.reasons(item: item, link: h.link, proposal: h.proposal, upstream: h.upstream)
+            handoffs[k].preview = Review.preview(domain, item, h.link, h.proposal, trial: false)
+        }
+    }
+    func escalate(_ id: String) { route(id, answer: config.review.escalateAnswer, gesture: "escalate") }
+
     /// human pulls an up-next item to the front
     func makeNow(_ id: String) { guard phase[id] == .waiting else { return }; nowId = id; shownAt[id] = Date(); resetDetailTelemetry() }
     func select(_ id: String, _ option: String) { ringFor = nil; route(id, answer: option, gesture: "select") }
@@ -356,6 +416,12 @@ struct Handoff: Identifiable, Hashable {
             if detailOpen { detailOpenedAt = Date() }
         } else { dd.detailOpened = false; dd.sectionsOpened = []; dd.sectionDwell = [:]; dd.detailDwell = 0 }
         dd.spotCheckSampled = false
+        dd.hardTrigger = h.trigger; dd.triggerFiredAt = h.firedAt
+        let rel = domain.reliability(item: item)
+        if !rel.isEmpty || h.trigger != nil {
+            dd.reliability = rel; dd.reRatings = itemReRatings[item.id] ?? []; dd.asks = itemAsks[item.id] ?? []
+            dd.voiOffered = domain.askNext(item: item); dd.hiddenTruth = domain.hiddenTruth(item: item)
+        }
         decisions.append(dd)
         if h.link.answerType == .category {
             // simulated second reviewer (inter-rater consistency) for HITM-added categories
@@ -367,7 +433,10 @@ struct Handoff: Identifiable, Hashable {
         if !ev.isEmpty || isNew { saveRegistry() }
         routed[id] = ans
         effective[item.id, default: [:]][h.link.id] = eff
-        if h.link.firesAlert && !trial && !h.link.alertNegative.contains(eff) { alertsFired += 1; domain.alertFired(item: item, link: h.link) }
+        if h.trigger == nil && h.link.firesAlert && !trial && !h.link.alertNegative.contains(eff) {
+            alertsFired += 1; domain.alertFired(item: item, link: h.link)
+            if let ad = h.link.alertDest { destFor[id] = ad }
+        }
         departFrom[id] = pos
         phase[id] = .outgoing; progress[id] = 0
         if ringFor == id { ringFor = nil }
@@ -436,8 +505,31 @@ struct Handoff: Identifiable, Hashable {
     }
 
     // MARK: test driver
+    /// -testDocReview: re-rate a field (oracle = hidden truth state), send the top ask-next, hold panels for screenshots
+    func testDocReview(_ k: Int, _ h: Handoff) async {
+        if h.trigger != nil { try? await Task.sleep(for: .seconds(3)); return }   // let the red banner be seen, then ack via pass
+        let rel = reliability(h)
+        guard let low = rel.filter({ $0.ifWrong != nil }).max(by: { ($0.ifWrong!.riskHi) < ($1.ifWrong!.riskHi) }) else { return }
+        if k % 4 == 1 || k == 6 {
+            sideTab = "reliability"; if !detailOpen { toggleDetail() }
+            try? await Task.sleep(for: .seconds(k == 6 ? 12 : 1.5))
+            // oracle physician: re-rate the field whose hidden state differs from the system estimate
+            if let m = rel.first(where: { $0.trueState != nil && $0.trueState != $0.state }) { rerate(h.id, field: m.field, to: m.trueState!) }
+            try? await Task.sleep(for: .seconds(k == 6 ? 6 : 1))
+        } else if k % 4 == 3 || k == 10, let q = askNextList(h).first {
+            sideTab = "ask"; if !detailOpen { toggleDetail() }
+            try? await Task.sleep(for: .seconds(k == 10 ? 10 : 1.5))
+            ask(h.id, q)
+            try? await Task.sleep(for: .seconds(k == 10 ? 8 : 1.5))
+        } else if k == 14 {
+            sideTab = "details"; if !detailOpen { toggleDetail() }
+            for s in detailSections(h).map(\.title).prefix(5) { toggleSection(s) }
+            try? await Task.sleep(for: .seconds(10))
+        } else if detailOpen { toggleDetail() }
+    }
     /// -testReview: exercise detail panel sections + spot-check queue (with holds for screenshots)
     func testReviewUI(_ k: Int) async {
+        if ProcessInfo.processInfo.arguments.contains("-testDocReview"), let h = nowHandoff { await testDocReview(k, h); return }
         guard ProcessInfo.processInfo.arguments.contains("-testReview"), let h = nowHandoff else { return }
         let secs = detailSections(h).map(\.title)
         if k % 5 == 2 && !secs.isEmpty {
@@ -472,7 +564,8 @@ struct Handoff: Identifiable, Hashable {
             }
             else if k % 9 == 8 { pass(h.id) }
             else if let gt = h.groundTruth, gt != h.proposal {
-                if h.link.answerType == .binary { flip(h.id) }
+                if gt == config.review.escalateAnswer && h.link.id == config.review.escalationLink { escalate(h.id) }
+                else if h.link.answerType == .binary { flip(h.id) }
                 else { ringFor = h.id; try? await Task.sleep(for: .milliseconds(600)); select(h.id, gt) }
             } else { pass(h.id) }
             k += 1

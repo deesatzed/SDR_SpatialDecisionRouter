@@ -12,6 +12,9 @@ struct ReviewSpec: Codable {
     /// priority = (1-conf)·(1+cost) + waitWeight·wait(domain minutes) + domain urgency
     var waitWeight: Double = 0.02
     var upNextCount: Int = 4
+    /// link whose proposal is replaced by `escalateAnswer` when a hard trigger fires (nil = none)
+    var escalationLink: String?
+    var escalateAnswer: String = "escalate"
     init() {}
     init(from d: Decoder) throws {
         let c = try d.container(keyedBy: CodingKeys.self); let t = ReviewSpec()
@@ -20,6 +23,8 @@ struct ReviewSpec: Codable {
         spotCheckRate = try c.decodeIfPresent(Double.self, forKey: .spotCheckRate) ?? t.spotCheckRate
         waitWeight = try c.decodeIfPresent(Double.self, forKey: .waitWeight) ?? t.waitWeight
         upNextCount = try c.decodeIfPresent(Int.self, forKey: .upNextCount) ?? t.upNextCount
+        escalationLink = try c.decodeIfPresent(String.self, forKey: .escalationLink)
+        escalateAnswer = try c.decodeIfPresent(String.self, forKey: .escalateAnswer) ?? t.escalateAnswer
     }
 }
 

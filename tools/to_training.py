@@ -21,6 +21,45 @@ def load(p):
 
 def kv(d): return ", ".join(f"{k}={v}" for k, v in sorted((d or {}).items())) or "none"
 
+REL_SYSTEM = ("You audit an AI–patient conversation. For each reported field, label it Reliable / Not said / Said wrong / "
+              "Said differently on purpose, using context (age, companion, interpreter, setting, topic sensitivity) and consistency "
+              "with records. Reply JSON {field: state}.")
+ASK_SYSTEM = ("You are the physician reviewing an AI–patient encounter. Choose the single next question with the highest value of "
+              "information (P(field wrong) x plan change x miss severity), or 'escalate' if a critical miss cannot be excluded. Reply JSON "
+              "{\"ask\": <field>|null, \"escalate\": <bool>}.")
+
+def reliability_examples(recs):
+    """One reliability-flagging example per encounter (last decision wins) + one ask-next example per physician question.
+    Labels: hidden truth state (simulator), overridden by the physician re-rating when present (physician label = weight 2)."""
+    by_item = {}
+    for r in recs:
+        if r.get("reliability") is not None and not r.get("hardTrigger"): by_item[r["itemId"]] = r
+    rel, ask = [], []
+    for iid, r in by_item.items():
+        ctx = kv(r.get("context"))
+        rows = r["reliability"]
+        user = (f"{r['displayLine']}\nContext: {ctx}\n" +
+                "Fields:\n" + "\n".join(f"- {f['field']}: stated '{f['stated']}' (why: {'; '.join(f.get('why', []))})" for f in rows))
+        rerated = {x["field"]: x["to"] for x in (r.get("reRatings") or [])}
+        label = {f["field"]: rerated.get(f["field"], f.get("trueState") or f["state"]) for f in rows}
+        rel.append({"messages": [{"role": "system", "content": REL_SYSTEM}, {"role": "user", "content": user},
+                                 {"role": "assistant", "content": json.dumps(label)}],
+                    "weight": 2.0 if rerated else 1.0,
+                    "metadata": {"itemId": iid, "domain": r["domain"], "label_source": "physician+hidden_truth" if rerated else "hidden_truth",
+                                 "system_estimate": {f["field"]: f["state"] for f in rows}, "hiddenTruth": r.get("hiddenTruth")}})
+        for a in (r.get("asks") or []):
+            offered = r.get("voiOffered") or []
+            ask.append({"messages": [{"role": "system", "content": ASK_SYSTEM},
+                                     {"role": "user", "content": user + "\nCandidate questions:\n" + "\n".join(
+                                         f"- {q['field']}: {q['text']} (VOI {q['voi']:.2f})" for q in offered) + f"\n(asked so far: {a['field']})"},
+                                     {"role": "assistant", "content": json.dumps({"ask": a["field"], "escalate": False})}],
+                        "metadata": {"itemId": iid, "voi": a["voi"], "answer": a["answer"], "hiddenTruth": r.get("hiddenTruth")}})
+        if any(x.get("linkId") == "plan" and x.get("routedAnswer") == "escalate" for x in recs if x["itemId"] == iid):
+            ask.append({"messages": [{"role": "system", "content": ASK_SYSTEM}, {"role": "user", "content": user},
+                                     {"role": "assistant", "content": json.dumps({"ask": None, "escalate": True})}],
+                        "metadata": {"itemId": iid, "kind": "escalate"}})
+    return rel, ask
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("log"); ap.add_argument("-o", "--out", default="training_out")
     ap.add_argument("--system", default=DEFAULT_SYSTEM)
@@ -44,6 +83,12 @@ def main():
                     "weight": 2.0 if r["changed"] else 1.0,
                     "metadata": {k: r.get(k) for k in ["domain", "siteId", "registryVersion", "linkId", "gesture", "latency", "priority",
                                                         "groundTruth", "effectiveAnswer", "downstreamOutcome", "distanceFromHead", "neighbors"]}})
+    rel_out, ask_out = reliability_examples(recs)
+    for name, rows in [("reliability_flagging.jsonl", rel_out), ("ask_next.jsonl", ask_out)]:
+        if rows:
+            with open(os.path.join(a.out, name), "w") as f:
+                for o in rows: f.write(json.dumps(o, ensure_ascii=False) + "\n")
+    st["reliability_examples"] = len(rel_out); st["ask_next_examples"] = len(ask_out)
     with open(os.path.join(a.out, "crossroads_chat.jsonl"), "w") as f:
         for o in out: f.write(json.dumps(o, ensure_ascii=False) + "\n")
     s = {"records": len(recs), "examples": len(out), "by_kind": dict(st),

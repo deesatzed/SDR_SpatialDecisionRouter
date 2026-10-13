@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1465DFFC8F8791B37C1ED521 /* ai_doc_review.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */; };
+		1AB6C6774A4D482CD2B42974 /* AIDocReviewDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */; };
 		1B69FB0044A9F5DD4570F908 /* RouterEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */; };
 		2CE4C735CC81C5BCBBC882FB /* ProceduralEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */; };
 		667FA886A8D34AB8886D66D7 /* CategoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DE7620E584197285B2ED27 /* CategoryRegistry.swift */; };
@@ -17,12 +19,15 @@
 		9172DC73E2553E1ABCE1C702 /* ReviewKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */; };
 		91D916D0C39ABA5E80D5B212 /* RoutingDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6457ECA631420CFF502092D6 /* RoutingDecision.swift */; };
 		97503C591D86F58FC7ACC5D9 /* EDReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82719454E70FE69DE11B22E /* EDReview.swift */; };
+		A8E53AF7B06879027699BE32 /* EncounterImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04144225277F2C1929F0B76 /* EncounterImporter.swift */; };
 		B96343F7685B18726254CDDE /* DomainKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */; };
+		BDAEA020D7D88A68A4098DD4 /* ReliabilityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */; };
 		C4600DFA7C310450885D2493 /* RouterViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewKit.swift; sourceTree = "<group>"; };
+		317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ai_doc_review.domain.json; sourceTree = "<group>"; };
 		36AC111D7362BC39421555D4 /* ed_triage.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ed_triage.domain.json; sourceTree = "<group>"; };
 		3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainKit.swift; sourceTree = "<group>"; };
 		6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDCapacity.swift; sourceTree = "<group>"; };
@@ -30,11 +35,14 @@
 		64DE7620E584197285B2ED27 /* CategoryRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRegistry.swift; sourceTree = "<group>"; };
 		67F5D70406C695E977446C41 /* EDTriageDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDTriageDomain.swift; sourceTree = "<group>"; };
 		9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialDecisionRouterApp.swift; sourceTree = "<group>"; };
+		A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIDocReviewDomain.swift; sourceTree = "<group>"; };
 		A82719454E70FE69DE11B22E /* EDReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDReview.swift; sourceTree = "<group>"; };
+		B04144225277F2C1929F0B76 /* EncounterImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncounterImporter.swift; sourceTree = "<group>"; };
 		D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceduralEnvironment.swift; sourceTree = "<group>"; };
 		D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterEngine.swift; sourceTree = "<group>"; };
 		F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterViews.swift; sourceTree = "<group>"; };
+		F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReliabilityKit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -52,6 +60,7 @@
 				64DE7620E584197285B2ED27 /* CategoryRegistry.swift */,
 				3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */,
 				D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */,
+				F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */,
 				1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */,
 				D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */,
 				F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */,
@@ -63,6 +72,7 @@
 		858B67F3D7637C94126B21DB /* Domains */ = {
 			isa = PBXGroup;
 			children = (
+				BBC7BB783659EB3FFAAB8CED /* AIDocReview */,
 				9BD3F5F668CCC9B648B9CE6D /* EDTriage */,
 			);
 			path = Domains;
@@ -77,6 +87,16 @@
 				67F5D70406C695E977446C41 /* EDTriageDomain.swift */,
 			);
 			path = EDTriage;
+			sourceTree = "<group>";
+		};
+		BBC7BB783659EB3FFAAB8CED /* AIDocReview */ = {
+			isa = PBXGroup;
+			children = (
+				317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */,
+				A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */,
+				B04144225277F2C1929F0B76 /* EncounterImporter.swift */,
+			);
+			path = AIDocReview;
 			sourceTree = "<group>";
 		};
 		DB3725A68F45F5D20377362B /* SpatialDecisionRouter */ = {
@@ -153,6 +173,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1465DFFC8F8791B37C1ED521 /* ai_doc_review.domain.json in Resources */,
 				68AD4706054ADD4DC5F75DE8 /* ed_triage.domain.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -164,12 +185,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AB6C6774A4D482CD2B42974 /* AIDocReviewDomain.swift in Sources */,
 				667FA886A8D34AB8886D66D7 /* CategoryRegistry.swift in Sources */,
 				B96343F7685B18726254CDDE /* DomainKit.swift in Sources */,
 				73065D8A731BC61019FD26A2 /* EDCapacity.swift in Sources */,
 				97503C591D86F58FC7ACC5D9 /* EDReview.swift in Sources */,
 				8C13E8EBB20207BA6E8E9D6B /* EDTriageDomain.swift in Sources */,
+				A8E53AF7B06879027699BE32 /* EncounterImporter.swift in Sources */,
 				2CE4C735CC81C5BCBBC882FB /* ProceduralEnvironment.swift in Sources */,
+				BDAEA020D7D88A68A4098DD4 /* ReliabilityKit.swift in Sources */,
 				9172DC73E2553E1ABCE1C702 /* ReviewKit.swift in Sources */,
 				1B69FB0044A9F5DD4570F908 /* RouterEngine.swift in Sources */,
 				C4600DFA7C310450885D2493 /* RouterViews.swift in Sources */,

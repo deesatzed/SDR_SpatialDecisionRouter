@@ -1,0 +1,21 @@
+{
+  "records": 37,
+  "examples": 37,
+  "by_kind": {
+    "pass_through": 29,
+    "override": 8,
+    "human_disagrees_gt": 1,
+    "reliability_examples": 19,
+    "ask_next_examples": 11
+  },
+  "by_link": {
+    "plan": 20,
+    "esi": 17
+  },
+  "outcomes": {
+    "completed-correctly": 20,
+    "completed-after-human-correction": 10,
+    "null": 5,
+    "error-reached-destination": 2
+  }
+}

@@ -27,6 +27,8 @@ struct LinkSpec: Codable, Hashable {
     var shortLabel: String?
     /// downstream preview templates: answer → text ("*" = default); {dest} {answer} substituted
     var previews: [String: String] = [:]
+    /// when an alert fires on this link, the handoff travels here instead of `dest`
+    var alertDest: String?
 }
 
 struct Terminology: Codable {
@@ -123,6 +125,18 @@ struct EngineStats {
     func urgency(item: DomainItem, link: LinkSpec, proposal: String) -> Double
     func downstreamPreview(item: DomainItem, link: LinkSpec, answer: String) -> String?
     func detail(item: DomainItem, section: String) -> [(String, String)]?
+    // reliability layer (defaults in ReliabilityKit.swift)
+    /// hard escalation trigger: bypasses reliability analysis, fires escalation immediately
+    func hardTrigger(item: DomainItem) -> String?
+    func reliability(item: DomainItem) -> [FieldReliability]
+    func askNext(item: DomainItem) -> [VOIQuestion]
+    /// send a question; returns the simulated answer and updates domain state
+    func ask(item: DomainItem, questionId: String) -> String?
+    func rerate(item: DomainItem, field: String, state: ReliabilityState)
+    func hiddenTruth(item: DomainItem) -> [String: String]
+    /// item with updated display after ask/re-rate
+    func refreshed(item: DomainItem) -> DomainItem?
+    func transcript(item: DomainItem) -> [String]
 }
 
 enum DomainLoader {
@@ -136,6 +150,7 @@ enum DomainLoader {
 /// Registry of available domain plug-ins. Adding a domain = add a module + config and register it here.
 enum DomainCatalog {
     @MainActor static let all: [() -> DomainModule] = [
+        { AIDocReviewDomain() },   // default
         { EDTriageDomain() },
     ]
 }
@@ -168,6 +183,7 @@ extension LinkSpec {
         costWeight = try c.decodeIfPresent(Double.self, forKey: .costWeight) ?? 0
         shortLabel = try c.decodeIfPresent(String.self, forKey: .shortLabel)
         previews = try c.decodeIfPresent([String: String].self, forKey: .previews) ?? [:]
+        alertDest = try c.decodeIfPresent(String.self, forKey: .alertDest)
     }
 }
 extension Terminology {

@@ -97,3 +97,9 @@ The engine always adds generic chips: `low confidence` (< 70%), `high error cost
 - [ ] reasons() flags rule conflicts as `.high` so they are never auto-passed
 - [ ] downstreamPreview() or `previews` gives a concrete effect for every option
 - [ ] auto-pass threshold tuned so the human sees the uncertain/costly items (check `decidedBy` mix in the log)
+
+## Reliability layer hooks (optional; see docs/AI_DOC_REVIEW.md)
+`hardTrigger(item:)`, `reliability(item:) -> [FieldReliability]`, `askNext(item:) -> [VOIQuestion]`, `ask(item:questionId:)`,
+`rerate(item:field:state:)`, `hiddenTruth(item:)`, `refreshed(item:)`, `transcript(item:)`. Config keys: `review.escalationLink`,
+`review.escalateAnswer`, `links[].alertDest`. Glossary keys should cover the 4 states: `Reliable`, `Not said`, `Said wrong`,
+`Said differently on purpose`, plus `VOI`, `if wrong`, `re-rate`, `hard trigger`, `recommend escalation`.

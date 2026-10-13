@@ -50,4 +50,12 @@ struct RoutingDecision: Codable, Identifiable {
     var detailDwell: Double?
     var spotCheckSampled: Bool?
     var spotCheckResult: String?             // agree | disagree (human review of an auto-pass)
+    // reliability layer
+    var hardTrigger: String?                 // fired escalation that bypassed reliability analysis
+    var triggerFiredAt: Date?
+    var reliability: [FieldReliability]?     // per field: stated, est. state/score, physician state, if-wrong, HIDDEN truth
+    var reRatings: [ReRating]?
+    var asks: [AskEvent]?
+    var voiOffered: [VOIQuestion]?
+    var hiddenTruth: [String: String]?
 }

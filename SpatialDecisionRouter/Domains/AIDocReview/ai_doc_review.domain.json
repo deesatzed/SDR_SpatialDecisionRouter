@@ -1,0 +1,200 @@
+{
+ "id": "ai_doc_review",
+ "title": "AI Doc Review — Physician in the Middle",
+ "synthetic": true,
+ "defaultSite": "Virtual-ED-A",
+ "terminology": {
+  "itemNoun": "encounter",
+  "itemNounPlural": "encounters",
+  "boardTitle": "AI Encounter Review",
+  "syntheticBanner": "SYNTHETIC encounters — not real patients",
+  "completedLabel": "Reviewed",
+  "historyLabel": "PMH",
+  "capacityLabel": "ED context"
+ },
+ "theme": {
+  "skyTop": [
+   0.82,
+   0.86,
+   0.92
+  ],
+  "skyHorizon": [
+   0.58,
+   0.64,
+   0.74
+  ],
+  "skyBottom": [
+   0.3,
+   0.34,
+   0.42
+  ],
+  "floor": [
+   0.2,
+   0.23,
+   0.29
+  ],
+  "grid": [
+   0.45,
+   0.5,
+   0.62
+  ],
+  "panel": [
+   0.16,
+   0.19,
+   0.25
+  ],
+  "trim": [
+   0.55,
+   0.6,
+   0.85
+  ]
+ },
+ "agents": [
+  {
+   "id": "aitriage",
+   "name": "AI Triage",
+   "role": "ESI from conversation",
+   "tier": 0
+  },
+  {
+   "id": "aiplan",
+   "name": "AI Plan",
+   "role": "ddx + plan/request",
+   "tier": 0
+  },
+  {
+   "id": "reliability",
+   "name": "Reliability Layer",
+   "role": "per-field 4-state",
+   "tier": 0
+  },
+  {
+   "id": "edintake",
+   "name": "ED Intake",
+   "role": "receives ESI",
+   "tier": 1
+  },
+  {
+   "id": "orders",
+   "name": "Orders",
+   "role": "plan released / held",
+   "tier": 1
+  },
+  {
+   "id": "alertteam",
+   "name": "Alert Team",
+   "role": "escalations",
+   "tier": 1
+  }
+ ],
+ "links": [
+  {
+   "id": "esi",
+   "source": "aitriage",
+   "dest": "edintake",
+   "question": "ESI?",
+   "answerType": "category",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+   ],
+   "costWeight": 0.5,
+   "shortLabel": "ESI"
+  },
+  {
+   "id": "plan",
+   "source": "aiplan",
+   "dest": "orders",
+   "question": "Plan?",
+   "answerType": "category",
+   "options": [
+    "sign off",
+    "modify plan",
+    "escalate"
+   ],
+   "firesAlert": true,
+   "alertNegative": [
+    "sign off",
+    "modify plan"
+   ],
+   "costWeight": 0.8,
+   "shortLabel": "Plan",
+   "alertDest": "alertteam"
+  }
+ ],
+ "rulesTable": [
+  "HARD TRIGGERS (bypass reliability): STEMI, stroke, unstable vitals (SBP<90/HR>130/SpO2<90), new AMS → escalate immediately; physician acknowledges",
+  "Reliability states per field: Reliable / Not said / Said wrong / Said differently on purpose",
+  "Score is context-dependent: sensitive topic, companion present, interpreter, adolescent, age≥75 without companion, low literacy, inconsistency with records/transcript",
+  "If-wrong: dangerous alternative → risk range = P(alt)×severity; ddx widens; plan changes",
+  "Ground truth: true ESI/plan from hidden truth (e.g. pregnant+abd pain → ESI 2 + escalate; methadone + azithro/FQ → modify plan)",
+  "VOI = P(field wrong) × plan change × miss severity; top 3 'ask next'"
+ ],
+ "capacity": {
+  "resusRooms": 3,
+  "mainRooms": 12,
+  "fastRooms": 5,
+  "isoRooms": 3,
+  "inpatientBedsPerHour": 2.5,
+  "lwbsAfterMin": 120,
+  "lwbsPerMin": 0.008,
+  "encountersPerHour": 14,
+  "startHour": 9,
+  "minutesPerSecond": 1.0
+ },
+ "review": {
+  "autoPassConfidence": 0.88,
+  "autoPassMaxCost": 0.5,
+  "spotCheckRate": 0.5,
+  "waitWeight": 0.02,
+  "upNextCount": 4,
+  "escalationLink": "plan",
+  "escalateAnswer": "escalate"
+ },
+ "detailSections": [
+  "Transcript",
+  "Context",
+  "Extracted fields",
+  "AI differential (with uncertainty)",
+  "AI triage + plan",
+  "Expected questions not asked",
+  "Capacity snapshot"
+ ],
+ "glossary": {
+  "Reliable": "The reported value is consistent with context and records; likely true.",
+  "Not said": "Omission — including never asked. See 'expected questions not asked' for this complaint.",
+  "Said wrong": "Unintentional error: recall error, misunderstanding, or answered a different question (e.g. via interpreter).",
+  "Said differently on purpose": "Deliberate reframing due to stigma, fear, culture, language or health literacy — substance use, safety at home, adherence, minimized symptoms, pregnancy, sexual history.",
+  "reliability score": "0–100% confidence the stated value is true, from context (age, companion, interpreter, setting, topic sensitivity) and consistency with other fields/records.",
+  "if wrong": "If this field is wrong: the dangerous alternative, the serious-miss risk range (P(alt) × severity), the worst-case miss and how the plan changes.",
+  "VOI": "Value of information = P(field wrong) × expected plan change × miss severity. Higher = ask first.",
+  "ask next": "Send one question to the patient; the answer updates the encounter and re-scores reliability, risk and VOI.",
+  "re-rate": "Physician overrides the field's reliability state (R/N/W/D). Logged as a training label.",
+  "hard trigger": "MI/STEMI, stroke, unstable vitals, AMS: escalation fires immediately and the reliability analysis is bypassed. The physician acknowledges.",
+  "recommend escalation": "A severe miss can't be excluded and the information is unreliable: escalate rather than sign off.",
+  "ESI": "Emergency Severity Index 1 (resuscitation) – 5 (non-urgent).",
+  "confidence": "The AI's self-reported confidence in its proposal.",
+  "priority": "Queue order: uncertainty × error cost + wait + if-wrong risk + hard triggers (top).",
+  "census": "ED rooms occupied/total per area; context for escalation.",
+  "boarding": "Admitted patients still occupying ED rooms.",
+  "abnormal vitals": "Vitals outside safe range.",
+  "low confidence": "AI confidence below 70%.",
+  "high error cost": "A wrong answer on this link is costly.",
+  "waiting": "Minutes waiting in queue.",
+  "auto-pass": "Confident, low-cost items with no high-severity reason are passed automatically; a sample goes to spot-check.",
+  "spot-check": "A random sample of auto-passed items for physician review.",
+  "what happens next": "Downstream effect if you pass or change this proposal.",
+  "Transcript": "Synthetic AI–patient conversation turns.",
+  "Context": "Who/where/how: drives reliability.",
+  "Extracted fields": "What the AI extracted (stated values).",
+  "AI differential (with uncertainty)": "Ranges widen where a low-reliability field could change the diagnosis.",
+  "AI triage + plan": "The AI's ESI and plan/request.",
+  "Expected questions not asked": "Complaint-specific checklist of questions the AI never asked.",
+  "Capacity snapshot": "ED census at emission time.",
+  "trial category": "A reviewer-added category; logged but never changes routing until promoted."
+ },
+ "testNewCategories": {}
+}
