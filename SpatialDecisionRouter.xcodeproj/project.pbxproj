@@ -15,6 +15,7 @@
 		667FA886A8D34AB8886D66D7 /* CategoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DE7620E584197285B2ED27 /* CategoryRegistry.swift */; };
 		68AD4706054ADD4DC5F75DE8 /* ed_triage.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 36AC111D7362BC39421555D4 /* ed_triage.domain.json */; };
 		73065D8A731BC61019FD26A2 /* EDCapacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */; };
+		833F3FE9BD320D99BB280A30 /* LauncherUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C858F324C90313897B77DF /* LauncherUITests.swift */; };
 		8C13E8EBB20207BA6E8E9D6B /* EDTriageDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F5D70406C695E977446C41 /* EDTriageDomain.swift */; };
 		8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
 		9172DC73E2553E1ABCE1C702 /* ReviewKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */; };
@@ -27,11 +28,22 @@
 		C4600DFA7C310450885D2493 /* RouterViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		AE7F021CCE13ED0C8FF01615 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B6BF46D74F81B52ACCD1415F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF3B1F75727CBAC9985DDBB6;
+			remoteInfo = SpatialDecisionRouter;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewKit.swift; sourceTree = "<group>"; };
 		317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ai_doc_review.domain.json; sourceTree = "<group>"; };
 		36AC111D7362BC39421555D4 /* ed_triage.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ed_triage.domain.json; sourceTree = "<group>"; };
 		3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainKit.swift; sourceTree = "<group>"; };
+		45C858F324C90313897B77DF /* LauncherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherUITests.swift; sourceTree = "<group>"; };
 		529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutpatientSpec.swift; sourceTree = "<group>"; };
 		6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDCapacity.swift; sourceTree = "<group>"; };
 		6457ECA631420CFF502092D6 /* RoutingDecision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingDecision.swift; sourceTree = "<group>"; };
@@ -46,6 +58,7 @@
 		D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterEngine.swift; sourceTree = "<group>"; };
 		E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskClient.swift; sourceTree = "<group>"; };
 		F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F407AADF547B37D02BC17A63 /* SpatialDecisionRouterUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SpatialDecisionRouterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterViews.swift; sourceTree = "<group>"; };
 		F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReliabilityKit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -55,8 +68,17 @@
 			isa = PBXGroup;
 			children = (
 				F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */,
+				F407AADF547B37D02BC17A63 /* SpatialDecisionRouterUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		20C936199B19185AB0C5A71A /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				45C858F324C90313897B77DF /* LauncherUITests.swift */,
+			);
+			path = UITests;
 			sourceTree = "<group>";
 		};
 		45BCEB5E97723B454859AD2E /* Core */ = {
@@ -121,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				DB3725A68F45F5D20377362B /* SpatialDecisionRouter */,
+				20C936199B19185AB0C5A71A /* UITests */,
 				13AEE49A568B5C2826A2D767 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -146,6 +169,24 @@
 			productReference = F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F035C9635DC5A67FDC2340F9 /* SpatialDecisionRouterUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE7B193C2178A1C695ACC058 /* Build configuration list for PBXNativeTarget "SpatialDecisionRouterUITests" */;
+			buildPhases = (
+				E052FFD256C3482E75A60EF8 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7BD4533A6F57119839DCB7EA /* PBXTargetDependency */,
+			);
+			name = SpatialDecisionRouterUITests;
+			packageProductDependencies = (
+			);
+			productName = SpatialDecisionRouterUITests;
+			productReference = F407AADF547B37D02BC17A63 /* SpatialDecisionRouterUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -155,6 +196,9 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					F035C9635DC5A67FDC2340F9 = {
+						TestTargetID = CF3B1F75727CBAC9985DDBB6;
+					};
 				};
 			};
 			buildConfigurationList = 21CD7DE5C915BE73BBA791F6 /* Build configuration list for PBXProject "SpatialDecisionRouter" */;
@@ -172,6 +216,7 @@
 			projectRoot = "";
 			targets = (
 				CF3B1F75727CBAC9985DDBB6 /* SpatialDecisionRouter */,
+				F035C9635DC5A67FDC2340F9 /* SpatialDecisionRouterUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -212,9 +257,45 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E052FFD256C3482E75A60EF8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				833F3FE9BD320D99BB280A30 /* LauncherUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		7BD4533A6F57119839DCB7EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF3B1F75727CBAC9985DDBB6 /* SpatialDecisionRouter */;
+			targetProxy = AE7F021CCE13ED0C8FF01615 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		609F29F78ED0AAE14513D544 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouterUITests;
+				SDKROOT = xros;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_TARGET_NAME = SpatialDecisionRouter;
+				XROS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Release;
+		};
 		8AB223DCC69477F4B491290F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -234,6 +315,26 @@
 				XROS_DEPLOYMENT_TARGET = 27.0;
 			};
 			name = Release;
+		};
+		A9009B47132188B18160EF7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouterUITests;
+				SDKROOT = xros;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_TARGET_NAME = SpatialDecisionRouter;
+				XROS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Debug;
 		};
 		ADDB195366C901D76B5E79D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -389,6 +490,15 @@
 			buildConfigurations = (
 				ADDB195366C901D76B5E79D6 /* Debug */,
 				8AB223DCC69477F4B491290F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EE7B193C2178A1C695ACC058 /* Build configuration list for PBXNativeTarget "SpatialDecisionRouterUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9009B47132188B18160EF7C /* Debug */,
+				609F29F78ED0AAE14513D544 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

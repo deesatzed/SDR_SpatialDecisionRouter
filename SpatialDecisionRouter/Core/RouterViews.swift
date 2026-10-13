@@ -3,6 +3,7 @@ import RealityKit
 
 struct CrossroadsView: View {
     @Environment(RouterEngine.self) private var engine
+    @Environment(\.openWindow) private var openWindow
     @State private var root = Entity()
     @State private var builtVersion = -1
     @State private var pulsed: [String: Date] = [:]
@@ -24,6 +25,10 @@ struct CrossroadsView: View {
             Attachment(id: "board") { BoardView() }
         }
         .task { while !Task.isCancelled { try? await Task.sleep(for: .milliseconds(50)); engine.tick(0.05) } }
+        .onAppear { engine.immersiveOpen = true; uiLog.notice("immersive content appeared") }
+        .onDisappear {   // closed by Close button, Digital Crown or system: bring the start window back
+            engine.immersiveOpen = false; uiLog.notice("immersive content disappeared"); openWindow(id: "main")
+        }
         .task {
             let a = ProcessInfo.processInfo.arguments
             if DemoState.on && DemoState.auto { try? await Task.sleep(for: .seconds(3)); await engine.demoPlay(); return }
@@ -495,7 +500,7 @@ struct BoardView: View {
                     Button("Export") { engine.export() }
                     @Bindable var e = engine
                     Toggle("Environment", isOn: $e.fullImmersion).frame(width: 170)
-                    Button("Close") { Task { openWindow(id: "main"); await dismissImmersiveSpace(); engine.immersiveOpen = false } }
+                    Button("Close") { Task { await dismissImmersiveSpace() } }   // onDisappear reopens the start window (exactly once)
                 }.font(.callout)
             }
             .frame(width: 1000).padding(16).glassBackgroundEffect()
@@ -544,26 +549,60 @@ struct CategoriesStrip: View {
     }
 }
 
+import os
+let uiLog = Logger(subsystem: "com.wsatz.SpatialDecisionRouter", category: "launcher")
+
 struct LauncherView: View {
     @Environment(RouterEngine.self) private var engine
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.dismissWindow) private var dismissWindow
+    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    @State private var status = ""
     var body: some View {
         VStack(spacing: 14) {
             Text(engine.config.title).font(.extraLargeTitle2)
             Text(engine.config.agents.filter { $0.tier == 0 }.map(\.name).joined(separator: " · "))
             if engine.config.synthetic { Text(engine.config.terminology.syntheticBanner).foregroundStyle(.yellow) }
             HStack(spacing: 20) {
-                Button("Enter Crossroads") { DemoState.on = false; Task { await open() } }
-                Button("Demo") { engine.startDemo(auto: false); Task { await open() } }.tint(.yellow)
-                Button("Demo (auto-play)") { engine.startDemo(auto: true); Task { await open() } }.tint(.orange)
+                Button("Enter Crossroads") { tap("enter") }
+                Button("Demo") { tap("demo") }.tint(.yellow)
+                Button("Demo (auto-play)") { tap("demoAuto") }.tint(.orange)
             }.font(.title2)
             Text("Demo: 6 scripted SYNTHETIC encounters · needs risk_engine sidecar for BN (else fallback badge)").font(.callout).foregroundStyle(.secondary)
+            if !status.isEmpty { Text(status).font(.headline).foregroundStyle(status.hasPrefix("⚠") ? .red : .secondary) }
         }
         .padding(40)
-        .task { if ProcessInfo.processInfo.arguments.contains("-autoOpenImmersive") || DemoState.on { await open() } }
+        .task {
+            let a = ProcessInfo.processInfo.arguments
+            // -autoTap enter|demo|demoAuto: exercises exactly the button code path (debug/test)
+            if let i = a.firstIndex(of: "-autoTap"), i + 1 < a.count { try? await Task.sleep(for: .seconds(2)); tap(a[i + 1]); return }
+            if a.contains("-autoOpenImmersive") { tap(DemoState.on ? (DemoState.auto ? "demoAuto" : "demo") : "enter") }
+            else if DemoState.on { tap(DemoState.auto ? "demoAuto" : "demo") }
+        }
+    }
+    /// single entry point for buttons AND launch args
+    private func tap(_ which: String) {
+        uiLog.notice("tap \(which, privacy: .public) immersiveOpen=\(engine.immersiveOpen)")
+        status = "tap received (\(which)) — opening…"
+        switch which {
+        case "demo": engine.startDemo(auto: false)
+        case "demoAuto": engine.startDemo(auto: true)
+        default: if DemoState.on { DemoState.on = false; engine.start(AIDocReviewDomain()) }
+        }
+        Task { await open() }
     }
     private func open() async {
-        if case .opened = await openImmersiveSpace(id: "Router") { engine.immersiveOpen = true; dismissWindow(id: "main") }
+        status = "opening immersive space…"
+        if engine.immersiveOpen {   // stale state (space closed by system, or still open): close first, then reopen
+            uiLog.notice("space marked open — dismissing before reopen"); await dismissImmersiveSpace(); engine.immersiveOpen = false
+        }
+        let r = await openImmersiveSpace(id: "Router")
+        uiLog.notice("openImmersiveSpace -> \(String(describing: r), privacy: .public)")
+        switch r {
+        case .opened: engine.immersiveOpen = true; status = ""; dismissWindow(id: "main")
+        case .userCancelled: status = "⚠ immersive space cancelled by system/user — tap again"
+        case .error: status = "⚠ could not open immersive space (another app's space open, or simulator issue) — close other immersive apps and tap again"
+        @unknown default: status = "⚠ immersive space: unexpected result"
+        }
     }
 }

@@ -19,3 +19,26 @@ targets:
       properties:
         NSAppTransportSecurity:
           NSAllowsLocalNetworking: true
+  SpatialDecisionRouterUITests:
+    type: bundle.ui-testing
+    platform: visionOS
+    deploymentTarget: "27.0"
+    sources: [UITests]
+    dependencies:
+      - target: SpatialDecisionRouter
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.wsatz.SpatialDecisionRouterUITests
+        TEST_TARGET_NAME: SpatialDecisionRouter
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_IDENTITY: "-"
+schemes:
+  SpatialDecisionRouter:
+    build:
+      targets:
+        SpatialDecisionRouter: all
+    run:
+      config: Debug
+    test:
+      targets: [SpatialDecisionRouterUITests]
