@@ -508,6 +508,7 @@ struct Handoff: Identifiable, Hashable {
     }
 
     // MARK: demo
+    var boardLarge = UserDefaults.standard.bool(forKey: "boardLarge") { didSet { UserDefaults.standard.set(boardLarge, forKey: "boardLarge") } }
     var demoRunning = false
     var demoStep = ""
     /// Reset demo: fresh deterministic sequence (seeded), optional auto-play.

@@ -12,7 +12,7 @@ final class LauncherUITests: XCTestCase {
         let app = XCUIApplication(); app.launch()
         let b = app.buttons["Enter Crossroads"]
         XCTAssertTrue(b.waitForExistence(timeout: 15)); shot("ui_launcher"); b.tap()
-        let now = app.buttons["Reliability"].firstMatch
+        let now = app.buttons["Rate trust"].firstMatch
         let ok = now.waitForExistence(timeout: 25) || app.staticTexts["NOW"].waitForExistence(timeout: 5)
         shot("ui_after_enter")
         XCTAssertTrue(ok, "immersive content (Now card) did not appear after tapping Enter Crossroads")
@@ -34,5 +34,16 @@ final class LauncherUITests: XCTestCase {
         XCTAssertEqual(app.buttons.matching(identifier: "Demo").count, 1, "duplicate start windows"); b.tap()
         XCTAssertTrue(app.buttons["Reset demo"].waitForExistence(timeout: 25), "re-entering after Close failed")
         sleep(10); shot("ui_reenter_demo")
+    }
+    /// demo polish walk-through (screenshots taken externally): card → option ring → enlarged board → shrink
+    func testDemoPolish() {
+        let app = XCUIApplication(); app.launch()
+        XCTAssertTrue(app.buttons["Demo"].waitForExistence(timeout: 15)); app.buttons["Demo"].tap()
+        XCTAssertTrue(app.buttons["Rate trust"].waitForExistence(timeout: 30)); sleep(8)          // card
+        app.buttons["Modify…"].firstMatch.tap(); sleep(6)                                          // option ring
+        XCTAssertTrue(app.buttons["decline"].waitForExistence(timeout: 5))
+        app.buttons["decline"].tap(); sleep(3)
+        XCTAssertTrue(app.buttons["Enlarge"].waitForExistence(timeout: 10)); app.buttons["Enlarge"].tap(); sleep(7)   // big board
+        if app.buttons["Shrink"].waitForExistence(timeout: 5) { app.buttons["Shrink"].tap(); sleep(2) }   // far overhead board: sim tap may not land
     }
 }

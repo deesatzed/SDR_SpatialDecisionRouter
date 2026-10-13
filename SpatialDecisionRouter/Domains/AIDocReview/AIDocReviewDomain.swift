@@ -157,6 +157,7 @@ enum DRSpec {
                                    "language": e.language, "healthLiteracy": e.literacyLow ? "low" : "adequate",
                                    "aiPlan": e.aiPlan, "vitals": e.vitalsLine]
         for (k, v) in e.fields { f["stated_" + k] = v.stated }
+        f["showCapacity"] = e.cc.isOutpatient ? "no" : "yes"
         f["pmh"] = e.pmh.isEmpty ? "none" : e.pmh.joined(separator: ", ")
         let ctx = [e.channel, e.companion.map { "with \($0)" }, e.interpreter ? "interpreter (\(e.language))" : nil].compactMap { $0 }.joined(separator: " · ")
         return DomainItem(id: e.id, fields: f,

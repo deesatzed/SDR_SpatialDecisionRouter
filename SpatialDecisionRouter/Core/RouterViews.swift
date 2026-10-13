@@ -72,7 +72,7 @@ struct CrossroadsView: View {
         place(att, "now", RouterEngine.nowCard, 1.5)
         place(att, "upnext", RouterEngine.upNextPos, 1.15)
         place(att, "side", RouterEngine.sidePos, 1.15)
-        if let r = att.entity(for: "ring") { r.name = "ringAttachment"; r.isEnabled = false; r.position = [0, 1.45, -1.0]; r.components.set(BillboardComponent()); root.addChild(r) }
+        if let r = att.entity(for: "ring") { r.name = "ringAttachment"; r.isEnabled = false; r.position = [0, 1.02, -1.28]; r.components.set(BillboardComponent()); root.addChild(r) }   // ring below the Now card: never covers its text
         let v = engine.packVersion
         Task { @MainActor in builtVersion = v; pulsed = [:] }
     }
@@ -102,6 +102,13 @@ struct CrossroadsView: View {
         root.findEntity(named: "environment")?.isEnabled = engine.fullImmersion
         root.findEntity(named: "att-side")?.isEnabled = engine.detailOpen || engine.spotCheckOpen
         root.findEntity(named: "ringAttachment")?.isEnabled = engine.ringFor != nil
+        if let b = root.findEntity(named: "att-board") {   // Enlarge: ~2x, closer and lower; Shrink: overhead
+            let big = engine.boardLarge
+            let p: SIMD3<Float> = big ? [0, 2.40, -1.75] : [0, 2.45, -2.05], sc: Float = big ? 2.0 : 1.3
+            if simd_distance(b.position, p) > 0.001 || abs(b.scale.x - sc) > 0.001 {
+                var t = b.transform; t.translation = p; t.scale = [sc, sc, sc]; b.move(to: t, relativeTo: root, duration: 0.35)
+            }
+        }
     }
 }
 
@@ -183,7 +190,9 @@ struct NowCard: View {
             }
             Text(item?.displayLine ?? "").font(.title2).lineLimit(2).gloss("ESI")
             Text("\(t.historyLabel): \(item?.historyLine ?? "none")").font(.title3).foregroundStyle(.yellow).lineLimit(1).gloss("PMH")
-            Text("\(t.capacityLabel): \(h.capacityLine)").font(.headline).foregroundStyle(.cyan).lineLimit(1).gloss("census")
+            if item?.fields["showCapacity"] != "no" {
+                Text("\(t.capacityLabel): \(h.capacityLine)").font(.headline).foregroundStyle(.cyan).lineLimit(1).gloss("census")
+            }
             if !reasons.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("WHY QUEUED").font(.caption.bold()).foregroundStyle(.secondary)
@@ -194,10 +203,13 @@ struct NowCard: View {
             }
             if !rel.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("RELIABILITY (key fields)").font(.caption.bold()).foregroundStyle(.secondary).gloss("reliability score")
-                    HStack(spacing: 6) {
-                        ForEach(rel.filter(\.key).prefix(6)) { r in RelChip(r: r) }
+                    Text("TRUST IN KEY ANSWERS").font(.caption.bold()).foregroundStyle(.secondary).gloss("reliability score")
+                    let keys = Array(rel.filter(\.key).prefix(6))
+                    ForEach(Array(stride(from: 0, to: keys.count, by: 3)), id: \.self) { i in
+                        HStack(spacing: 6) { ForEach(keys[i..<min(i + 3, keys.count)]) { r in RelChip(r: r) } }
                     }
+                    Text("% safe = chance the answer is true · said differently = likely held back on purpose · said wrong = honest mistake · not said = never asked")
+                        .font(.caption).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.7)
                     if let w = rel.compactMap({ f in f.ifWrong.map { (f, $0) } }).max(by: { $0.1.riskHi < $1.1.riskHi }) {
                         Text("IF WRONG · \(w.0.field): “\(w.0.stated)” → \(w.1.alternative): risk \(Int((w.1.riskLo * 100).rounded()))–\(Int((w.1.riskHi * 100).rounded()))% · worst: \(w.1.worstMiss) · plan: \(w.1.planChange)")
                             .font(.headline).foregroundStyle(.pink).lineLimit(2).gloss("if wrong")
@@ -226,7 +238,7 @@ struct NowCard: View {
                 }
                 Spacer()
                 if !rel.isEmpty {
-                    Button("Reliability") { engine.sideTab = "reliability"; if !engine.detailOpen { engine.toggleDetail() } }.tint(.purple)
+                    Button { engine.sideTab = "reliability"; if !engine.detailOpen { engine.toggleDetail() } } label: { Text("Rate trust").lineLimit(1).fixedSize() }.tint(.purple)
                     Button("Ask next") { engine.sideTab = "ask"; if !engine.detailOpen { engine.toggleDetail() } }.tint(.teal)
                 }
                 Button(engine.detailOpen ? "ⓘ Hide" : "ⓘ Details") { engine.sideTab = "details"; engine.toggleDetail() }.tint(.gray)
@@ -236,13 +248,25 @@ struct NowCard: View {
     }
 }
 
+/// human-readable field names for chips
+func fieldLabel(_ f: String) -> String {
+    let m = ["nitrate_use": "nitrates", "alpha_blocker": "alpha-blocker", "exertional_cp": "chest pain on exertion", "recreational_drugs": "recreational drugs",
+             "meds": "medications", "mtc_men2": "family thyroid cancer", "pancreatitis_hx": "pancreatitis history", "eating_disorder": "eating disorder",
+             "hypoglycemic_meds": "insulin / sulfonylurea", "inflated_bmi": "measured weight", "fertility_desire": "fertility plans", "high_hct": "hematocrit",
+             "untreated_osa": "sleep apnea", "prostate_issue": "prostate / PSA", "cv_risk_high": "heart disease", "not_confirmed_low": "confirmed low T",
+             "airway_red_flag": "airway red flags", "nonadherent": "adherence", "overdue_monitoring": "monitoring labs", "controlled_misuse": "controlled-drug use",
+             "new_interaction": "new medicines", "masked_symptom": "new symptoms", "hormone_cancer": "breast / uterine cancer", "vte_stroke_hx": "clots / stroke",
+             "unexplained_bleeding": "post-menopause bleeding", "migraine_aura": "migraine aura", "liver_disease": "liver disease", "late_start": "timing since menopause"]
+    return m[f] ?? f.replacingOccurrences(of: "_", with: " ")
+}
 func relColor(_ s: ReliabilityState) -> Color {
     switch s { case .reliable: .green; case .notSaid: .gray; case .saidWrong: .orange; case .saidDifferently: .purple }
 }
 struct RelChip: View {
     let r: FieldReliability
     var body: some View {
-        Text("\(r.field) \(r.state.short) \(Int(r.score * 100))%").font(.callout.bold()).padding(.horizontal, 8).padding(.vertical, 3)
+        Text(r.state == .notSaid ? "\(fieldLabel(r.field)) · not said" : "\(fieldLabel(r.field)) · \(r.state.spoken) · \(Int((r.score * 100).rounded()))% safe")
+            .font(.callout.bold()).lineLimit(1).fixedSize().padding(.horizontal, 8).padding(.vertical, 3)
             .background(relColor(r.state).opacity(0.55), in: Capsule()).gloss(r.state.rawValue)
     }
 }
@@ -456,7 +480,8 @@ struct BoardView: View {
             let cfg = engine.config, s = engine.stats
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
-                    Text(cfg.terminology.boardTitle).font(.title.bold())
+                    Button { engine.boardLarge.toggle() } label: { Text(cfg.terminology.boardTitle).font(.title.bold()) }.buttonStyle(.plain)
+                    Button(engine.boardLarge ? "Shrink" : "Enlarge") { engine.boardLarge.toggle() }.font(.callout).fixedSize()
                     if cfg.synthetic { Text(cfg.terminology.syntheticBanner).font(.callout.bold()).foregroundStyle(.yellow) }
                     Spacer()
                     Text("site \(engine.siteId) · agent error \(Int(s.agentErrorRate * 100))%").font(.callout).foregroundStyle(.secondary)

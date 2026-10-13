@@ -7,6 +7,7 @@ enum ReliabilityState: String, Codable, CaseIterable, Hashable {
     case notSaid = "Not said"
     case saidWrong = "Said wrong"
     case saidDifferently = "Said differently on purpose"
+    var spoken: String { switch self { case .reliable: "reliable"; case .notSaid: "not said"; case .saidWrong: "said wrong"; case .saidDifferently: "said differently" } }
     var short: String { switch self { case .reliable: "R"; case .notSaid: "N"; case .saidWrong: "W"; case .saidDifferently: "D" } }
 }
 
