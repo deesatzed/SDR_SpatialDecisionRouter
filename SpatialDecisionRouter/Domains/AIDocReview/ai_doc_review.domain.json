@@ -194,7 +194,9 @@
   "AI triage + plan": "The AI's ESI and plan/request.",
   "Expected questions not asked": "Complaint-specific checklist of questions the AI never asked.",
   "Capacity snapshot": "ED census at emission time.",
-  "trial category": "A reviewer-added category; logged but never changes routing until promoted."
+  "trial category": "A reviewer-added category; logged but never changes routing until promoted.",
+  "BN": "Analysis from the local Bayesian-network sidecar (risk_engine, exact inference). Parameters are PLACEHOLDER values pending expert review; labels (very unlikely/unlikely/possible/likely) matter more than the digits.",
+  "fallback": "Sidecar unreachable or complaint not modelled: Swift heuristic reliability/risk (not a probabilistic model)."
  },
  "testNewCategories": {}
 }

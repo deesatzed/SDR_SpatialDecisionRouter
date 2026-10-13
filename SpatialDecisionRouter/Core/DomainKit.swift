@@ -137,6 +137,10 @@ struct EngineStats {
     /// item with updated display after ask/re-rate
     func refreshed(item: DomainItem) -> DomainItem?
     func transcript(item: DomainItem) -> [String]
+    /// which risk engine produced the analysis (e.g. "BN · params: placeholder" / "fallback")
+    func riskBadge(item: DomainItem) -> String?
+    /// item ids whose analysis changed asynchronously (engine re-scores their handoffs)
+    func takeDirty() -> [String]
 }
 
 enum DomainLoader {

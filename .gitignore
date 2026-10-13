@@ -1,3 +1,7 @@
 build/
 *.xcuserstate
 xcuserdata/
+
+risk_engine/.venv/
+__pycache__/
+.pytest_cache/

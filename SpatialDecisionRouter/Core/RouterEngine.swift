@@ -214,6 +214,7 @@ struct Handoff: Identifiable, Hashable {
             default: break
             }
         }
+        for id in domain.takeDirty() { refreshItem(id) }
         // hard triggers pre-empt the Now card
         if let t = waiting.first(where: { $0.trigger != nil }), nowHandoff?.trigger == nil, nowId != t.id {
             nowId = t.id; shownAt[t.id] = Date(); resetDetailTelemetry()

@@ -22,6 +22,7 @@
 		A8E53AF7B06879027699BE32 /* EncounterImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04144225277F2C1929F0B76 /* EncounterImporter.swift */; };
 		B96343F7685B18726254CDDE /* DomainKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */; };
 		BDAEA020D7D88A68A4098DD4 /* ReliabilityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */; };
+		C16E35005F7C1383D31B50E7 /* RiskClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */; };
 		C4600DFA7C310450885D2493 /* RouterViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDCapacity.swift; sourceTree = "<group>"; };
 		6457ECA631420CFF502092D6 /* RoutingDecision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingDecision.swift; sourceTree = "<group>"; };
 		64DE7620E584197285B2ED27 /* CategoryRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRegistry.swift; sourceTree = "<group>"; };
+		6614C41420528AF1F28F5E45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		67F5D70406C695E977446C41 /* EDTriageDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDTriageDomain.swift; sourceTree = "<group>"; };
 		9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialDecisionRouterApp.swift; sourceTree = "<group>"; };
 		A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIDocReviewDomain.swift; sourceTree = "<group>"; };
@@ -40,6 +42,7 @@
 		B04144225277F2C1929F0B76 /* EncounterImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncounterImporter.swift; sourceTree = "<group>"; };
 		D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceduralEnvironment.swift; sourceTree = "<group>"; };
 		D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterEngine.swift; sourceTree = "<group>"; };
+		E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskClient.swift; sourceTree = "<group>"; };
 		F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterViews.swift; sourceTree = "<group>"; };
 		F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReliabilityKit.swift; sourceTree = "<group>"; };
@@ -95,6 +98,7 @@
 				317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */,
 				A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */,
 				B04144225277F2C1929F0B76 /* EncounterImporter.swift */,
+				E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */,
 			);
 			path = AIDocReview;
 			sourceTree = "<group>";
@@ -102,6 +106,7 @@
 		DB3725A68F45F5D20377362B /* SpatialDecisionRouter */ = {
 			isa = PBXGroup;
 			children = (
+				6614C41420528AF1F28F5E45 /* Info.plist */,
 				9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */,
 				45BCEB5E97723B454859AD2E /* Core */,
 				858B67F3D7637C94126B21DB /* Domains */,
@@ -195,6 +200,7 @@
 				2CE4C735CC81C5BCBBC882FB /* ProceduralEnvironment.swift in Sources */,
 				BDAEA020D7D88A68A4098DD4 /* ReliabilityKit.swift in Sources */,
 				9172DC73E2553E1ABCE1C702 /* ReviewKit.swift in Sources */,
+				C16E35005F7C1383D31B50E7 /* RiskClient.swift in Sources */,
 				1B69FB0044A9F5DD4570F908 /* RouterEngine.swift in Sources */,
 				C4600DFA7C310450885D2493 /* RouterViews.swift in Sources */,
 				91D916D0C39ABA5E80D5B212 /* RoutingDecision.swift in Sources */,
@@ -211,6 +217,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGNING_ALLOWED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SpatialDecisionRouter/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -230,6 +237,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGNING_ALLOWED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SpatialDecisionRouter/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

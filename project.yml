@@ -14,3 +14,8 @@ targets:
         SWIFT_VERSION: "5.0"
         CODE_SIGNING_ALLOWED: NO
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+    info:
+      path: SpatialDecisionRouter/Info.plist
+      properties:
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true

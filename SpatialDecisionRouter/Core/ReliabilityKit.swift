@@ -61,4 +61,6 @@ extension DomainModule {
     func hiddenTruth(item: DomainItem) -> [String: String] { [:] }
     func refreshed(item: DomainItem) -> DomainItem? { nil }
     func transcript(item: DomainItem) -> [String] { [] }
+    func riskBadge(item: DomainItem) -> String? { nil }
+    func takeDirty() -> [String] { [] }
 }

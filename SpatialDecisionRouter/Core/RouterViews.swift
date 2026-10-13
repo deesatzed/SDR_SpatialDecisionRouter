@@ -164,6 +164,10 @@ struct NowCard: View {
                 Text("NOW").font(.headline.bold()).padding(.horizontal, 8).background(.blue, in: Capsule())
                 Text("\(src) → \(dst) · \(h.itemId)").font(.title3).foregroundStyle(.secondary)
                 Spacer()
+                if let item = engine.items[h.itemId], let b = engine.domain.riskBadge(item: item) {
+                    Text(b).font(.headline.bold()).padding(.horizontal, 8).padding(.vertical, 2)
+                        .background(b.hasPrefix("BN") ? Color.indigo : Color.gray.opacity(0.6), in: Capsule()).gloss(b.hasPrefix("BN") ? "BN" : "fallback")
+                }
                 Text(String(format: "priority %.2f", engine.livePriority(h))).font(.headline.monospacedDigit()).gloss("priority")
                 if engine.livePriority(h) >= 1.0 { Text("⚑").font(.title2).foregroundStyle(.red).gloss("priority") }
             }
@@ -185,7 +189,7 @@ struct NowCard: View {
                         ForEach(rel.filter(\.key).prefix(6)) { r in RelChip(r: r) }
                     }
                     if let w = rel.compactMap({ f in f.ifWrong.map { (f, $0) } }).max(by: { $0.1.riskHi < $1.1.riskHi }) {
-                        Text("IF WRONG · \(w.0.field): “\(w.0.stated)” → \(w.1.alternative): risk +\(Int(w.1.riskLo * 100))–\(Int(w.1.riskHi * 100))% · worst: \(w.1.worstMiss) · plan: \(w.1.planChange)")
+                        Text("IF WRONG · \(w.0.field): “\(w.0.stated)” → \(w.1.alternative): risk \(Int((w.1.riskLo * 100).rounded()))–\(Int((w.1.riskHi * 100).rounded()))% · worst: \(w.1.worstMiss) · plan: \(w.1.planChange)")
                             .font(.headline).foregroundStyle(.pink).lineLimit(2).gloss("if wrong")
                     }
                     if let a = engine.lastAnswer[h.itemId] { Text("last answer · \(a)").font(.headline).foregroundStyle(.mint) }
@@ -255,7 +259,7 @@ struct ReliabilityPanel: View {
                     Text(r.state.rawValue + " · " + r.why.prefix(3).joined(separator: " · ")).font(.caption).foregroundStyle(relColor(r.state))
                     if !r.notAsked.isEmpty { Text("☐ not asked: " + r.notAsked.joined(separator: "; ")).font(.caption).foregroundStyle(.secondary) }
                     if let w = r.ifWrong {
-                        Text("if wrong → \(w.alternative): risk +\(Int(w.riskLo * 100))–\(Int(w.riskHi * 100))% · worst \(w.worstMiss) · \(w.planChange) · ddx \(w.ddxShift)")
+                        Text("if wrong → \(w.alternative): risk \(Int((w.riskLo * 100).rounded()))–\(Int((w.riskHi * 100).rounded()))% · worst \(w.worstMiss) · \(w.planChange) · ddx \(w.ddxShift)")
                             .font(.caption.bold()).foregroundStyle(.pink).gloss("if wrong")
                     }
                 }

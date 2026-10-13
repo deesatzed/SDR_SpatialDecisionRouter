@@ -98,6 +98,10 @@ enum DRSpec {
     var escalations = 0, triggers = 0, asksSent = 0, rerates = 0, revealed = 0
     var triggerAckWaits: [Double] = []
     var imported: [DREncounter] = []
+    // Bayesian sidecar results (nil → Swift fallback)
+    var bn: [String: BNResult] = [:]
+    var dirty: [String] = []
+    var sidecarSeen = false
 
     init() {
         config = (try? DomainLoader.config(named: "ai_doc_review.domain")) ?? DomainConfig(id: "ai_doc_review", title: "AI Doc Review (config missing)", agents: [], links: [])
@@ -126,6 +130,7 @@ enum DRSpec {
     func nextItem() -> DomainItem? {
         guard !arrivals.isEmpty else { return nil }
         let e = arrivals.removeFirst(); enc[e.id] = e
+        requestBN(e.id)
         return item(e)
     }
 
@@ -227,8 +232,44 @@ enum DRSpec {
         return e
     }
 
-    // MARK: reliability estimate (system view: context + consistency, never the hidden truth)
+    // MARK: Bayesian sidecar
+    func requestBN(_ id: String) {
+        guard let e = enc[id], let body = BNMap.request(e) else { return }
+        Task { @MainActor in
+            if let r = await RiskClient.assess(body) { self.bn[id] = r; self.sidecarSeen = true; self.dirty.append(id) }
+            else { self.bn[id] = nil }
+        }
+    }
+    func takeDirty() -> [String] { defer { dirty = [] }; return dirty }
+    func riskBadge(item: DomainItem) -> String? {
+        guard let e = enc[item.id] else { return nil }
+        if let r = bn[e.id] { return "BN · params: \(r.param_source)" }
+        return BNMap.complaint[e.cc] == nil ? "fallback · no BN for complaint" : "fallback · sidecar \(sidecarSeen ? "pending" : "offline")"
+    }
+
+    /// BN-backed reliability where the sidecar answered; Swift heuristics for the remaining fields.
     func reliabilityList(_ e: DREncounter) -> [FieldReliability] {
+        var base = fallbackReliability(e)
+        guard e.trigger == nil, let r = bn[e.id] else { return base }
+        for t in r.truths {
+            guard let fname = BNMap.field[t.truth], let k = base.firstIndex(where: { $0.field == fname }), let fd = e.fields[fname] else { continue }
+            var f = base[k]
+            f.state = ReliabilityState(rawValue: t.state) ?? f.state
+            f.score = t.report == "pos" || t.answer == "pos" ? 0.95 : max(0.02, 1 - t.posterior)
+            f.why = ["BN: P(\(t.truth)) \(t.label) (\(Int((t.posterior * 100).rounded()))%)", t.why, "params: \(r.param_source)"] + f.why.filter { $0.hasPrefix("inconsistent") }
+            if let p = fd.physician { f.state = p; f.why.insert("physician re-rated", at: 0) }
+            if let w = t.if_wrong, f.state != .reliable || t.posterior >= 0.15 {
+                f.ifWrong = RiskRange(alternative: t.truth == "substance" ? "substance use" : t.truth.replacingOccurrences(of: "_", with: " "),
+                                      pAlt: t.posterior, riskLo: w.low, riskHi: w.high, severity: w.severity, worstMiss: w.worst_miss,
+                                      planChange: w.plan_change, ddxShift: "\(w.dx): now \(w.label_current) · if wrong up to \(w.label_high)")
+            } else { f.ifWrong = nil }
+            base[k] = f
+        }
+        return base
+    }
+
+    // MARK: reliability estimate (system view: context + consistency, never the hidden truth)
+    func fallbackReliability(_ e: DREncounter) -> [FieldReliability] {
         let key = Set(DRSpec.expected[e.cc]!)
         return e.fields.values.sorted { ($0.name) < ($1.name) }.map { fd in
             var why: [String] = []
@@ -382,6 +423,13 @@ enum DRSpec {
     }
     func askNext(item: DomainItem) -> [VOIQuestion] {
         guard let e = enc[item.id], e.trigger == nil else { return [] }
+        if let r = bn[e.id] {
+            return r.voi.compactMap { q -> VOIQuestion? in
+                guard let f = BNMap.field[q.truth], !e.asks.contains(f), q.voi > 0.0005 else { return nil }
+                return VOIQuestion(id: "\(e.id)-\(f)", field: f, text: q.question, voi: q.voi,
+                                   rationale: "BN: expected-loss reduction \(String(format: "%.2f", q.voi)) · P(answer rules out critical) \(Int(q.p_ruleout * 100))%")
+            }.prefix(3).map { $0 }
+        }
         return reliabilityList(e).compactMap { r -> VOIQuestion? in
             guard let w = r.ifWrong, !r.confirmedByAsk, !e.asks.contains(r.field) else { return nil }
             let planChange = w.planChange == "none" ? 0.1 : 1.0
@@ -399,11 +447,12 @@ enum DRSpec {
         fd.asked = true; fd.confirmed = reveal; fd.clue = nil
         if reveal && fd.truth != fd.benign { revealed += 1 }
         e.fields[field] = fd; enc[e.id] = e
+        requestBN(e.id)
         return reveal ? "Pt: \(fd.truth)" : "Pt: \(fd.benign) (hesitant)"
     }
     func rerate(item: DomainItem, field: String, state: ReliabilityState) {
         guard var e = enc[item.id] else { return }
-        e.fields[field]?.physician = state; enc[e.id] = e; rerates += 1
+        e.fields[field]?.physician = state; enc[e.id] = e; rerates += 1; dirty.append(e.id)
     }
     func refreshed(item: DomainItem) -> DomainItem? { enc[item.id].map(self.item) }
 
@@ -428,7 +477,11 @@ enum DRSpec {
             r.append(ReasonChip(text: "\(f.field): \(f.state.rawValue)", key: f.state.rawValue,
                                 severity: (f.ifWrong?.severity ?? 0) >= 4 ? .high : .warn))
         }
-        if rel.contains(where: { ($0.ifWrong?.severity ?? 0) >= 4 && ($0.ifWrong?.pAlt ?? 0) >= 0.2 && !$0.confirmedByAsk && $0.physicianState != .reliable }) {
+        if let b = bn[e.id] {
+            if b.escalation.recommend {
+                r.append(ReasonChip(text: "BN: P(critical miss) \(b.p_critical_label) → recommend escalation", key: "recommend escalation", severity: .high))
+            }
+        } else if rel.contains(where: { ($0.ifWrong?.severity ?? 0) >= 4 && ($0.ifWrong?.pAlt ?? 0) >= 0.2 && !$0.confirmedByAsk && $0.physicianState != .reliable }) {
             r.append(ReasonChip(text: "critical miss not excluded → recommend escalation", key: "recommend escalation", severity: .high))
         }
         if let s = e.sbp, s < 95 { r.append(ReasonChip(text: "SBP \(s)", key: "abnormal vitals", severity: .high)) }
