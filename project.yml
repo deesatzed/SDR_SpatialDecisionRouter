@@ -33,6 +33,47 @@ targets:
         TEST_TARGET_NAME: SpatialDecisionRouter
         SWIFT_VERSION: "5.0"
         CODE_SIGN_IDENTITY: "-"
+  SpatialDecisionRouterPad:
+    # iPad (and Mac via "Designed for iPad"): same sources, flat 2D crossroads (SpatialDecisionRouter/Pad)
+    type: application
+    platform: iOS
+    deploymentTarget: "27.0"
+    sources:
+      - path: SpatialDecisionRouter
+        excludes: [Info.plist]
+    settings:
+      base:
+        PRODUCT_NAME: SpatialDecisionRouter
+        PRODUCT_BUNDLE_IDENTIFIER: com.wsatz.SpatialDecisionRouter.pad
+        TARGETED_DEVICE_FAMILY: "2"
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: YES
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_VERSION: "5.0"
+        CODE_SIGNING_ALLOWED: NO
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+    info:
+      path: SupportFiles/Pad-Info.plist
+      properties:
+        CFBundleDisplayName: SDR
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations~ipad: [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+  SpatialDecisionRouterPadUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "27.0"
+    sources: [UITestsPad]
+    dependencies:
+      - target: SpatialDecisionRouterPad
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.wsatz.SpatialDecisionRouterPadUITests
+        TEST_TARGET_NAME: SpatialDecisionRouterPad
+        TARGETED_DEVICE_FAMILY: "2"
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_IDENTITY: "-"
 schemes:
   SpatialDecisionRouter:
     build:
@@ -42,3 +83,11 @@ schemes:
       config: Debug
     test:
       targets: [SpatialDecisionRouterUITests]
+  SpatialDecisionRouterPad:
+    build:
+      targets:
+        SpatialDecisionRouterPad: all
+    run:
+      config: Debug
+    test:
+      targets: [SpatialDecisionRouterPadUITests]

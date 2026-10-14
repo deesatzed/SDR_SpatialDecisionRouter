@@ -1,4 +1,5 @@
 import SwiftUI
+#if os(visionOS)
 import RealityKit
 
 struct CrossroadsView: View {
@@ -112,6 +113,8 @@ struct CrossroadsView: View {
     }
 }
 
+#endif
+
 /// Glossary-backed hover: highlight + tooltip.
 struct Gloss: ViewModifier {
     @Environment(RouterEngine.self) private var engine
@@ -145,7 +148,7 @@ struct AgentCard: View {
                 Text("\(queued)").font(.title3.bold().monospacedDigit()).frame(minWidth: 30).padding(4)
                     .background(queued > 0 ? Color.orange.opacity(0.8) : Color.white.opacity(0.15), in: Circle()).help("items from this agent waiting in the review queue")
             }
-        }.padding(8).glassBackgroundEffect().opacity(0.85)
+        }.padding(8).sdrPanel().opacity(0.85)
     }
 }
 
@@ -156,7 +159,7 @@ struct NowCard: View {
         TimelineView(.periodic(from: .now, by: 1)) { _ in
             if let h = engine.nowHandoff { content(h) }
             else {
-                Text(DemoState.on && engine.domain.isDemoDone ? "Demo complete · \(engine.autoPassed) auto-passed · Reset demo to replay" : "Queue clear · \(engine.autoPassed) auto-passed").font(.title).padding(30).frame(width: 880).glassBackgroundEffect()
+                Text(DemoState.on && engine.domain.isDemoDone ? "Demo complete · \(engine.autoPassed) auto-passed · Reset demo to replay" : "Queue clear · \(engine.autoPassed) auto-passed").font(.title).padding(30).sdrWidth(880).sdrPanel()
             }
         }
     }
@@ -196,18 +199,26 @@ struct NowCard: View {
             if !reasons.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("WHY QUEUED").font(.caption.bold()).foregroundStyle(.secondary)
+                    #if os(visionOS)
                     ForEach(Array(stride(from: 0, to: reasons.count, by: 3)), id: \.self) { i in
                         HStack(spacing: 6) { ForEach(reasons[i..<min(i + 3, reasons.count)], id: \.self) { Chip(r: $0) } }
                     }
+                    #else
+                    FlowRow { ForEach(reasons, id: \.self) { Chip(r: $0) } }
+                    #endif
                 }
             }
             if !rel.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("TRUST IN KEY ANSWERS").font(.caption.bold()).foregroundStyle(.secondary).gloss("reliability score")
                     let keys = Array(rel.filter(\.key).prefix(6))
+                    #if os(visionOS)
                     ForEach(Array(stride(from: 0, to: keys.count, by: 3)), id: \.self) { i in
                         HStack(spacing: 6) { ForEach(keys[i..<min(i + 3, keys.count)]) { r in RelChip(r: r) } }
                     }
+                    #else
+                    FlowRow { ForEach(keys) { r in RelChip(r: r) } }
+                    #endif
                     Text("% safe = chance the answer is true · said differently = likely held back on purpose · said wrong = honest mistake · not said = never asked")
                         .font(.caption).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.7)
                     if let w = rel.compactMap({ f in f.ifWrong.map { (f, $0) } }).max(by: { $0.1.riskHi < $1.1.riskHi }) {
@@ -219,7 +230,7 @@ struct NowCard: View {
             }
             HStack(alignment: .firstTextBaseline) {
                 Text(h.link.question).font(.title)
-                Text(h.proposal).font(.extraLargeTitle2.bold())
+                Text(h.proposal).font(.sdrHuge.bold())
                 Text("\(Int(h.confidence * 100))%").font(.title2.monospacedDigit()).foregroundStyle(h.confidence < 0.7 ? .orange : .secondary).gloss("confidence")
                 Spacer()
             }
@@ -229,14 +240,16 @@ struct NowCard: View {
                 if let alt = h.altPreview { Text("Flip → \(alt)").font(.title3).foregroundStyle(.orange) }
                 else if h.link.answerType == .category { Text("Change… → pick another \(h.link.shortLabel ?? "option") (preview on hover)").font(.headline).foregroundStyle(.blue) }
             }
-            HStack(spacing: 14) {
+            ActionRow {
                 Button(h.trigger != nil ? "Acknowledge ✓" : (h.link.id == engine.config.review.escalationLink ? "Sign off ✓" : "Pass ✓")) { engine.pass(h.id) }.tint(.green)
                 if h.link.answerType == .binary { Button("Flip") { engine.flip(h.id) }.tint(.orange) }
                 else if h.trigger == nil { Button("Modify…") { engine.openRing(h.id) }.tint(.blue) }
                 if h.trigger == nil && h.link.id == engine.config.review.escalationLink {
                     Button("Escalate") { engine.escalate(h.id) }.tint(.red)
                 }
+                #if os(visionOS)
                 Spacer()
+                #endif
                 if !rel.isEmpty {
                     Button { engine.sideTab = "reliability"; if !engine.detailOpen { engine.toggleDetail() } } label: { Text("Rate trust").lineLimit(1).fixedSize() }.tint(.purple)
                     Button("Ask next") { engine.sideTab = "ask"; if !engine.detailOpen { engine.toggleDetail() } }.tint(.teal)
@@ -244,7 +257,18 @@ struct NowCard: View {
                 Button(engine.detailOpen ? "ⓘ Hide" : "ⓘ Details") { engine.sideTab = "details"; engine.toggleDetail() }.tint(.gray)
             }.font(.title2.bold())
         }
-        .frame(width: 880).padding(22).glassBackgroundEffect()
+        .sdrWidth(880).padding(22).sdrPanel()
+    }
+}
+
+struct ActionRow<C: View>: View {
+    @ViewBuilder var content: C
+    var body: some View {
+        #if os(visionOS)
+        HStack(spacing: 14) { content }
+        #else
+        FlowRow(spacing: 12) { content }
+        #endif
     }
 }
 
@@ -371,7 +395,7 @@ struct UpNextStrip: View {
                 }
                 if q.count > engine.config.review.upNextCount { Text("+\(q.count - engine.config.review.upNextCount) more").font(.callout).foregroundStyle(.secondary) }
             }
-            .frame(width: 470).padding(16).glassBackgroundEffect()
+            .sdrWidth(470).padding(16).sdrPanel()
         }
     }
 }
@@ -389,7 +413,7 @@ struct SidePanel: View {
                     else { detail(h) }
                 } else { Text("—") }
             }.frame(maxWidth: .infinity, alignment: .leading) }
-            .frame(width: 560).frame(maxHeight: 640).fixedSize(horizontal: false, vertical: true).padding(16).glassBackgroundEffect()
+            .sdrWidth(560).sdrMaxHeight(640).padding(16).sdrPanel()
         }
     }
     func detail(_ h: Handoff) -> some View {
@@ -467,14 +491,15 @@ struct OptionRing: View {
             } else {
                 Button("New…") { adding = true }.tint(.purple).font(.headline)
             }
-        }.padding(12).glassBackgroundEffect()
+        }.padding(12).sdrPanel()
     }
 }
 
 struct BoardView: View {
     @Environment(RouterEngine.self) private var engine
-    @Environment(\.openWindow) private var openWindow
+    #if os(visionOS)
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    #endif
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { _ in
             let cfg = engine.config, s = engine.stats
@@ -524,11 +549,13 @@ struct BoardView: View {
                     } else if DomainCatalog.all.count > 1 { Button("Next Domain") { engine.nextDomain() } }
                     Button("Export") { engine.export() }
                     @Bindable var e = engine
+                    #if os(visionOS)
                     Toggle("Environment", isOn: $e.fullImmersion).frame(width: 170)
                     Button("Close") { Task { await dismissImmersiveSpace() } }   // onDisappear reopens the start window (exactly once)
+                    #endif
                 }.font(.callout)
             }
-            .frame(width: 1000).padding(16).glassBackgroundEffect()
+            .sdrWidth(1000).padding(16).sdrPanel()
         }
     }
     private func stat(_ t: String, _ v: String) -> some View {
@@ -577,6 +604,8 @@ struct CategoriesStrip: View {
 import os
 let uiLog = Logger(subsystem: "com.wsatz.SpatialDecisionRouter", category: "launcher")
 
+#if os(visionOS)
+
 struct LauncherView: View {
     @Environment(RouterEngine.self) private var engine
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
@@ -585,7 +614,7 @@ struct LauncherView: View {
     @State private var status = ""
     var body: some View {
         VStack(spacing: 14) {
-            Text(engine.config.title).font(.extraLargeTitle2)
+            Text(engine.config.title).font(.sdrHuge)
             Text(engine.config.agents.filter { $0.tier == 0 }.map(\.name).joined(separator: " · "))
             if engine.config.synthetic { Text(engine.config.terminology.syntheticBanner).foregroundStyle(.yellow) }
             HStack(spacing: 20) {
@@ -631,3 +660,4 @@ struct LauncherView: View {
         }
     }
 }
+#endif

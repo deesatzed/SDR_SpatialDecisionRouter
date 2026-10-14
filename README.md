@@ -44,8 +44,19 @@ screens/                          screenshots, sample routing logs, demo.mp4
   - The app calls `/assess` with a 0.8 s timeout. If the sidecar can't be reached, the app falls back to Swift heuristics, and the card badge reads `fallback`.
 - **Training export.** `tools/to_training.py` converts routing logs (JSONL/JSON) into chat-style fine-tune examples. Overrides are upweighted. Trial-category routes are flagged and excluded from ground-truth accuracy.
 
+## Platforms
+| Platform | Target / scheme | What you get |
+|---|---|---|
+| visionOS 27 (Vision Pro + simulator) | `SpatialDecisionRouter` | Full spatial crossroads in an `ImmersiveSpace` (RealityKit agents, moving handoffs, option ring). |
+| iPadOS 27 | `SpatialDecisionRouterPad` | Flat, touch-first crossroads: Now card, Pass / Modify (category sheet) / Flip / Escalate, Rate trust, Ask next (VOI), escalation banners, review queue sidebar, results board. Split view adapts to landscape and portrait. |
+| macOS ("Designed for iPad") | `SpatialDecisionRouterPad` → *My Mac (Designed for iPad)* | Same iPad app on Apple-silicon Macs. Builds; running needs a signing team set in Xcode. |
+
+Both targets share every source file. visionOS-only code (`ImmersiveSpace`, RealityKit, glass) sits behind `#if os(visionOS)`; the iPad UI is in `SpatialDecisionRouter/Pad/`. The iPad simulator reaches the risk sidecar on `127.0.0.1:8765` just like visionOS.
+
+<p><img src="docs/img/ipad_05_landscape_asknext.jpg" width="49%"> <img src="docs/img/ipad_09_board_landscape.jpg" width="49%"></p>
+
 ## Quickstart
-Requirements: macOS with Xcode 27, the visionOS 27 simulator runtime, xcodegen, and Python 3.
+Requirements: macOS with Xcode 27, the visionOS 27 simulator runtime (and the iOS 27 runtime for iPad), xcodegen, and Python 3.
 ```bash
 xcodegen generate
 xcodebuild -scheme SpatialDecisionRouter -destination 'platform=visionOS Simulator,name=SDR-VisionPro' -derivedDataPath build build
@@ -53,6 +64,7 @@ risk_engine/run_sidecar.sh          # optional; creates .venv, serves 127.0.0.1:
 tools/demo.sh                       # sidecar + simulator + app in demo mode
 tools/demo.sh --auto                # auto-plays the 6 scripted steps
 tools/demo.sh --auto --record 185   # also records screens/demo.mp4
+tools/ipad.sh --demo                # iPad simulator (needs the iOS 27 simulator runtime)
 ```
 A 3–5 minute talk track is in [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md). The app also accepts the launch flags `-demo`, `-noSidecar` and `-forceTrigger`.
 
@@ -65,6 +77,7 @@ python3 tools/to_training.py screens/32_routing_log.jsonl -o out/
 ```bash
 cd risk_engine && .venv/bin/python -m pytest -q       # BN engine
 xcodebuild test -scheme SpatialDecisionRouter -destination 'platform=visionOS Simulator,name=SDR-VisionPro'   # UI tests
+xcodebuild test -scheme SpatialDecisionRouterPad -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M5)'   # iPad UI tests
 ```
 
 ## Disclaimer

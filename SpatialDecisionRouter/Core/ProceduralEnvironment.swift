@@ -1,3 +1,4 @@
+#if os(visionOS)
 import RealityKit
 import UIKit
 
@@ -45,3 +46,4 @@ enum ProceduralEnvironment {
         return try? TextureResource(image: cg, options: .init(semantic: .color))
     }
 }
+#endif
