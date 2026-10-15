@@ -1,0 +1,42 @@
+outcome_id,source,case_id,outcome_value,outcome_source,observed_offset_days,severity_if_wrong
+O-001,synthetic,M001,ESI 2,chart_review,2,major
+O-002,synthetic,M002,ESI 4,chart_review,1,minor
+O-003,synthetic,M003,ESI 2,chart_review,1,critical
+O-004,synthetic,M004,ESI 3,chart_review,1,none
+O-005,synthetic,M005,ESI 4,chart_review,1,none
+O-006,synthetic,M006,ESI 1,chart_review,0,critical
+O-007,synthetic,M007,ESI 4,chart_review,1,minor
+O-008,synthetic,M008,ESI 2,discharge_summary,3,critical
+O-009,synthetic,M009,ESI 3,chart_review,1,none
+O-010,synthetic,M010,ESI 2,chart_review,2,major
+O-011,synthetic,M011,ESI 3,chart_review,2,major
+O-012,synthetic,M012,ESI 2,chart_review,1,critical
+O-013,synthetic,M013,ESI 2,chart_review,1,critical
+O-014,synthetic,T001,treat remotely,followup_call,3,none
+O-015,synthetic,T002,decline request,followup_call,7,major
+O-016,synthetic,T003,in-person visit,chart_review,2,critical
+O-017,synthetic,T004,treat remotely,followup_call,14,none
+O-018,synthetic,T005,treat remotely,followup_call,5,none
+O-019,synthetic,T006,in-person visit,lab_result,4,minor
+O-020,synthetic,T007,in-person visit,chart_review,10,major
+O-021,synthetic,T008,send to ED,discharge_summary,1,critical
+O-022,synthetic,T009,in-person visit,followup_call,7,major
+O-023,synthetic,T010,in-person visit,chart_review,3,critical
+O-024,synthetic,T011,in-person visit,chart_review,10,major
+O-025,synthetic,F001,pause and review,user_followup,30,major
+O-026,synthetic,F002,proceed,bank_statement,30,none
+O-027,synthetic,F003,proceed with changes,bank_statement,30,minor
+O-028,synthetic,F004,decline,user_followup,60,major
+O-029,synthetic,F005,proceed with changes,bank_statement,30,minor
+O-030,synthetic,F007,pause and review,user_followup,30,major
+O-031,synthetic,F008,proceed with changes,bank_statement,30,minor
+O-032,synthetic,F009,decline,user_followup,60,major
+O-033,synthetic,D001,merge,ci_result,1,none
+O-034,synthetic,D002,escalate to security,incident_report,2,critical
+O-035,synthetic,D003,request changes,post_merge_review,1,major
+O-036,synthetic,D004,request changes,post_merge_review,3,minor
+O-037,synthetic,D005,merge,ci_result,0,none
+O-038,synthetic,D006,escalate to security,incident_report,2,critical
+O-039,synthetic,D007,request changes,post_merge_review,1,major
+O-040,synthetic,D008,escalate to security,incident_report,3,critical
+O-041,synthetic,D009,request changes,post_merge_review,3,minor

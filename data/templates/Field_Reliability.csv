@@ -1,0 +1,24 @@
+case_id,source,field,reported_value,true_value,reliability_state,info_source
+M001,synthetic,meds,metformin,metformin,confirmed,patient
+M001,synthetic,symptoms,mild,nausea and diaphoresis,said_wrong,patient
+M003,synthetic,meds,blood thinner,anticoagulant,confirmed,record
+M008,synthetic,symptoms,just a cough,confusion,said_wrong,patient
+M008,synthetic,symptoms,confused since yesterday,confusion,confirmed,companion
+M011,synthetic,substance,,energy drinks daily,not_said,patient
+M013,synthetic,substance,none,none,confirmed,patient
+T001,synthetic,allergies,NKDA,NKDA,confirmed,patient
+T002,synthetic,pregnancy,not planning,trying to conceive,said_differently,patient
+T003,synthetic,meds,none,nitrate,said_wrong,patient
+T006,synthetic,adherence,finished course,stopped early,said_wrong,patient
+T007,synthetic,symptoms,hot flashes,hot flashes,confirmed,patient
+T008,synthetic,symptoms,mild,fever and flank pain,said_wrong,patient
+T009,synthetic,pregnancy,not trying to conceive,,said_differently,patient
+T010,synthetic,meds,,nitrate,not_said,patient
+T011,synthetic,substance,none,,confirmed,patient
+F003,synthetic,income,stable,stable,confirmed,bank_feed
+F004,synthetic,obligations,none,existing car loan,said_wrong,self_report
+F006,synthetic,subscriptions,2,4,said_wrong,self_report
+F009,synthetic,written_terms,yes,,said_differently,self_report
+D004,synthetic,tests_added,yes,no,said_wrong,pr_description
+D007,synthetic,reversible,yes,no,said_wrong,pr_description
+D008,synthetic,scope,internal only,public endpoint,said_wrong,pr_description

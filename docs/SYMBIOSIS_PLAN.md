@@ -203,6 +203,7 @@ flowchart LR
 | WERIAM `labels.jsonl` + signed approvals | Exists; can join observed outcomes |
 | ED triage / tele-doc real outcomes | **Missing** — demo grades are scripted |
 | Unified schema across domains | **Done (M0)** — `DecisionLedger.swift`, signed + hash-chained, all four domains; see `docs/SYMBIOSIS.md` |
+| Case import (faux / de-identified) + with/without-history split | **Done** — `tools/import_cases.py`, templates in `data/templates/`, baseline `tools/case_learning_eval.py`; see `docs/CASE_IMPORT.md` |
 | Anything that actually trains on the logs | **Missing** |
 
 M0 (below) closes the schema and exporter gap first. Status 2026-10-15: M0 and M1 landed (see `docs/SYMBIOSIS.md`);

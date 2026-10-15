@@ -1,0 +1,28 @@
+response_id,source,case_id,subject_key,reviewer_role,human_decision,human_answer,split_rating,latency_ms,rationale_tag
+R-001,synthetic,M001,P0001,nurse,modify,ESI 2,about_right,8400,atypical_presentation
+R-002,synthetic,M002,P0002,nurse,modify,ESI 4,buried_me,5200,known_benign_pattern
+R-003,synthetic,M003,P0003,nurse,escalate,ESI 2,about_right,3100,hard_trigger
+R-004,synthetic,M004,P0004,nurse,pass,ESI 3,about_right,2900,agree
+R-005,synthetic,M005,P0005,physician,pass,ESI 4,about_right,2500,agree
+R-006,synthetic,M006,P0006,physician,escalate,ESI 1,about_right,1800,hard_trigger
+R-007,synthetic,M007,P0002,nurse,modify,ESI 4,overstepped_me,4100,known_benign_pattern
+R-008,synthetic,M008,P0007,nurse,escalate,ESI 2,about_right,3600,hard_trigger
+R-009,synthetic,T001,P0010,clinician,pass,treat remotely,about_right,3000,agree
+R-010,synthetic,T002,P0011,physician,modify,decline request,about_right,9100,said_differently_on_purpose
+R-011,synthetic,T003,P0012,physician,escalate,in-person visit,about_right,4200,hard_trigger
+R-012,synthetic,T004,P0013,clinician,pass,treat remotely,buried_me,2200,agree
+R-013,synthetic,T005,P0014,clinician,pass,treat remotely,about_right,2600,agree
+R-014,synthetic,T006,P0010,clinician,modify,in-person visit,too_abstract,6100,recurrence
+R-015,synthetic,T007,P0015,clinician,pass,treat remotely,,5000,agree
+R-016,synthetic,F001,U0001,self,escalate,pause and review,overstepped_me,12000,hard_trigger
+R-017,synthetic,F002,U0001,self,pass,proceed,about_right,1500,agree
+R-018,synthetic,F003,U0002,advisor,modify,proceed with changes,buried_me,7000,fees
+R-019,synthetic,F004,U0003,advisor,escalate,decline,about_right,9000,hard_trigger
+R-020,synthetic,F005,U0002,self,modify,proceed with changes,about_right,4000,fees
+R-021,synthetic,F006,U0004,self,pass,proceed,about_right,1200,agree
+R-022,synthetic,D001,R0001,engineer,pass,merge,about_right,900,agree
+R-023,synthetic,D002,R0002,security_reviewer,escalate,escalate to security,about_right,2100,hard_trigger
+R-024,synthetic,D003,R0001,engineer,escalate,request changes,about_right,3300,hard_trigger
+R-025,synthetic,D004,R0003,engineer,modify,request changes,overstepped_me,5400,no_tests
+R-026,synthetic,D005,R0001,engineer,pass,merge,about_right,600,agree
+R-027,synthetic,D006,R0002,security_reviewer,escalate,escalate to security,about_right,2500,hard_trigger
