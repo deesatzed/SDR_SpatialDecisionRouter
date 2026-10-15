@@ -80,6 +80,41 @@ struct Handoff: Identifiable, Hashable {
     var aiDepthOpen = false
     var showManifesto = ProcessInfo.processInfo.arguments.contains("-manifesto")
     var ledgerCount: Int { ledger.read().count }
+    // M2 earned-autonomy dials: derived from the signed ledger (seed + dial_change lines)
+    var dialState: [String: SymbiosisContext] = [:]
+    var dialLog: [UnifiedDecisionRecord] = []
+    var lastDialMove: UnifiedDecisionRecord?
+    func loadDials() {
+        let recs = ledger.read()
+        dialState = DialEngine.replay(recs); dialLog = recs.filter { $0.kind == "dial_change" }
+        for (k, c) in dialState { syncDomain(k, c) }
+    }
+    private func syncDomain(_ key: String, _ c: SymbiosisContext) {
+        if let sd = domain as? SymbiosisDomain, key.hasPrefix("symbiosis:") { sd.contexts[String(key.dropFirst(10))] = c }
+    }
+    func dials(_ key: String) -> SymbiosisContext? { dialState[key] ?? DialEngine.seed(for: key) }
+    func dialHistory(_ key: String) -> [DialSnapshot] {
+        let ch = dialLog.filter { $0.domain == key }
+        guard let first = ch.first?.dial_before ?? DialEngine.seed(for: key)?.dials else { return [] }
+        return [first] + ch.compactMap(\.dial_after)
+    }
+    /// evaluate the earned-autonomy rules for one context; a move is a signed `dial_change` ledger line
+    func reviewDials(key: String, contextId: String) {
+        guard let cur = dials(key) else { return }
+        guard let m = DialEngine.evaluate(key: key, current: cur, recs: ledger.read()) else { return }
+        if let r = ledger.append(DialEngine.record(key: key, contextId: contextId, move: m, generation: cur.generation + 1)) {
+            var c = cur; c.dials = m.after; c.generation += 1; dialState[key] = c; syncDomain(key, c); dialLog.append(r); lastDialMove = r
+            lastAction = (m.demotion ? "⚠ dial DEMOTION · " : "dial move · ") + key
+        }
+    }
+    /// reversible: undo the latest dial move of a context (itself a signed dial_change line)
+    func undoLastDialMove(_ key: String) {
+        guard let last = dialLog.last(where: { $0.domain == key }), let back = last.dial_before, let cur = dials(key) else { return }
+        let m = DialMove(before: cur.dials, after: back, reason: "REVERT of dial change \(last.id.prefix(8)) (human undo)", evidence: [last.id], posterior: nil, demotion: false)
+        if let r = ledger.append(DialEngine.record(key: key, contextId: last.context_id, move: m, generation: cur.generation + 1)) {
+            var c = cur; c.dials = back; c.generation += 1; dialState[key] = c; syncDomain(key, c); dialLog.append(r); lastDialMove = r
+        }
+    }
     // review queue
     var nowId: String? { didSet { if oldValue != nowId { aiDepthOpen = false } } }
     var detailOpen = false
@@ -125,7 +160,7 @@ struct Handoff: Identifiable, Hashable {
             registry.merge(persisted: p)
         }
         reviewerRng = SplitMix64(s: 99); testNameIdx = 0; spotRng = SplitMix64(s: 4242)
-        pendingSplit = [:]; splitGiven = [:]; aiDepthOpen = false
+        pendingSplit = [:]; splitGiven = [:]; aiDepthOpen = false; loadDials(); lastDialMove = nil
         nowId = nil; spotChecks = []; autoPassed = 0; resetDetailTelemetry()
         itemReRatings = [:]; itemAsks = [:]; lastAnswer = [:]; destFor = [:]; sideTab = "details"
         items = [:]; itemOrder = []; handoffs = []; phase = [:]; progress = [:]; slot = [:]; shownAt = [:]
@@ -461,7 +496,9 @@ struct Handoff: Identifiable, Hashable {
             + (ev.last.map { " · \($0.op) \($0.category)" } ?? "")
         appendLog(dd)
         let split = pendingSplit.removeValue(forKey: item.id)
-        if let u = ledger.append(.from(dd, ctx: domain.decisionContext(item: item), split: split)) { unified[dd.id] = u }
+        var dctx = domain.decisionContext(item: item)
+        if let cur = dials(dctx.domain) { dctx.dials = cur.dials; dctx.generation = cur.generation }
+        if let u = ledger.append(.from(dd, ctx: dctx, split: split)) { unified[dd.id] = u; reviewDials(key: u.domain, contextId: u.context_id) }
         aiDepthOpen = false
         domain.decided(item: item, link: h.link, answer: eff, latency: dd.latency, by: by)
     }
@@ -482,6 +519,7 @@ struct Handoff: Identifiable, Hashable {
             if let u = unified[d.id] {
                 let src = config.id == "weriam_principal" ? "weriam_teacher (WERIAM observed outcome)" : "late_truth"
                 ledger.append(.amendment(kind: "outcome", ref: u, outcome: RecordOutcome(value: truth, source: src, observed_at: DecisionLedger.iso())))
+                reviewDials(key: u.domain, contextId: u.context_id)
             }
         }
         rewriteLog()

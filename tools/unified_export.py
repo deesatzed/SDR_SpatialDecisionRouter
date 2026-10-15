@@ -6,6 +6,7 @@ Ed25519 signature, folds amendment lines (kind=outcome / split_rating) into thei
 
   finetune/sft.jsonl          chat-style SFT pairs: card context -> the human's decision
   finetune/preference.jsonl   chosen vs rejected where the human changed the agent's pick (outcome-aware)
+  dials/dial_changes.jsonl    every signed earned-autonomy move / demotion / revert (M2), with reason + evidence refs
   rl/rewards.jsonl            outcome-graded reward (+1 / -1; null when no outcome is known). split rating is an
                               auxiliary field only and is NEVER added into `reward` (plan non-negotiable 2)
   replay/<name>/cases.jsonl   frozen, blinded replay set (only decisions with a known outcome; no human label, no outcome)
@@ -223,6 +224,14 @@ def main(argv=None):
             decisions.append(from_legacy(d))
     name = a.replay_name or "replay-" + dt.datetime.now().strftime("%Y%m%d-%H%M%S")
     counts = export(decisions, a.out, name)
+    dial = [r for r in recs if r.get("kind") == "dial_change"]
+    os.makedirs(os.path.join(a.out, "dials"), exist_ok=True)
+    with open(os.path.join(a.out, "dials", "dial_changes.jsonl"), "w", encoding="utf-8") as f:
+        for r in dial:
+            f.write(json.dumps({k: r.get(k) for k in ("id", "timestamp", "domain", "context_id", "generation", "dial_before", "dial_after",
+                                                    "reason", "evidence_refs", "posterior", "escalation_flags", "ledger_hash")},
+                               ensure_ascii=False, sort_keys=True) + "\n")
+    counts["dial_changes"] = len(dial)
     s = {"legacy_skipped_duplicates": dup, "ledger_lines": len(recs), "chain_ok": ok, "problems": probs[:20], "decisions": len(decisions),
          "by_domain": dict(collections.Counter(d["domain"] for d in decisions)),
          "by_kind": dict(collections.Counter(r.get("kind") for r in recs)),

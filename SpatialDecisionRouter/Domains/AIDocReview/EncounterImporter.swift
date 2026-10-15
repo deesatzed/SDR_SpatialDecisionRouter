@@ -34,7 +34,7 @@ enum EncounterImporter {
                                 language: r["language"] ?? "English", literacyLow: r["health_literacy"] == "low",
                                 hr: Int(r["hr"] ?? ""), sbp: Int(r["sbp"] ?? ""), spo2: Int(r["spo2"] ?? ""), temp: Double(r["temp"] ?? ""),
                                 pmh: (r["pmh"] ?? "").split(separator: ";").map { $0.trimmingCharacters(in: .whitespaces) },
-                                aiPlan: r["ai_plan"] ?? "—", aiDdx: DRSpec.ddx[cc]!, arrival: now)
+                                aiPlan: r["ai_plan"] ?? "—", aiDdx: DRSpec.ddx[cc] ?? OPSpec.ddx[cc] ?? [], arrival: now)
             let benign = ["pregnancy": "not pregnant", "meds": "none", "substance": "none", "allergies": "NKDA", "symptoms": "mild",
                           "safety": "safe", "adherence": "adherent", "sexual": "no new partners"]
             for (k, b) in benign {

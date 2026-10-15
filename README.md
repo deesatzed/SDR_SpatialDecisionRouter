@@ -69,8 +69,9 @@ tools/weriam_demo.sh --fresh --auto     # WERIAM bridge + iPad demo; the approva
 ### Symbiosis (human judgment × AI depth)
 Every HITM decision in every domain now lands in one signed, hash-chained **unified decision record**, exportable to
 fine-tune pairs, RL reward rows and frozen replay sets (`tools/unified_export.py`). The Symbiosis domain shows each decision
-as three columns (you hold / bridge / AI holds), takes a second one-tap split rating, and has a four-lens manifesto. Dials are
-seeded placeholders until M2. Spec: [docs/SYMBIOSIS_PLAN.md](docs/SYMBIOSIS_PLAN.md) · built: [docs/SYMBIOSIS.md](docs/SYMBIOSIS.md).
+as three columns (you hold / bridge / AI holds), takes a second one-tap split rating, and has a four-lens manifesto. Dials start
+seeded and move only on outcome-graded ledger evidence (M2: Beta posterior, minimum n, small steps, clinical caps, demotion on
+a critical miss, each move signed and undoable). Spec: [docs/SYMBIOSIS_PLAN.md](docs/SYMBIOSIS_PLAN.md) · built: [docs/SYMBIOSIS.md](docs/SYMBIOSIS.md).
 <p><img src="docs/img/sym_card.jpg" width="49%"> <img src="docs/img/sym_manifesto.jpg" width="49%"></p>
 
 ```bash

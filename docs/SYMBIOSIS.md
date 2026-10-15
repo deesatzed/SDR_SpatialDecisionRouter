@@ -54,3 +54,31 @@ one-tap split presets, four audience lenses). Its file header says Apache-2.0; t
 code is a Swift rewrite, manifesto copy is our own wording (two lines are close paraphrases of Symbiont ideas: "the why and the
 ought" / "the how and the exhaustive what", and "wisdom is what experience teaches that no knowledge base can hold").
 No Symbiont images are used. Confirm with the author before any commercial use.
+
+## M2 — earned-autonomy dials
+- **Rules** (`Core/DialEngine.swift`, pure functions, unit-tested): evidence = decisions of a context since its last dial change
+  that have an **observed outcome** in the ledger; success = the **agent's** proposal matched the outcome.
+  Posterior Beta(1+s, 1+f), 90% interval by normal approximation.
+  - rise: n ≥ 5 and interval low ≥ 0.6 → autonomy +5, deference −5
+  - lower: n ≥ 5 and interval high ≤ 0.5 → autonomy −5, deference +5
+  - **demotion:** any critical miss (agent wrong where a hard trigger / escalation applied, or on a card marked
+    `severity=critical`) → autonomy −15, deference +15, immediately, no minimum n
+  - split ratings may nudge detail (buried me +5 / too abstract −5) or challenge (overstepped me −5) only alongside a graded
+    window of n ≥ 5 and with ≥ 3 ratings of one kind; split ratings alone never move anything; rewards stay outcome-based
+  - caps applied after every move (clinical: autonomy ≤ 40, deference ≥ 80); no-op moves write nothing
+  - **thresholds are design placeholders**, not validated
+- **Signed:** every move is a `kind=dial_change` ledger line with `dial_before/after`, `reason`, `evidence_refs`, `posterior`
+  (`escalation_flags: ["demotion"]` for demotions). Current dials = seed + replay of those lines, so they persist and are auditable.
+- **Reversible:** "Undo move" writes a new signed `dial_change` (REVERT) restoring the previous dials.
+- **Applies to every domain** keyed by unified domain id (ED triage, tele-doc, WERIAM, symbiosis:<area>); decisions record the
+  current dials. WERIAM moves on its teacher outcomes as they arrive.
+- **UI:** dial gauge + autonomy/deference sparkline (history from the ledger) + "Why it moved" line with n / mean / interval.
+- **Export:** `dials/dial_changes.jsonl` in `tools/unified_export.py`.
+- **Demo:** the Symbiosis demo now runs finance first (5 correct graded calls → earned rise) then ED triage (SYM-ED-3 critical
+  miss → demotion shown on SYM-ED-4). `tools/symbiosis_demo.sh --auto --fresh-ledger --export`.
+
+## Case import hooks
+- `-importItems <dir>` (dir = `tools/import_cases.py --out`): Symbiosis loads `items/personal_finance.json` (options mapped by
+  closest fit, shown on the card; outcomes from `decisions_imported.jsonl`). `tools/symbiosis_demo.sh --import=<dir>`.
+- `-importCSV <dir>/encounters.csv` loads in AI tele-doc (fixed a crash on outpatient complaints in `EncounterImporter`).
+- ED triage is **not** wired: its items come from a capacity/queue simulation with several linked decisions per patient.

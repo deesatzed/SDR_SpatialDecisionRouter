@@ -43,7 +43,8 @@ import Foundation
 
     func reset(seed: UInt64) {
         now = 0; completedIds = []; counts = [:]; cards = [:]; issued = 0; decidedN = 0
-        let all = Self.seed
+        // finance first (earned rise shows mid-demo), then ED triage (critical miss → demotion shows on the last ED card)
+        let all = (Self.imported() ?? []) + Self.seed.filter { $0.area == "personal_finance" } + Self.seed.filter { $0.area != "personal_finance" }
         for k in all { cards[k.id] = k }
         order = all.map(\.id)
         queue = all.enumerated().map { i, k in item(k, arrival: Double(i)) }
@@ -54,7 +55,8 @@ import Foundation
                                    "human_judgment": k.humanJudgment, "human_question": k.humanQuestion,
                                    "bridge_architecture": k.bridgeArchitecture, "bridge_checkpoint": k.bridgeCheckpoint, "bridge_workflow": k.bridgeWorkflow,
                                    "ai_distilled": k.aiDistilled, "ai_detail": k.aiDetail.joined(separator: "\n"), "ai_edge": k.aiEdgeCases.joined(separator: "\n"),
-                                   "plan": k.planText, "alternative": k.alternativeText, "demo_split": k.demoSplit.rawValue, "showCapacity": "yes"]
+                                   "plan": k.planText, "alternative": k.alternativeText, "demo_split": k.demoSplit.rawValue, "showCapacity": "yes",
+                                   "severity": k.severity ?? "normal", "origin": k.origin]
         return DomainItem(id: k.id, fields: f, displayLine: "\(ctx.title) · \(k.title)", shortLine: "\(ctx.title): \(k.title)",
                           historyLine: k.situation, arrivalTime: arrival)
     }
@@ -83,7 +85,7 @@ import Foundation
     }
     func area(_ item: DomainItem) -> SymbiosisContext? { item.fields["area"].flatMap { contexts[$0] } }
     func capacitySnapshot() -> [String: String] { ["areas": contexts.keys.sorted().joined(separator: ",")] }
-    func capacityLine() -> String { "dials are seeded placeholders · clinical caps enforced" }
+    func capacityLine() -> String { "dials start seeded; they move only on outcome-graded ledger evidence (thresholds are placeholders) · clinical caps enforced" }
     func boardMetrics(_ s: EngineStats) -> [MetricValue] {
         [MetricValue(label: "Cards decided", value: "\(s.decisions)"),
          MetricValue(label: "Changed the AI's pick", value: "\(s.corrections)"),
@@ -103,7 +105,7 @@ import Foundation
         return DecisionContext(domain: "symbiosis:\(item.fields["area"] ?? "unknown")", contextId: item.fields["area"] ?? "unknown",
                                dials: a?.dials, generation: a?.generation ?? 0,
                                reliability: RecordReliability(score: nil, n: 0, label: "placeholder — no graded labels yet"),
-                               outcomeSource: "seeded_scenario (synthetic)")
+                               outcomeSource: item.fields["origin"] == "imported" ? "imported_outcome (synthetic template)" : "seeded_scenario (synthetic)")
     }
     func detail(item: DomainItem, section: String) -> [(String, String)]? {
         guard let a = area(item) else { return nil }
@@ -118,6 +120,52 @@ import Foundation
 }
 
 extension SymbiosisDomain {
+    /// compact seeded finance card where the AI's pick is right (gives the earned-autonomy demo graded evidence)
+    static func fin(_ id: String, _ title: String, _ sit: String, _ q: String, _ ai: String, _ plan: String, _ alt: String,
+                    outcome: String, split: SplitRating) -> SymbiosisCard {
+        SymbiosisCard(id: id, area: "personal_finance", title: title, situation: sit + " Sample scenario.",
+                      humanJudgment: "Does this fit what the money is for?", humanQuestion: q,
+                      bridgeArchitecture: "AI checks the mechanics; you check the fit with your life.",
+                      bridgeCheckpoint: "No emergency fund → hold.", bridgeWorkflow: "AI: rules + arithmetic. You: goals.",
+                      aiDistilled: ai, aiDetail: ["Check fees and terms first"], aiEdgeCases: ["Irregular income"],
+                      planText: plan, alternativeText: alt, proposal: "Accept plan", proposalConfidence: 0.8,
+                      scriptedOutcome: outcome, hardTrigger: nil, demoSplit: split)
+    }
+
+    /// `-importItems <dir>`: personal-finance items from tools/import_cases.py (`<dir>/items/personal_finance.json`, outcomes from
+    /// `<dir>/decisions_imported.jsonl`). Imported options map to Symbiosis options by closest fit (shown on the card).
+    static let importMap = ["proceed": "Accept plan", "proceed with changes": "Alternative plan", "pause and review": "Hold — gather info", "decline": "Escalate"]
+    static func imported() -> [SymbiosisCard]? {
+        let a = ProcessInfo.processInfo.arguments
+        guard let i = a.firstIndex(of: "-importItems"), i + 1 < a.count else { return nil }
+        let dir = URL(fileURLWithPath: a[i + 1])
+        guard let d = try? Data(contentsOf: dir.appendingPathComponent("items/personal_finance.json")),
+              let j = try? JSONSerialization.jsonObject(with: d) as? [String: Any], let items = j["items"] as? [[String: Any]] else { return nil }
+        var outcome: [String: String] = [:]
+        if let t = try? String(contentsOf: dir.appendingPathComponent("decisions_imported.jsonl"), encoding: .utf8) {
+            for l in t.split(separator: "\n") {
+                guard let r = try? JSONSerialization.jsonObject(with: Data(l.utf8)) as? [String: Any], let iid = r["item_id"] as? String,
+                      let o = (r["outcome"] as? [String: Any])?["value"] as? String else { continue }
+                outcome[iid] = o
+            }
+        }
+        return items.compactMap { it in
+            guard let id = it["id"] as? String else { return nil }
+            let ap = it["agent_proposal"] as? [String: Any]
+            let prop = importMap[(ap?["answer"] as? String) ?? ""] ?? "Hold — gather info"
+            let pres = (it["presentation"] as? String) ?? ""
+            return SymbiosisCard(id: id, area: "personal_finance", title: pres, situation: "Imported synthetic case (\(it["context_id"] as? String ?? "")).",
+                                 humanJudgment: "Does this fit what the money is for?", humanQuestion: "What would you regret?",
+                                 bridgeArchitecture: "Imported options: proceed = Accept plan · proceed with changes = Alternative · pause and review = Hold · decline = Escalate (closest fit).",
+                                 bridgeCheckpoint: (it["hard_trigger"] as? String).map { "Fixed trigger: \($0)" } ?? "none",
+                                 bridgeWorkflow: "AI: mechanics. You: fit.", aiDistilled: "Imported case — no AI depth text in the template.",
+                                 aiDetail: [], aiEdgeCases: [], planText: "proceed", alternativeText: "proceed with changes",
+                                 proposal: prop, proposalConfidence: (ap?["confidence"] as? Double) ?? 0.5,
+                                 scriptedOutcome: outcome[id].flatMap { importMap[$0] }, hardTrigger: it["hard_trigger"] as? String,
+                                 demoSplit: .about_right, origin: "imported")
+        }
+    }
+
     static let seed: [SymbiosisCard] = [
         SymbiosisCard(id: "SYM-ED-1", area: "ed_triage", title: "Abdominal pain, 'looks fine'",
                       situation: "34F, lower abdominal pain 6 h, vitals normal, smiling in triage. Sample scenario.",
@@ -154,7 +202,19 @@ extension SymbiosisDomain {
                       aiDetail: ["Many decision rules exclude anticoagulated patients", "Delayed bleeds can present hours later"],
                       aiEdgeCases: ["Subtle confusion attributed to baseline dementia"],
                       planText: "Level 4, waiting room", alternativeText: "Level 3 + head CT pathway",
-                      proposal: "Accept plan", proposalConfidence: 0.62, scriptedOutcome: "Alternative plan", hardTrigger: nil, demoSplit: .overstepped_me),
+                      proposal: "Accept plan", proposalConfidence: 0.62, scriptedOutcome: "Alternative plan", hardTrigger: nil, demoSplit: .overstepped_me,
+                      severity: "critical"),
+        SymbiosisCard(id: "SYM-ED-4", area: "ed_triage", title: "Sprained ankle, can walk",
+                      situation: "25M twisted ankle playing football, bearing weight, no bony tenderness. Sample scenario.",
+                      humanJudgment: "After the last miss, the AI defers more — do you agree this one is routine?",
+                      humanQuestion: "Anything in the story that doesn't fit an ankle sprain?",
+                      bridgeArchitecture: "AI applies the ankle rule; you confirm the story fits.",
+                      bridgeCheckpoint: "Unable to bear weight or bony tenderness → imaging.",
+                      bridgeWorkflow: "AI: decision rule. You: story fit.",
+                      aiDistilled: "Weight-bearing with no bony tenderness usually means no fracture imaging is needed.",
+                      aiDetail: ["Check both malleoli and the base of the fifth metatarsal"], aiEdgeCases: ["High ankle sprain"],
+                      planText: "Level 5, fast track", alternativeText: "Level 4 + X-ray",
+                      proposal: "Accept plan", proposalConfidence: 0.8, scriptedOutcome: "Accept plan", hardTrigger: nil, demoSplit: .about_right),
         SymbiosisCard(id: "SYM-FIN-1", area: "personal_finance", title: "Pay off car loan or invest?",
                       situation: "Windfall equal to the car loan balance. Sample scenario; numbers omitted on purpose.",
                       humanJudgment: "What is this money for, and how would you feel in a down year?",
@@ -167,6 +227,18 @@ extension SymbiosisDomain {
                       aiEdgeCases: ["Low-rate loan + no emergency fund", "Employer match left unclaimed"],
                       planText: "Invest, keep paying the loan", alternativeText: "Pay off the loan",
                       proposal: "Accept plan", proposalConfidence: 0.68, scriptedOutcome: "Accept plan", hardTrigger: nil, demoSplit: .buried_me),
+        fin("SYM-FIN-3", "Raise the 401(k) contribution to the match?", "Employer matches up to a percentage; you contribute below it.",
+            "Is there any reason you need this cash in the next year?", "Match is free money; liquidity is the trade-off.",
+            "Raise to the match", "Keep as is", outcome: "Accept plan", split: .buried_me),
+        fin("SYM-FIN-4", "Turn on automatic savings transfer?", "Paycheck lands; savings depend on remembering.",
+            "Will an automatic transfer ever leave you short on rent?", "Automation beats willpower for most people.",
+            "Automate a fixed transfer", "Keep manual", outcome: "Accept plan", split: .buried_me),
+        fin("SYM-FIN-5", "Refinance a high-rate card balance?", "Balance on a high-APR card; a 0% transfer offer arrived.",
+            "Will you stop using the card once the balance moves?", "Transfer fees and the promo end date matter more than the headline rate.",
+            "Transfer and set a payoff plan", "Keep paying as is", outcome: "Accept plan", split: .buried_me),
+        fin("SYM-FIN-6", "Cancel unused subscriptions?", "Several monthly charges you rarely use.",
+            "Which of these would you actually miss?", "Small recurring charges add up; cancellation terms vary.",
+            "Cancel the unused ones", "Keep all", outcome: "Accept plan", split: .about_right),
         SymbiosisCard(id: "SYM-FIN-2", area: "personal_finance", title: "Co-sign a sibling's lease?",
                       situation: "Sibling asks you to co-sign. Sample scenario.",
                       humanJudgment: "This is about the relationship as much as the money — what can you afford to lose, in both?",

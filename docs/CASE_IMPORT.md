@@ -78,8 +78,9 @@ listed in the manifest so they cannot leak.
 
 - **AI tele-doc**: launch with `-importCSV <out>/encounters.csv`, or copy it to the app's Documents as `encounters.csv`
   (existing `EncounterImporter`). Age bands are sent as band midpoints because the app takes an integer age.
-- **ED triage, Symbiosis personal finance, DevSecOps**: `items/<domain>.json` is the hook; the app does not load it yet
-  (TODO: a `-importItems <path>` flag in each domain's seed loader). DevSecOps is not an app domain yet.
+- **Symbiosis personal finance**: `-importItems <out dir>` loads `items/personal_finance.json` (see docs/SYMBIOSIS.md).
+- **ED triage, DevSecOps**: `items/<domain>.json` is the hook; ED triage does not load it yet (its items come from the
+  capacity simulation). DevSecOps is not an app domain yet.
 
 ## Baseline eval (honest)
 

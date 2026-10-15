@@ -208,6 +208,7 @@ flowchart LR
 
 M0 (below) closes the schema and exporter gap first. Status 2026-10-15: M0 and M1 landed (see `docs/SYMBIOSIS.md`);
 ED triage / tele-doc outcomes are still simulator truth, and nothing trains on the exports yet.
+M2 (earned-autonomy dials) landed the same day — rules in `Core/DialEngine.swift`, documented in `docs/SYMBIOSIS.md`.
 
 ---
 
@@ -321,10 +322,10 @@ Check boxes as work lands on `main`. Do not skip M0.
 
 ### M2 — Earned-autonomy dials
 
-- [ ] Dial updates from outcome-verified streaks; step-down on critical miss
-- [ ] Clinical caps/floors enforced
-- [ ] Each dial change signed into ledger
-- [ ] Acceptance: after N correct graded calls dials may rise; one
+- [x] Dial updates from outcome-verified streaks; step-down on critical miss
+- [x] Clinical caps/floors enforced
+- [x] Each dial change signed into ledger
+- [x] Acceptance: after N correct graded calls dials may rise; one
       critical miss demotes; clinical cannot exceed caps
 
 ### M3 — Sharpness checks

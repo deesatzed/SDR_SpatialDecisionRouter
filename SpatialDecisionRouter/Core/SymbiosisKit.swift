@@ -34,7 +34,7 @@ struct SymbiosisContext: Codable, Hashable, Identifiable {
 }
 
 enum SymbiosisSeeds {
-    static let seedSource = "seed (placeholder — not learned; earned movement lands in M2)"
+    static let seedSource = "seed (placeholder starting value — moves only on outcome-graded evidence)"
     /// Clinical seed profile. Starting values follow the Symbiont concept's clinical area (deference 90, detail 92,
     /// challenge 78, autonomy 55) — autonomy is then clamped to the clinical cap (40).
     static let clinical = SymbiosisContext(
@@ -109,7 +109,9 @@ struct SymbiosisCard: Codable, Hashable {
     let alternativeText: String       // what "Alternative plan" means here
     let proposal: String              // agent's pick (one of SymbiosisDomain.options)
     let proposalConfidence: Double    // seeded, labeled as such
-    let scriptedOutcome: String       // seeded scenario outcome (synthetic) — the graded "truth" for the demo
+    let scriptedOutcome: String?      // seeded/imported outcome (synthetic) — the graded "truth"; nil = unknown
     let hardTrigger: String?
     let demoSplit: SplitRating
+    var severity: String? = nil       // "critical": a wrong agent pick here is a critical miss (M2 demotion)
+    var origin = "seed"               // seed | imported
 }

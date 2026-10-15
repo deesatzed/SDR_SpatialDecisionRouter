@@ -13,7 +13,7 @@ struct SymbiosisPanel: View {
         let f = item.fields
         let area = (engine.domain as? SymbiosisDomain)?.area(item)
         VStack(alignment: .leading, spacing: 12) {
-            if let a = area { DialGauge(ctx: a) }
+            if let a = area { DialGauge(key: "symbiosis:\(a.id)", fallback: a) }
             HStack(alignment: .top, spacing: 12) {
                 column("YOU HOLD", symOrange, id: "humanColumn") {
                     Text(f["human_judgment"] ?? "").font(.title3.bold())
@@ -52,16 +52,39 @@ struct SymbiosisPanel: View {
 }
 
 struct DialGauge: View {
-    let ctx: SymbiosisContext
+    @Environment(RouterEngine.self) private var engine
+    let key: String
+    let fallback: SymbiosisContext
     var body: some View {
-        HStack(spacing: 14) {
-            Text(ctx.title).font(.headline.bold())
-            dial("Defer", ctx.dials.deference, floor: ctx.caps.deferenceMin > 0 ? ctx.caps.deferenceMin : nil, cap: nil)
-            dial("Detail", ctx.dials.detail_absorption, floor: nil, cap: nil)
-            dial("Challenge", ctx.dials.challenge, floor: nil, cap: nil)
-            dial("Autonomy", ctx.dials.autonomy_horizon, floor: nil, cap: ctx.caps.autonomyMax < 100 ? ctx.caps.autonomyMax : nil)
-            Text("gen \(ctx.generation)").font(.caption.monospaced())
-            Text("placeholder dials + AI confidence — seeded, not learned").font(.caption).foregroundStyle(.yellow)
+        let ctx = engine.dials(key) ?? fallback
+        let hist = engine.dialHistory(key)
+        let last = engine.dialLog.last { $0.domain == key }
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 14) {
+                Text(ctx.title).font(.headline.bold())
+                dial("Defer", ctx.dials.deference, floor: ctx.caps.deferenceMin > 0 ? ctx.caps.deferenceMin : nil, cap: nil)
+                dial("Detail", ctx.dials.detail_absorption, floor: nil, cap: nil)
+                dial("Challenge", ctx.dials.challenge, floor: nil, cap: nil)
+                dial("Autonomy", ctx.dials.autonomy_horizon, floor: nil, cap: ctx.caps.autonomyMax < 100 ? ctx.caps.autonomyMax : nil)
+                VStack(alignment: .leading, spacing: 2) {
+                    Sparkline(values: hist.map(\.autonomy_horizon), color: .mint).frame(width: 110, height: 26)
+                    Sparkline(values: hist.map(\.deference), color: .teal).frame(width: 110, height: 26)
+                    Text("autonomy · deference history").font(.caption2).foregroundStyle(.secondary)
+                }.accessibilityIdentifier("dialSparkline")
+                Text("gen \(ctx.generation)").font(.caption.monospaced())
+            }
+            if let last, let why = last.reason {
+                HStack {
+                    Text((last.escalation_flags?.contains("demotion") == true ? "⚠ " : "↗ ") + "Why it moved: " + why
+                         + (last.posterior.map { " · n=\($0.n), mean \($0.mean) [\($0.lo)–\($0.hi)]" } ?? ""))
+                        .font(.callout.bold()).foregroundStyle(last.escalation_flags?.contains("demotion") == true ? .red : .mint)
+                        .lineLimit(3).accessibilityIdentifier("dialWhy")
+                    Button("Undo move") { engine.undoLastDialMove(key) }.tint(.gray).accessibilityIdentifier("undoDial")
+                }
+            } else {
+                Text("No dial moves yet · needs \(DialPolicy.standard.minN) outcome-graded calls (thresholds are design placeholders)")
+                    .font(.caption).foregroundStyle(.yellow)
+            }
         }
     }
     private func dial(_ n: String, _ v: Double, floor: Double?, cap: Double?) -> some View {
@@ -69,6 +92,24 @@ struct DialGauge: View {
             Gauge(value: v, in: 0...100) { EmptyView() } currentValueLabel: { Text("\(Int(v))").font(.caption.monospacedDigit()) }
                 .gaugeStyle(.accessoryCircularCapacity).tint(n == "Autonomy" ? .mint : .teal).scaleEffect(0.8)
             Text(n + (cap.map { " ≤\(Int($0))" } ?? "") + (floor.map { " ≥\(Int($0))" } ?? "")).font(.caption2)
+        }.accessibilityElement(children: .combine).accessibilityLabel("\(n) \(Int(v))").accessibilityIdentifier("dial_\(n)")
+    }
+}
+
+struct Sparkline: View {
+    let values: [Double]
+    let color: Color
+    var body: some View {
+        GeometryReader { g in
+            let v = values.isEmpty ? [0] : values
+            let lo = (v.min() ?? 0) - 1, hi = (v.max() ?? 100) + 1
+            Path { p in
+                for (i, x) in v.enumerated() {
+                    let pt = CGPoint(x: v.count == 1 ? 0 : g.size.width * CGFloat(i) / CGFloat(v.count - 1),
+                                     y: g.size.height * (1 - CGFloat((x - lo) / (hi - lo))))
+                    i == 0 ? p.move(to: pt) : p.addLine(to: pt)
+                }
+            }.stroke(color, lineWidth: 2)
         }
     }
 }

@@ -32,6 +32,8 @@ def test_three_outputs_and_rules(tmp_path):
     pref = [json.loads(l) for l in open(tmp_path / "finetune" / "preference.jsonl")]
     rl = [json.loads(l) for l in open(tmp_path / "rl" / "rewards.jsonl")]
     assert len(sft) == 3 and len(rl) == 3 and len(pref) == 2
+    dc = [json.loads(l) for l in open(tmp_path / "dials" / "dial_changes.jsonl")]
+    assert len(dc) == 1 and dc[0]["dial_after"]["autonomy_horizon"] == dc[0]["dial_before"]["autonomy_horizon"] + 5 and dc[0]["evidence_refs"]
     # split rating is auxiliary, never part of reward
     for r in rl:
         assert r["reward"] in (1.0, -1.0, None)

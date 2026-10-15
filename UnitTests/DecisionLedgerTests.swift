@@ -76,10 +76,10 @@ final class DecisionLedgerTests: XCTestCase {
         let d = SymbiosisDomain(); d.reset(seed: 1)
         let areas = Set(SymbiosisDomain.seed.map(\.area))
         XCTAssertEqual(areas, ["ed_triage", "personal_finance"])
-        for k in SymbiosisDomain.seed { XCTAssertTrue(SymbiosisDomain.options.contains(k.proposal)); XCTAssertTrue(SymbiosisDomain.options.contains(k.scriptedOutcome)) }
+        for k in SymbiosisDomain.seed { XCTAssertTrue(SymbiosisDomain.options.contains(k.proposal)); XCTAssertTrue(SymbiosisDomain.options.contains(k.scriptedOutcome ?? "")) }
         guard let it = d.nextItem() else { return XCTFail("no item") }
-        XCTAssertEqual(d.decisionContext(item: it).domain, "symbiosis:ed_triage")
-        XCTAssertEqual(d.decisionContext(item: it).dials, SymbiosisSeeds.clinical.dials)
+        XCTAssertEqual(d.decisionContext(item: it).domain, "symbiosis:personal_finance")
+        XCTAssertEqual(d.decisionContext(item: it).dials, SymbiosisSeeds.finance.dials)
     }
 
     /// Golden fixture for the Python exporter: tools/tests read this file and must verify the same hashes/signatures.
@@ -90,6 +90,9 @@ final class DecisionLedgerTests: XCTestCase {
         let a = l.append(.from(decision("ed_triage"), ctx: ctx("ed_triage"), split: nil))!
         l.append(.from(decision("symbiosis", gesture: "select", answer: "B", proposal: "A", truth: "B"), ctx: ctx("symbiosis:personal_finance"), split: .about_right))
         l.append(.amendment(kind: "outcome", ref: a, outcome: RecordOutcome(value: "A", source: "test", observed_at: DecisionLedger.iso())))
+        var after = SymbiosisSeeds.finance.dials; after.autonomy_horizon += 5; after.source = DialEngine.earnedSource
+        let mv = DialMove(before: SymbiosisSeeds.finance.dials, after: after, reason: "earned: test", evidence: [a.id], posterior: DialEngine.posterior(5, 0), demotion: false)
+        l.append(DialEngine.record(key: "symbiosis:personal_finance", contextId: "personal_finance", move: mv, generation: 1))
         XCTAssertTrue(DecisionLedger.verify(l.read()).ok)
     }
 }

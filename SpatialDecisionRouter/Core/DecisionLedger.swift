@@ -70,6 +70,12 @@ struct UnifiedDecisionRecord: Codable, Hashable {
     var item_id: String?
     var link_id: String?
     var legacy_id: String?                   // RoutingDecision.id in routing_log.jsonl (old log kept as-is)
+    // kind == "dial_change" (M2): earned-autonomy move, demotion, or revert
+    var dial_before: DialSnapshot?
+    var dial_after: DialSnapshot?
+    var reason: String?
+    var evidence_refs: [String]?
+    var posterior: DialPosterior?
     var signer_key_id: String
     var signer_pub: String                   // base64 raw Ed25519 public key
     var ledger_prev: String

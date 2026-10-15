@@ -24,10 +24,8 @@ final class SymbiosisUITests: XCTestCase {
         let pass = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Sign off' OR label BEGINSWITH 'Pass'")).firstMatch
         if !pass.waitForExistence(timeout: 5) { shot("sym_fail_pass"); XCTFail("decision button missing"); return }
         pass.tap()
-        // next card: hard trigger (possible MI) → acknowledge
-        let ack = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Acknowledge'")).firstMatch
-        XCTAssertTrue(ack.waitForExistence(timeout: 20), "hard-trigger card missing"); sleep(2); shot("sym_03_hard_trigger")
-        ack.tap()
+        // next card (order: finance first, then ED triage incl. the hard-trigger card)
+        XCTAssertTrue(app.descendants(matching: .any)["humanColumn"].waitForExistence(timeout: 20), "next card missing"); sleep(2); shot("sym_03_next_card")
         let mf = app.buttons["openManifesto"].firstMatch
         XCTAssertTrue(mf.waitForExistence(timeout: 20)); mf.tap()
         XCTAssertTrue(app.buttons["lens_philosophical"].waitForExistence(timeout: 10), "manifesto did not open"); sleep(1)
