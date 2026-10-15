@@ -161,7 +161,20 @@ enum DomainCatalog {
     @MainActor static let all: [() -> DomainModule] = [
         { AIDocReviewDomain() },   // default
         { EDTriageDomain() },
+        { WERIAMPrincipalDomain() },
     ]
+}
+
+extension DomainCatalog {
+    /// demo domain: `-domain weriam_principal` (or `-weriamDemo`) picks the WERIAM Principal demo; default AI Doc Review
+    static var demoId: String? = {
+        let a = ProcessInfo.processInfo.arguments
+        if a.contains("-weriamDemo") { return "weriam_principal" }
+        return a.firstIndex(of: "-domain").flatMap { $0 + 1 < a.count ? a[$0 + 1] : nil }
+    }()
+    @MainActor static func demoDomain() -> DomainModule {
+        demoId == "weriam_principal" ? WERIAMPrincipalDomain() : AIDocReviewDomain()
+    }
 }
 
 struct SplitMix64 { var s: UInt64

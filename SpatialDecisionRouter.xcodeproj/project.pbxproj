@@ -14,6 +14,7 @@
 		183ED5E4831770FAD4C4544C /* OutpatientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */; };
 		1AB6C6774A4D482CD2B42974 /* AIDocReviewDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */; };
 		1B69FB0044A9F5DD4570F908 /* RouterEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */; };
+		1C8E8A94B64D0EBE27359C92 /* weriam_seed.json in Resources */ = {isa = PBXBuildFile; fileRef = C513BD7BEB8F6B6303D94803 /* weriam_seed.json */; };
 		275D5EA879D3476D21A94CEF /* EDCapacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */; };
 		2A8E167F28F4B3F7C81F8C18 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA1C08382DD95C45ECFEA1D /* Platform.swift */; };
 		2CE4C735CC81C5BCBBC882FB /* ProceduralEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */; };
@@ -25,7 +26,12 @@
 		6677D7C7C3233C931B3BFE92 /* RouterViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */; };
 		667FA886A8D34AB8886D66D7 /* CategoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DE7620E584197285B2ED27 /* CategoryRegistry.swift */; };
 		68AD4706054ADD4DC5F75DE8 /* ed_triage.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 36AC111D7362BC39421555D4 /* ed_triage.domain.json */; };
+		6BB21463821C1218BCBAA67D /* weriam_principal.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 531C8BBFF26EF5127037C08C /* weriam_principal.domain.json */; };
 		73065D8A731BC61019FD26A2 /* EDCapacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */; };
+		75E97CAAA3C84CC37730D810 /* WERIAMPrincipalDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */; };
+		7BE6F72AEC7FF5D1170122B1 /* WERIAMClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86240C1CE2AEB460E57AD2B6 /* WERIAMClient.swift */; };
+		7DF8A6BFFC2C374E1F6DFF87 /* WERIAMClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86240C1CE2AEB460E57AD2B6 /* WERIAMClient.swift */; };
+		7F19D2F37B86B6C4BC8038FD /* weriam_seed.json in Resources */ = {isa = PBXBuildFile; fileRef = C513BD7BEB8F6B6303D94803 /* weriam_seed.json */; };
 		833F3FE9BD320D99BB280A30 /* LauncherUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C858F324C90313897B77DF /* LauncherUITests.swift */; };
 		8539DE0BF5E7A1756BD536DF /* RoutingDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6457ECA631420CFF502092D6 /* RoutingDecision.swift */; };
 		8B0DA88EA08E8966E7DA4688 /* AIDocReviewDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */; };
@@ -33,6 +39,7 @@
 		8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
 		9172DC73E2553E1ABCE1C702 /* ReviewKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */; };
 		91D916D0C39ABA5E80D5B212 /* RoutingDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6457ECA631420CFF502092D6 /* RoutingDecision.swift */; };
+		94A731305126B5FF217DB74D /* WERIAMPrincipalDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */; };
 		97503C591D86F58FC7ACC5D9 /* EDReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82719454E70FE69DE11B22E /* EDReview.swift */; };
 		A8E53AF7B06879027699BE32 /* EncounterImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04144225277F2C1929F0B76 /* EncounterImporter.swift */; };
 		B4709829509B06C129137CA4 /* PadViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0811B2B05BBB05960B5A265C /* PadViews.swift */; };
@@ -49,6 +56,7 @@
 		E4298859A131CAADF817C43D /* ed_triage.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 36AC111D7362BC39421555D4 /* ed_triage.domain.json */; };
 		F64D8D3E5559025616A9AAD0 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
 		F6C056567C4188421289120F /* PadViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0811B2B05BBB05960B5A265C /* PadViews.swift */; };
+		FF19467CA1923D436DAAB596 /* weriam_principal.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 531C8BBFF26EF5127037C08C /* weriam_principal.domain.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,18 +86,22 @@
 		3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainKit.swift; sourceTree = "<group>"; };
 		45C858F324C90313897B77DF /* LauncherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherUITests.swift; sourceTree = "<group>"; };
 		529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutpatientSpec.swift; sourceTree = "<group>"; };
+		531C8BBFF26EF5127037C08C /* weriam_principal.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = weriam_principal.domain.json; sourceTree = "<group>"; };
 		6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDCapacity.swift; sourceTree = "<group>"; };
 		6457ECA631420CFF502092D6 /* RoutingDecision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingDecision.swift; sourceTree = "<group>"; };
 		64DE7620E584197285B2ED27 /* CategoryRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRegistry.swift; sourceTree = "<group>"; };
 		6614C41420528AF1F28F5E45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		67F5D70406C695E977446C41 /* EDTriageDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDTriageDomain.swift; sourceTree = "<group>"; };
+		86240C1CE2AEB460E57AD2B6 /* WERIAMClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WERIAMClient.swift; sourceTree = "<group>"; };
 		9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialDecisionRouterApp.swift; sourceTree = "<group>"; };
 		A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIDocReviewDomain.swift; sourceTree = "<group>"; };
 		A82719454E70FE69DE11B22E /* EDReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDReview.swift; sourceTree = "<group>"; };
 		B04144225277F2C1929F0B76 /* EncounterImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncounterImporter.swift; sourceTree = "<group>"; };
+		C513BD7BEB8F6B6303D94803 /* weriam_seed.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = weriam_seed.json; sourceTree = "<group>"; };
 		C8D05C5F01797C6E4BE65D25 /* SpatialDecisionRouterPad.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouterPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceduralEnvironment.swift; sourceTree = "<group>"; };
 		D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterEngine.swift; sourceTree = "<group>"; };
+		E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WERIAMPrincipalDomain.swift; sourceTree = "<group>"; };
 		E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskClient.swift; sourceTree = "<group>"; };
 		F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F407AADF547B37D02BC17A63 /* SpatialDecisionRouterUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SpatialDecisionRouterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,6 +117,17 @@
 				2BDF4EE30763D7A1A0FC549B /* PadUITests.swift */,
 			);
 			path = UITestsPad;
+			sourceTree = "<group>";
+		};
+		10ACABE275D353CDB5FC4450 /* WERIAMPrincipal */ = {
+			isa = PBXGroup;
+			children = (
+				531C8BBFF26EF5127037C08C /* weriam_principal.domain.json */,
+				C513BD7BEB8F6B6303D94803 /* weriam_seed.json */,
+				86240C1CE2AEB460E57AD2B6 /* WERIAMClient.swift */,
+				E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */,
+			);
+			path = WERIAMPrincipal;
 			sourceTree = "<group>";
 		};
 		13AEE49A568B5C2826A2D767 /* Products */ = {
@@ -147,6 +170,7 @@
 			children = (
 				BBC7BB783659EB3FFAAB8CED /* AIDocReview */,
 				9BD3F5F668CCC9B648B9CE6D /* EDTriage */,
+				10ACABE275D353CDB5FC4450 /* WERIAMPrincipal */,
 			);
 			path = Domains;
 			sourceTree = "<group>";
@@ -325,6 +349,8 @@
 			files = (
 				30F4A59B1B0D110348C23F83 /* ai_doc_review.domain.json in Resources */,
 				E4298859A131CAADF817C43D /* ed_triage.domain.json in Resources */,
+				FF19467CA1923D436DAAB596 /* weriam_principal.domain.json in Resources */,
+				1C8E8A94B64D0EBE27359C92 /* weriam_seed.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +360,8 @@
 			files = (
 				1465DFFC8F8791B37C1ED521 /* ai_doc_review.domain.json in Resources */,
 				68AD4706054ADD4DC5F75DE8 /* ed_triage.domain.json in Resources */,
+				6BB21463821C1218BCBAA67D /* weriam_principal.domain.json in Resources */,
+				7F19D2F37B86B6C4BC8038FD /* weriam_seed.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,6 +390,8 @@
 				6677D7C7C3233C931B3BFE92 /* RouterViews.swift in Sources */,
 				8539DE0BF5E7A1756BD536DF /* RoutingDecision.swift in Sources */,
 				F64D8D3E5559025616A9AAD0 /* SpatialDecisionRouterApp.swift in Sources */,
+				7DF8A6BFFC2C374E1F6DFF87 /* WERIAMClient.swift in Sources */,
+				94A731305126B5FF217DB74D /* WERIAMPrincipalDomain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,6 +417,8 @@
 				C4600DFA7C310450885D2493 /* RouterViews.swift in Sources */,
 				91D916D0C39ABA5E80D5B212 /* RoutingDecision.swift in Sources */,
 				8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */,
+				7BE6F72AEC7FF5D1170122B1 /* WERIAMClient.swift in Sources */,
+				75E97CAAA3C84CC37730D810 /* WERIAMPrincipalDomain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -621,6 +621,7 @@ struct LauncherView: View {
                 Button("Enter Crossroads") { tap("enter") }
                 Button("Demo") { tap("demo") }.tint(.yellow)
                 Button("Demo (auto-play)") { tap("demoAuto") }.tint(.orange)
+                Button("WERIAM Principal") { tap("weriamDemo") }.tint(.purple)
             }.font(.title2)
             Text("Demo: 6 scripted SYNTHETIC encounters · needs risk_engine sidecar for BN (else fallback badge)").font(.callout).foregroundStyle(.secondary)
             if !status.isEmpty { Text(status).font(.headline).foregroundStyle(status.hasPrefix("⚠") ? .red : .secondary) }
@@ -641,6 +642,7 @@ struct LauncherView: View {
         switch which {
         case "demo": engine.startDemo(auto: false)
         case "demoAuto": engine.startDemo(auto: true)
+        case "weriamDemo": DomainCatalog.demoId = "weriam_principal"; engine.startDemo(auto: false)
         default: if DemoState.on { DemoState.on = false; engine.start(AIDocReviewDomain()) }
         }
         Task { await open() }

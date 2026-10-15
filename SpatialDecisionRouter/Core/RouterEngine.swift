@@ -98,7 +98,7 @@ struct Handoff: Identifiable, Hashable {
         let a = ProcessInfo.processInfo.arguments
         if let i = a.firstIndex(of: "-speedup"), i + 1 < a.count, let v = Float(a[i + 1]) { speedup = v }
         let pick = a.firstIndex(of: "-domain").flatMap { $0 + 1 < a.count ? a[$0 + 1] : nil }
-        let d = DemoState.on ? AIDocReviewDomain() : (DomainCatalog.all.map { $0() }.first { $0.config.id == pick } ?? DomainCatalog.all[0]())
+        let d = DemoState.on ? DomainCatalog.demoDomain() : (DomainCatalog.all.map { $0() }.first { $0.config.id == pick } ?? DomainCatalog.all[0]())
         domain = d
         let site = (a.firstIndex(of: "-site").flatMap { $0 + 1 < a.count ? a[$0 + 1] : nil }) ?? d.config.defaultSite
         siteId = site
@@ -514,7 +514,7 @@ struct Handoff: Identifiable, Hashable {
     /// Reset demo: fresh deterministic sequence (seeded), optional auto-play.
     func startDemo(auto: Bool) {
         DemoState.on = true
-        start(AIDocReviewDomain())
+        start(DomainCatalog.demoDomain())
         if auto { Task { await demoPlay() } }
     }
     /// Scripted walk-through: reliability → ask-next (top VOI) → decide (ground truth); hard trigger: hold + acknowledge.
@@ -531,7 +531,7 @@ struct Handoff: Identifiable, Hashable {
                 demoStep = "hard trigger"; if detailOpen { toggleDetail() }
                 try? await Task.sleep(for: .seconds(7 * pace)); pass(h.id); continue
             }
-            demoStep = "reliability"; sideTab = "reliability"; if !detailOpen { toggleDetail() }
+            demoStep = "reliability"; sideTab = reliability(h).isEmpty ? "details" : "reliability"; if !detailOpen { toggleDetail() }
             try? await Task.sleep(for: .seconds(7 * pace))
             if let q = askNextList(h).first {
                 demoStep = "ask next"; sideTab = "ask"

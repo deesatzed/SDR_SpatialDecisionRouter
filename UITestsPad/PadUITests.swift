@@ -45,4 +45,23 @@ final class PadUITests: XCTestCase {
         app.buttons["openBoard"].firstMatch.tap(); sleep(2); shot("ipad_09_board_landscape")
         XCUIDevice.shared.orientation = .portrait; sleep(3); shot("ipad_10_board_portrait")
     }
+
+    /// WERIAM Principal (bridge forced offline → seeded cards, nothing sent): start → card → Modify → Approve once → board
+    func testWERIAMPrincipalOffline() {
+        let app = XCUIApplication(); app.launchArguments = ["-noBridge", "-freshRegistry", "-hideSidebar"]; app.launch()
+        XCUIDevice.shared.orientation = .landscapeLeft
+        let w = app.buttons["WERIAM Principal"]
+        XCTAssertTrue(w.waitForExistence(timeout: 20)); w.tap()
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'Retire the watcher'")).firstMatch.waitForExistence(timeout: 20), "principal card missing")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'bridge offline'")).firstMatch.exists, "offline chip missing")
+        sleep(2)
+        let mod = app.buttons["Modify…"].firstMatch
+        XCTAssertTrue(mod.waitForExistence(timeout: 10)); mod.tap()
+        let ap = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Approve once'")).firstMatch
+        if !ap.waitForExistence(timeout: 8) { shot("weriam_fail_ring"); XCTFail("Approve once option missing"); return }
+        ap.tap()
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'Foundation rebuild'")).firstMatch.waitForExistence(timeout: 20), "next card missing")
+        app.buttons["openBoard"].firstMatch.tap()
+        XCTAssertTrue(app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS 'Approved once'")).firstMatch.waitForExistence(timeout: 10), "board did not open")
+    }
 }

@@ -1,0 +1,62 @@
+{
+ "id": "weriam_principal",
+ "title": "WERIAM Principal — Human in the Middle",
+ "synthetic": true,
+ "defaultSite": "weriam-sim",
+ "terminology": {
+  "itemNoun": "request",
+  "itemNounPlural": "requests",
+  "boardTitle": "Principal Board",
+  "syntheticBanner": "WERIAM simulator (scripted worlds) — not a deployed agent",
+  "completedLabel": "Decided",
+  "historyLabel": "Context",
+  "capacityLabel": "Bridge"
+ },
+ "theme": {
+  "skyTop": [0.20, 0.22, 0.32], "skyHorizon": [0.32, 0.30, 0.45], "skyBottom": [0.12, 0.12, 0.18],
+  "floor": [0.12, 0.13, 0.18], "grid": [0.45, 0.40, 0.70], "panel": [0.14, 0.14, 0.22], "trim": [0.70, 0.55, 0.95]
+ },
+ "agents": [
+  {"id": "principal_req", "name": "WERIAM · principal requests", "role": "asks permission", "tier": 0},
+  {"id": "gap_solver", "name": "WERIAM · gap solver & gates", "role": "shadow mode", "tier": 0},
+  {"id": "journal", "name": "WERIAM journal (hash-chained)", "role": "single-use approvals", "tier": 1},
+  {"id": "scorer_set", "name": "C/D scorer training set", "role": "labels = measurement", "tier": 1}
+ ],
+ "links": [
+  {"id": "principal", "source": "principal_req", "dest": "journal", "question": "Principal:", "answerType": "category",
+   "options": ["Approve once", "Decline", "Defer"], "costWeight": 1.0, "shortLabel": "decision",
+   "previews": {"Approve once": "{dest}: WERIAM CLI writes a single-use, scoped approval (consumed on use)",
+                "Decline": "{dest}: request closed; agent may re-file only with new evidence",
+                "Defer": "{dest}: nothing signed — request stays pending", "*": "{dest}: receives {answer}"}},
+  {"id": "shadow", "source": "gap_solver", "dest": "scorer_set", "question": "Agent's pick:", "answerType": "category",
+   "options": ["Agree", "Alt #2", "Alt #3", "WAIT / ask", "Refuse (harm)"], "costWeight": 0.9, "shortLabel": "label",
+   "previews": {"Agree": "{dest}: label 'agree' (counterfactual only — nothing executes)",
+                "*": "{dest}: label '{answer}' (counterfactual only — nothing executes)"}}
+ ],
+ "rulesTable": [
+  "Approve/Decline are written ONLY by WERIAM's own principal CLI (single-use, scoped, hash-chained).",
+  "Defer and the Pass default write nothing to WERIAM.",
+  "Shadow labels are measurement/training data for the independent C/D scorer — not rules or vetoes (Charter rule a).",
+  "A_K shield, environment guard and STOP are containment: never retired and never learned away."
+ ],
+ "capacity": {"minutesPerSecond": 0.1},
+ "review": {"autoPassConfidence": 1.01, "autoPassMaxCost": 0.0, "spotCheckRate": 0, "waitWeight": 0.01, "upNextCount": 4},
+ "detailSections": ["Evidence", "Scope & reversibility", "Shadow record", "Option menu", "Containment", "Ledger"],
+ "glossary": {
+  "principal sign-off": "WERIAM never changes anything that needs a principal on its own. It files a request with evidence; you decide.",
+  "single-use": "An approval authorizes one action and is then consumed. After a watcher reinstatement a new sign-off is needed.",
+  "shadow label": "You label the agent's pick BEFORE the outcome is shown. Prospective labels avoid hindsight bias.",
+  "containment": "External gates (A_K shield, guard, STOP) that are never retired. Labeled as containment, not as the agent's own values.",
+  "measurement": "Charter rule (a): refusing harm must come from the agent's own learned loss. Human labels train/measure the scorer; they are not rules.",
+  "Evidence": "What the agent submitted with its request (window, temptations, E vs E_crit, procedures).",
+  "Scope & reversibility": "Exactly what one approval authorizes and how it can be undone.",
+  "Shadow record": "Watcher history: retirements, reinstatements, load-bearing decisions in the current window.",
+  "Option menu": "The agent's candidate options with forecast C (cooperation) and D (defection/harm). #1 is the agent's pick.",
+  "Containment": "Options pruned by the A_K shield — containment hits, not learned refusals.",
+  "Ledger": "Bridge status and hash-chain verification of WERIAM's journal and evidence ledgers.",
+  "reliability": "Heuristic placeholder: score margin over the next option minus regulated uncertainty. Not calibrated.",
+  "bridge offline": "Seeded sample cards; decisions are logged in-app only and NOT sent to WERIAM.",
+  "E": "Accessible mind (Love Equation). Widens capacity; never grants authority.",
+  "E_crit": "Critical mass of E needed so betrayal is structurally self-destructive (love.py)."
+ }
+}

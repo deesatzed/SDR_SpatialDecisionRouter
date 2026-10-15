@@ -7,7 +7,7 @@ struct PadRootView: View {
     @Environment(RouterEngine.self) private var engine
     @State private var tab = "review"
     @State private var showStart = !(DemoState.on || ProcessInfo.processInfo.arguments.contains("-skipStart"))
-    @State private var columns = NavigationSplitViewVisibility.automatic
+    @State private var columns: NavigationSplitViewVisibility = ProcessInfo.processInfo.arguments.contains("-hideSidebar") ? .detailOnly : .automatic
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columns) {
@@ -38,6 +38,7 @@ struct PadRootView: View {
                         Button("Enter Crossroads") { tap("enter") }
                         Button("Demo") { tap("demo") }
                         Button("Demo (auto-play)") { tap("demoAuto") }
+                        Button("WERIAM Principal demo") { tap("weriamDemo") }
                         if DomainCatalog.all.count > 1 { Button("Next Domain") { engine.nextDomain() } }
                         Button("Export decisions") { engine.export() }
                     } label: { Label("Session", systemImage: "play.circle") }
@@ -54,13 +55,23 @@ struct PadRootView: View {
                 .buttonStyle(.bordered).controlSize(.large).preferredColorScheme(.dark)
         }
         .fullScreenCover(isPresented: $showStart) { PadStartView { tap($0) } }
+        .onChange(of: engine.nowId) { _, id in   // -openSections "A,B": screenshot/test aid, re-opens detail sections on each Now card
+            let a = ProcessInfo.processInfo.arguments
+            guard id != nil, let i = a.firstIndex(of: "-openSections"), i + 1 < a.count else { return }
+            Task { @MainActor in
+                try? await Task.sleep(for: .seconds(1.2))
+                engine.sideTab = "details"; if !engine.detailOpen { engine.toggleDetail() }
+                for k in a[i + 1].split(separator: ",").map(String.init) where engine.openSections[k] == nil { engine.toggleSection(k) }
+            }
+        }
         .task { while !Task.isCancelled { try? await Task.sleep(for: .milliseconds(50)); engine.tick(0.05) } }
         .task {
             engine.immersiveOpen = true   // the console is always "open" on iPad
             let a = ProcessInfo.processInfo.arguments
             if let i = a.firstIndex(of: "-autoTap"), i + 1 < a.count { try? await Task.sleep(for: .seconds(1)); tap(a[i + 1]) }
             if let i = a.firstIndex(of: "-tab"), i + 1 < a.count { tab = a[i + 1] }
-            if DemoState.on && DemoState.auto { try? await Task.sleep(for: .seconds(3)); await engine.demoPlay(); return }
+            if DemoState.on && DemoState.auto { try? await Task.sleep(for: .seconds(3)); await engine.demoPlay()
+                if a.contains("-boardAfterDemo") { tab = "board" }; return }
             if let i = a.firstIndex(of: "-autoResolve"), i + 1 < a.count, let n = Int(a[i + 1]) {
                 try? await Task.sleep(for: .seconds(2)); await engine.autoResolve(n)
                 if a.contains("-autoExport") { engine.export() }
@@ -86,6 +97,7 @@ struct PadRootView: View {
         switch which {
         case "demo": engine.startDemo(auto: false)
         case "demoAuto": engine.startDemo(auto: true)
+        case "weriamDemo": DomainCatalog.demoId = "weriam_principal"; engine.startDemo(auto: false)
         default: if DemoState.on { DemoState.on = false; engine.start(AIDocReviewDomain()) }
         }
         tab = "review"; showStart = false
@@ -108,6 +120,7 @@ struct PadStartView: View {
                     Button { go("enter") } label: { Text("Enter Crossroads").frame(minWidth: 180) }.buttonStyle(.borderedProminent)
                     Button { go("demo") } label: { Text("Demo").frame(minWidth: 120) }.tint(.yellow)
                     Button { go("demoAuto") } label: { Text("Demo (auto-play)").frame(minWidth: 160) }.tint(.orange)
+                    Button { go("weriamDemo") } label: { Text("WERIAM Principal").frame(minWidth: 170) }.tint(.purple)
                 }.font(.title2.bold()).buttonStyle(.bordered).controlSize(.extraLarge)
                 Text("Demo: 6 scripted SYNTHETIC encounters · BN badge needs the risk_engine sidecar on this Mac (else fallback badge)")
                     .font(.callout).foregroundStyle(.secondary).multilineTextAlignment(.center)

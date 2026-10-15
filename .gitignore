@@ -6,3 +6,5 @@ risk_engine/.venv/
 __pycache__/
 .pytest_cache/
 screens/*.mp4
+__pycache__/
+.pytest_cache/
