@@ -51,12 +51,13 @@ import Foundation
     }
     private func item(_ k: SymbiosisCard, arrival: Double) -> DomainItem {
         let ctx = contexts[k.area]!
-        let f: [String: String] = ["symbiosis": "1", "area": k.area, "title": k.title, "situation": k.situation,
+        var f: [String: String] = ["symbiosis": "1", "area": k.area, "title": k.title, "situation": k.situation,
                                    "human_judgment": k.humanJudgment, "human_question": k.humanQuestion,
                                    "bridge_architecture": k.bridgeArchitecture, "bridge_checkpoint": k.bridgeCheckpoint, "bridge_workflow": k.bridgeWorkflow,
                                    "ai_distilled": k.aiDistilled, "ai_detail": k.aiDetail.joined(separator: "\n"), "ai_edge": k.aiEdgeCases.joined(separator: "\n"),
                                    "plan": k.planText, "alternative": k.alternativeText, "demo_split": k.demoSplit.rawValue, "showCapacity": "yes",
                                    "severity": k.severity ?? "normal", "origin": k.origin]
+        if let call = Self.demoSpots[k.id] { f["demo_spot"] = "1"; f["demo_human_call"] = call }
         return DomainItem(id: k.id, fields: f, displayLine: "\(ctx.title) · \(k.title)", shortLine: "\(ctx.title): \(k.title)",
                           historyLine: k.situation, arrivalTime: arrival)
     }
@@ -120,6 +121,9 @@ import Foundation
 }
 
 extension SymbiosisDomain {
+    /// M3 demo: forced "Your call first" spot-checks, with the (scripted) human call. The demo human misses all three,
+    /// so the sharpness rule hands detail back alongside the earned rise at FIN-6.
+    static let demoSpots: [String: String] = ["SYM-FIN-4": "Alternative plan", "SYM-FIN-5": "Alternative plan", "SYM-FIN-6": "Alternative plan"]
     /// compact seeded finance card where the AI's pick is right (gives the earned-autonomy demo graded evidence)
     static func fin(_ id: String, _ title: String, _ sit: String, _ q: String, _ ai: String, _ plan: String, _ alt: String,
                     outcome: String, split: SplitRating) -> SymbiosisCard {

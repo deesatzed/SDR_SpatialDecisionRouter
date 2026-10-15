@@ -71,7 +71,8 @@ Every HITM decision in every domain now lands in one signed, hash-chained **unif
 fine-tune pairs, RL reward rows and frozen replay sets (`tools/unified_export.py`). The Symbiosis domain shows each decision
 as three columns (you hold / bridge / AI holds), takes a second one-tap split rating, and has a four-lens manifesto. Dials start
 seeded and move only on outcome-graded ledger evidence (M2: Beta posterior, minimum n, small steps, clinical caps, demotion on
-a critical miss, each move signed and undoable). Spec: [docs/SYMBIOSIS_PLAN.md](docs/SYMBIOSIS_PLAN.md) · built: [docs/SYMBIOSIS.md](docs/SYMBIOSIS.md).
+a critical miss, each move signed and undoable). M3 spot-checks your sharpness: in high-detail areas some cards hide the AI
+and ask for **your call first**, then reveal the AI pick and outcome; missed checks make the AI hand detail back. Spec: [docs/SYMBIOSIS_PLAN.md](docs/SYMBIOSIS_PLAN.md) · built: [docs/SYMBIOSIS.md](docs/SYMBIOSIS.md).
 <p><img src="docs/img/sym_card.jpg" width="49%"> <img src="docs/img/sym_manifesto.jpg" width="49%"></p>
 
 ```bash

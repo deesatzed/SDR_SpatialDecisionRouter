@@ -40,6 +40,7 @@
 		667FA886A8D34AB8886D66D7 /* CategoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DE7620E584197285B2ED27 /* CategoryRegistry.swift */; };
 		68AD4706054ADD4DC5F75DE8 /* ed_triage.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 36AC111D7362BC39421555D4 /* ed_triage.domain.json */; };
 		6BB21463821C1218BCBAA67D /* weriam_principal.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 531C8BBFF26EF5127037C08C /* weriam_principal.domain.json */; };
+		6F7640963543FE6C08A5AA60 /* SharpnessUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55606CFAD96251866AE8E2AD /* SharpnessUITests.swift */; };
 		73065D8A731BC61019FD26A2 /* EDCapacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */; };
 		75E97CAAA3C84CC37730D810 /* WERIAMPrincipalDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */; };
 		7BE6F72AEC7FF5D1170122B1 /* WERIAMClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86240C1CE2AEB460E57AD2B6 /* WERIAMClient.swift */; };
@@ -123,6 +124,7 @@
 		4CE4B513C4BBF935E7D5D1D6 /* GameKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameKit.swift; sourceTree = "<group>"; };
 		529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutpatientSpec.swift; sourceTree = "<group>"; };
 		531C8BBFF26EF5127037C08C /* weriam_principal.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = weriam_principal.domain.json; sourceTree = "<group>"; };
+		55606CFAD96251866AE8E2AD /* SharpnessUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharpnessUITests.swift; sourceTree = "<group>"; };
 		6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDCapacity.swift; sourceTree = "<group>"; };
 		6457ECA631420CFF502092D6 /* RoutingDecision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingDecision.swift; sourceTree = "<group>"; };
 		64DE7620E584197285B2ED27 /* CategoryRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRegistry.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 			children = (
 				D0F7BEE96DD262AC9467CE84 /* DialsUITests.swift */,
 				2BDF4EE30763D7A1A0FC549B /* PadUITests.swift */,
+				55606CFAD96251866AE8E2AD /* SharpnessUITests.swift */,
 				B58C41143C95B99BC42613E1 /* SymbiosisUITests.swift */,
 			);
 			path = UITestsPad;
@@ -553,6 +556,7 @@
 			files = (
 				7FEA90F5E9A325977F4D7D35 /* DialsUITests.swift in Sources */,
 				55341D4CCA1DEF294491A956 /* PadUITests.swift in Sources */,
+				6F7640963543FE6C08A5AA60 /* SharpnessUITests.swift in Sources */,
 				2A686F54F16FCD68BF47B926 /* SymbiosisUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

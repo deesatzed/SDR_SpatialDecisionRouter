@@ -6,6 +6,7 @@ Ed25519 signature, folds amendment lines (kind=outcome / split_rating) into thei
 
   finetune/sft.jsonl          chat-style SFT pairs: card context -> the human's decision
   finetune/preference.jsonl   chosen vs rejected where the human changed the agent's pick (outcome-aware)
+  sharpness/spot_checks.jsonl every signed M3 spot-check (human call vs AI pick vs outcome)
   dials/dial_changes.jsonl    every signed earned-autonomy move / demotion / revert (M2), with reason + evidence refs
   rl/rewards.jsonl            outcome-graded reward (+1 / -1; null when no outcome is known). split rating is an
                               auxiliary field only and is NEVER added into `reward` (plan non-negotiable 2)
@@ -232,6 +233,24 @@ def main(argv=None):
                                                     "reason", "evidence_refs", "posterior", "escalation_flags", "ledger_hash")},
                                ensure_ascii=False, sort_keys=True) + "\n")
     counts["dial_changes"] = len(dial)
+    # M3: sharpness spot-checks (AI hidden, human called first); later outcome lines are folded in
+    outs = {r.get("ref_id"): r.get("outcome") for r in recs if r.get("kind") == "outcome"}
+    spots = []
+    for r in recs:
+        if r.get("kind") != "spot_check":
+            continue
+        sc = dict(r.get("spot_check") or {})
+        if sc.get("outcome") is None and outs.get(r.get("ref_id")):
+            sc["outcome"] = outs[r["ref_id"]].get("value")
+            sc["human_correct"] = sc["outcome"] == sc.get("human_call")
+            sc["agent_correct"] = sc["outcome"] == sc.get("agent_pick")
+        spots.append({"id": r.get("id"), "decision_id": r.get("ref_id"), "timestamp": r.get("timestamp"), "domain": r.get("domain"),
+                      "context_id": r.get("context_id"), "generation": r.get("generation"), **sc, "ledger_hash": r.get("ledger_hash")})
+    os.makedirs(os.path.join(a.out, "sharpness"), exist_ok=True)
+    with open(os.path.join(a.out, "sharpness", "spot_checks.jsonl"), "w", encoding="utf-8") as f:
+        for row in spots:
+            f.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+    counts["spot_checks"] = len(spots)
     s = {"legacy_skipped_duplicates": dup, "ledger_lines": len(recs), "chain_ok": ok, "problems": probs[:20], "decisions": len(decisions),
          "by_domain": dict(collections.Counter(d["domain"] for d in decisions)),
          "by_kind": dict(collections.Counter(r.get("kind") for r in recs)),

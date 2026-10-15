@@ -116,7 +116,48 @@ struct Handoff: Identifiable, Hashable {
         }
     }
     // review queue
-    var nowId: String? { didSet { if oldValue != nowId { aiDepthOpen = false } } }
+    var nowId: String? { didSet { if oldValue != nowId { aiDepthOpen = false; considerSharp() } } }
+    // M3 sharpness spot-checks: AI answer hidden, human calls first, then reveal
+    var sharpIds: Set<String> = []                 // handoff ids currently in "Your call first"
+    var sharpWhy: [String: String] = [:]
+    var lastSharp: UnifiedDecisionRecord?          // most recent signed spot_check line (for the reveal)
+    var sharpRate: Double = ProcessInfo.processInfo.arguments.argValue("-sharpRate").flatMap(Double.init) ?? 0.3
+    var sharpEvery: Int? = ProcessInfo.processInfo.arguments.argValue("-sharpEvery").flatMap(Int.init)
+    var sharpDetailMin: Double = ProcessInfo.processInfo.arguments.argValue("-sharpDetail").flatMap(Double.init) ?? 85
+    private var sharpEligible = 0
+    private var sharpRng = SplitMix64(s: 7171)
+    func isSharp(_ h: Handoff) -> Bool { sharpIds.contains(h.id) && h.trigger == nil }
+    /// schedule a spot-check when a card becomes Now. Never on hard-trigger cards (escalation is never delayed).
+    private func considerSharp() {
+        guard let h = nowHandoff, h.trigger == nil, !sharpIds.contains(h.id), let item = items[h.itemId] else { return }
+        let key = domain.decisionContext(item: item).domain
+        guard let c = dials(key), domain.hardTrigger(item: item) == nil else { return }
+        var why: String?
+        if DemoState.on { if item.fields["demo_spot"] == "1" { why = "demo-forced (detail \(Int(c.dials.detail_absorption)))" } }
+        else if c.dials.detail_absorption >= sharpDetailMin {
+            sharpEligible += 1
+            if let n = sharpEvery, n > 0 { if sharpEligible % n == 0 { why = "every \(n) cards at detail ≥ \(Int(sharpDetailMin))" } }
+            else if sharpRng.chance(sharpRate) { why = "detail \(Int(c.dials.detail_absorption)) ≥ \(Int(sharpDetailMin)) · rate \(Int(sharpRate * 100))%" }
+        }
+        if let w = why { sharpIds.insert(h.id); sharpWhy[h.id] = w; aiDepthOpen = false }
+    }
+    /// the human's first call on a spot-check card; it is the routed decision, then the AI pick + outcome are revealed
+    func sharpCall(_ id: String, _ call: String) {
+        guard sharpIds.contains(id), let h = handoffs.first(where: { $0.id == id }) else { return }
+        route(id, answer: call, gesture: "your_call_first")
+        _ = h
+    }
+    private func appendSharp(_ u: UnifiedDecisionRecord, _ h: Handoff) {
+        var s = UnifiedDecisionRecord.amendment(kind: "spot_check", ref: u)
+        let call = u.human_decision?.answer ?? "", out = u.outcome?.value
+        s.spot_check = SpotCheckInfo(human_call: call, agent_pick: h.proposal, outcome: out,
+                                     human_correct: out.map { $0 == call }, agent_correct: out.map { $0 == h.proposal },
+                                     hidden: ["ai_column", "proposal", "confidence", "reasons"], trigger: sharpWhy[h.id] ?? "")
+        if let r = ledger.append(s) { lastSharp = r }
+        sharpIds.remove(h.id)
+    }
+    func sharpness(_ key: String) -> DialPosterior? { DialEngine.sharpness(key: key, recs: ledger.read()) }
+    func overrideRate(_ key: String) -> DialPosterior? { DialEngine.overrides(key: key, recs: ledger.read()) }
     var detailOpen = false
     var openSections: [String: Date] = [:]
     private var sectionAcc: [String: Double] = [:]
@@ -161,6 +202,7 @@ struct Handoff: Identifiable, Hashable {
         }
         reviewerRng = SplitMix64(s: 99); testNameIdx = 0; spotRng = SplitMix64(s: 4242)
         pendingSplit = [:]; splitGiven = [:]; aiDepthOpen = false; loadDials(); lastDialMove = nil
+        sharpIds = []; sharpWhy = [:]; lastSharp = nil; sharpEligible = 0; sharpRng = SplitMix64(s: 7171)
         nowId = nil; spotChecks = []; autoPassed = 0; resetDetailTelemetry()
         itemReRatings = [:]; itemAsks = [:]; lastAnswer = [:]; destFor = [:]; sideTab = "details"
         items = [:]; itemOrder = []; handoffs = []; phase = [:]; progress = [:]; slot = [:]; shownAt = [:]
@@ -498,7 +540,11 @@ struct Handoff: Identifiable, Hashable {
         let split = pendingSplit.removeValue(forKey: item.id)
         var dctx = domain.decisionContext(item: item)
         if let cur = dials(dctx.domain) { dctx.dials = cur.dials; dctx.generation = cur.generation }
-        if let u = ledger.append(.from(dd, ctx: dctx, split: split)) { unified[dd.id] = u; reviewDials(key: u.domain, contextId: u.context_id) }
+        if let u = ledger.append(.from(dd, ctx: dctx, split: split)) {
+            unified[dd.id] = u
+            if sharpIds.contains(id) { appendSharp(u, h) }
+            reviewDials(key: u.domain, contextId: u.context_id)
+        }
         aiDepthOpen = false
         domain.decided(item: item, link: h.link, answer: eff, latency: dd.latency, by: by)
     }
@@ -618,6 +664,12 @@ struct Handoff: Identifiable, Hashable {
                 demoStep = "hard trigger"; if detailOpen { toggleDetail() }
                 try? await Task.sleep(for: .seconds(7 * pace)); pass(h.id); continue
             }
+            if isSharp(h), let it = items[h.itemId] {
+                demoStep = "your call first"; if detailOpen { toggleDetail() }
+                try? await Task.sleep(for: .seconds(5 * pace))
+                sharpCall(h.id, it.fields["demo_human_call"] ?? domain.demoAnswer(item: it, link: h.link) ?? h.proposal)
+                demoStep = "reveal"; try? await Task.sleep(for: .seconds(6 * pace)); continue
+            }
             demoStep = "reliability"; sideTab = reliability(h).isEmpty ? "details" : "reliability"; if !detailOpen { toggleDetail() }
             try? await Task.sleep(for: .seconds(7 * pace))
             if let q = askNextList(h).first {
@@ -710,4 +762,9 @@ struct Handoff: Identifiable, Hashable {
             k += 1
         }
     }
+}
+
+extension Array where Element == String {
+    /// value following a launch flag, e.g. ["-sharpRate","0.5"] → "0.5"
+    func argValue(_ flag: String) -> String? { firstIndex(of: flag).flatMap { $0 + 1 < count ? self[$0 + 1] : nil } }
 }

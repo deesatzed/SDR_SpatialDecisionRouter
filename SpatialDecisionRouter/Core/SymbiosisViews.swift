@@ -12,8 +12,10 @@ struct SymbiosisPanel: View {
     var body: some View {
         let f = item.fields
         let area = (engine.domain as? SymbiosisDomain)?.area(item)
+        let sharp = engine.nowHandoff.map { $0.itemId == item.id && engine.isSharp($0) } ?? false
         VStack(alignment: .leading, spacing: 12) {
-            if let a = area { DialGauge(key: "symbiosis:\(a.id)", fallback: a) }
+            if let r = engine.lastSharp { SpotReveal(rec: r) }
+            if let a = area { DialGauge(key: "symbiosis:\(a.id)", fallback: a); CalibrationCard(key: "symbiosis:\(a.id)") }
             HStack(alignment: .top, spacing: 12) {
                 column("YOU HOLD", symOrange, id: "humanColumn") {
                     Text(f["human_judgment"] ?? "").font(.title3.bold())
@@ -25,6 +27,17 @@ struct SymbiosisPanel: View {
                     Text("Accept plan = \(f["plan"] ?? "")").font(.callout)
                     if let alt = f["alternative"], alt != "—" { Text("Alternative = \(alt)").font(.callout) }
                 }
+                if sharp {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("AI HOLDS").font(.caption.bold()).foregroundStyle(symBlue)
+                        Text("Hidden — your call first.").font(.headline).foregroundStyle(.secondary)
+                        Text("The AI's pick and the outcome are revealed after you decide.").font(.callout).foregroundStyle(.secondary)
+                    }
+                    .padding(12).frame(maxWidth: .infinity, alignment: .topLeading)
+                    .background(.gray.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
+                    .overlay(RoundedRectangle(cornerRadius: 14).stroke(symBlue.opacity(0.4), style: StrokeStyle(lineWidth: 1.5, dash: [6, 4])))
+                    .accessibilityElement(children: .contain).accessibilityIdentifier("aiHidden")
+                } else {
                 column("AI HOLDS", symBlue, id: "aiColumn") {
                     Text(f["ai_distilled"] ?? "").font(.headline)
                     if engine.aiDepthOpen {
@@ -35,8 +48,9 @@ struct SymbiosisPanel: View {
                     Button(engine.aiDepthOpen ? "Hide AI depth" : "Show AI depth") { engine.aiDepthOpen.toggle() }
                         .tint(symBlue).accessibilityIdentifier("aiDepthToggle")
                 }
+                }
             }
-            SplitRatingRow(itemId: item.id)
+            if !sharp { SplitRatingRow(itemId: item.id) }
         }
     }
     @ViewBuilder private func column<C: View>(_ title: String, _ tint: Color, id: String, @ViewBuilder _ c: () -> C) -> some View {
@@ -225,5 +239,79 @@ struct ManifestoButton: View {
             engine.showManifesto = true
             #endif
         }.tint(.orange).accessibilityIdentifier("openManifesto")
+    }
+}
+
+/// M3 · "Your call first": the AI's pick, confidence and reasons are hidden; the human picks, then the reveal shows.
+struct YourCallFirst: View {
+    @Environment(RouterEngine.self) private var engine
+    let h: Handoff
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("YOUR CALL FIRST").font(.headline.bold()).padding(.horizontal, 10).padding(.vertical, 3)
+                    .background(symOrange, in: Capsule()).foregroundStyle(.black)
+                Text("sharpness spot-check · \(engine.sharpWhy[h.id] ?? "")").font(.callout).foregroundStyle(.secondary)
+            }
+            Text(h.link.question).font(.title)
+            ActionRow {
+                ForEach(h.link.options, id: \.self) { o in
+                    Button(o) { engine.sharpCall(h.id, o) }.tint(symOrange).accessibilityIdentifier("call_\(o)")
+                }
+            }.font(.title2.bold())
+            Text("Keeps your judgment sharp while the AI absorbs detail. Hard-trigger cards are never spot-checked.")
+                .font(.caption).foregroundStyle(.secondary)
+        }
+        .padding(14).background(symOrange.opacity(0.10), in: RoundedRectangle(cornerRadius: 14))
+        .overlay(RoundedRectangle(cornerRadius: 14).stroke(symOrange.opacity(0.7), lineWidth: 2))
+        .accessibilityElement(children: .contain).accessibilityIdentifier("yourCallFirst")
+    }
+}
+
+/// reveal of the last spot-check: your call vs the AI's pick vs the outcome
+struct SpotReveal: View {
+    let rec: UnifiedDecisionRecord
+    var body: some View {
+        if let s = rec.spot_check {
+            HStack(spacing: 14) {
+                Text("REVEAL").font(.caption.bold()).foregroundStyle(.secondary)
+                Text("You: \(s.human_call)").font(.headline).foregroundStyle(symOrange)
+                Text("AI: \(s.agent_pick)").font(.headline).foregroundStyle(symBlue)
+                Text("Outcome: \(s.outcome ?? "pending")").font(.headline)
+                if let c = s.human_correct { Text(c ? "✓ you held up" : "✗ missed").font(.headline.bold()).foregroundStyle(c ? .green : .pink) }
+                Spacer()
+            }
+            .padding(10).background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 10))
+            .accessibilityElement(children: .combine).accessibilityIdentifier("spotReveal")
+        }
+    }
+}
+
+/// per-area calibration: human spot-check accuracy vs outcome, and whether overrides held up
+struct CalibrationCard: View {
+    @Environment(RouterEngine.self) private var engine
+    let key: String
+    var body: some View {
+        let _ = engine.decisions.count + (engine.lastSharp == nil ? 0 : 1)   // re-render on new decisions/spot-checks
+        let sh = engine.sharpness(key), ov = engine.overrideRate(key)
+        HStack(spacing: 18) {
+            Text("CALIBRATION").font(.caption.bold()).foregroundStyle(.secondary)
+            stat("Your sharpness", sh, empty: "no spot-checks yet")
+            stat("Overrides held up", ov, empty: "no graded overrides")
+            Text("checks: detail ≥ \(Int(engine.sharpDetailMin)) · \(engine.sharpEvery.map { "every \($0)" } ?? "rate \(Int(engine.sharpRate * 100))%")")
+                .font(.caption).foregroundStyle(.secondary)
+            Spacer()
+        }
+        .padding(8).background(.white.opacity(0.05), in: RoundedRectangle(cornerRadius: 10))
+        .accessibilityElement(children: .combine).accessibilityIdentifier("calibrationCard")
+    }
+    @ViewBuilder private func stat(_ t: String, _ p: DialPosterior?, empty: String) -> some View {
+        VStack(alignment: .leading, spacing: 1) {
+            Text(t).font(.caption.bold())
+            if let p {
+                Text("\(p.successes)/\(p.n) · \(Int(p.mean * 100))% [\(Int(p.lo * 100))–\(Int(p.hi * 100))]").font(.headline.monospacedDigit())
+                    .foregroundStyle(p.hi <= 0.5 ? .pink : (p.lo >= 0.5 ? .green : .primary))
+            } else { Text(empty).font(.callout).foregroundStyle(.secondary) }
+        }
     }
 }

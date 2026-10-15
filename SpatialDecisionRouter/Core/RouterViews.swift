@@ -209,7 +209,8 @@ struct NowCard: View {
             if item?.fields["showCapacity"] != "no" {
                 Text("\(t.capacityLabel): \(h.capacityLine)").font(.headline).foregroundStyle(.cyan).lineLimit(1).gloss("census")
             }
-            if !reasons.isEmpty {
+            let sharp = engine.isSharp(h)
+            if !reasons.isEmpty && !sharp {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("WHY QUEUED").font(.caption.bold()).foregroundStyle(.secondary)
                     #if os(visionOS)
@@ -245,6 +246,7 @@ struct NowCard: View {
                 SymbiosisPanel(item: item)
                 ManifestoButton()
             }
+            if sharp { YourCallFirst(h: h) } else {
             HStack(alignment: .firstTextBaseline) {
                 Text(h.link.question).font(.title)
                 Text(h.proposal).font(.sdrHuge.bold())
@@ -273,6 +275,7 @@ struct NowCard: View {
                 }
                 Button(engine.detailOpen ? "ⓘ Hide" : "ⓘ Details") { engine.sideTab = "details"; engine.toggleDetail() }.tint(.gray)
             }.font(.title2.bold())
+            }
         }
         .sdrWidth(880).padding(22).sdrPanel()
     }

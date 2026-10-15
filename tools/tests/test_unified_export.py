@@ -34,6 +34,10 @@ def test_three_outputs_and_rules(tmp_path):
     assert len(sft) == 3 and len(rl) == 3 and len(pref) == 2
     dc = [json.loads(l) for l in open(tmp_path / "dials" / "dial_changes.jsonl")]
     assert len(dc) == 1 and dc[0]["dial_after"]["autonomy_horizon"] == dc[0]["dial_before"]["autonomy_horizon"] + 5 and dc[0]["evidence_refs"]
+    sc = [json.loads(l) for l in open(tmp_path / "sharpness" / "spot_checks.jsonl")]
+    # spot-check on decision `a` (proposal A); its later outcome line (A) is folded in: human called B → missed
+    assert len(sc) == 1 and sc[0]["human_call"] == "B" and sc[0]["outcome"] == "A" and sc[0]["human_correct"] is False and sc[0]["agent_correct"] is True
+    assert s["outputs"]["spot_checks"] == 1
     # split rating is auxiliary, never part of reward
     for r in rl:
         assert r["reward"] in (1.0, -1.0, None)

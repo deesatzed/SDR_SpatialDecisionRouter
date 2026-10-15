@@ -29,6 +29,16 @@ struct RecordOutcome: Codable, Hashable {
     var observed_at: String
 }
 
+struct SpotCheckInfo: Codable, Hashable {
+    var human_call: String
+    var agent_pick: String
+    var outcome: String?           // nil until observed (later outcome lines are folded in)
+    var human_correct: Bool?
+    var agent_correct: Bool?
+    var hidden: [String]           // what was hidden while the human decided
+    var trigger: String            // why it was scheduled: detail ≥ threshold + rate | every-N | demo-forced
+}
+
 struct AgentProposal: Codable, Hashable { var answer: String; var confidence: Double }
 
 struct HumanDecision: Codable, Hashable {
@@ -76,6 +86,8 @@ struct UnifiedDecisionRecord: Codable, Hashable {
     var reason: String?
     var evidence_refs: [String]?
     var posterior: DialPosterior?
+    // kind == "spot_check" (M3): AI answer hidden, human called first
+    var spot_check: SpotCheckInfo?
     var signer_key_id: String
     var signer_pub: String                   // base64 raw Ed25519 public key
     var ledger_prev: String

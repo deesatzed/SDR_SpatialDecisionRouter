@@ -82,3 +82,23 @@ No Symbiont images are used. Confirm with the author before any commercial use.
   closest fit, shown on the card; outcomes from `decisions_imported.jsonl`). `tools/symbiosis_demo.sh --import=<dir>`.
 - `-importCSV <dir>/encounters.csv` loads in AI tele-doc (fixed a crash on outpatient complaints in `EncounterImporter`).
 - ED triage is **not** wired: its items come from a capacity/queue simulation with several linked decisions per patient.
+
+
+## M3 — Human sharpness spot-checks
+
+When the AI absorbs a lot of detail in an area, the human's own judgment can quietly atrophy. M3 checks it.
+
+- **Scheduling** (`RouterEngine.considerSharp`): when a card becomes Now and its area's detail dial is ≥ `-sharpDetail` (default 85),
+  a spot-check fires at `-sharpRate` (default 0.3, seeded RNG) or every `-sharpEvery N` eligible cards. In the demo, cards listed in
+  `SymbiosisDomain.demoSpots` are forced (FIN-4/5/6). **Never on hard-trigger cards** — escalation is never delayed, and a firing trigger preempts.
+- **"Your call first"**: the AI column, proposal, confidence, why-queued reasons, split row and the Pass/accept shortcut are hidden; the
+  human picks an option. That pick is the routed decision. Then a reveal strip shows *you · AI · outcome · held up/missed*.
+- **Ledger**: each check is a signed `kind: "spot_check"` line referencing the decision (`spot_check: {human_call, agent_pick, outcome,
+  human_correct, agent_correct, hidden, trigger}`); a later `outcome` line grades an ungraded check.
+- **Calibration** (`DialEngine.sharpness`): Beta(1+k, 1+n−k) per area, shown on the calibration card with n and 90% interval, beside
+  **overrides held up** (`DialEngine.overrides`: decisions where the human changed the agent's pick, graded by outcome).
+- **Dial effect** (inside the M2 window, signed `dial_change`): n ≥ 3 and 90% high ≤ 0.5 → detail −5, challenge +5 ("AI hands detail back");
+  at detail ≥ 85, a "buried me" split can raise absorption only with 90% low ≥ 0.5. Sharpness never moves autonomy.
+- **Demotion softened**: a critical miss still cuts autonomy −15, but deference rises at most +10 and stops at 95 (floor 80 still enforced).
+- **Export**: `sharpness/spot_checks.jsonl` (outcomes folded in), count in `summary.json`.
+- Demo: `tools/symbiosis_demo.sh --auto` — three missed checks in finance, then at FIN-6 the earned rise and the sharpness hand-back land in one move.

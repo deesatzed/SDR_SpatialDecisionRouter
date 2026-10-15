@@ -330,11 +330,14 @@ Check boxes as work lands on `main`. Do not skip M0.
 
 ### M3 — Sharpness checks
 
-- [ ] Scheduler when detail absorption is high
-- [ ] Hide AI answer → human call → reveal + calibration
-- [ ] Low calibration lowers absorption
-- [ ] Acceptance: forced check appears in demo path; failed checks
-      reduce absorption dial in the next session snapshot
+- [x] Scheduler when detail absorption is high (detail ≥ `-sharpDetail` 85, rate `-sharpRate` 0.3 or `-sharpEvery N`; demo-forced cards; never on hard-trigger cards)
+- [x] Hide AI answer → human call → reveal + calibration (AI column, proposal, confidence, reasons, Pass hidden; signed `spot_check` line; reveal strip; per-area calibration card)
+- [x] Low calibration lowers absorption (n ≥ 3 and 90% high ≤ 0.5 → detail −5, challenge +5; detail ≥ 85 may rise only with 90% low ≥ 0.5)
+- [x] Acceptance: forced check appears in demo path; failed checks
+      reduce absorption dial in the next session snapshot (replayed from signed `dial_change`; unit test `testPoorSharpnessHandsDetailBack`)
+- [x] M2 gaps: override-held-up rate shown on the calibration card; clinical demotion softened (deference +≤10, max 95, floor 80 still enforced)
+
+M3 status: done (2026-10-15). Thresholds are design placeholders.
 
 ### M4 — Frozen-replay promotion + Principal card
 

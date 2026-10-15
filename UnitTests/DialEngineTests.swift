@@ -80,7 +80,70 @@ final class DialEngineTests: XCTestCase {
         let l = ledger(); var c = SymbiosisSeeds.finance
         for _ in 0..<5 { dec(l, key: "k", agentRight: true, split: .buried_me) }
         let m = step(l, "k", &c)
+        // finance detail starts at the 85 gate: further absorption needs good spot-check evidence (M3)
+        XCTAssertEqual(m?.after.detail_absorption, SymbiosisSeeds.finance.dials.detail_absorption)
+        XCTAssertTrue(m?.reason.contains("needs good spot-check") ?? false)
+    }
+    // MARK: M3 sharpness
+    @discardableResult
+    private func spot(_ l: DecisionLedger, key: String, humanRight: Bool, outcome: Bool = true) -> UnifiedDecisionRecord {
+        let d = dec(l, key: key, agentRight: true)
+        var s = UnifiedDecisionRecord.amendment(kind: "spot_check", ref: d)
+        s.spot_check = SpotCheckInfo(human_call: humanRight ? "A" : "B", agent_pick: "A", outcome: outcome ? "A" : nil,
+                                     human_correct: outcome ? humanRight : nil, agent_correct: outcome ? true : nil, hidden: ["ai_column"], trigger: "test")
+        return l.append(s)!
+    }
+    func testGoodSharpnessPermitsAbsorption() {
+        let l = ledger(); var c = SymbiosisSeeds.finance
+        for _ in 0..<3 { spot(l, key: "k", humanRight: true) }
+        for _ in 0..<2 { dec(l, key: "k", agentRight: true, split: .buried_me) }
+        for _ in 0..<1 { dec(l, key: "k", agentRight: true, split: .buried_me) }
+        let m = step(l, "k", &c)
         XCTAssertEqual(m?.after.detail_absorption, SymbiosisSeeds.finance.dials.detail_absorption + 5)
+        XCTAssertEqual(DialEngine.sharpness(key: "k", recs: l.read())?.n, 3)
+    }
+    func testPoorSharpnessHandsDetailBack() {
+        let K = "symbiosis:personal_finance"; let l = ledger(); var c = SymbiosisSeeds.finance
+        for _ in 0..<3 { spot(l, key: K, humanRight: false) }   // only 3 graded decisions (< minN) — sharpness still acts
+        let m = step(l, K, &c)
+        XCTAssertEqual(m?.after.detail_absorption, SymbiosisSeeds.finance.dials.detail_absorption - 5)
+        XCTAssertEqual(m?.after.challenge, SymbiosisSeeds.finance.dials.challenge + 5)
+        XCTAssertEqual(m?.after.autonomy_horizon, SymbiosisSeeds.finance.dials.autonomy_horizon, "sharpness never moves autonomy")
+        XCTAssertTrue(m?.reason.hasPrefix("sharpness") ?? false); XCTAssertEqual(m?.evidence.count, 3)
+        // next session: replayed snapshot keeps the lowered absorption
+        XCTAssertEqual(DialEngine.replay(l.read())[K]?.dials.detail_absorption, SymbiosisSeeds.finance.dials.detail_absorption - 5)
+    }
+    func testUngradedSpotChecksDoNothingUntilOutcome() {
+        let l = ledger(); var c = SymbiosisSeeds.finance
+        var refs: [UnifiedDecisionRecord] = []
+        for _ in 0..<3 { refs.append(spot(l, key: "k", humanRight: false, outcome: false)) }
+        XCTAssertNil(DialEngine.sharpness(key: "k", recs: l.read()))
+        // late outcome lines on the decisions grade the spot-checks
+        for r in refs { l.append(.amendment(kind: "outcome", ref: UnifiedDecisionRecord(kind: "decision", id: r.ref_id!, ref_id: nil, timestamp: "", domain: "k", context_id: "c", dial_snapshot: nil, generation: 0, signer_key_id: "", signer_pub: "", ledger_prev: ""), outcome: RecordOutcome(value: "A", source: "test", observed_at: DecisionLedger.iso()))) }
+        XCTAssertEqual(DialEngine.sharpness(key: "k", recs: l.read())?.successes, 0)
+        XCTAssertEqual(step(l, "k", &c)?.after.detail_absorption, SymbiosisSeeds.finance.dials.detail_absorption - 5)
+    }
+    func testOverrideCorrectRate() {
+        let l = ledger()
+        for right in [true, true, false] {
+            var r = UnifiedDecisionRecord(kind: "decision", id: UUID().uuidString, ref_id: nil, timestamp: DecisionLedger.iso(), domain: "k",
+                                          context_id: "c", dial_snapshot: nil, generation: 0, signer_key_id: "", signer_pub: "", ledger_prev: "")
+            r.agent_proposal = AgentProposal(answer: "A", confidence: 0.7)
+            r.human_decision = HumanDecision(label: "modify", answer: "B", gesture: "select", changed: true, decided_by: "human")
+            r.outcome = RecordOutcome(value: right ? "B" : "A", source: "test", observed_at: DecisionLedger.iso())
+            l.append(r)
+        }
+        dec(l, key: "k", agentRight: true)   // not an override
+        let p = DialEngine.overrides(key: "k", recs: l.read())
+        XCTAssertEqual(p?.n, 3); XCTAssertEqual(p?.successes, 2)
+    }
+    func testClinicalDemotionSoftened() {
+        let l = ledger(); var c = SymbiosisSeeds.clinical
+        dec(l, key: "e", agentRight: false, critical: true)
+        let m = step(l, "e", &c)!
+        XCTAssertEqual(m.after.deference, min(SymbiosisSeeds.clinical.dials.deference + 10, 95), "deference steps ≤10 and stops at 95, not 100")
+        XCTAssertGreaterThanOrEqual(m.after.deference, 80)
+        XCTAssertLessThan(m.after.deference, 100)
     }
     func testReplayAndRevert() {
         let l = ledger(); var c = SymbiosisSeeds.finance

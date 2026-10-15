@@ -93,6 +93,9 @@ final class DecisionLedgerTests: XCTestCase {
         var after = SymbiosisSeeds.finance.dials; after.autonomy_horizon += 5; after.source = DialEngine.earnedSource
         let mv = DialMove(before: SymbiosisSeeds.finance.dials, after: after, reason: "earned: test", evidence: [a.id], posterior: DialEngine.posterior(5, 0), demotion: false)
         l.append(DialEngine.record(key: "symbiosis:personal_finance", contextId: "personal_finance", move: mv, generation: 1))
+        var sc = UnifiedDecisionRecord.amendment(kind: "spot_check", ref: a)
+        sc.spot_check = SpotCheckInfo(human_call: "B", agent_pick: "A", outcome: nil, human_correct: nil, agent_correct: nil, hidden: ["ai_column", "proposal"], trigger: "test")
+        l.append(sc)
         XCTAssertTrue(DecisionLedger.verify(l.read()).ok)
     }
 }

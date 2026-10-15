@@ -32,6 +32,12 @@ struct DialPolicy {
     var step = 5.0
     var demoteStep = 15.0
     var splitMin = 3
+    var sharpMin = 3            // spot-checks needed before human sharpness affects dials
+    var sharpPoorHi = 0.5       // 90% high ≤ this → AI hands detail back + challenges more
+    var sharpGoodLo = 0.5       // 90% low ≥ this → absorption may rise above sharpDetailGate
+    var sharpDetailGate = 85.0  // detail ≥ this needs good sharpness evidence to rise further
+    var demoteDeferenceStep = 10.0
+    var demoteDeferenceMax = 95.0
     static let standard = DialPolicy()
 }
 
@@ -57,6 +63,37 @@ enum DialEngine {
     }
 
     struct Graded { let id: String; let agentCorrect: Bool; let critical: Bool; let split: String? }
+    struct Spot { let id: String; let humanCorrect: Bool }
+
+    static func outcomes(_ recs: [UnifiedDecisionRecord]) -> [String: RecordOutcome] {
+        var o: [String: RecordOutcome] = [:]
+        for r in recs where r.kind == "outcome" { if let ref = r.ref_id, let x = r.outcome { o[ref] = x } }
+        return o
+    }
+    /// outcome-graded spot-checks of `key` (all, or since index `from`)
+    static func spots(key: String, recs: [UnifiedDecisionRecord], from: Int = 0) -> [Spot] {
+        let o = outcomes(recs)
+        return recs[from...].compactMap { r in
+            guard r.kind == "spot_check", r.domain == key, let sc = r.spot_check else { return nil }
+            guard let out = sc.outcome ?? r.ref_id.flatMap({ o[$0]?.value }) else { return nil }
+            return Spot(id: r.id, humanCorrect: sc.human_call == out)
+        }
+    }
+    /// human sharpness (spot-check calibration) for UI
+    static func sharpness(key: String, recs: [UnifiedDecisionRecord]) -> DialPosterior? {
+        let sp = spots(key: key, recs: recs); guard !sp.isEmpty else { return nil }
+        let k = sp.filter(\.humanCorrect).count; return posterior(k, sp.count - k)
+    }
+    /// did the human's overrides (changed the agent's pick) hold up against the outcome?
+    static func overrides(key: String, recs: [UnifiedDecisionRecord]) -> DialPosterior? {
+        let o = outcomes(recs)
+        var k = 0, n = 0
+        for r in recs where r.kind == "decision" && r.domain == key && r.human_decision?.changed == true {
+            guard let out = (o[r.id] ?? r.outcome)?.value, let h = r.human_decision?.answer else { continue }
+            n += 1; if h == out { k += 1 }
+        }
+        return n == 0 ? nil : posterior(k, n - k)
+    }
 
     /// decisions for `key` after its last dial_change, with outcomes / split ratings folded from amendment lines
     static func window(key: String, recs: [UnifiedDecisionRecord]) -> (graded: [Graded], splits: [String: Int]) {
@@ -89,19 +126,35 @@ enum DialEngine {
             var capNote = ""
             if e.dials.autonomy_horizon != c.dials.autonomy_horizon { capNote += " · autonomy held at cap \(Int(c.caps.autonomyMax))" }
             if e.dials.deference != c.dials.deference {
-                capNote += c.dials.deference < c.caps.deferenceMin ? " · deference held at floor \(Int(c.caps.deferenceMin))" : " · deference at max 100" }
+                capNote += c.dials.deference < c.caps.deferenceMin ? " · deference held at floor \(Int(c.caps.deferenceMin))" : " · deference at max" }
             let a = e.dials
             guard a.deference != before.deference || a.autonomy_horizon != before.autonomy_horizon ||
                   a.detail_absorption != before.detail_absorption || a.challenge != before.challenge else { return nil }
             return DialMove(before: before, after: a, reason: reason + capNote, evidence: ev, posterior: post, demotion: demotion)
         }
         if let miss = g.first(where: \.critical) {
-            c.dials.autonomy_horizon -= policy.demoteStep; c.dials.deference += policy.demoteStep
+            c.dials.autonomy_horizon -= policy.demoteStep
+            // softened: deference rises by at most demoteDeferenceStep and never above demoteDeferenceMax (floor still applies)
+            c.dials.deference = max(c.dials.deference, min(c.dials.deference + policy.demoteDeferenceStep, policy.demoteDeferenceMax))
             return finish("DEMOTION: critical miss — the agent's pick was wrong on a high-severity card", [miss.id], posterior(g.filter(\.agentCorrect).count, g.filter { !$0.agentCorrect }.count), demotion: true)
         }
-        guard g.count >= policy.minN else { return nil }
+        let start = (recs.lastIndex { $0.kind == "dial_change" && $0.domain == key }).map { $0 + 1 } ?? 0
+        let sp = spots(key: key, recs: recs, from: start)
+        let sk = sp.filter(\.humanCorrect).count, sharp = sp.count >= policy.sharpMin ? posterior(sk, sp.count - sk) : nil
+        let sharpPoor = sharp.map { $0.hi <= policy.sharpPoorHi } ?? false
+        let sharpGood = sharp.map { $0.lo >= policy.sharpGoodLo } ?? false
+        var why: [String] = [], sharpNote: [String] = []
+        var ev: [String] = []
+        if sharpPoor, let sh = sharp {
+            c.dials.detail_absorption -= policy.step; c.dials.challenge += policy.step
+            sharpNote.append("sharpness: you matched the outcome on \(sk)/\(sp.count) spot-checks (90% high \(sh.hi) ≤ \(policy.sharpPoorHi)) → AI hands detail back, challenges more")
+            ev += sp.map(\.id)
+        }
+        guard g.count >= policy.minN else {
+            return sharpNote.isEmpty ? nil : finish(sharpNote.joined(separator: " · "), ev, sharp, demotion: false)
+        }
         let s = g.filter(\.agentCorrect).count, post = posterior(s, g.count - s)
-        var why: [String] = []
+        ev += g.map(\.id)
         if post.lo >= policy.raiseLo {
             c.dials.autonomy_horizon += policy.step; c.dials.deference -= policy.step
             why.append("earned: agent matched the outcome \(s)/\(g.count) (90% low \(post.lo) ≥ \(policy.raiseLo))")
@@ -112,14 +165,19 @@ enum DialEngine {
         // split nudges: only alongside the outcome-graded window above
         if let (k, n) = splits.max(by: { $0.value < $1.value }), n >= policy.splitMin {
             switch k {
-            case "buried_me": c.dials.detail_absorption += policy.step; why.append("split: 'buried me in detail' ×\(n) → AI absorbs more detail")
+            case "buried_me":
+                if sharpPoor { why.append("split: 'buried me' ×\(n) ignored — sharpness too low to absorb more") }
+                else if c.dials.detail_absorption >= policy.sharpDetailGate && !sharpGood {
+                    if c.dials.detail_absorption == before.detail_absorption { why.append("split: 'buried me' ×\(n) held — detail ≥ \(Int(policy.sharpDetailGate)) needs good spot-check evidence") }
+                } else { c.dials.detail_absorption += policy.step; why.append("split: 'buried me in detail' ×\(n) → AI absorbs more detail") }
             case "too_abstract": c.dials.detail_absorption -= policy.step; why.append("split: 'too abstract' ×\(n) → AI hands back detail")
             case "overstepped_me": c.dials.challenge -= policy.step; why.append("split: 'overstepped me' ×\(n) → AI challenges less")
             default: break
             }
         }
+        why += sharpNote
         guard !why.isEmpty else { return nil }
-        return finish(why.joined(separator: " · "), g.map(\.id), post, demotion: false)
+        return finish(why.joined(separator: " · "), ev, post, demotion: false)
     }
 
     /// seed profile for a unified-domain key
