@@ -68,17 +68,35 @@ curl -s -XPOST localhost:8766/develop -d '{"episodes":1}'  # agent consumes the 
 curl -s -XPOST localhost:8766/export                      # ~/.sdr/weriam_bridge/labels_export.jsonl
 ```
 
+## v2: live pause, signed approvals, grounded reliability, Game mode
+- **Live pause** (`POST /live/start`, `POST /live/label`): the bridge runs a WERIAM episode with a `pause_hook`. The agent stops at every gap decision and at the first defect-gate decision of each episode, then waits for your label. Agree runs its own pick. Alt #k / WAIT / Refuse swap in that action, but only after the environment guard passes it again. On **timeout** it falls back to `wait`, so it **never auto-approves**. Gap entries are matched to decisions by `decision_id` (`<episode>@t<t>`).
+  The hook lives on WERIAM branch **`sdr-principal-hooks`**, which is local and not pushed. That branch adds `run_episode(pause_hook=)`, `decision_id`, and retraining consumption. WERIAM's 77 existing tests still pass, plus 5 new ones (82 total).
+- **Retraining approvals are consumed** at the end of the episode, journaled as `foundation_rebuild` with `status: recorded_no_weights`. The simulator has no weights.
+- **Ed25519 approver signature**: the app makes a Curve25519 key (stored in the Keychain, with an Application Support file as fallback) and registers it with the bridge, which pins the key on first use. It signs the canonical JSON `{request_id, decision, by, ts, nonce, request_hash}`. The bridge checks the signature, the ±600 s clock skew, nonce replay, and that the request hash matches, and only then calls the WERIAM CLI with `--by "<name> · ed25519:<kid>"`. Signed records sit in their own hash-chained `signed_approvals.jsonl`, linked to the WERIAM `journal_seq`/`journal_hash`, and `/verify` re-checks all of it. Every route except `/health` needs `X-SDR-Token` (`~/.sdr/weriam_bridge/token`, 0600).
+- **Ground truth on the board** comes from WERIAM's observed outcome (teacher D of the nominated action). A label counts as a hit if you agreed and no harm followed, or if you didn't agree and the pick would have harmed. It counts as **overcautious** or a **critical miss** otherwise. Timeouts aren't graded.
+- **Reliability** is Beta(1+s, 1+f) over harm-free agent picks, per preset · world · action family. It shows the mean, a 90% interval, n, and how often you agreed.
+- **Game mode** (Game/Focus toggle, `-focus`) adds:
+  - score, streaks and combos
+  - session goals
+  - a calibration curve with Brier score
+  - predict-then-reveal with haptics and sound on iPad, and a particle burst on visionOS
+  - per-world earned-autonomy levels L0–L3. These are **display only and grant nothing**.
+  - a recap card
+  - on iPad: keys P/F/1–5/W/R/E/G, plus swipes (→ pass, ← modify, ↑ WAIT/defer)
+- Presets: `-weriamPreset theology_observed` is the demo default, because its agent defects when it isn't watched, so you can actually catch it. `weriam` and `baseline` are also available.
+
+![live pause](img/w05_live_pause.jpg) ![label ring](img/w06_label_ring.jpg) ![graded board](img/w07_board_graded.jpg)
+
 ## Tests
-`python3 -m pytest -q weriam_bridge/tests` (7 tests, real WERIAM state from `develop`): pending requests → cards; outcome hidden;
+`python3 -m pytest -q weriam_bridge/tests` (11 tests: v1 plus token/signature/replay/audit, live label changes the run, timeout→wait, approval queued during live, Beta/grade;, real WERIAM state from `develop`): pending requests → cards; outcome hidden;
 approve goes through WERIAM and is single-use (second decision refused; `develop` then marks it `consumed`; chain verifies);
 defer writes nothing to WERIAM; tamper detected; labels never written into WERIAM and export joins the outcome; HTTP round trip.
 iPad UI test `testWERIAMPrincipalOffline` (offline seeded path: card → Modify → Approve once → board).
 
 ## Known gaps
-- Demo-mode "correct / corrected / agent error" on the board use the **demo script** as ground truth; there is no ground truth for principal decisions.
-- `retraining` approvals are recorded but nothing in WERIAM consumes them yet (roadmap v0.6). The card says so.
-- `reliability` is a heuristic placeholder, not calibrated. The scorer the labels are meant for does not exist yet.
-- Shadow cards are only the gap/gate decisions already in the journal (journal keeps the top 40 gap candidates). Live "pause the agent at the gap and wait for the human" is not built — labels are prospective w.r.t. what the human sees, but the agent already acted in the sim.
-- Gap entries are paired with their decision by order in the journal.
-- The bridge is localhost-only, no auth. `--by` is a free-text name, not a signature (WERIAM's chain is tamper-evident, not signed).
-- Ideas 3–10 from the HITM report (π court, scorer audit, VOI ask-the-principal, earned-autonomy ladder, parity probes …) are not built.
+- Live pause needs WERIAM branch `sdr-principal-hooks`. On WERIAM main the bridge falls back to v1 (shadow labels on past decisions), and `/health` reports `hooks`.
+- Retraining is "consumed, recorded, no weights". Nothing gets retrained.
+- Ground truth is the simulator's teacher D. It's scripted worlds, not a deployed agent. Earned-autonomy levels grant nothing.
+- Key pinning is trust-on-first-use, with one key per name. If the Keychain isn't available (simulator), the key lives in a file. The token is a local shared secret, not user auth.
+- Approvals that arrive during a live run are queued and applied afterwards, so the journal chain can't fork.
+- Ideas 3–10 from the HITM report (π court, scorer audit, VOI ask-the-principal, parity probes …) are still not built.

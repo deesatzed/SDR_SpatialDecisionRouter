@@ -37,8 +37,8 @@ struct RoutingDecision: Codable, Identifiable {
     let distanceFromHead: Float
     let neighbors: [String]
     let queueDepth: Int
-    let groundTruth: String?
-    let agreesWithGroundTruth: Bool?
+    var groundTruth: String?
+    var agreesWithGroundTruth: Bool?
     var downstreamOutcome: String?
     // review-queue / detail telemetry (optional so older log lines still decode)
     var decidedBy: String?                   // human | auto

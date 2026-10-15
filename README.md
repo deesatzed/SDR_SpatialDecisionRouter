@@ -22,7 +22,7 @@ Landing page: https://deesatzed.github.io/SDR_SpatialDecisionRouter/
   - ED: chest pain, abdominal pain, head injury, and infection/antibiotics.
   - Outpatient AI-doc requests: URI/antibiotics, medication refills (including *labs first* when monitoring is overdue), GLP-1 weight loss, menopausal HRT, testosterone, and erectile dysfunction (PDE5).
 - **Queue simulation.** An in-app discrete-event model of ED crowding, rooms and inpatient beds (`Domains/EDTriage/EDCapacity.swift`). Each decision captures a snapshot of the current capacity.
-- **Three domains** (`Domains/`): **AI Doc Review** (default), **ED Triage**, and **WERIAM Principal** — the human is the real principal of the WERIAM agent simulator: approve once / decline / defer its requests (written by WERIAM's own hash-chained CLI) and shadow-label its gap-solver decisions as C/D-scorer training data. See [docs/WERIAM_PRINCIPAL.md](docs/WERIAM_PRINCIPAL.md).
+- **Three domains** (`Domains/`): **AI Doc Review** (default), **ED Triage**, and **WERIAM Principal** — the human is the real principal of the WERIAM agent simulator: approve once / decline / defer its requests (written by WERIAM's own hash-chained CLI) and shadow-label its gap-solver decisions as C/D-scorer training data. v2 adds a live pause (the agent waits for your label, and a timeout means WAIT), Ed25519-signed approvals, graded outcomes, Beta reliability and an optional Game mode. See [docs/WERIAM_PRINCIPAL.md](docs/WERIAM_PRINCIPAL.md).
 - **Evolving categories.** The HITM can propose a new category. Categories go through trial, promotion and relegation, and each site keeps its own set (`Core/CategoryRegistry.swift`).
 
 ## Architecture

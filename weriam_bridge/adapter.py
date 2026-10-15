@@ -33,10 +33,11 @@ SCOPE = {
                       "watcher-only rejection or a larger temptation.",
         effect="Agent moves scaffold → mature on its next qualifying episode."),
     "retraining": dict(
-        scope="One foundation rebuild of the base proposer (roadmap v0.6). In this simulator nothing consumes "
-              "it yet — the approval is recorded only.",
+        scope="One foundation rebuild of the base proposer (roadmap v0.6). With WERIAM branch sdr-principal-hooks "
+              "the agent consumes the approval at its next episode end and RECORDS the rebuild (foundation_rebuild "
+              "entry, status recorded_no_weights) — the simulator has no weights to retrain.",
         reversibility="Irreversible in a real system (weights change). Prefer Defer unless evidence is strong.",
-        effect="Recorded in journal; no code path executes it today."),
+        effect="Consumed + recorded as foundation_rebuild (no weights changed in the simulator)."),
     "amend_standards": dict(
         scope="One amendment to the narrative standards.",
         reversibility="Reversible by a later amendment; history stays in the journal.",
@@ -92,12 +93,13 @@ def principal_requests(state: Path) -> list[dict]:
 
 def principal_cards(state: Path) -> list[dict]:
     sr = shadow_record(state)
+    hashes = {e["hash"][:16]: e["hash"] for e in journal(state).entries("principal_request")}
     cards = []
     for r in principal_requests(state):
         if r["status"] != "pending":
             continue
         s = SCOPE.get(r["kind"], dict(scope="?", reversibility="?", effect="?"))
-        cards.append({"type": "principal", "id": r["id"], "kind": r["kind"], "seq": r["seq"],
+        cards.append({"type": "principal", "id": r["id"], "kind": r["kind"], "seq": r["seq"], "request_hash": hashes.get(r["id"]),
                       "evidence": r["evidence"], "shadow_record": sr, **s, "containment": CONTAINMENT,
                       "options": PRINCIPAL_OPTIONS, "agent_pick": "Defer"})
     return cards

@@ -217,6 +217,8 @@ struct Handoff: Identifiable, Hashable {
             }
         }
         for id in domain.takeDirty() { refreshItem(id) }
+        for (iid, truth) in domain.takeOutcomes() { applyLateTruth(iid, truth) }
+        if let r = domain.takeReveal() { reveal = r }
         // hard triggers pre-empt the Now card
         if let t = waiting.first(where: { $0.trigger != nil }), nowHandoff?.trigger == nil, nowId != t.id {
             nowId = t.id; shownAt[t.id] = Date(); resetDetailTelemetry()
@@ -446,6 +448,24 @@ struct Handoff: Identifiable, Hashable {
         lastAction = "\(gesture) \(id): \(h.proposal)\(d.changed ? " → \(ans)" : " ✓")\(trial ? " (trial)" : "")"
             + (ev.last.map { " · \($0.op) \($0.category)" } ?? "")
         appendLog(dd)
+        domain.decided(item: item, link: h.link, answer: eff, latency: dd.latency, by: by)
+    }
+
+    // MARK: game layer + late truth
+    var gameMode = UserDefaults.standard.object(forKey: "gameMode") as? Bool ?? !ProcessInfo.processInfo.arguments.contains("-focus") {
+        didSet { UserDefaults.standard.set(gameMode, forKey: "gameMode") }
+    }
+    var reveal: Reveal?
+    /// ground truth that arrives after the decision (e.g. WERIAM's teacher outcome): re-grade logged decisions + board
+    func applyLateTruth(_ itemId: String, _ truth: String) {
+        for k in decisions.indices where decisions[k].itemId == itemId {
+            let d = decisions[k]
+            decisions[k].groundTruth = truth
+            decisions[k].agreesWithGroundTruth = truth == d.routedAnswer
+            decisions[k].downstreamOutcome = truth == d.routedAnswer ? (d.changed ? "completed-after-human-correction" : "completed-correctly") : "error-reached-destination"
+            itemStatus[itemId] = truth == d.routedAnswer ? (d.changed ? "corrected" : "correct") : "missed"
+        }
+        rewriteLog()
     }
 
     // MARK: stats
@@ -543,7 +563,7 @@ struct Handoff: Identifiable, Hashable {
             }
             guard phase[h.id] == .waiting else { continue }
             demoStep = "decide"
-            if let gt = h.groundTruth, gt != h.proposal {
+            if let gt = items[h.itemId].flatMap({ domain.demoAnswer(item: $0, link: h.link) }) ?? h.groundTruth, gt != h.proposal {
                 if gt == config.review.escalateAnswer { escalate(h.id) } else { ringFor = h.id; try? await Task.sleep(for: .seconds(2 * pace)); select(h.id, gt) }
             } else { pass(h.id) }
             if detailOpen { toggleDetail() }

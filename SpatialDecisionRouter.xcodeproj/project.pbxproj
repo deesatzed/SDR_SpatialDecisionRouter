@@ -10,6 +10,7 @@
 		0212BC76853E93A4C0449CE3 /* ReliabilityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */; };
 		03402F7FC2C6B531D9A11462 /* OutpatientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */; };
 		0B82B08CB03B561D1FE7D768 /* ReviewKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */; };
+		1198292743B73E0B50DC84B8 /* GameViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0165402789A2697A94AF29EB /* GameViews.swift */; };
 		1465DFFC8F8791B37C1ED521 /* ai_doc_review.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */; };
 		183ED5E4831770FAD4C4544C /* OutpatientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */; };
 		1AB6C6774A4D482CD2B42974 /* AIDocReviewDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */; };
@@ -34,6 +35,7 @@
 		7F19D2F37B86B6C4BC8038FD /* weriam_seed.json in Resources */ = {isa = PBXBuildFile; fileRef = C513BD7BEB8F6B6303D94803 /* weriam_seed.json */; };
 		833F3FE9BD320D99BB280A30 /* LauncherUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C858F324C90313897B77DF /* LauncherUITests.swift */; };
 		8539DE0BF5E7A1756BD536DF /* RoutingDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6457ECA631420CFF502092D6 /* RoutingDecision.swift */; };
+		85A9ACF2C46C810E3C67B3E3 /* GameKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4B513C4BBF935E7D5D1D6 /* GameKit.swift */; };
 		8B0DA88EA08E8966E7DA4688 /* AIDocReviewDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */; };
 		8C13E8EBB20207BA6E8E9D6B /* EDTriageDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F5D70406C695E977446C41 /* EDTriageDomain.swift */; };
 		8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
@@ -42,6 +44,7 @@
 		94A731305126B5FF217DB74D /* WERIAMPrincipalDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */; };
 		97503C591D86F58FC7ACC5D9 /* EDReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82719454E70FE69DE11B22E /* EDReview.swift */; };
 		A8E53AF7B06879027699BE32 /* EncounterImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04144225277F2C1929F0B76 /* EncounterImporter.swift */; };
+		B37EEDF17E47D5F05D081891 /* GameViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0165402789A2697A94AF29EB /* GameViews.swift */; };
 		B4709829509B06C129137CA4 /* PadViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0811B2B05BBB05960B5A265C /* PadViews.swift */; };
 		B6D23003DB6564A7DC885C5F /* RiskClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */; };
 		B96343F7685B18726254CDDE /* DomainKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */; };
@@ -56,6 +59,7 @@
 		E4298859A131CAADF817C43D /* ed_triage.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 36AC111D7362BC39421555D4 /* ed_triage.domain.json */; };
 		F64D8D3E5559025616A9AAD0 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
 		F6C056567C4188421289120F /* PadViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0811B2B05BBB05960B5A265C /* PadViews.swift */; };
+		F70ECF918747A44140C52372 /* GameKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4B513C4BBF935E7D5D1D6 /* GameKit.swift */; };
 		FF19467CA1923D436DAAB596 /* weriam_principal.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 531C8BBFF26EF5127037C08C /* weriam_principal.domain.json */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +81,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0165402789A2697A94AF29EB /* GameViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViews.swift; sourceTree = "<group>"; };
 		0811B2B05BBB05960B5A265C /* PadViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PadViews.swift; sourceTree = "<group>"; };
 		1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewKit.swift; sourceTree = "<group>"; };
 		2AA1C08382DD95C45ECFEA1D /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
@@ -85,6 +90,7 @@
 		36AC111D7362BC39421555D4 /* ed_triage.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ed_triage.domain.json; sourceTree = "<group>"; };
 		3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainKit.swift; sourceTree = "<group>"; };
 		45C858F324C90313897B77DF /* LauncherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherUITests.swift; sourceTree = "<group>"; };
+		4CE4B513C4BBF935E7D5D1D6 /* GameKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameKit.swift; sourceTree = "<group>"; };
 		529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutpatientSpec.swift; sourceTree = "<group>"; };
 		531C8BBFF26EF5127037C08C /* weriam_principal.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = weriam_principal.domain.json; sourceTree = "<group>"; };
 		6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDCapacity.swift; sourceTree = "<group>"; };
@@ -154,6 +160,8 @@
 			children = (
 				64DE7620E584197285B2ED27 /* CategoryRegistry.swift */,
 				3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */,
+				4CE4B513C4BBF935E7D5D1D6 /* GameKit.swift */,
+				0165402789A2697A94AF29EB /* GameViews.swift */,
 				2AA1C08382DD95C45ECFEA1D /* Platform.swift */,
 				D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */,
 				F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */,
@@ -379,6 +387,8 @@
 				DDD6CCAFE3C5F06C686A5AF7 /* EDReview.swift in Sources */,
 				C5756DFD58BBE13957D169D7 /* EDTriageDomain.swift in Sources */,
 				59F88647E5E14B48EFBE1A90 /* EncounterImporter.swift in Sources */,
+				F70ECF918747A44140C52372 /* GameKit.swift in Sources */,
+				B37EEDF17E47D5F05D081891 /* GameViews.swift in Sources */,
 				183ED5E4831770FAD4C4544C /* OutpatientSpec.swift in Sources */,
 				F6C056567C4188421289120F /* PadViews.swift in Sources */,
 				4FA1A2F85009A30E0D47BA2D /* Platform.swift in Sources */,
@@ -406,6 +416,8 @@
 				97503C591D86F58FC7ACC5D9 /* EDReview.swift in Sources */,
 				8C13E8EBB20207BA6E8E9D6B /* EDTriageDomain.swift in Sources */,
 				A8E53AF7B06879027699BE32 /* EncounterImporter.swift in Sources */,
+				85A9ACF2C46C810E3C67B3E3 /* GameKit.swift in Sources */,
+				1198292743B73E0B50DC84B8 /* GameViews.swift in Sources */,
 				03402F7FC2C6B531D9A11462 /* OutpatientSpec.swift in Sources */,
 				B4709829509B06C129137CA4 /* PadViews.swift in Sources */,
 				2A8E167F28F4B3F7C81F8C18 /* Platform.swift in Sources */,

@@ -146,6 +146,13 @@ struct EngineStats {
     /// demo: caption for the Now card; demo finished
     func demoCaption(item: DomainItem) -> String?
     var isDemoDone: Bool { get }
+    // game layer + late truth (defaults in GameKit.swift)
+    func gameHUD() -> GameHUD?
+    func takeReveal() -> Reveal?
+    func gameAction(_ id: String)
+    func takeOutcomes() -> [(String, String)]
+    func demoAnswer(item: DomainItem, link: LinkSpec) -> String?
+    func decided(item: DomainItem, link: LinkSpec, answer: String, latency: TimeInterval, by: String)
 }
 
 enum DomainLoader {

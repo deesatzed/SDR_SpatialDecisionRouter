@@ -51,6 +51,14 @@ code{background:#0f1830;border:1px solid var(--line);padding:1px 6px;border-radi
 <figure><img src="img/36_board_enlarged.jpg" alt=""><figcaption>Enlarged Encounter Review board</figcaption></figure>
 <figure><img src="img/30_crossroads_live.jpg" alt=""><figcaption>The live crossroads in ImmersiveSpace</figcaption></figure>
 </div></div></section>
+<section id="weriam"><div class="w"><h2>Third domain: WERIAM Principal</h2><p class="sub">You are the real principal of a simulated agent</p><div class="g3">
+<div class="c"><h3>Live pause</h3><p>The WERIAM agent stops at gap and defect-gate decisions and waits for your label. If it times out, it falls back to WAIT and never auto-approves.</p></div>
+<div class="c"><h3>Signed approvals</h3><p>Approve once / Decline / Defer go through WERIAM's own principal CLI and its hash-chained journal, signed with Ed25519 and verified by the bridge.</p></div>
+<div class="c"><h3>Grounded + fun</h3><p>Outcomes show up on the board as WERIAM observes them. There's a Beta reliability score with an interval, and an optional Game mode with streaks, a calibration curve, reveals and earned-autonomy bars that are display only.</p></div>
+</div><div class="gal">
+<figure><img src="img/w05_live_pause.jpg" alt=""><figcaption>Live pause: the agent is waiting for your label</figcaption></figure>
+<figure><img src="img/w07_board_graded.jpg" alt=""><figcaption>Principal Board graded by WERIAM's later outcomes</figcaption></figure>
+</div></div></section>
 <section id="tech"><div class="w"><h2>Tech stack</h2><p class="sub">A pluggable domain framework with a Bayesian sidecar</p><div class="g3">
 <div class="c"><h3>visionOS app</h3><p>SwiftUI, RealityKit and ImmersiveSpace, generated with xcodegen and tested with XCUITest.</p></div>
 <div class="c"><h3>Domain framework</h3><p><code>DomainKit</code>, <code>RouterEngine</code>, <code>CategoryRegistry</code> and <code>RoutingDecision</code>. A new domain plugs in without engine changes.</p></div>

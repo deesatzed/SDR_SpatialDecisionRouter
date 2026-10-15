@@ -8,6 +8,7 @@ struct CrossroadsView: View {
     @State private var root = Entity()
     @State private var builtVersion = -1
     @State private var pulsed: [String: Date] = [:]
+    @State private var lastBurst = ""
 
     var body: some View {
         RealityView { content, att in
@@ -24,6 +25,8 @@ struct CrossroadsView: View {
             Attachment(id: "side") { SidePanel() }
             Attachment(id: "ring") { OptionRing() }
             Attachment(id: "board") { BoardView() }
+            Attachment(id: "game") { if engine.domain.gameHUD() != nil { VStack(spacing: 8) { GameHUDStrip(); RevealBanner() } } }
+            Attachment(id: "insights") { GameInsights() }
         }
         .task { while !Task.isCancelled { try? await Task.sleep(for: .milliseconds(50)); engine.tick(0.05) } }
         .onAppear { engine.immersiveOpen = true; uiLog.notice("immersive content appeared") }
@@ -71,6 +74,8 @@ struct CrossroadsView: View {
         }
         place(att, "board", [0, 2.45, -2.05], 1.3)
         place(att, "now", RouterEngine.nowCard, 1.5)
+        place(att, "game", RouterEngine.nowCard + [0, 0.52, 0.02], 1.2)
+        place(att, "insights", [0, 0.62, -1.4], 1.0)
         place(att, "upnext", RouterEngine.upNextPos, 1.15)
         place(att, "side", RouterEngine.sidePos, 1.15)
         if let r = att.entity(for: "ring") { r.name = "ringAttachment"; r.isEnabled = false; r.position = [0, 1.02, -1.28]; r.components.set(BillboardComponent()); root.addChild(r) }   // ring below the Now card: never covers its text
@@ -99,6 +104,14 @@ struct CrossroadsView: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { var s = n.transform; s.scale = [1, 1, 1]; n.move(to: s, relativeTo: root, duration: 0.35) }
             }
             Task { @MainActor in pulsed[agent] = t }
+        }
+        if let r = engine.reveal, r.id != lastBurst, engine.gameMode {   // predict-then-reveal: particle burst at the Now card
+            let e = Entity(); var pe = ParticleEmitterComponent.Presets.sparks
+            pe.mainEmitter.color = .constant(.single(r.hit == true ? .green : r.hit == false ? .red : .gray))
+            pe.emitterShape = .sphere; pe.burstCount = 400; pe.isEmitting = false; pe.burst()
+            e.components.set(pe); e.position = RouterEngine.nowCard + [0, 0.05, 0.1]; root.addChild(e)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { e.removeFromParent() }
+            Task { @MainActor in lastBurst = r.id }
         }
         root.findEntity(named: "environment")?.isEnabled = engine.fullImmersion
         root.findEntity(named: "att-side")?.isEnabled = engine.detailOpen || engine.spotCheckOpen

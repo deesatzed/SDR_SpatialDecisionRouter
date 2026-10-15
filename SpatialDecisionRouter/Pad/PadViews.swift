@@ -40,6 +40,7 @@ struct PadRootView: View {
                         Button("Demo (auto-play)") { tap("demoAuto") }
                         Button("WERIAM Principal demo") { tap("weriamDemo") }
                         if DomainCatalog.all.count > 1 { Button("Next Domain") { engine.nextDomain() } }
+                        Button(engine.gameMode ? "Switch to Focus mode" : "Switch to Game mode") { engine.gameMode.toggle() }
                         Button("Export decisions") { engine.export() }
                     } label: { Label("Session", systemImage: "play.circle") }
                 }
@@ -81,16 +82,19 @@ struct PadRootView: View {
 
     @ViewBuilder private func review(wide: Bool) -> some View {
         let side = engine.spotCheckOpen || (engine.detailOpen && engine.nowHandoff != nil)
+        if engine.domain.gameHUD() != nil { GameHUDStrip(); RevealBanner() }
         if wide && side {
             HStack(alignment: .top, spacing: 16) {
-                NowCard().frame(maxWidth: .infinity)
+                SwipeCard().frame(maxWidth: .infinity)
                 SidePanel().frame(width: 520)
             }
         } else {
-            NowCard()
+            SwipeCard()
             if side { SidePanel() }
         }
+        GameInsights()
         PadMiniBoard(tab: $tab)
+        KeyboardShortcuts()
     }
 
     private func tap(_ which: String) {
@@ -187,5 +191,43 @@ struct PadBackdrop: View {
         LinearGradient(colors: [Color(red: 0.05, green: 0.09, blue: 0.13), Color(red: 0.03, green: 0.14, blue: 0.17)],
                        startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea()
     }
+}
+
+/// Now card with swipe gestures: right = Pass, left = Flip (binary) / Modify (category), up = WAIT-like option.
+struct SwipeCard: View {
+    @Environment(RouterEngine.self) private var engine
+    @State private var dx: CGFloat = 0
+    var body: some View {
+        NowCard()
+            .offset(x: dx).rotationEffect(.degrees(Double(dx) / 40))
+            .gesture(DragGesture(minimumDistance: 30).onChanged { v in dx = v.translation.width / 2 }.onEnded { v in
+                defer { withAnimation(.spring) { dx = 0 } }
+                guard let h = engine.nowHandoff, engine.phase[h.id] == .waiting else { return }
+                if v.translation.width > 140 { engine.pass(h.id) }
+                else if v.translation.width < -140 { h.link.answerType == .binary ? engine.flip(h.id) : engine.openRing(h.id) }
+                else if v.translation.height < -140, let w = engine.registry.mainOptions(h.link).first(where: { $0.uppercased().hasPrefix("WAIT") || $0 == "Defer" }) { engine.select(h.id, w) }
+            })
+    }
+}
+
+/// Hardware-keyboard shortcuts: P pass · F flip/modify · 1–5 option · W wait/defer · R refuse/decline · E escalate · G game/focus
+struct KeyboardShortcuts: View {
+    @Environment(RouterEngine.self) private var engine
+    var body: some View {
+        ZStack {
+            Button("") { act { engine.pass($0.id) } }.keyboardShortcut("p", modifiers: [])
+            Button("") { act { $0.link.answerType == .binary ? engine.flip($0.id) : engine.openRing($0.id) } }.keyboardShortcut("f", modifiers: [])
+            ForEach(1...5, id: \.self) { i in
+                Button("") { act { h in let o = engine.registry.mainOptions(h.link); if i <= o.count { engine.select(h.id, o[i - 1]) } } }
+                    .keyboardShortcut(KeyEquivalent(Character("\(i)")), modifiers: [])
+            }
+            Button("") { pick { $0.uppercased().hasPrefix("WAIT") || $0 == "Defer" } }.keyboardShortcut("w", modifiers: [])
+            Button("") { pick { $0.hasPrefix("Refuse") || $0 == "Decline" } }.keyboardShortcut("r", modifiers: [])
+            Button("") { act { engine.escalate($0.id) } }.keyboardShortcut("e", modifiers: [])
+            Button("") { engine.gameMode.toggle() }.keyboardShortcut("g", modifiers: [])
+        }.frame(width: 0, height: 0).opacity(0).accessibilityHidden(true)
+    }
+    private func act(_ f: (Handoff) -> Void) { if let h = engine.nowHandoff, engine.phase[h.id] == .waiting { f(h) } }
+    private func pick(_ m: @escaping (String) -> Bool) { act { h in if let o = engine.registry.mainOptions(h.link).first(where: m) { engine.select(h.id, o) } } }
 }
 #endif

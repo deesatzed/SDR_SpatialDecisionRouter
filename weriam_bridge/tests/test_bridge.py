@@ -2,12 +2,15 @@
 import json
 import threading
 import urllib.request
+import time
+import uuid
 from pathlib import Path
 
 import pytest
 
 from weriam_bridge import adapter as A
 from weriam_bridge import server as S
+from weriam_bridge import signing as SG
 
 
 @pytest.fixture(scope="module")
@@ -93,24 +96,109 @@ def test_label_and_export_join_outcome(fresh, tmp_path):
         A.record_label(fresh, lp, c["id"], "approve everything", "me")
 
 
-def test_http_roundtrip(fresh, tmp_path):
-    S.STATE, S.DATA = fresh, tmp_path
+def _server(fresh, tmp_path):
+    S.STATE, S.DATA, S._live = fresh, tmp_path, None
     srv = S.ThreadingHTTPServer(("127.0.0.1", 0), S.H)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{srv.server_address[1]}"
-    get = lambda p: json.loads(urllib.request.urlopen(base + p).read())
-    def post(p, b):
-        rq = urllib.request.Request(base + p, json.dumps(b).encode(), {"Content-Type": "application/json"})
-        return json.loads(urllib.request.urlopen(rq).read())
-    assert get("/health")["ok"]
-    cards = get("/cards")
-    rid = cards["principal"][0]["id"]
-    assert post("/principal/decide", {"request_id": rid, "decision": "decline", "by": "http"})["weriam"]["status"] == "declined"
-    assert post("/shadow/label", {"id": cards["shadow"][0]["id"], "label": "Agree"})["agree"] is True
-    assert get("/verify")["ok"]
-    try:
-        post("/principal/decide", {"request_id": "nope", "decision": "approve"})
-        assert False
-    except urllib.error.HTTPError as e:
-        assert e.code == 400
+    tok = SG.token(tmp_path)
+    def call(p, b=None, token=tok):
+        rq = urllib.request.Request(base + p, json.dumps(b).encode() if b is not None else None,
+                                    {"Content-Type": "application/json", "X-SDR-Token": token or ""})
+        try:
+            return 200, json.loads(urllib.request.urlopen(rq).read())
+        except urllib.error.HTTPError as e:
+            return e.code, json.loads(e.read())
+    return srv, call
+
+
+def _signed(k, kid, card, decision, by="W. Allen Satz"):
+    payload = {"request_id": card["id"], "decision": decision, "by": by, "ts": time.time(),
+               "nonce": uuid.uuid4().hex, "request_hash": card["request_hash"]}
+    return {"request_id": card["id"], "decision": decision, "payload": payload, "sig": SG.sign(k, payload), "key_id": kid}
+
+
+def test_http_token_and_signed_approval(fresh, tmp_path):
+    srv, call = _server(fresh, tmp_path)
+    assert call("/health", token=None)[1]["hooks"] is True
+    assert call("/cards", token="wrong")[0] == 401
+    cards = call("/cards")[1]
+    card = next(c for c in cards["principal"] if c["kind"] == "retire_watcher")
+    # unsigned approve refused
+    assert call("/principal/decide", {"request_id": card["id"], "decision": "approve"})[0] == 401
+    k, pub = SG.dev_keypair()
+    kid = call("/approver/register", {"name": "W. Allen Satz", "pub": pub})[1]["key_id"]
+    # a second key for the same name is refused (pinned)
+    assert call("/approver/register", {"name": "W. Allen Satz", "pub": SG.dev_keypair()[1]})[0] == 401
+    body = _signed(k, kid, card, "approve")
+    bad = dict(body, sig=SG.sign(SG.dev_keypair()[0], body["payload"]))
+    assert call("/principal/decide", bad)[0] == 401
+    code, rec = call("/principal/decide", body)
+    assert code == 200 and rec["signed"] and rec["weriam"]["status"] == "approved"
+    assert "ed25519:" + kid in rec["weriam"]["granted_by"]
+    assert call("/principal/decide", body)[0] == 401          # nonce replay refused
+    v = call("/verify")[1]
+    assert v["ok"] and v["signed"]["signed"] == 1 and not v["signed"]["bad"]
     srv.shutdown()
+
+
+def test_live_pause_label_changes_run_and_grades(fresh, tmp_path):
+    srv, call = _server(fresh, tmp_path)
+    assert call("/live/start", {"episodes": 1, "scenarios": ["water_gap"], "max_pauses": 3, "timeout": 20})[0] == 200
+    seen = []
+    for i in range(3):
+        for _ in range(200):
+            snap = call("/cards")[1]["live"]
+            if snap["pending"] or snap["status"] != "running":
+                break
+            time.sleep(0.05)
+        if not snap["pending"]:
+            break
+        card = snap["pending"]
+        assert "D_executed" not in json.dumps(card)                # outcome hidden while paused
+        assert card["reliability_beta"]["n"] >= 0 and card["alternatives"][0]["option"] == card["agent_pick"]
+        lab = "WAIT / ask" if i == 0 else "Agree"
+        assert call("/live/label", {"pause_id": card["pause_id"], "label": lab, "by": "t"})[0] == 200
+        seen.append((card["pause_id"], lab, card["action"]))
+    S._live.wait_done(60)
+    res = {r["pause_id"]: r for r in call("/cards")[1]["live"]["results"]}
+    assert seen and all(pid in res for pid, _, _ in seen)
+    pid, lab, act = seen[0]
+    if act != "wait":
+        assert res[pid]["applied"] == "wait" and "principal_pause:WAIT / ask" in res[pid]["guard_hits"]
+    assert all(r["hit"] in (True, False) for r in res.values())
+    assert call("/verify")[1]["journal"]["ok"]
+    srv.shutdown()
+
+
+def test_live_timeout_defaults_to_wait(fresh, tmp_path):
+    srv, call = _server(fresh, tmp_path)
+    call("/live/start", {"episodes": 1, "scenarios": ["water_gap"], "max_pauses": 1, "timeout": 0.2})
+    S._live.wait_done(60)
+    r = call("/cards")[1]["live"]["results"]
+    assert r and r[0]["label"].startswith("timeout") and r[0]["applied"] in ("wait", r[0]["nominated"])
+    if r[0]["nominated"] != "wait":
+        assert r[0]["applied"] == "wait"
+    srv.shutdown()
+
+
+def test_approval_during_live_is_queued_then_applied(fresh, tmp_path):
+    srv, call = _server(fresh, tmp_path)
+    card = next(c for c in call("/cards")[1]["principal"] if c["kind"] == "retire_watcher")
+    k, pub = SG.dev_keypair()
+    kid = call("/approver/register", {"name": "W. Allen Satz", "pub": pub})[1]["key_id"]
+    call("/live/start", {"episodes": 1, "scenarios": ["water_gap"], "max_pauses": 1, "timeout": 3})
+    code, rec = call("/principal/decide", _signed(k, kid, card, "approve"))
+    assert code == 200 and rec["queued"]
+    S._live.wait_done(60)
+    st = {r["id"]: r["status"] for r in A.principal_requests(fresh)}
+    assert st[card["id"]] in ("approved", "consumed")
+    assert call("/verify")[1]["ok"]
+    srv.shutdown()
+
+
+def test_beta_and_grade():
+    from weriam_bridge.live import beta_summary, grade
+    b = beta_summary(8, 2)
+    assert b["n"] == 10 and b["lo"] < b["mean"] < b["hi"]
+    assert grade("Agree", 3.0)["critical"] and grade("WAIT / ask", 3.0)["hit"] and not grade("Alt #2", 0.0)["hit"]

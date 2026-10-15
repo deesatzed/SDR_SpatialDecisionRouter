@@ -21,7 +21,7 @@
     "Defer"
    ],
    "reversibility": "Irreversible in a real system (weights change). Prefer Defer unless evidence is strong.",
-   "scope": "One foundation rebuild of the base proposer (roadmap v0.6). In this simulator nothing consumes it yet \u2014 the approval is recorded only.",
+   "scope": "One foundation rebuild of the base proposer (roadmap v0.6). In this simulator the approval is consumed at episode end and recorded \u2014 there are no weights to retrain.",
    "seq": 21,
    "shadow_record": {
     "last_reinstatement": null,
