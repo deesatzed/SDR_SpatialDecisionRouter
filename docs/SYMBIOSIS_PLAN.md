@@ -341,12 +341,14 @@ M3 status: done (2026-10-15). Thresholds are design placeholders.
 
 ### M4 — Frozen-replay promotion + Principal card
 
-- [ ] Critic proposes only (stub or LLM behind flag)
-- [ ] Frozen blinded replay vs champion
-- [ ] Principal card with real before/after diff; Approve once / Decline / Defer
-- [ ] Signed promotion record; Pass = Defer
-- [ ] Acceptance: self-graded apply path does not exist; losing candidate
+- [x] Critic proposes only (deterministic rule proposer `deterministic-v1`; LLM hook is a stub, no external calls)
+- [x] Frozen blinded replay vs champion (manifest sha256 verified; cases carry no labels/outcomes; held-out ids excluded from critic evidence; evaluator `replay-eval-v1` pinned by hash; pre-registered margin Δacc ≥ 0.05, n ≥ 20, wins/losses 90% low > 0.5, no rise in critical misses, no removed clinical escalations)
+- [x] Principal card with real before/after diff; Approve once / Decline / Defer
+- [x] Signed promotion record; Pass = Defer (policy_proposal / policy_evaluation / principal_decision / promotion / rollback lines; champion generation increments; rollback reversible)
+- [x] Acceptance: self-graded apply path does not exist; losing candidate
       is discarded and logged; winning candidate requires human signature
+
+M4 status: done (2026-10-15). Replay history is SYNTHETIC (`tools/make_replay_seed.py`); thresholds are design placeholders.
 
 ### M5 — Lineage tab
 

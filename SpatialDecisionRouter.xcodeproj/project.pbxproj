@@ -9,9 +9,11 @@
 /* Begin PBXBuildFile section */
 		0212BC76853E93A4C0449CE3 /* ReliabilityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */; };
 		03402F7FC2C6B531D9A11462 /* OutpatientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */; };
+		06C6E7982E62990D18DBF397 /* PromotionFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26702AFE781F1D80BFD2758 /* PromotionFlow.swift */; };
 		0B82B08CB03B561D1FE7D768 /* ReviewKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */; };
 		1198292743B73E0B50DC84B8 /* GameViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0165402789A2697A94AF29EB /* GameViews.swift */; };
 		1465DFFC8F8791B37C1ED521 /* ai_doc_review.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */; };
+		160A10C92BD4162592EDD7EF /* replay_manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 0376247D9573184BA4F45192 /* replay_manifest.json */; };
 		17ABABC948FD2DC365E65F87 /* DecisionLedgerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80795C87F22049B3B20A7A10 /* DecisionLedgerTests.swift */; };
 		183ED5E4831770FAD4C4544C /* OutpatientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */; };
 		1AB6C6774A4D482CD2B42974 /* AIDocReviewDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */; };
@@ -24,6 +26,7 @@
 		2A8E167F28F4B3F7C81F8C18 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA1C08382DD95C45ECFEA1D /* Platform.swift */; };
 		2CE4C735CC81C5BCBBC882FB /* ProceduralEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */; };
 		30F4A59B1B0D110348C23F83 /* ai_doc_review.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */; };
+		35B35DAC96E670907C29849F /* PromotionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360EF3A2C3FA6DD12784C31D /* PromotionEngine.swift */; };
 		39E1DE7E2F730450DBFCB097 /* digest.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4A3D378C7423ABCEB09EB083 /* digest.txt */; };
 		426087E52E4D64ECC49B6A14 /* SymbiosisKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E004C3CAA1E5B82A61E45 /* SymbiosisKit.swift */; };
 		4D8E3FF5B22FBE97C79E58DB /* DialEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A5B3D1368B933F6EC15DF4 /* DialEngine.swift */; };
@@ -42,7 +45,9 @@
 		6BB21463821C1218BCBAA67D /* weriam_principal.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 531C8BBFF26EF5127037C08C /* weriam_principal.domain.json */; };
 		6F7640963543FE6C08A5AA60 /* SharpnessUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55606CFAD96251866AE8E2AD /* SharpnessUITests.swift */; };
 		73065D8A731BC61019FD26A2 /* EDCapacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */; };
+		75640716575822CEC40A5A3C /* PromotionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B63FFC4B6A5A2417C6F6AEC /* PromotionUITests.swift */; };
 		75E97CAAA3C84CC37730D810 /* WERIAMPrincipalDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */; };
+		76C907BD1C522F5D4C723256 /* replay_answers.jsonl in Resources */ = {isa = PBXBuildFile; fileRef = B610171194F963505DD303E1 /* replay_answers.jsonl */; };
 		7BE6F72AEC7FF5D1170122B1 /* WERIAMClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86240C1CE2AEB460E57AD2B6 /* WERIAMClient.swift */; };
 		7DF8A6BFFC2C374E1F6DFF87 /* WERIAMClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86240C1CE2AEB460E57AD2B6 /* WERIAMClient.swift */; };
 		7F19D2F37B86B6C4BC8038FD /* weriam_seed.json in Resources */ = {isa = PBXBuildFile; fileRef = C513BD7BEB8F6B6303D94803 /* weriam_seed.json */; };
@@ -53,18 +58,22 @@
 		85A9ACF2C46C810E3C67B3E3 /* GameKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4B513C4BBF935E7D5D1D6 /* GameKit.swift */; };
 		8B0DA88EA08E8966E7DA4688 /* AIDocReviewDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */; };
 		8C13E8EBB20207BA6E8E9D6B /* EDTriageDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F5D70406C695E977446C41 /* EDTriageDomain.swift */; };
+		8DED456F34A2E162E5B76439 /* replay_answers.jsonl in Resources */ = {isa = PBXBuildFile; fileRef = B610171194F963505DD303E1 /* replay_answers.jsonl */; };
 		8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
 		9121ED46669901CC5F761ACE /* DialEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8921D0D476A6FAFA2FAC58 /* DialEngineTests.swift */; };
 		9172DC73E2553E1ABCE1C702 /* ReviewKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */; };
 		91D916D0C39ABA5E80D5B212 /* RoutingDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6457ECA631420CFF502092D6 /* RoutingDecision.swift */; };
 		94A731305126B5FF217DB74D /* WERIAMPrincipalDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */; };
 		97503C591D86F58FC7ACC5D9 /* EDReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82719454E70FE69DE11B22E /* EDReview.swift */; };
+		A50771A1BF416D740C123325 /* replay_manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 0376247D9573184BA4F45192 /* replay_manifest.json */; };
 		A8E53AF7B06879027699BE32 /* EncounterImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04144225277F2C1929F0B76 /* EncounterImporter.swift */; };
 		AD99FE7A4C6D32881FE5E676 /* ai_studio_code.html in Resources */ = {isa = PBXBuildFile; fileRef = 6923C6811412C542A4A33B3A /* ai_studio_code.html */; };
+		AE3820AEDAF667A07932FCB0 /* replay_cases.jsonl in Resources */ = {isa = PBXBuildFile; fileRef = 1F467D54BBBDA1FBF6DDD85C /* replay_cases.jsonl */; };
 		B37EEDF17E47D5F05D081891 /* GameViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0165402789A2697A94AF29EB /* GameViews.swift */; };
 		B4709829509B06C129137CA4 /* PadViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0811B2B05BBB05960B5A265C /* PadViews.swift */; };
 		B6D23003DB6564A7DC885C5F /* RiskClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */; };
 		B96343F7685B18726254CDDE /* DomainKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */; };
+		BA2BFCFBE0C61C2832A31E4C /* PromotionViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB92B88B680D53E686071A /* PromotionViews.swift */; };
 		BDAEA020D7D88A68A4098DD4 /* ReliabilityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */; };
 		C16E35005F7C1383D31B50E7 /* RiskClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */; };
 		C4600DFA7C310450885D2493 /* RouterViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */; };
@@ -75,8 +84,15 @@
 		D3820012D7F604FCCA37A9AE /* DecisionLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DED29C5032BD02BD8990AF /* DecisionLedger.swift */; };
 		D3FA62D8D6A759EE389F4BDB /* CategoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DE7620E584197285B2ED27 /* CategoryRegistry.swift */; };
 		D44C5BDD0D4E0D530E5DC547 /* RouterEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */; };
+		DA3BBE5CDC2E8289A2C7AE10 /* PromotionFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26702AFE781F1D80BFD2758 /* PromotionFlow.swift */; };
 		DDD6CCAFE3C5F06C686A5AF7 /* EDReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82719454E70FE69DE11B22E /* EDReview.swift */; };
+		DFEE1457DE67C83E976246DB /* PromotionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360EF3A2C3FA6DD12784C31D /* PromotionEngine.swift */; };
+		E3BC6C396A21843F0E7CCEDF /* replay_train.jsonl in Resources */ = {isa = PBXBuildFile; fileRef = 47EA3FA369911A3B59B3A8F9 /* replay_train.jsonl */; };
 		E4298859A131CAADF817C43D /* ed_triage.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 36AC111D7362BC39421555D4 /* ed_triage.domain.json */; };
+		E9574116A35BE4156A58EE74 /* PromotionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739E3E6383C542BEB2CC7D60 /* PromotionTests.swift */; };
+		EE41DA74AA7532F3E9FC22F7 /* replay_train.jsonl in Resources */ = {isa = PBXBuildFile; fileRef = 47EA3FA369911A3B59B3A8F9 /* replay_train.jsonl */; };
+		F2696D320BB86CD81386EA13 /* replay_cases.jsonl in Resources */ = {isa = PBXBuildFile; fileRef = 1F467D54BBBDA1FBF6DDD85C /* replay_cases.jsonl */; };
+		F48EEF2627E4A7A55042729A /* PromotionViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB92B88B680D53E686071A /* PromotionViews.swift */; };
 		F4AD116765167DC06ECC30E9 /* implementation_plan1.md in Resources */ = {isa = PBXBuildFile; fileRef = 76D3776492434D4BAD3CD281 /* implementation_plan1.md */; };
 		F64D8D3E5559025616A9AAD0 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
 		F6C056567C4188421289120F /* PadViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0811B2B05BBB05960B5A265C /* PadViews.swift */; };
@@ -110,16 +126,20 @@
 
 /* Begin PBXFileReference section */
 		0165402789A2697A94AF29EB /* GameViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViews.swift; sourceTree = "<group>"; };
+		0376247D9573184BA4F45192 /* replay_manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = replay_manifest.json; sourceTree = "<group>"; };
 		0811B2B05BBB05960B5A265C /* PadViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PadViews.swift; sourceTree = "<group>"; };
 		1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewKit.swift; sourceTree = "<group>"; };
+		1F467D54BBBDA1FBF6DDD85C /* replay_cases.jsonl */ = {isa = PBXFileReference; path = replay_cases.jsonl; sourceTree = "<group>"; };
 		2796BB30563167BAE0D82C24 /* SymbiosisDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbiosisDomain.swift; sourceTree = "<group>"; };
 		2AA1C08382DD95C45ECFEA1D /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 		2BDF4EE30763D7A1A0FC549B /* PadUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PadUITests.swift; sourceTree = "<group>"; };
 		317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ai_doc_review.domain.json; sourceTree = "<group>"; };
+		360EF3A2C3FA6DD12784C31D /* PromotionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionEngine.swift; sourceTree = "<group>"; };
 		36AC111D7362BC39421555D4 /* ed_triage.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ed_triage.domain.json; sourceTree = "<group>"; };
 		3A8921D0D476A6FAFA2FAC58 /* DialEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialEngineTests.swift; sourceTree = "<group>"; };
 		3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainKit.swift; sourceTree = "<group>"; };
 		45C858F324C90313897B77DF /* LauncherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherUITests.swift; sourceTree = "<group>"; };
+		47EA3FA369911A3B59B3A8F9 /* replay_train.jsonl */ = {isa = PBXFileReference; path = replay_train.jsonl; sourceTree = "<group>"; };
 		4A3D378C7423ABCEB09EB083 /* digest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = digest.txt; sourceTree = "<group>"; };
 		4CE4B513C4BBF935E7D5D1D6 /* GameKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameKit.swift; sourceTree = "<group>"; };
 		529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutpatientSpec.swift; sourceTree = "<group>"; };
@@ -131,17 +151,22 @@
 		6614C41420528AF1F28F5E45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		67F5D70406C695E977446C41 /* EDTriageDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDTriageDomain.swift; sourceTree = "<group>"; };
 		6923C6811412C542A4A33B3A /* ai_studio_code.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ai_studio_code.html; sourceTree = "<group>"; };
+		739E3E6383C542BEB2CC7D60 /* PromotionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionTests.swift; sourceTree = "<group>"; };
 		76D3776492434D4BAD3CD281 /* implementation_plan1.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = implementation_plan1.md; sourceTree = "<group>"; };
+		7B63FFC4B6A5A2417C6F6AEC /* PromotionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionUITests.swift; sourceTree = "<group>"; };
 		7C1E004C3CAA1E5B82A61E45 /* SymbiosisKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbiosisKit.swift; sourceTree = "<group>"; };
 		80795C87F22049B3B20A7A10 /* DecisionLedgerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionLedgerTests.swift; sourceTree = "<group>"; };
 		86240C1CE2AEB460E57AD2B6 /* WERIAMClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WERIAMClient.swift; sourceTree = "<group>"; };
 		9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialDecisionRouterApp.swift; sourceTree = "<group>"; };
 		A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIDocReviewDomain.swift; sourceTree = "<group>"; };
+		A26702AFE781F1D80BFD2758 /* PromotionFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionFlow.swift; sourceTree = "<group>"; };
 		A82719454E70FE69DE11B22E /* EDReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDReview.swift; sourceTree = "<group>"; };
 		AD3F9D0524BD07A6FDB4BA24 /* SymbiosisViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbiosisViews.swift; sourceTree = "<group>"; };
 		B04144225277F2C1929F0B76 /* EncounterImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncounterImporter.swift; sourceTree = "<group>"; };
 		B4DED29C5032BD02BD8990AF /* DecisionLedger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionLedger.swift; sourceTree = "<group>"; };
 		B58C41143C95B99BC42613E1 /* SymbiosisUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbiosisUITests.swift; sourceTree = "<group>"; };
+		B610171194F963505DD303E1 /* replay_answers.jsonl */ = {isa = PBXFileReference; path = replay_answers.jsonl; sourceTree = "<group>"; };
+		C0CB92B88B680D53E686071A /* PromotionViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionViews.swift; sourceTree = "<group>"; };
 		C513BD7BEB8F6B6303D94803 /* weriam_seed.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = weriam_seed.json; sourceTree = "<group>"; };
 		C8D05C5F01797C6E4BE65D25 /* SpatialDecisionRouterPad.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouterPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0F7BEE96DD262AC9467CE84 /* DialsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialsUITests.swift; sourceTree = "<group>"; };
@@ -164,6 +189,7 @@
 			children = (
 				D0F7BEE96DD262AC9467CE84 /* DialsUITests.swift */,
 				2BDF4EE30763D7A1A0FC549B /* PadUITests.swift */,
+				7B63FFC4B6A5A2417C6F6AEC /* PromotionUITests.swift */,
 				55606CFAD96251866AE8E2AD /* SharpnessUITests.swift */,
 				B58C41143C95B99BC42613E1 /* SymbiosisUITests.swift */,
 			);
@@ -209,6 +235,17 @@
 			path = Symbiosis;
 			sourceTree = "<group>";
 		};
+		2F4AC963464322CD39979A61 /* ReplaySeed */ = {
+			isa = PBXGroup;
+			children = (
+				B610171194F963505DD303E1 /* replay_answers.jsonl */,
+				1F467D54BBBDA1FBF6DDD85C /* replay_cases.jsonl */,
+				0376247D9573184BA4F45192 /* replay_manifest.json */,
+				47EA3FA369911A3B59B3A8F9 /* replay_train.jsonl */,
+			);
+			path = ReplaySeed;
+			sourceTree = "<group>";
+		};
 		45BCEB5E97723B454859AD2E /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,6 +257,9 @@
 				0165402789A2697A94AF29EB /* GameViews.swift */,
 				2AA1C08382DD95C45ECFEA1D /* Platform.swift */,
 				D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */,
+				360EF3A2C3FA6DD12784C31D /* PromotionEngine.swift */,
+				A26702AFE781F1D80BFD2758 /* PromotionFlow.swift */,
+				C0CB92B88B680D53E686071A /* PromotionViews.swift */,
 				F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */,
 				1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */,
 				D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */,
@@ -236,6 +276,7 @@
 			children = (
 				80795C87F22049B3B20A7A10 /* DecisionLedgerTests.swift */,
 				3A8921D0D476A6FAFA2FAC58 /* DialEngineTests.swift */,
+				739E3E6383C542BEB2CC7D60 /* PromotionTests.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -249,6 +290,14 @@
 				10ACABE275D353CDB5FC4450 /* WERIAMPrincipal */,
 			);
 			path = Domains;
+			sourceTree = "<group>";
+		};
+		879F393EABB8D4118DE3EEB4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2F4AC963464322CD39979A61 /* ReplaySeed */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		9BD3F5F668CCC9B648B9CE6D /* EDTriage */ = {
@@ -293,6 +342,7 @@
 				45BCEB5E97723B454859AD2E /* Core */,
 				858B67F3D7637C94126B21DB /* Domains */,
 				C6F642543272AF7FED06A31C /* Pad */,
+				879F393EABB8D4118DE3EEB4 /* Resources */,
 			);
 			path = SpatialDecisionRouter;
 			sourceTree = "<group>";
@@ -451,6 +501,10 @@
 				2994DB48E689DA0D95347583 /* digest.txt in Resources */,
 				E4298859A131CAADF817C43D /* ed_triage.domain.json in Resources */,
 				62D70982BA57949FF631F2D5 /* implementation_plan1.md in Resources */,
+				76C907BD1C522F5D4C723256 /* replay_answers.jsonl in Resources */,
+				F2696D320BB86CD81386EA13 /* replay_cases.jsonl in Resources */,
+				A50771A1BF416D740C123325 /* replay_manifest.json in Resources */,
+				EE41DA74AA7532F3E9FC22F7 /* replay_train.jsonl in Resources */,
 				FF19467CA1923D436DAAB596 /* weriam_principal.domain.json in Resources */,
 				1C8E8A94B64D0EBE27359C92 /* weriam_seed.json in Resources */,
 			);
@@ -465,6 +519,10 @@
 				39E1DE7E2F730450DBFCB097 /* digest.txt in Resources */,
 				68AD4706054ADD4DC5F75DE8 /* ed_triage.domain.json in Resources */,
 				F4AD116765167DC06ECC30E9 /* implementation_plan1.md in Resources */,
+				8DED456F34A2E162E5B76439 /* replay_answers.jsonl in Resources */,
+				AE3820AEDAF667A07932FCB0 /* replay_cases.jsonl in Resources */,
+				160A10C92BD4162592EDD7EF /* replay_manifest.json in Resources */,
+				E3BC6C396A21843F0E7CCEDF /* replay_train.jsonl in Resources */,
 				6BB21463821C1218BCBAA67D /* weriam_principal.domain.json in Resources */,
 				7F19D2F37B86B6C4BC8038FD /* weriam_seed.json in Resources */,
 			);
@@ -492,6 +550,9 @@
 				F6C056567C4188421289120F /* PadViews.swift in Sources */,
 				4FA1A2F85009A30E0D47BA2D /* Platform.swift in Sources */,
 				C65886DECE017E93228D344B /* ProceduralEnvironment.swift in Sources */,
+				DFEE1457DE67C83E976246DB /* PromotionEngine.swift in Sources */,
+				06C6E7982E62990D18DBF397 /* PromotionFlow.swift in Sources */,
+				F48EEF2627E4A7A55042729A /* PromotionViews.swift in Sources */,
 				0212BC76853E93A4C0449CE3 /* ReliabilityKit.swift in Sources */,
 				0B82B08CB03B561D1FE7D768 /* ReviewKit.swift in Sources */,
 				B6D23003DB6564A7DC885C5F /* RiskClient.swift in Sources */,
@@ -526,6 +587,9 @@
 				B4709829509B06C129137CA4 /* PadViews.swift in Sources */,
 				2A8E167F28F4B3F7C81F8C18 /* Platform.swift in Sources */,
 				2CE4C735CC81C5BCBBC882FB /* ProceduralEnvironment.swift in Sources */,
+				35B35DAC96E670907C29849F /* PromotionEngine.swift in Sources */,
+				DA3BBE5CDC2E8289A2C7AE10 /* PromotionFlow.swift in Sources */,
+				BA2BFCFBE0C61C2832A31E4C /* PromotionViews.swift in Sources */,
 				BDAEA020D7D88A68A4098DD4 /* ReliabilityKit.swift in Sources */,
 				9172DC73E2553E1ABCE1C702 /* ReviewKit.swift in Sources */,
 				C16E35005F7C1383D31B50E7 /* RiskClient.swift in Sources */,
@@ -547,6 +611,7 @@
 			files = (
 				17ABABC948FD2DC365E65F87 /* DecisionLedgerTests.swift in Sources */,
 				9121ED46669901CC5F761ACE /* DialEngineTests.swift in Sources */,
+				E9574116A35BE4156A58EE74 /* PromotionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,6 +621,7 @@
 			files = (
 				7FEA90F5E9A325977F4D7D35 /* DialsUITests.swift in Sources */,
 				55341D4CCA1DEF294491A956 /* PadUITests.swift in Sources */,
+				75640716575822CEC40A5A3C /* PromotionUITests.swift in Sources */,
 				6F7640963543FE6C08A5AA60 /* SharpnessUITests.swift in Sources */,
 				2A686F54F16FCD68BF47B926 /* SymbiosisUITests.swift in Sources */,
 			);

@@ -7,6 +7,7 @@ Ed25519 signature, folds amendment lines (kind=outcome / split_rating) into thei
   finetune/sft.jsonl          chat-style SFT pairs: card context -> the human's decision
   finetune/preference.jsonl   chosen vs rejected where the human changed the agent's pick (outcome-aware)
   sharpness/spot_checks.jsonl every signed M3 spot-check (human call vs AI pick vs outcome)
+  promotion/promotion_records.jsonl M4 proposals, replay evaluations, Principal decisions, promotions, rollbacks
   dials/dial_changes.jsonl    every signed earned-autonomy move / demotion / revert (M2), with reason + evidence refs
   rl/rewards.jsonl            outcome-graded reward (+1 / -1; null when no outcome is known). split rating is an
                               auxiliary field only and is NEVER added into `reward` (plan non-negotiable 2)
@@ -119,7 +120,7 @@ def card_text(r):
         ds = r["dial_snapshot"]
         lines.append("Dials: deference {deference}, detail {detail_absorption}, challenge {challenge}, autonomy {autonomy_horizon} ({source})".format(**ds))
     for k in sorted(p):
-        if k not in ("demo_split", "symbiosis", "showCapacity"):
+        if k not in ("demo_split", "symbiosis", "showCapacity", "demo_spot", "demo_human_call"):   # demo_human_call is a label: never in a card
             lines.append(f"{k}: {p[k]}")
     ap = r.get("agent_proposal") or {}
     lines.append(f"Question: {r.get('question')}")
@@ -173,7 +174,9 @@ def export(decisions, out, replay_name):
         if rw is not None:
             cid = hashlib.sha256(r["id"].encode()).hexdigest()[:16]
             cases.append({"case_id": cid, "domain": r["domain"], "context_id": r.get("context_id"), "card": user,
-                          "options": r.get("options"), "agent_proposal": ap.get("answer")})
+                          "options": r.get("options"), "agent_proposal": ap.get("answer"),
+                          "features": {"agent_confidence": ap.get("confidence"), "severity": (r.get("card_payload") or {}).get("severity", "normal"),
+                                       "area": r["domain"].split(":", 1)[-1]}})
             answers.append({"case_id": cid, "human_answer": h.get("answer"), "human_label": h.get("label"),
                             "outcome": r["outcome"]["value"], "outcome_source": r["outcome"].get("source"),
                             "split_rating": r.get("split_rating"), "source_id": r["id"]})
@@ -251,6 +254,15 @@ def main(argv=None):
         for row in spots:
             f.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
     counts["spot_checks"] = len(spots)
+    # M4: frozen-replay promotion trail (proposal → evaluation → Principal decision → promotion / rollback)
+    promo = [r for r in recs if r.get("kind") in ("policy_proposal", "policy_evaluation", "principal_decision", "promotion", "rollback")]
+    os.makedirs(os.path.join(a.out, "promotion"), exist_ok=True)
+    with open(os.path.join(a.out, "promotion", "promotion_records.jsonl"), "w", encoding="utf-8") as f:
+        for r in promo:
+            f.write(json.dumps({k: r.get(k) for k in ("id", "kind", "ref_id", "timestamp", "domain", "context_id", "generation", "promo",
+                                                    "reason", "evidence_refs", "ledger_hash", "signer_key_id")},
+                               ensure_ascii=False, sort_keys=True) + "\n")
+    counts["promotion_records"] = len(promo)
     s = {"legacy_skipped_duplicates": dup, "ledger_lines": len(recs), "chain_ok": ok, "problems": probs[:20], "decisions": len(decisions),
          "by_domain": dict(collections.Counter(d["domain"] for d in decisions)),
          "by_kind": dict(collections.Counter(r.get("kind") for r in recs)),

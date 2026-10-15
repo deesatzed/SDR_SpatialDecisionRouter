@@ -71,7 +71,10 @@ import Foundation
     }
     private var decidedN = 0
     func propose(item: DomainItem, link: LinkSpec, routed: [String: String]) -> Proposal {
-        let k = cards[item.id]!; return Proposal(answer: k.proposal, confidence: k.proposalConfidence)
+        let k = cards[item.id]!
+        // M4: the human-promoted champion policy may change the AI's pick (never on hard-trigger cards or clinical escalations)
+        let a = k.hardTrigger != nil ? k.proposal : PromotionEngine.answer(ChampionPolicy.rules, area: k.area, conf: k.proposalConfidence, severity: k.severity ?? "normal", base: k.proposal)
+        return Proposal(answer: a, confidence: k.proposalConfidence)
     }
     func groundTruth(item: DomainItem, link: LinkSpec, routed: [String: String]) -> String? { cards[item.id]?.scriptedOutcome }
     func demoAnswer(item: DomainItem, link: LinkSpec) -> String? { cards[item.id]?.scriptedOutcome }

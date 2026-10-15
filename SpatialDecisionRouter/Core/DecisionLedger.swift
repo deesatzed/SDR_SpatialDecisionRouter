@@ -88,6 +88,8 @@ struct UnifiedDecisionRecord: Codable, Hashable {
     var posterior: DialPosterior?
     // kind == "spot_check" (M3): AI answer hidden, human called first
     var spot_check: SpotCheckInfo?
+    // M4: policy_proposal | policy_evaluation | principal_decision | promotion | rollback
+    var promo: PromotionInfo?
     var signer_key_id: String
     var signer_pub: String                   // base64 raw Ed25519 public key
     var ledger_prev: String

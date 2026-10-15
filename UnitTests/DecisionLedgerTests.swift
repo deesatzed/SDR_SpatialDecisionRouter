@@ -96,6 +96,10 @@ final class DecisionLedgerTests: XCTestCase {
         var sc = UnifiedDecisionRecord.amendment(kind: "spot_check", ref: a)
         sc.spot_check = SpotCheckInfo(human_call: "B", agent_pick: "A", outcome: nil, human_correct: nil, agent_correct: nil, hidden: ["ai_column", "proposal"], trigger: "test")
         l.append(sc)
+        let rule = PolicyRule(area: "personal_finance", when: PolicyWhen(conf_lt: 0.65), answer: "Hold — gather info")
+        l.append(PromotionEngine.line("promotion", area: "personal_finance", ref: a.id, generation: 1,
+                                      PromotionInfo(rule: rule, verdict: "passed", decision: "approve_once", champion_generation: 1, rules_before: [], rules_after: [rule]),
+                                      reason: "PROMOTED by human signature (fixture)"))
         XCTAssertTrue(DecisionLedger.verify(l.read()).ok)
     }
 }

@@ -1,0 +1,13 @@
+{
+  "answers_sha256": "cc2baf467554aecc6fc85aa558072fc0121ea556466bb2b5f1d3e214ad7e681a",
+  "blinded": true,
+  "cases": 100,
+  "cases_sha256": "09908d594e233b2f68b37009c0db60be1598b7e42bb9032c0a0af0ee8c422883",
+  "domains": {
+    "symbiosis:ed_triage": 40,
+    "symbiosis:personal_finance": 60
+  },
+  "frozen_at": "2026-10-15T00:00:00+00:00",
+  "name": "seed",
+  "note": "cases.jsonl carries no human label and no outcome; answers.jsonl is held out for champion-vs-challenger scoring"
+}

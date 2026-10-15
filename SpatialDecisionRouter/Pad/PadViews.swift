@@ -41,6 +41,7 @@ struct PadRootView: View {
                         Button("WERIAM Principal demo") { tap("weriamDemo") }
                         Button("Symbiosis demo") { tap("symbiosisDemo") }
                         Button("Manifesto") { engine.showManifesto = true }
+                        Button("Promotion") { engine.showPromotion = true }
                         if DomainCatalog.all.count > 1 { Button("Next Domain") { engine.nextDomain() } }
                         Button(engine.gameMode ? "Switch to Focus mode" : "Switch to Game mode") { engine.gameMode.toggle() }
                         Button("Export decisions") { engine.export() }
@@ -59,6 +60,7 @@ struct PadRootView: View {
         }
         .fullScreenCover(isPresented: $showStart) { PadStartView { tap($0) } }
         .sheet(isPresented: Binding(get: { engine.showManifesto }, set: { engine.showManifesto = $0 })) { ManifestoView() }
+        .sheet(isPresented: Binding(get: { engine.showPromotion }, set: { engine.showPromotion = $0 })) { PromotionView().preferredColorScheme(.dark).presentationSizing(.page) }
         .onChange(of: engine.nowId) { _, id in   // -openSections "A,B": screenshot/test aid, re-opens detail sections on each Now card
             let a = ProcessInfo.processInfo.arguments
             guard id != nil, let i = a.firstIndex(of: "-openSections"), i + 1 < a.count else { return }

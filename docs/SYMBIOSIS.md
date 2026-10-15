@@ -102,3 +102,33 @@ When the AI absorbs a lot of detail in an area, the human's own judgment can qui
 - **Demotion softened**: a critical miss still cuts autonomy −15, but deference rises at most +10 and stops at 95 (floor 80 still enforced).
 - **Export**: `sharpness/spot_checks.jsonl` (outcomes folded in), count in `summary.json`.
 - Demo: `tools/symbiosis_demo.sh --auto` — three missed checks in finance, then at FIN-6 the earned rise and the sharpness hand-back land in one move.
+
+
+## M4 — Frozen-replay promotion + Principal card
+
+Pipeline (Swift `Core/PromotionEngine.swift` + `Core/PromotionFlow.swift`; Python mirror `tools/promotion.py`, same numbers):
+
+1. **Critic proposes** (`deterministic-v1`): per area, tries predicates (agent confidence < 0.6/0.65/0.7, severity = critical) on
+   held-in evidence (bundled synthetic history + this device's graded Symbiosis decisions, minus every held-out replay id) and proposes
+   the rule with the best in-sample gain (≥ 3 supporting cases). `llmCritic()` / `critic_llm()` is a stub: no external calls; anything it
+   returned would still only be a proposal. Signed `policy_proposal` line with evidence refs.
+2. **Frozen, blinded replay** (`replay_*` resources = `data/replay_seed/replay/seed`, written by the exporter): manifest sha256 of
+   cases and answers re-checked on every load (tamper → refused); cases carrying `outcome`/`human_answer`/… are refused (leakage);
+   candidate evidence overlapping held-out ids is refused; policies only receive `ReplayCase` (inputs), answers are joined only inside
+   the evaluator. Evaluator `replay-eval-v1` and the pre-registered margin are hashed and pinned (`tools/evaluator.lock`, Swift
+   `evaluatorLock`): changing either without a new version is refused.
+3. **Rules** (pre-registered): Δaccuracy ≥ 0.05 with 90% interval reported, n ≥ 20, wins/losses Beta 90% low > 0.5, candidate critical
+   misses ≤ champion's, clinical areas may not remove any escalation. Signed `policy_evaluation` line: verdict, reasons, metrics, replay
+   hashes, evaluator version + hash. Failing candidates are **discarded and logged**.
+4. **Principal card** (passing only): before/after diff of every replay case whose behaviour changes (worse first) with outcomes;
+   **Approve once / Decline / Defer (Pass)**. Signed `principal_decision`. Approve on a stale (other champion generation), failing or
+   re-hashed evaluation writes the decision but does not promote.
+5. **Promotion**: signed `promotion` line (rules before/after, champion generation +1). The champion changes the AI's pick on live
+   Symbiosis cards (never on hard-trigger cards, never rewriting a clinical escalation). **Rollback**: signed `rollback` line, generation +1.
+6. **Export**: `promotion/promotion_records.jsonl`.
+
+Demo (seed is SYNTHETIC with a planted real pattern and a planted spurious one): finance rule "confidence < 0.65 → Hold" wins on replay
+(35/60 → 53/60, Δ +0.30 [+0.19, +0.41], wins/losses 20/2); ED rule "critical → Alternative plan" looks good in-sample but on replay
+loses (Δ −0.20, critical misses 0 → 8, removes 8 escalations) and is discarded. Open **Promotion** on any Symbiosis card (iPad sheet,
+visionOS window) → Run critic + replay → Approve once → gen 1 → Roll back → gen 2. Offline: `python3 tools/promotion.py --train
+data/replay_seed/train.jsonl --replay data/replay_seed/replay/seed`. Regenerate the seed: `python3 tools/make_replay_seed.py`.

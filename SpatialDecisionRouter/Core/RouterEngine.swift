@@ -79,6 +79,12 @@ struct Handoff: Identifiable, Hashable {
     var splitGiven: [String: SplitRating] = [:]             // item id -> last split rating (UI)
     var aiDepthOpen = false
     var showManifesto = ProcessInfo.processInfo.arguments.contains("-manifesto")
+    // M4 promotion
+    var showPromotion = ProcessInfo.processInfo.arguments.contains("-promotion")
+    var promoLog: [UnifiedDecisionRecord] = []          // signed M4 lines (this ledger)
+    var champion: [PolicyRule] = [] { didSet { ChampionPolicy.rules = champion } }
+    var championGeneration = 0
+    var promoError: String?
     var ledgerCount: Int { ledger.read().count }
     // M2 earned-autonomy dials: derived from the signed ledger (seed + dial_change lines)
     var dialState: [String: SymbiosisContext] = [:]
@@ -201,7 +207,7 @@ struct Handoff: Identifiable, Hashable {
             registry.merge(persisted: p)
         }
         reviewerRng = SplitMix64(s: 99); testNameIdx = 0; spotRng = SplitMix64(s: 4242)
-        pendingSplit = [:]; splitGiven = [:]; aiDepthOpen = false; loadDials(); lastDialMove = nil
+        pendingSplit = [:]; splitGiven = [:]; aiDepthOpen = false; loadDials(); lastDialMove = nil; loadPromotion()
         sharpIds = []; sharpWhy = [:]; lastSharp = nil; sharpEligible = 0; sharpRng = SplitMix64(s: 7171)
         nowId = nil; spotChecks = []; autoPassed = 0; resetDetailTelemetry()
         itemReRatings = [:]; itemAsks = [:]; lastAnswer = [:]; destFor = [:]; sideTab = "details"

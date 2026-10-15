@@ -244,7 +244,7 @@ struct NowCard: View {
             }
             if let item, item.fields["symbiosis"] == "1" {
                 SymbiosisPanel(item: item)
-                ManifestoButton()
+                HStack { ManifestoButton(); PromotionButton() }
             }
             if sharp { YourCallFirst(h: h) } else {
             HStack(alignment: .firstTextBaseline) {

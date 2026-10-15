@@ -38,6 +38,8 @@ def test_three_outputs_and_rules(tmp_path):
     # spot-check on decision `a` (proposal A); its later outcome line (A) is folded in: human called B → missed
     assert len(sc) == 1 and sc[0]["human_call"] == "B" and sc[0]["outcome"] == "A" and sc[0]["human_correct"] is False and sc[0]["agent_correct"] is True
     assert s["outputs"]["spot_checks"] == 1
+    pr = [json.loads(l) for l in open(tmp_path / "promotion" / "promotion_records.jsonl")]
+    assert len(pr) == 1 and pr[0]["kind"] == "promotion" and pr[0]["promo"]["rules_after"][0]["answer"] == "Hold — gather info"
     # split rating is auxiliary, never part of reward
     for r in rl:
         assert r["reward"] in (1.0, -1.0, None)
