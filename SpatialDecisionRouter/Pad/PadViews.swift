@@ -39,6 +39,8 @@ struct PadRootView: View {
                         Button("Demo") { tap("demo") }
                         Button("Demo (auto-play)") { tap("demoAuto") }
                         Button("WERIAM Principal demo") { tap("weriamDemo") }
+                        Button("Symbiosis demo") { tap("symbiosisDemo") }
+                        Button("Manifesto") { engine.showManifesto = true }
                         if DomainCatalog.all.count > 1 { Button("Next Domain") { engine.nextDomain() } }
                         Button(engine.gameMode ? "Switch to Focus mode" : "Switch to Game mode") { engine.gameMode.toggle() }
                         Button("Export decisions") { engine.export() }
@@ -56,6 +58,7 @@ struct PadRootView: View {
                 .buttonStyle(.bordered).controlSize(.large).preferredColorScheme(.dark)
         }
         .fullScreenCover(isPresented: $showStart) { PadStartView { tap($0) } }
+        .sheet(isPresented: Binding(get: { engine.showManifesto }, set: { engine.showManifesto = $0 })) { ManifestoView() }
         .onChange(of: engine.nowId) { _, id in   // -openSections "A,B": screenshot/test aid, re-opens detail sections on each Now card
             let a = ProcessInfo.processInfo.arguments
             guard id != nil, let i = a.firstIndex(of: "-openSections"), i + 1 < a.count else { return }
@@ -102,6 +105,7 @@ struct PadRootView: View {
         case "demo": engine.startDemo(auto: false)
         case "demoAuto": engine.startDemo(auto: true)
         case "weriamDemo": DomainCatalog.demoId = "weriam_principal"; engine.startDemo(auto: false)
+        case "symbiosisDemo": DomainCatalog.demoId = "symbiosis"; engine.startDemo(auto: false)
         default: if DemoState.on { DemoState.on = false; engine.start(AIDocReviewDomain()) }
         }
         tab = "review"; showStart = false
@@ -125,6 +129,7 @@ struct PadStartView: View {
                     Button { go("demo") } label: { Text("Demo").frame(minWidth: 120) }.tint(.yellow)
                     Button { go("demoAuto") } label: { Text("Demo (auto-play)").frame(minWidth: 160) }.tint(.orange)
                     Button { go("weriamDemo") } label: { Text("WERIAM Principal").frame(minWidth: 170) }.tint(.purple)
+                    Button { go("symbiosisDemo") } label: { Text("Symbiosis").frame(minWidth: 140) }.tint(.orange)
                 }.font(.title2.bold()).buttonStyle(.bordered).controlSize(.extraLarge)
                 Text("Demo: 6 scripted SYNTHETIC encounters · BN badge needs the risk_engine sidecar on this Mac (else fallback badge)")
                     .font(.callout).foregroundStyle(.secondary).multilineTextAlignment(.center)

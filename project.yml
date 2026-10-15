@@ -74,6 +74,22 @@ targets:
         TARGETED_DEVICE_FAMILY: "2"
         SWIFT_VERSION: "5.0"
         CODE_SIGN_IDENTITY: "-"
+  SpatialDecisionRouterPadTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "27.0"
+    sources: [UnitTests]
+    dependencies:
+      - target: SpatialDecisionRouterPad
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.wsatz.SpatialDecisionRouterPadTests
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/SpatialDecisionRouter.app/SpatialDecisionRouter"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        TARGETED_DEVICE_FAMILY: "2"
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_IDENTITY: "-"
 schemes:
   SpatialDecisionRouter:
     build:
@@ -90,4 +106,4 @@ schemes:
     run:
       config: Debug
     test:
-      targets: [SpatialDecisionRouterPadUITests]
+      targets: [SpatialDecisionRouterPadTests, SpatialDecisionRouterPadUITests]

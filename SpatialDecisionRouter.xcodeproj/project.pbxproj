@@ -12,18 +12,29 @@
 		0B82B08CB03B561D1FE7D768 /* ReviewKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */; };
 		1198292743B73E0B50DC84B8 /* GameViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0165402789A2697A94AF29EB /* GameViews.swift */; };
 		1465DFFC8F8791B37C1ED521 /* ai_doc_review.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */; };
+		17ABABC948FD2DC365E65F87 /* DecisionLedgerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80795C87F22049B3B20A7A10 /* DecisionLedgerTests.swift */; };
 		183ED5E4831770FAD4C4544C /* OutpatientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */; };
 		1AB6C6774A4D482CD2B42974 /* AIDocReviewDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */; };
 		1B69FB0044A9F5DD4570F908 /* RouterEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */; };
 		1C8E8A94B64D0EBE27359C92 /* weriam_seed.json in Resources */ = {isa = PBXBuildFile; fileRef = C513BD7BEB8F6B6303D94803 /* weriam_seed.json */; };
+		1E009184364889F82A147308 /* SymbiosisDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2796BB30563167BAE0D82C24 /* SymbiosisDomain.swift */; };
 		275D5EA879D3476D21A94CEF /* EDCapacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6134EEE1D1EB7A15016F1004 /* EDCapacity.swift */; };
+		2994DB48E689DA0D95347583 /* digest.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4A3D378C7423ABCEB09EB083 /* digest.txt */; };
+		2A686F54F16FCD68BF47B926 /* SymbiosisUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C41143C95B99BC42613E1 /* SymbiosisUITests.swift */; };
 		2A8E167F28F4B3F7C81F8C18 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA1C08382DD95C45ECFEA1D /* Platform.swift */; };
 		2CE4C735CC81C5BCBBC882FB /* ProceduralEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */; };
 		30F4A59B1B0D110348C23F83 /* ai_doc_review.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */; };
+		39E1DE7E2F730450DBFCB097 /* digest.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4A3D378C7423ABCEB09EB083 /* digest.txt */; };
+		426087E52E4D64ECC49B6A14 /* SymbiosisKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E004C3CAA1E5B82A61E45 /* SymbiosisKit.swift */; };
 		4FA1A2F85009A30E0D47BA2D /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA1C08382DD95C45ECFEA1D /* Platform.swift */; };
+		54A07C8B60AB8DA32D03333C /* ai_studio_code.html in Resources */ = {isa = PBXBuildFile; fileRef = 6923C6811412C542A4A33B3A /* ai_studio_code.html */; };
 		55341D4CCA1DEF294491A956 /* PadUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDF4EE30763D7A1A0FC549B /* PadUITests.swift */; };
 		59F88647E5E14B48EFBE1A90 /* EncounterImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04144225277F2C1929F0B76 /* EncounterImporter.swift */; };
+		6077B478DBC06936E47346BC /* SymbiosisViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3F9D0524BD07A6FDB4BA24 /* SymbiosisViews.swift */; };
+		6160D2B7D0F94F8349538B32 /* SymbiosisViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3F9D0524BD07A6FDB4BA24 /* SymbiosisViews.swift */; };
 		61D2D5A5F148713BFF13D5AF /* DomainKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */; };
+		61E59360981453ADB50FBD5C /* SymbiosisDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2796BB30563167BAE0D82C24 /* SymbiosisDomain.swift */; };
+		62D70982BA57949FF631F2D5 /* implementation_plan1.md in Resources */ = {isa = PBXBuildFile; fileRef = 76D3776492434D4BAD3CD281 /* implementation_plan1.md */; };
 		6677D7C7C3233C931B3BFE92 /* RouterViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */; };
 		667FA886A8D34AB8886D66D7 /* CategoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DE7620E584197285B2ED27 /* CategoryRegistry.swift */; };
 		68AD4706054ADD4DC5F75DE8 /* ed_triage.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 36AC111D7362BC39421555D4 /* ed_triage.domain.json */; };
@@ -44,6 +55,7 @@
 		94A731305126B5FF217DB74D /* WERIAMPrincipalDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */; };
 		97503C591D86F58FC7ACC5D9 /* EDReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82719454E70FE69DE11B22E /* EDReview.swift */; };
 		A8E53AF7B06879027699BE32 /* EncounterImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04144225277F2C1929F0B76 /* EncounterImporter.swift */; };
+		AD99FE7A4C6D32881FE5E676 /* ai_studio_code.html in Resources */ = {isa = PBXBuildFile; fileRef = 6923C6811412C542A4A33B3A /* ai_studio_code.html */; };
 		B37EEDF17E47D5F05D081891 /* GameViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0165402789A2697A94AF29EB /* GameViews.swift */; };
 		B4709829509B06C129137CA4 /* PadViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0811B2B05BBB05960B5A265C /* PadViews.swift */; };
 		B6D23003DB6564A7DC885C5F /* RiskClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */; };
@@ -51,12 +63,16 @@
 		BDAEA020D7D88A68A4098DD4 /* ReliabilityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */; };
 		C16E35005F7C1383D31B50E7 /* RiskClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */; };
 		C4600DFA7C310450885D2493 /* RouterViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */; };
+		C523EADE2B0DE8319F1F8FFF /* DecisionLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DED29C5032BD02BD8990AF /* DecisionLedger.swift */; };
 		C5756DFD58BBE13957D169D7 /* EDTriageDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F5D70406C695E977446C41 /* EDTriageDomain.swift */; };
 		C65886DECE017E93228D344B /* ProceduralEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */; };
+		C944179D8D9A2EE29D2EBEE2 /* SymbiosisKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1E004C3CAA1E5B82A61E45 /* SymbiosisKit.swift */; };
+		D3820012D7F604FCCA37A9AE /* DecisionLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DED29C5032BD02BD8990AF /* DecisionLedger.swift */; };
 		D3FA62D8D6A759EE389F4BDB /* CategoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DE7620E584197285B2ED27 /* CategoryRegistry.swift */; };
 		D44C5BDD0D4E0D530E5DC547 /* RouterEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */; };
 		DDD6CCAFE3C5F06C686A5AF7 /* EDReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82719454E70FE69DE11B22E /* EDReview.swift */; };
 		E4298859A131CAADF817C43D /* ed_triage.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 36AC111D7362BC39421555D4 /* ed_triage.domain.json */; };
+		F4AD116765167DC06ECC30E9 /* implementation_plan1.md in Resources */ = {isa = PBXBuildFile; fileRef = 76D3776492434D4BAD3CD281 /* implementation_plan1.md */; };
 		F64D8D3E5559025616A9AAD0 /* SpatialDecisionRouterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */; };
 		F6C056567C4188421289120F /* PadViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0811B2B05BBB05960B5A265C /* PadViews.swift */; };
 		F70ECF918747A44140C52372 /* GameKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4B513C4BBF935E7D5D1D6 /* GameKit.swift */; };
@@ -64,6 +80,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		05138108A57386CBCAE36139 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B6BF46D74F81B52ACCD1415F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3E5F7AFEC516A4CB2A393E4F;
+			remoteInfo = SpatialDecisionRouterPad;
+		};
 		AE7F021CCE13ED0C8FF01615 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B6BF46D74F81B52ACCD1415F /* Project object */;
@@ -84,12 +107,14 @@
 		0165402789A2697A94AF29EB /* GameViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViews.swift; sourceTree = "<group>"; };
 		0811B2B05BBB05960B5A265C /* PadViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PadViews.swift; sourceTree = "<group>"; };
 		1A46F3DC714D2EAF7E0E58C6 /* ReviewKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewKit.swift; sourceTree = "<group>"; };
+		2796BB30563167BAE0D82C24 /* SymbiosisDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbiosisDomain.swift; sourceTree = "<group>"; };
 		2AA1C08382DD95C45ECFEA1D /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 		2BDF4EE30763D7A1A0FC549B /* PadUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PadUITests.swift; sourceTree = "<group>"; };
 		317FCBFEA9A9AC040083B1E4 /* ai_doc_review.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ai_doc_review.domain.json; sourceTree = "<group>"; };
 		36AC111D7362BC39421555D4 /* ed_triage.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ed_triage.domain.json; sourceTree = "<group>"; };
 		3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainKit.swift; sourceTree = "<group>"; };
 		45C858F324C90313897B77DF /* LauncherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherUITests.swift; sourceTree = "<group>"; };
+		4A3D378C7423ABCEB09EB083 /* digest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = digest.txt; sourceTree = "<group>"; };
 		4CE4B513C4BBF935E7D5D1D6 /* GameKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameKit.swift; sourceTree = "<group>"; };
 		529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutpatientSpec.swift; sourceTree = "<group>"; };
 		531C8BBFF26EF5127037C08C /* weriam_principal.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = weriam_principal.domain.json; sourceTree = "<group>"; };
@@ -98,14 +123,22 @@
 		64DE7620E584197285B2ED27 /* CategoryRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRegistry.swift; sourceTree = "<group>"; };
 		6614C41420528AF1F28F5E45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		67F5D70406C695E977446C41 /* EDTriageDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDTriageDomain.swift; sourceTree = "<group>"; };
+		6923C6811412C542A4A33B3A /* ai_studio_code.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = ai_studio_code.html; sourceTree = "<group>"; };
+		76D3776492434D4BAD3CD281 /* implementation_plan1.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = implementation_plan1.md; sourceTree = "<group>"; };
+		7C1E004C3CAA1E5B82A61E45 /* SymbiosisKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbiosisKit.swift; sourceTree = "<group>"; };
+		80795C87F22049B3B20A7A10 /* DecisionLedgerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionLedgerTests.swift; sourceTree = "<group>"; };
 		86240C1CE2AEB460E57AD2B6 /* WERIAMClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WERIAMClient.swift; sourceTree = "<group>"; };
 		9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialDecisionRouterApp.swift; sourceTree = "<group>"; };
 		A2189E74FCD2D78AE9BD0CB3 /* AIDocReviewDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIDocReviewDomain.swift; sourceTree = "<group>"; };
 		A82719454E70FE69DE11B22E /* EDReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDReview.swift; sourceTree = "<group>"; };
+		AD3F9D0524BD07A6FDB4BA24 /* SymbiosisViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbiosisViews.swift; sourceTree = "<group>"; };
 		B04144225277F2C1929F0B76 /* EncounterImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncounterImporter.swift; sourceTree = "<group>"; };
+		B4DED29C5032BD02BD8990AF /* DecisionLedger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionLedger.swift; sourceTree = "<group>"; };
+		B58C41143C95B99BC42613E1 /* SymbiosisUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbiosisUITests.swift; sourceTree = "<group>"; };
 		C513BD7BEB8F6B6303D94803 /* weriam_seed.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = weriam_seed.json; sourceTree = "<group>"; };
 		C8D05C5F01797C6E4BE65D25 /* SpatialDecisionRouterPad.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouterPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceduralEnvironment.swift; sourceTree = "<group>"; };
+		D2322AEB575C234507469E46 /* SpatialDecisionRouterPadTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SpatialDecisionRouterPadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterEngine.swift; sourceTree = "<group>"; };
 		E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WERIAMPrincipalDomain.swift; sourceTree = "<group>"; };
 		E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskClient.swift; sourceTree = "<group>"; };
@@ -121,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				2BDF4EE30763D7A1A0FC549B /* PadUITests.swift */,
+				B58C41143C95B99BC42613E1 /* SymbiosisUITests.swift */,
 			);
 			path = UITestsPad;
 			sourceTree = "<group>";
@@ -141,6 +175,7 @@
 			children = (
 				F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */,
 				C8D05C5F01797C6E4BE65D25 /* SpatialDecisionRouterPad.app */,
+				D2322AEB575C234507469E46 /* SpatialDecisionRouterPadTests.xctest */,
 				F5B7A1658348EE6C11BF2E6C /* SpatialDecisionRouterPadUITests.xctest */,
 				F407AADF547B37D02BC17A63 /* SpatialDecisionRouterUITests.xctest */,
 			);
@@ -155,10 +190,19 @@
 			path = UITests;
 			sourceTree = "<group>";
 		};
+		2B1CB89219993FBB693D6138 /* Symbiosis */ = {
+			isa = PBXGroup;
+			children = (
+				2796BB30563167BAE0D82C24 /* SymbiosisDomain.swift */,
+			);
+			path = Symbiosis;
+			sourceTree = "<group>";
+		};
 		45BCEB5E97723B454859AD2E /* Core */ = {
 			isa = PBXGroup;
 			children = (
 				64DE7620E584197285B2ED27 /* CategoryRegistry.swift */,
+				B4DED29C5032BD02BD8990AF /* DecisionLedger.swift */,
 				3BBB4AB971AE44D1CDFE69DA /* DomainKit.swift */,
 				4CE4B513C4BBF935E7D5D1D6 /* GameKit.swift */,
 				0165402789A2697A94AF29EB /* GameViews.swift */,
@@ -169,8 +213,18 @@
 				D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */,
 				F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */,
 				6457ECA631420CFF502092D6 /* RoutingDecision.swift */,
+				7C1E004C3CAA1E5B82A61E45 /* SymbiosisKit.swift */,
+				AD3F9D0524BD07A6FDB4BA24 /* SymbiosisViews.swift */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		7853DA745760A88A2D274630 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				80795C87F22049B3B20A7A10 /* DecisionLedgerTests.swift */,
+			);
+			path = UnitTests;
 			sourceTree = "<group>";
 		};
 		858B67F3D7637C94126B21DB /* Domains */ = {
@@ -178,6 +232,7 @@
 			children = (
 				BBC7BB783659EB3FFAAB8CED /* AIDocReview */,
 				9BD3F5F668CCC9B648B9CE6D /* EDTriage */,
+				2B1CB89219993FBB693D6138 /* Symbiosis */,
 				10ACABE275D353CDB5FC4450 /* WERIAMPrincipal */,
 			);
 			path = Domains;
@@ -217,6 +272,9 @@
 		DB3725A68F45F5D20377362B /* SpatialDecisionRouter */ = {
 			isa = PBXGroup;
 			children = (
+				6923C6811412C542A4A33B3A /* ai_studio_code.html */,
+				4A3D378C7423ABCEB09EB083 /* digest.txt */,
+				76D3776492434D4BAD3CD281 /* implementation_plan1.md */,
 				6614C41420528AF1F28F5E45 /* Info.plist */,
 				9EAAE4E8FA55DB2375EE0E55 /* SpatialDecisionRouterApp.swift */,
 				45BCEB5E97723B454859AD2E /* Core */,
@@ -232,6 +290,7 @@
 				DB3725A68F45F5D20377362B /* SpatialDecisionRouter */,
 				20C936199B19185AB0C5A71A /* UITests */,
 				087F119E704EE1002A9C784E /* UITestsPad */,
+				7853DA745760A88A2D274630 /* UnitTests */,
 				13AEE49A568B5C2826A2D767 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -256,6 +315,24 @@
 			productName = SpatialDecisionRouterPad;
 			productReference = C8D05C5F01797C6E4BE65D25 /* SpatialDecisionRouterPad.app */;
 			productType = "com.apple.product-type.application";
+		};
+		A45BDA8C2E449C86BAC73620 /* SpatialDecisionRouterPadTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03E7854B11238F17D93B6624 /* Build configuration list for PBXNativeTarget "SpatialDecisionRouterPadTests" */;
+			buildPhases = (
+				0F4F309F6BA6AE4821609FDF /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15D29F709973E5E9E3051043 /* PBXTargetDependency */,
+			);
+			name = SpatialDecisionRouterPadTests;
+			packageProductDependencies = (
+			);
+			productName = SpatialDecisionRouterPadTests;
+			productReference = D2322AEB575C234507469E46 /* SpatialDecisionRouterPadTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		CF3B1F75727CBAC9985DDBB6 /* SpatialDecisionRouter */ = {
 			isa = PBXNativeTarget;
@@ -346,6 +423,7 @@
 				F035C9635DC5A67FDC2340F9 /* SpatialDecisionRouterUITests */,
 				3E5F7AFEC516A4CB2A393E4F /* SpatialDecisionRouterPad */,
 				E29C9C340DA8F7DC3EBCCFB0 /* SpatialDecisionRouterPadUITests */,
+				A45BDA8C2E449C86BAC73620 /* SpatialDecisionRouterPadTests */,
 			);
 		};
 /* End PBXProject section */
@@ -356,7 +434,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				30F4A59B1B0D110348C23F83 /* ai_doc_review.domain.json in Resources */,
+				54A07C8B60AB8DA32D03333C /* ai_studio_code.html in Resources */,
+				2994DB48E689DA0D95347583 /* digest.txt in Resources */,
 				E4298859A131CAADF817C43D /* ed_triage.domain.json in Resources */,
+				62D70982BA57949FF631F2D5 /* implementation_plan1.md in Resources */,
 				FF19467CA1923D436DAAB596 /* weriam_principal.domain.json in Resources */,
 				1C8E8A94B64D0EBE27359C92 /* weriam_seed.json in Resources */,
 			);
@@ -367,7 +448,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1465DFFC8F8791B37C1ED521 /* ai_doc_review.domain.json in Resources */,
+				AD99FE7A4C6D32881FE5E676 /* ai_studio_code.html in Resources */,
+				39E1DE7E2F730450DBFCB097 /* digest.txt in Resources */,
 				68AD4706054ADD4DC5F75DE8 /* ed_triage.domain.json in Resources */,
+				F4AD116765167DC06ECC30E9 /* implementation_plan1.md in Resources */,
 				6BB21463821C1218BCBAA67D /* weriam_principal.domain.json in Resources */,
 				7F19D2F37B86B6C4BC8038FD /* weriam_seed.json in Resources */,
 			);
@@ -382,6 +466,7 @@
 			files = (
 				8B0DA88EA08E8966E7DA4688 /* AIDocReviewDomain.swift in Sources */,
 				D3FA62D8D6A759EE389F4BDB /* CategoryRegistry.swift in Sources */,
+				C523EADE2B0DE8319F1F8FFF /* DecisionLedger.swift in Sources */,
 				61D2D5A5F148713BFF13D5AF /* DomainKit.swift in Sources */,
 				275D5EA879D3476D21A94CEF /* EDCapacity.swift in Sources */,
 				DDD6CCAFE3C5F06C686A5AF7 /* EDReview.swift in Sources */,
@@ -400,6 +485,9 @@
 				6677D7C7C3233C931B3BFE92 /* RouterViews.swift in Sources */,
 				8539DE0BF5E7A1756BD536DF /* RoutingDecision.swift in Sources */,
 				F64D8D3E5559025616A9AAD0 /* SpatialDecisionRouterApp.swift in Sources */,
+				1E009184364889F82A147308 /* SymbiosisDomain.swift in Sources */,
+				426087E52E4D64ECC49B6A14 /* SymbiosisKit.swift in Sources */,
+				6160D2B7D0F94F8349538B32 /* SymbiosisViews.swift in Sources */,
 				7DF8A6BFFC2C374E1F6DFF87 /* WERIAMClient.swift in Sources */,
 				94A731305126B5FF217DB74D /* WERIAMPrincipalDomain.swift in Sources */,
 			);
@@ -411,6 +499,7 @@
 			files = (
 				1AB6C6774A4D482CD2B42974 /* AIDocReviewDomain.swift in Sources */,
 				667FA886A8D34AB8886D66D7 /* CategoryRegistry.swift in Sources */,
+				D3820012D7F604FCCA37A9AE /* DecisionLedger.swift in Sources */,
 				B96343F7685B18726254CDDE /* DomainKit.swift in Sources */,
 				73065D8A731BC61019FD26A2 /* EDCapacity.swift in Sources */,
 				97503C591D86F58FC7ACC5D9 /* EDReview.swift in Sources */,
@@ -429,8 +518,19 @@
 				C4600DFA7C310450885D2493 /* RouterViews.swift in Sources */,
 				91D916D0C39ABA5E80D5B212 /* RoutingDecision.swift in Sources */,
 				8E6E346D9AFF198E06252668 /* SpatialDecisionRouterApp.swift in Sources */,
+				61E59360981453ADB50FBD5C /* SymbiosisDomain.swift in Sources */,
+				C944179D8D9A2EE29D2EBEE2 /* SymbiosisKit.swift in Sources */,
+				6077B478DBC06936E47346BC /* SymbiosisViews.swift in Sources */,
 				7BE6F72AEC7FF5D1170122B1 /* WERIAMClient.swift in Sources */,
 				75E97CAAA3C84CC37730D810 /* WERIAMPrincipalDomain.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0F4F309F6BA6AE4821609FDF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				17ABABC948FD2DC365E65F87 /* DecisionLedgerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,6 +539,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55341D4CCA1DEF294491A956 /* PadUITests.swift in Sources */,
+				2A686F54F16FCD68BF47B926 /* SymbiosisUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,6 +554,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		15D29F709973E5E9E3051043 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3E5F7AFEC516A4CB2A393E4F /* SpatialDecisionRouterPad */;
+			targetProxy = 05138108A57386CBCAE36139 /* PBXContainerItemProxy */;
+		};
 		7BD4533A6F57119839DCB7EA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CF3B1F75727CBAC9985DDBB6 /* SpatialDecisionRouter */;
@@ -486,6 +592,26 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		1E50F21793CDE835735D1530 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouterPadTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpatialDecisionRouter.app/SpatialDecisionRouter";
 			};
 			name = Debug;
 		};
@@ -686,6 +812,26 @@
 			};
 			name = Release;
 		};
+		F2347381306814ADE312BE02 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouterPadTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpatialDecisionRouter.app/SpatialDecisionRouter";
+			};
+			name = Release;
+		};
 		FDEA77D1C9D330F15C4BE303 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -750,6 +896,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		03E7854B11238F17D93B6624 /* Build configuration list for PBXNativeTarget "SpatialDecisionRouterPadTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E50F21793CDE835735D1530 /* Debug */,
+				F2347381306814ADE312BE02 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		0D6C31E4F4D553E764A4624E /* Build configuration list for PBXNativeTarget "SpatialDecisionRouterPadUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

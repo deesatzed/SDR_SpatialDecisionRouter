@@ -69,8 +69,19 @@ struct Handoff: Identifiable, Hashable {
     var departFrom: [String: SIMD3<Float>] = [:]
 
     var registryEvents: [RegistryEvent] = []
+    // unified decision record (SYMBIOSIS_PLAN §4): every HITM decision, every domain
+    let ledger: DecisionLedger = {
+        if ProcessInfo.processInfo.arguments.contains("-freshLedger") { try? FileManager.default.removeItem(at: DecisionLedger.defaultURL) }
+        return DecisionLedger.shared
+    }()
+    var unified: [UUID: UnifiedDecisionRecord] = [:]       // RoutingDecision.id -> sealed unified record
+    var pendingSplit: [String: SplitRating] = [:]           // item id -> split rating given before deciding
+    var splitGiven: [String: SplitRating] = [:]             // item id -> last split rating (UI)
+    var aiDepthOpen = false
+    var showManifesto = ProcessInfo.processInfo.arguments.contains("-manifesto")
+    var ledgerCount: Int { ledger.read().count }
     // review queue
-    var nowId: String?
+    var nowId: String? { didSet { if oldValue != nowId { aiDepthOpen = false } } }
     var detailOpen = false
     var openSections: [String: Date] = [:]
     private var sectionAcc: [String: Double] = [:]
@@ -114,6 +125,7 @@ struct Handoff: Identifiable, Hashable {
             registry.merge(persisted: p)
         }
         reviewerRng = SplitMix64(s: 99); testNameIdx = 0; spotRng = SplitMix64(s: 4242)
+        pendingSplit = [:]; splitGiven = [:]; aiDepthOpen = false
         nowId = nil; spotChecks = []; autoPassed = 0; resetDetailTelemetry()
         itemReRatings = [:]; itemAsks = [:]; lastAnswer = [:]; destFor = [:]; sideTab = "details"
         items = [:]; itemOrder = []; handoffs = []; phase = [:]; progress = [:]; slot = [:]; shownAt = [:]
@@ -448,6 +460,9 @@ struct Handoff: Identifiable, Hashable {
         lastAction = "\(gesture) \(id): \(h.proposal)\(d.changed ? " → \(ans)" : " ✓")\(trial ? " (trial)" : "")"
             + (ev.last.map { " · \($0.op) \($0.category)" } ?? "")
         appendLog(dd)
+        let split = pendingSplit.removeValue(forKey: item.id)
+        if let u = ledger.append(.from(dd, ctx: domain.decisionContext(item: item), split: split)) { unified[dd.id] = u }
+        aiDepthOpen = false
         domain.decided(item: item, link: h.link, answer: eff, latency: dd.latency, by: by)
     }
 
@@ -464,8 +479,21 @@ struct Handoff: Identifiable, Hashable {
             decisions[k].agreesWithGroundTruth = truth == d.routedAnswer
             decisions[k].downstreamOutcome = truth == d.routedAnswer ? (d.changed ? "completed-after-human-correction" : "completed-correctly") : "error-reached-destination"
             itemStatus[itemId] = truth == d.routedAnswer ? (d.changed ? "corrected" : "correct") : "missed"
+            if let u = unified[d.id] {
+                let src = config.id == "weriam_principal" ? "weriam_teacher (WERIAM observed outcome)" : "late_truth"
+                ledger.append(.amendment(kind: "outcome", ref: u, outcome: RecordOutcome(value: truth, source: src, observed_at: DecisionLedger.iso())))
+            }
         }
         rewriteLog()
+    }
+
+    /// one-tap split rating (Symbiosis layer 3). Before the decision it rides on the decision record; after, it is a
+    /// separate signed `split_rating` line that references the decision.
+    func rateSplit(itemId: String, _ r: SplitRating) {
+        splitGiven[itemId] = r
+        if let d = decisions.last(where: { $0.itemId == itemId }), let u = unified[d.id] {
+            ledger.append(.amendment(kind: "split_rating", ref: u, split: r))
+        } else { pendingSplit[itemId] = r }
     }
 
     // MARK: stats
@@ -519,6 +547,7 @@ struct Handoff: Identifiable, Hashable {
         let e = enc(); e.outputFormatting = [.sortedKeys, .prettyPrinted]
         try? e.encode(decisions).write(to: exportDir.appendingPathComponent("routing-\(ts).json"))
         exportExtras(ts: ts)
+        try? FileManager.default.copyItem(at: ledger.url, to: exportDir.appendingPathComponent("decision_ledger-\(ts).jsonl"))
         lastExport = "Exported \(decisions.count) decisions"
     }
     func exportExtras(ts: String) {
@@ -562,6 +591,10 @@ struct Handoff: Identifiable, Hashable {
                 try? await Task.sleep(for: .seconds(5 * pace))
             }
             guard phase[h.id] == .waiting else { continue }
+            if let it = items[h.itemId], let sp = it.fields["demo_split"].flatMap(SplitRating.init(rawValue:)) {
+                demoStep = "ai depth"; aiDepthOpen = true; try? await Task.sleep(for: .seconds(4 * pace))
+                demoStep = "rate split"; rateSplit(itemId: it.id, sp); try? await Task.sleep(for: .seconds(2 * pace))
+            }
             demoStep = "decide"
             if let gt = items[h.itemId].flatMap({ domain.demoAnswer(item: $0, link: h.link) }) ?? h.groundTruth, gt != h.proposal {
                 if gt == config.review.escalateAnswer { escalate(h.id) } else { ringFor = h.id; try? await Task.sleep(for: .seconds(2 * pace)); select(h.id, gt) }

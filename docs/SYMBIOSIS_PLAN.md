@@ -198,13 +198,15 @@ flowchart LR
 | Piece | Status |
 |-------|--------|
 | SDR Pass/Change/Flip logging | Exists today |
-| `tools/to_training.py` | Turns SDR logs into fine-tune-shaped data |
+| `tools/to_training.py` | Turns SDR logs into fine-tune-shaped data (unchanged) |
+| `tools/unified_export.py` | **Done (M0)** — SFT + preference pairs, RL reward rows, frozen blinded replay sets |
 | WERIAM `labels.jsonl` + signed approvals | Exists; can join observed outcomes |
 | ED triage / tele-doc real outcomes | **Missing** — demo grades are scripted |
-| Unified schema across domains | **Missing** |
+| Unified schema across domains | **Done (M0)** — `DecisionLedger.swift`, signed + hash-chained, all four domains; see `docs/SYMBIOSIS.md` |
 | Anything that actually trains on the logs | **Missing** |
 
-M0 (below) closes the schema and exporter gap first.
+M0 (below) closes the schema and exporter gap first. Status 2026-10-15: M0 and M1 landed (see `docs/SYMBIOSIS.md`);
+ED triage / tele-doc outcomes are still simulator truth, and nothing trains on the exports yet.
 
 ---
 
@@ -297,23 +299,23 @@ Check boxes as work lands on `main`. Do not skip M0.
 
 ### M0 — Unified decision record + exporter (first)
 
-- [ ] Shared Swift/`Codable` (or equivalent) schema for the record in §4
-- [ ] All domains write into it (SDR + WERIAM bridge + new Symbiosis)
-- [ ] Exporter produces fine-tune pairs, RL reward rows, frozen replay sets
-- [ ] Docs note remaining outcome gaps (ED/tele-doc) explicitly
-- [ ] Acceptance: one session across two domains yields parseable exports;
+- [x] Shared Swift/`Codable` (or equivalent) schema for the record in §4
+- [x] All domains write into it (SDR + WERIAM bridge + new Symbiosis)
+- [x] Exporter produces fine-tune pairs, RL reward rows, frozen replay sets
+- [x] Docs note remaining outcome gaps (ED/tele-doc) explicitly
+- [x] Acceptance: one session across two domains yields parseable exports;
       hash chain verifies; no domain-private-only log path remains for
       HITM decisions
 
 ### M1 — Demoable slice (~2.5 days)
 
-- [ ] Context model with four dials (static or seeded; earned movement
+- [x] Context model with four dials (static or seeded; earned movement
       can wait for M2)
-- [ ] Three-column card on iPad (and visionOS if cheap)
-- [ ] Dual labels (decision + split rating) into unified record
-- [ ] Manifesto page, four lenses, our words, editorial tokens
-- [ ] Seed: ED triage + one personal area
-- [ ] Acceptance: demo script walks a card, both labels land in export,
+- [x] Three-column card on iPad (and visionOS if cheap)
+- [x] Dual labels (decision + split rating) into unified record
+- [x] Manifesto page, four lenses, our words, editorial tokens
+- [x] Seed: ED triage + one personal area
+- [x] Acceptance: demo script walks a card, both labels land in export,
       manifesto opens from app/landing
 
 ### M2 — Earned-autonomy dials
@@ -350,8 +352,8 @@ Check boxes as work lands on `main`. Do not skip M0.
 ### M6 — Tests
 
 - [ ] Model / dial rules / promotion gate unit tests
-- [ ] Exporter golden tests
-- [ ] iPad UI smoke for three-column card + dual labels
+- [x] Exporter golden tests
+- [x] iPad UI smoke for three-column card + dual labels
 - [ ] Acceptance: CI green; promotion gate cannot be bypassed in tests
 
 Rough total after M0: ~6–8 focused days for M1–M6 as previously estimated.
@@ -364,8 +366,8 @@ Rough total after M0: ~6–8 focused days for M1–M6 as previously estimated.
    evaluator (rse-harness style). Confirm if another meaning is intended.
 2. **Ground-truth sources for ED triage and tele-doc.** What attaches
    real outcomes so those domains stop using scripted demo grades?
-3. **Personal areas list.** Which first personal area ships with M1
-   (finances, interpersonal, systems-architecture, other)?
+3. **Personal areas list.** M1 ships **personal finance** as the first
+   personal area (2 seeded cards). Confirm or swap.
 4. **Commercial license.** Author confirmation for Symbiont-inspired
    shipping before any commercial use.
 

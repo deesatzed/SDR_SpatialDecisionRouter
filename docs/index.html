@@ -21,7 +21,7 @@ figure img{width:100%;display:block}figcaption{padding:12px 16px;color:var(--mu)
 code{background:#0f1830;border:1px solid var(--line);padding:1px 6px;border-radius:6px;font-size:14px}
 .disc{background:#2a1a0a;border:1px solid #6b4513;color:#fcd9a8;border-radius:12px;padding:16px 20px}footer{padding:36px 0;color:var(--mu);border-top:1px solid var(--line);font-size:14px}
 </style></head><body>
-<nav><div class="w"><b>⟁ Spatial Decision Router</b><div><a href="#how">How it works</a><a href="#features">Features</a><a href="#gallery">Screens</a><a href="#tech">Tech</a><a href="https://github.com/deesatzed/SDR_SpatialDecisionRouter">GitHub</a></div></div></nav>
+<nav><div class="w"><b>⟁ Spatial Decision Router</b><div><a href="#how">How it works</a><a href="#features">Features</a><a href="#gallery">Screens</a><a href="#symbiosis">Symbiosis</a><a href="#tech">Tech</a><a href="https://github.com/deesatzed/SDR_SpatialDecisionRouter">GitHub</a></div></div></nav>
 <header class="hero"><div class="w">
 <span class="tag">visionOS 27 · research prototype · synthetic data</span>
 <h1>The physician stays in the middle of <span>AI-doctor</span> decisions.</h1>
@@ -59,6 +59,19 @@ code{background:#0f1830;border:1px solid var(--line);padding:1px 6px;border-radi
 <figure><img src="img/w05_live_pause.jpg" alt=""><figcaption>Live pause: the agent is waiting for your label</figcaption></figure>
 <figure><img src="img/w07_board_graded.jpg" alt=""><figcaption>Principal Board graded by WERIAM's later outcomes</figcaption></figure>
 </div></div></section>
+<section id="symbiosis" style="background:#FBF9F5;color:#1C1917"><div class="w">
+<p style="font:600 12px/1 ui-monospace,Menlo,monospace;letter-spacing:2px;margin:0 0 10px">SYMBIOSIS · MANIFESTO</p>
+<h2 style="font-family:'New York',Georgia,serif;font-size:40px;font-weight:600">Human judgment × AI depth</h2>
+<p style="font-family:Georgia,serif;font-size:22px;max-width:820px">Stop being the library; become a better judge. Let the machine be the library and stop pretending to be the judge. Each area of life learns where that line belongs, for this person.</p>
+<div class="g3" style="margin-top:22px">
+<div style="border-left:3px solid #f58c33;padding:4px 16px"><b style="font:600 12px ui-monospace,monospace;color:#c2621a">THE HUMAN</b><p>Keeps the why and the ought: values, stakes, and what experience taught that no database stores.</p></div>
+<div style="border-left:3px solid #4d94fa;padding:4px 16px"><b style="font:600 12px ui-monospace,monospace;color:#2f6fd0">THE AI</b><p>Carries the how and the exhaustive what: facts, syntax, edge cases, recall at any scale.</p></div>
+<div style="border-left:3px solid #1C1917;padding:4px 16px"><b style="font:600 12px ui-monospace,monospace">HOW BOTH LEARN</b><p>Every decision and every split rating is a signed, hash-chained record. Rewards come from observed outcomes; promotion needs a frozen replay win and your signature.</p></div>
+</div>
+<p style="margin-top:18px;font:13px ui-monospace,monospace;opacity:.7">Four lenses in the app: philosophical · technical · teaching · executive. M1 dials are seeded placeholders, not learned. Concept structure inspired by Symbiont; copy is ours.</p>
+<div class="gal" style="margin-top:20px"><figure><img src="img/sym_card.jpg" alt=""><figcaption>Three-column card: you hold · bridge · AI holds, plus the one-tap split rating</figcaption></figure>
+<figure><img src="img/sym_manifesto.jpg" alt=""><figcaption>In-app manifesto, philosophical lens</figcaption></figure></div>
+</div></section>
 <section id="tech"><div class="w"><h2>Tech stack</h2><p class="sub">A pluggable domain framework with a Bayesian sidecar</p><div class="g3">
 <div class="c"><h3>visionOS app</h3><p>SwiftUI, RealityKit and ImmersiveSpace, generated with xcodegen and tested with XCUITest.</p></div>
 <div class="c"><h3>Domain framework</h3><p><code>DomainKit</code>, <code>RouterEngine</code>, <code>CategoryRegistry</code> and <code>RoutingDecision</code>. A new domain plugs in without engine changes.</p></div>

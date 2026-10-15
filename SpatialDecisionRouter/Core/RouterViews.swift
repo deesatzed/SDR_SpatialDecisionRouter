@@ -241,6 +241,10 @@ struct NowCard: View {
                     if let a = engine.lastAnswer[h.itemId] { Text("last answer · \(a)").font(.headline).foregroundStyle(.mint) }
                 }
             }
+            if let item, item.fields["symbiosis"] == "1" {
+                SymbiosisPanel(item: item)
+                ManifestoButton()
+            }
             HStack(alignment: .firstTextBaseline) {
                 Text(h.link.question).font(.title)
                 Text(h.proposal).font(.sdrHuge.bold())
@@ -635,6 +639,8 @@ struct LauncherView: View {
                 Button("Demo") { tap("demo") }.tint(.yellow)
                 Button("Demo (auto-play)") { tap("demoAuto") }.tint(.orange)
                 Button("WERIAM Principal") { tap("weriamDemo") }.tint(.purple)
+                Button("Symbiosis") { tap("symbiosisDemo") }.tint(.orange)
+                ManifestoButton()
             }.font(.title2)
             Text("Demo: 6 scripted SYNTHETIC encounters · needs risk_engine sidecar for BN (else fallback badge)").font(.callout).foregroundStyle(.secondary)
             if !status.isEmpty { Text(status).font(.headline).foregroundStyle(status.hasPrefix("⚠") ? .red : .secondary) }
@@ -644,8 +650,9 @@ struct LauncherView: View {
             let a = ProcessInfo.processInfo.arguments
             // -autoTap enter|demo|demoAuto: exercises exactly the button code path (debug/test)
             if let i = a.firstIndex(of: "-autoTap"), i + 1 < a.count { try? await Task.sleep(for: .seconds(2)); tap(a[i + 1]); return }
-            if a.contains("-autoOpenImmersive") { tap(DemoState.on ? (DemoState.auto ? "demoAuto" : "demo") : "enter") }
-            else if DemoState.on { tap(DemoState.auto ? "demoAuto" : "demo") }
+            let sym = DomainCatalog.demoId == "symbiosis"
+            if a.contains("-autoOpenImmersive") { tap(sym ? "symbiosisDemo" : DemoState.on ? (DemoState.auto ? "demoAuto" : "demo") : "enter") }
+            else if DemoState.on { tap(sym ? "symbiosisDemo" : DemoState.auto ? "demoAuto" : "demo") }
         }
     }
     /// single entry point for buttons AND launch args
@@ -656,6 +663,7 @@ struct LauncherView: View {
         case "demo": engine.startDemo(auto: false)
         case "demoAuto": engine.startDemo(auto: true)
         case "weriamDemo": DomainCatalog.demoId = "weriam_principal"; engine.startDemo(auto: false)
+        case "symbiosisDemo": DomainCatalog.demoId = "symbiosis"; engine.startDemo(auto: DemoState.auto)
         default: if DemoState.on { DemoState.on = false; engine.start(AIDocReviewDomain()) }
         }
         Task { await open() }

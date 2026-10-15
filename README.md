@@ -66,6 +66,17 @@ Both targets share every source file. visionOS-only code (`ImmersiveSpace`, Real
 tools/weriam_demo.sh --fresh --auto     # WERIAM bridge + iPad demo; the approval lands in WERIAM's hash-chained journal
 ```
 
+### Symbiosis (human judgment × AI depth)
+Every HITM decision in every domain now lands in one signed, hash-chained **unified decision record**, exportable to
+fine-tune pairs, RL reward rows and frozen replay sets (`tools/unified_export.py`). The Symbiosis domain shows each decision
+as three columns (you hold / bridge / AI holds), takes a second one-tap split rating, and has a four-lens manifesto. Dials are
+seeded placeholders until M2. Spec: [docs/SYMBIOSIS_PLAN.md](docs/SYMBIOSIS_PLAN.md) · built: [docs/SYMBIOSIS.md](docs/SYMBIOSIS.md).
+<p><img src="docs/img/sym_card.jpg" width="49%"> <img src="docs/img/sym_manifesto.jpg" width="49%"></p>
+
+```bash
+tools/symbiosis_demo.sh --auto --fresh-ledger --export   # iPad demo, then verify + export the signed ledger
+```
+
 ## Quickstart
 Requirements: macOS with Xcode 27, the visionOS 27 simulator runtime (and the iOS 27 runtime for iPad), xcodegen, and Python 3.
 ```bash
@@ -81,7 +92,8 @@ A 3–5 minute talk track is in [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md). The 
 
 Export the training data:
 ```bash
-python3 tools/to_training.py screens/32_routing_log.jsonl -o out/
+python3 tools/to_training.py screens/32_routing_log.jsonl -o out/            # legacy routing log
+python3 tools/unified_export.py decision_ledger.jsonl -o out/ --strict        # unified signed ledger (all domains)
 ```
 
 ## Tests
@@ -89,7 +101,8 @@ python3 tools/to_training.py screens/32_routing_log.jsonl -o out/
 cd risk_engine && .venv/bin/python -m pytest -q       # BN engine
 xcodebuild test -scheme SpatialDecisionRouter -destination 'platform=visionOS Simulator,name=SDR-VisionPro'   # UI tests
 python3 -m pytest -q weriam_bridge/tests              # WERIAM bridge (needs the WERIAM checkout, WERIAM_ROOT)
-xcodebuild test -scheme SpatialDecisionRouterPad -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M5)'   # iPad UI tests
+python3 -m pytest -q tools/tests                      # unified exporter (verifies a Swift-written signed ledger)
+xcodebuild test -scheme SpatialDecisionRouterPad -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M5)'   # ledger unit tests + iPad UI tests (incl. Symbiosis)
 ```
 
 ## Disclaimer

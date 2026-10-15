@@ -38,6 +38,17 @@
       </MacroExpansion>
       <Testables>
          <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A45BDA8C2E449C86BAC73620"
+               BuildableName = "SpatialDecisionRouterPadTests.xctest"
+               BlueprintName = "SpatialDecisionRouterPadTests"
+               ReferencedContainer = "container:SpatialDecisionRouter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"

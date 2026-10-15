@@ -153,6 +153,8 @@ struct EngineStats {
     func takeOutcomes() -> [(String, String)]
     func demoAnswer(item: DomainItem, link: LinkSpec) -> String?
     func decided(item: DomainItem, link: LinkSpec, answer: String, latency: TimeInterval, by: String)
+    // unified decision record (defaults in SymbiosisKit.swift)
+    func decisionContext(item: DomainItem) -> DecisionContext
 }
 
 enum DomainLoader {
@@ -169,6 +171,7 @@ enum DomainCatalog {
         { AIDocReviewDomain() },   // default
         { EDTriageDomain() },
         { WERIAMPrincipalDomain() },
+        { SymbiosisDomain() },
     ]
 }
 
@@ -177,10 +180,16 @@ extension DomainCatalog {
     static var demoId: String? = {
         let a = ProcessInfo.processInfo.arguments
         if a.contains("-weriamDemo") { return "weriam_principal" }
+        if a.contains("-symbiosisDemo") { return "symbiosis" }
         return a.firstIndex(of: "-domain").flatMap { $0 + 1 < a.count ? a[$0 + 1] : nil }
     }()
     @MainActor static func demoDomain() -> DomainModule {
-        demoId == "weriam_principal" ? WERIAMPrincipalDomain() : AIDocReviewDomain()
+        switch demoId {
+        case "weriam_principal": WERIAMPrincipalDomain()
+        case "symbiosis": SymbiosisDomain()
+        case "ed_triage": EDTriageDomain()
+        default: AIDocReviewDomain()
+        }
     }
 }
 
