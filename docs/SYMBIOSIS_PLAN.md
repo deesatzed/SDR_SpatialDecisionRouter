@@ -360,10 +360,13 @@ M5 status: done (2026-10-16). Also: up-next hides AI picks during a spot-check; 
 
 ### M6 — Tests
 
-- [ ] Model / dial rules / promotion gate unit tests
+- [x] Model / dial rules / promotion gate unit tests (DecisionLedger 6, DialEngine 15 incl. sharpness calibration, Lineage 4 incl. tamper + hard-trigger never spot-checked, Promotion 8, PromotionGate 7: decline/defer, non-evaluation record, stale generation, tampered evaluator sha, tampered replay hash, missing rule, replayed approval — all refused; only approve-once on a fresh passing evaluation promotes, rollback restores)
 - [x] Exporter golden tests
 - [x] iPad UI smoke for three-column card + dual labels
-- [ ] Acceptance: CI green; promotion gate cannot be bypassed in tests
+- [x] Acceptance: promotion gate cannot be bypassed in tests (Swift PromotionGateTests + pytest test_gate.py: boundaries read from the placeholder MARGIN, clinical guard per clinical area, unblinded case refused, harness output never promotes)
+- [~] Acceptance: CI green — local green (2026-10-16): pytest tools 55, risk_engine 35; Swift unit 40 (1 skipped: golden-fixture writer, opt-in); iPad UI 9; visionOS + iPad builds. GitHub Actions (.github/workflows/python-tests.yml) runs the Python suites only; Swift/UI tests need Xcode 27 + iOS 27 simulators and are not in hosted CI yet.
+
+M6 status: done (2026-10-16). Honest gaps: no hosted CI for Swift/UI; Swift gate tests use the shared app ledger (they roll back what they promote); weriam_bridge tests need a WERIAM checkout and are not in CI; thresholds remain placeholders; outcomes for ED/tele-doc still synthetic.
 
 Rough total after M0: ~6–8 focused days for M1–M6 as previously estimated.
 
