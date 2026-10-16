@@ -172,7 +172,10 @@ struct NowCard: View {
         TimelineView(.periodic(from: .now, by: 1)) { _ in
             if let h = engine.nowHandoff { content(h) }
             else {
-                Text(DemoState.on && engine.domain.isDemoDone ? "Demo complete · \(engine.autoPassed) auto-passed · Reset demo to replay" : "Queue clear · \(engine.autoPassed) auto-passed").font(.title).padding(30).sdrWidth(880).sdrPanel()
+                VStack(spacing: 14) {
+                    Text(DemoState.on && engine.domain.isDemoDone ? "Demo complete · \(engine.autoPassed) auto-passed · Reset demo to replay" : "Queue clear · \(engine.autoPassed) auto-passed").font(.title)
+                    if engine.domain is SymbiosisDomain { HStack { PromotionButton(); LineageButton() }.font(.title3.bold()) }
+                }.padding(30).sdrWidth(880).sdrPanel()
             }
         }
     }
@@ -244,7 +247,7 @@ struct NowCard: View {
             }
             if let item, item.fields["symbiosis"] == "1" {
                 SymbiosisPanel(item: item)
-                HStack { ManifestoButton(); PromotionButton() }
+                HStack { ManifestoButton(); PromotionButton(); LineageButton() }
             }
             if sharp { YourCallFirst(h: h) } else {
             HStack(alignment: .firstTextBaseline) {
@@ -406,7 +409,8 @@ struct UpNextStrip: View {
                                 if h.trigger != nil { Text("⚠").foregroundStyle(.red).font(.headline) }
                                 Text("\(h.itemId) · \(h.link.shortLabel ?? h.link.id)").font(.headline)
                                 Spacer()
-                                Text("\(h.proposal) \(Int(h.confidence * 100))%").font(.headline.monospacedDigit())
+                                if engine.nowHandoff.map(engine.isSharp) == true { Text("AI pick hidden").font(.caption).foregroundStyle(.secondary) }
+                                else { Text("\(h.proposal) \(Int(h.confidence * 100))%").font(.headline.monospacedDigit()) }
                                 Text(String(format: "%.2f", engine.livePriority(h))).font(.caption.monospacedDigit()).foregroundStyle(.secondary)
                             }
                             if let r = engine.reasons(h).max(by: { $0.severity.rawValue < $1.severity.rawValue }) { Chip(r: r) }
@@ -631,6 +635,7 @@ struct LauncherView: View {
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    @Environment(\.openWindow) private var openWindow
     @State private var status = ""
     var body: some View {
         VStack(spacing: 14) {
@@ -651,6 +656,10 @@ struct LauncherView: View {
         .padding(40)
         .task {
             let a = ProcessInfo.processInfo.arguments
+            // -openLineageAfter N: screenshot aid — opens the Lineage window N seconds after launch
+            if let n = a.argValue("-openLineageAfter").flatMap(Double.init) {
+                Task { try? await Task.sleep(for: .seconds(n)); openWindow(id: "lineage") }
+            }
             // -autoTap enter|demo|demoAuto: exercises exactly the button code path (debug/test)
             if let i = a.firstIndex(of: "-autoTap"), i + 1 < a.count { try? await Task.sleep(for: .seconds(2)); tap(a[i + 1]); return }
             let sym = DomainCatalog.demoId == "symbiosis"

@@ -73,7 +73,8 @@ as three columns (you hold / bridge / AI holds), takes a second one-tap split ra
 seeded and move only on outcome-graded ledger evidence (M2: Beta posterior, minimum n, small steps, clinical caps, demotion on
 a critical miss, each move signed and undoable). M3 spot-checks your sharpness: in high-detail areas some cards hide the AI
 and ask for **your call first**, then reveal the AI pick and outcome; missed checks make the AI hand detail back. M4 promotes policy changes only when a critic's candidate beats the champion
-on a frozen, blinded replay and you sign a Principal card (reversible). Spec: [docs/SYMBIOSIS_PLAN.md](docs/SYMBIOSIS_PLAN.md) · built: [docs/SYMBIOSIS.md](docs/SYMBIOSIS.md).
+on a frozen, blinded replay and you sign a Principal card (reversible). M5 Lineage shows each area's history (generations, dial moves, calibration,
+signature status) rebuilt from the signed ledger, with markdown export. Spec: [docs/SYMBIOSIS_PLAN.md](docs/SYMBIOSIS_PLAN.md) · built: [docs/SYMBIOSIS.md](docs/SYMBIOSIS.md).
 <p><img src="docs/img/sym_card.jpg" width="49%"> <img src="docs/img/sym_manifesto.jpg" width="49%"></p>
 
 ```bash

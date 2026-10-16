@@ -132,3 +132,22 @@ Demo (seed is SYNTHETIC with a planted real pattern and a planted spurious one):
 loses (Δ −0.20, critical misses 0 → 8, removes 8 escalations) and is discarded. Open **Promotion** on any Symbiosis card (iPad sheet,
 visionOS window) → Run critic + replay → Approve once → gen 1 → Roll back → gen 2. Offline: `python3 tools/promotion.py --train
 data/replay_seed/train.jsonl --replay data/replay_seed/replay/seed`. Regenerate the seed: `python3 tools/make_replay_seed.py`.
+
+
+## M5 — Lineage tab
+
+`Core/Lineage.swift` rebuilds an area's history **only from the signed ledger** (no engine state): timeline of signed events
+(dial moves / demotions / reverts with why + evidence + posterior, spot-checks, critic proposals, replay evaluations — passed or
+discarded with reasons and replay numbers —, Principal decisions, promotions / rollbacks with the champion generation), plus series:
+dial sparklines, cumulative spot-check sharpness and override-held-up (Beta, n, 90% interval), critical misses and demotions.
+Every event carries its ledger line, hash, prev, signer and a status from `LineageBuilder.lineStatus`: *verified* (hash + Ed25519 +
+chain position), *bad signature* / *chain break here*, or *after chain break (line N)*.
+
+UI (`Core/LineageViews.swift`): editorial paper/ink palette with serif display and mono data (same tokens as the manifesto; system
+serif / mono stand in for Fraunces / Plex). Open **Lineage** from any Symbiosis card or the demo-complete panel (iPad sheet, visionOS
+window; `-openLineageAfter N` opens it on visionOS for screenshots). Tap an event to see its evidence and signature status.
+**Export markdown** writes `Documents/lineage/<area>.md`; the exporter writes the same per-area file (`lineage/<area>.md`,
+`tools/lineage.py`). Acceptance run: app vs exporter markdown for one demo session list identical event hashes (finance 8, ED 4).
+
+M3/M4 follow-ups: the up-next strip hides AI picks while a spot-check is open; spot-check scheduling is a pure function
+(`RouterEngine.sharpDecision`) with a unit test proving hard-trigger cards are never checked, even when forced.

@@ -163,6 +163,12 @@ final class DecisionLedger {
         return t.split(separator: "\n").compactMap { try? JSONDecoder().decode(UnifiedDecisionRecord.self, from: Data($0.utf8)) }
     }
 
+    /// one line on its own: recomputed hash + Ed25519 signature (chain position is checked by `verify`)
+    static func verifyOne(_ r: UnifiedDecisionRecord) -> Bool {
+        guard let body = try? canonical(r), sha(body) == r.ledger_hash, let pub = Data(base64Encoded: r.signer_pub),
+              let k = try? Curve25519.Signing.PublicKey(rawRepresentation: pub), let s = r.signature.flatMap({ Data(base64Encoded: $0) }) else { return false }
+        return k.isValidSignature(s, for: Data(r.ledger_hash!.utf8))
+    }
     /// Verify chain + every signature. Returns (ok, count, first problem).
     static func verify(_ recs: [UnifiedDecisionRecord]) -> (ok: Bool, n: Int, problem: String?) {
         var prev = genesis

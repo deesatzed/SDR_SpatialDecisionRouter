@@ -81,6 +81,7 @@ struct Handoff: Identifiable, Hashable {
     var showManifesto = ProcessInfo.processInfo.arguments.contains("-manifesto")
     // M4 promotion
     var showPromotion = ProcessInfo.processInfo.arguments.contains("-promotion")
+    var showLineage = ProcessInfo.processInfo.arguments.contains("-lineage")
     var promoLog: [UnifiedDecisionRecord] = []          // signed M4 lines (this ledger)
     var champion: [PolicyRule] = [] { didSet { ChampionPolicy.rules = champion } }
     var championGeneration = 0
@@ -138,14 +139,21 @@ struct Handoff: Identifiable, Hashable {
         guard let h = nowHandoff, h.trigger == nil, !sharpIds.contains(h.id), let item = items[h.itemId] else { return }
         let key = domain.decisionContext(item: item).domain
         guard let c = dials(key), domain.hardTrigger(item: item) == nil else { return }
-        var why: String?
-        if DemoState.on { if item.fields["demo_spot"] == "1" { why = "demo-forced (detail \(Int(c.dials.detail_absorption)))" } }
-        else if c.dials.detail_absorption >= sharpDetailMin {
-            sharpEligible += 1
-            if let n = sharpEvery, n > 0 { if sharpEligible % n == 0 { why = "every \(n) cards at detail ≥ \(Int(sharpDetailMin))" } }
-            else if sharpRng.chance(sharpRate) { why = "detail \(Int(c.dials.detail_absorption)) ≥ \(Int(sharpDetailMin)) · rate \(Int(sharpRate * 100))%" }
-        }
+        let eligible = !DemoState.on && c.dials.detail_absorption >= sharpDetailMin
+        if eligible { sharpEligible += 1 }
+        let why = Self.sharpDecision(hardTrigger: h.trigger != nil || domain.hardTrigger(item: item) != nil, demo: DemoState.on, forced: item.fields["demo_spot"] == "1",
+                                     detail: c.dials.detail_absorption, detailMin: sharpDetailMin, every: sharpEvery, eligibleCount: sharpEligible,
+                                     roll: eligible && sharpEvery == nil ? sharpRng.chance(sharpRate) : false, rate: sharpRate)
         if let w = why { sharpIds.insert(h.id); sharpWhy[h.id] = w; aiDepthOpen = false }
+    }
+    /// pure scheduling rule (unit-tested). Hard-trigger cards are NEVER spot-checked, forced or not.
+    nonisolated static func sharpDecision(hardTrigger: Bool, demo: Bool, forced: Bool, detail: Double, detailMin: Double, every: Int?,
+                                          eligibleCount: Int, roll: Bool, rate: Double) -> String? {
+        if hardTrigger { return nil }
+        if demo { return forced ? "demo-forced (detail \(Int(detail)))" : nil }
+        guard detail >= detailMin else { return nil }
+        if let n = every, n > 0 { return eligibleCount % n == 0 ? "every \(n) cards at detail ≥ \(Int(detailMin))" : nil }
+        return roll ? "detail \(Int(detail)) ≥ \(Int(detailMin)) · rate \(Int(rate * 100))%" : nil
     }
     /// the human's first call on a spot-check card; it is the routed decision, then the AI pick + outcome are revealed
     func sharpCall(_ id: String, _ call: String) {

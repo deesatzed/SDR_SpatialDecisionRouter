@@ -8,6 +8,7 @@ Ed25519 signature, folds amendment lines (kind=outcome / split_rating) into thei
   finetune/preference.jsonl   chosen vs rejected where the human changed the agent's pick (outcome-aware)
   sharpness/spot_checks.jsonl every signed M3 spot-check (human call vs AI pick vs outcome)
   promotion/promotion_records.jsonl M4 proposals, replay evaluations, Principal decisions, promotions, rollbacks
+  lineage/<area>.md           M5 per-area lineage (generations, promotions, dial moves, calibration, chain status)
   dials/dial_changes.jsonl    every signed earned-autonomy move / demotion / revert (M2), with reason + evidence refs
   rl/rewards.jsonl            outcome-graded reward (+1 / -1; null when no outcome is known). split rating is an
                               auxiliary field only and is NEVER added into `reward` (plan non-negotiable 2)
@@ -263,6 +264,9 @@ def main(argv=None):
                                                     "reason", "evidence_refs", "ledger_hash", "signer_key_id")},
                                ensure_ascii=False, sort_keys=True) + "\n")
     counts["promotion_records"] = len(promo)
+    # M5: per-area lineage markdown, reconstructed from the signed ledger
+    import lineage
+    counts["lineage_events"] = lineage.write_all(recs, os.path.join(a.out, "lineage"))
     s = {"legacy_skipped_duplicates": dup, "ledger_lines": len(recs), "chain_ok": ok, "problems": probs[:20], "decisions": len(decisions),
          "by_domain": dict(collections.Counter(d["domain"] for d in decisions)),
          "by_kind": dict(collections.Counter(r.get("kind") for r in recs)),

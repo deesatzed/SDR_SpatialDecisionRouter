@@ -11,6 +11,8 @@ struct SpatialDecisionRouterApp: App {
             .defaultSize(width: 900, height: 760)
         WindowGroup(id: "promotion") { PromotionView().environment(engine) }
             .defaultSize(width: 1100, height: 820)
+        WindowGroup(id: "lineage") { LineageView().environment(engine) }
+            .defaultSize(width: 1200, height: 860)
         ImmersiveSpace(id: "Router") { CrossroadsView().environment(engine) }
             .immersionStyle(selection: Binding<any ImmersionStyle>(
                 get: { engine.fullImmersion ? (FullImmersionStyle.full as any ImmersionStyle) : (MixedImmersionStyle.mixed as any ImmersionStyle) },

@@ -352,9 +352,11 @@ M4 status: done (2026-10-15). Replay history is SYNTHETIC (`tools/make_replay_se
 
 ### M5 — Lineage tab
 
-- [ ] Per-area history: rules gained/dropped, dial movement, why
-- [ ] Markdown export from signed ledger
-- [ ] Acceptance: export matches ledger contents for a demo session
+- [x] Per-area history: rules gained/dropped, dial movement, why (Lineage tab on iPad sheet + visionOS window: champion generations, promotions / rollbacks / discarded candidates with reasons + replay results, dial moves with why + evidence, spot-check calibration and override-held-up over time, critical misses / demotions; tap an event for evidence + per-line signature / chain status)
+- [x] Markdown export from signed ledger (in-app → Documents/lineage/<area>.md; exporter → lineage/<area>.md via tools/lineage.py)
+- [x] Acceptance: export matches ledger contents for a demo session (iPad demo + promotion session: app and exporter markdown list the same events by signed hash — finance 8/8, ED 4/4; unit + pytest check every ledger event appears)
+
+M5 status: done (2026-10-16). Also: up-next hides AI picks during a spot-check; unit test that hard-trigger cards are never spot-checked.
 
 ### M6 — Tests
 
