@@ -1,0 +1,14 @@
+name: python-tests
+# Python suites only. Swift unit + iPad UI tests need Xcode 27 / iOS 27 simulators and run locally (see docs/SYMBIOSIS_PLAN.md M6).
+on: [push, pull_request]
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install pytest openpyxl cryptography
+      - run: python -m pytest -q tools/tests
+      - run: pip install -r risk_engine/requirements.txt
+      - run: python -m pytest -q risk_engine/tests
