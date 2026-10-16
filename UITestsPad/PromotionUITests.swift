@@ -13,7 +13,7 @@ final class PromotionUITests: XCTestCase {
     }
     func testProposalEvalPrincipalApproveRollback() {
         let app = XCUIApplication()
-        app.launchArguments += ["-demo", "-symbiosisDemo", "-freshLedger", "-freshRegistry", "-hideSidebar", "-focus", "-noBridge"]
+        app.launchArguments += ["-demo", "-symbiosisDemo", "-testLedger", "-freshRegistry", "-hideSidebar", "-focus", "-noBridge"]
         app.launch(); XCUIDevice.shared.orientation = .landscapeLeft
         let open = app.buttons["openPromotions"].firstMatch
         XCTAssertTrue(open.waitForExistence(timeout: 30)); open.tap()

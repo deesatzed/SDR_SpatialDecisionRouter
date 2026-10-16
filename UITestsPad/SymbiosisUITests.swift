@@ -9,7 +9,7 @@ final class SymbiosisUITests: XCTestCase {
         if let dir = ProcessInfo.processInfo.environment["SHOT_DIR"] { try? s.pngRepresentation.write(to: URL(fileURLWithPath: dir).appendingPathComponent("\(name).png")) }
     }
     func testSymbiosisDemoFlow() {
-        let app = XCUIApplication(); app.launchArguments += ["-freshRegistry", "-freshLedger", "-hideSidebar", "-focus", "-noBridge"]; app.launch()
+        let app = XCUIApplication(); app.launchArguments += ["-freshRegistry", "-testLedger", "-hideSidebar", "-focus", "-noBridge"]; app.launch()
         XCUIDevice.shared.orientation = .landscapeLeft
         let b = app.buttons["Symbiosis"]
         XCTAssertTrue(b.waitForExistence(timeout: 20)); b.tap()

@@ -5,7 +5,7 @@ final class PadUITests: XCTestCase {
     override func setUp() { continueAfterFailure = false }
     func testDemoFlowOnPad() {
         // isolate from state left by other tests (registry, game mode, sidebar overlay)
-        let app = XCUIApplication(); app.launchArguments += ["-freshRegistry", "-hideSidebar", "-focus", "-noBridge"]; app.launch(); XCUIDevice.shared.orientation = .landscapeLeft
+        let app = XCUIApplication(); app.launchArguments += ["-testLedger", "-freshRegistry", "-hideSidebar", "-focus", "-noBridge"]; app.launch(); XCUIDevice.shared.orientation = .landscapeLeft
         let demo = app.buttons["Demo"]
         XCTAssertTrue(demo.waitForExistence(timeout: 20)); demo.tap()
         let pass = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Pass' OR label BEGINSWITH 'Sign off' OR label BEGINSWITH 'Acknowledge'")).firstMatch
@@ -25,7 +25,7 @@ final class PadUITests: XCTestCase {
     }
     /// screenshot walk-through: portrait + landscape card, detail, ring sheet, board
     func testScreens() {
-        let app = XCUIApplication(); app.launch()
+        let app = XCUIApplication(); app.launchArguments += ["-testLedger"]; app.launch()
         XCUIDevice.shared.orientation = .portrait
         XCTAssertTrue(app.buttons["Demo"].waitForExistence(timeout: 20)); app.buttons["Demo"].tap()
         XCTAssertTrue(app.buttons["Rate trust"].firstMatch.waitForExistence(timeout: 30)); sleep(4)
@@ -49,7 +49,7 @@ final class PadUITests: XCTestCase {
 
     /// WERIAM Principal (bridge forced offline → seeded cards, nothing sent): start → card → Modify → Approve once → board
     func testWERIAMPrincipalOffline() {
-        let app = XCUIApplication(); app.launchArguments = ["-noBridge", "-freshRegistry", "-hideSidebar"]; app.launch()
+        let app = XCUIApplication(); app.launchArguments = ["-testLedger", "-noBridge", "-freshRegistry", "-hideSidebar"]; app.launch()
         XCUIDevice.shared.orientation = .landscapeLeft
         let w = app.buttons["WERIAM Principal"]
         XCTAssertTrue(w.waitForExistence(timeout: 20)); w.tap()

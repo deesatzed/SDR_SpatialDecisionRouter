@@ -91,6 +91,7 @@
 		D3820012D7F604FCCA37A9AE /* DecisionLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DED29C5032BD02BD8990AF /* DecisionLedger.swift */; };
 		D3FA62D8D6A759EE389F4BDB /* CategoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DE7620E584197285B2ED27 /* CategoryRegistry.swift */; };
 		D44C5BDD0D4E0D530E5DC547 /* RouterEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */; };
+		D69E450F347CC3F3EF8FDABD /* LaunchLedgerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B817022DBE51871D40AB19 /* LaunchLedgerTests.swift */; };
 		DA3BBE5CDC2E8289A2C7AE10 /* PromotionFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26702AFE781F1D80BFD2758 /* PromotionFlow.swift */; };
 		DDD6CCAFE3C5F06C686A5AF7 /* EDReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82719454E70FE69DE11B22E /* EDReview.swift */; };
 		DFEE1457DE67C83E976246DB /* PromotionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360EF3A2C3FA6DD12784C31D /* PromotionEngine.swift */; };
@@ -187,6 +188,7 @@
 		D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceduralEnvironment.swift; sourceTree = "<group>"; };
 		D2322AEB575C234507469E46 /* SpatialDecisionRouterPadTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SpatialDecisionRouterPadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D917DDAF2CD9A7B1652FE740 /* RouterEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterEngine.swift; sourceTree = "<group>"; };
+		E4B817022DBE51871D40AB19 /* LaunchLedgerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchLedgerTests.swift; sourceTree = "<group>"; };
 		E6A5B3D1368B933F6EC15DF4 /* DialEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialEngine.swift; sourceTree = "<group>"; };
 		E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WERIAMPrincipalDomain.swift; sourceTree = "<group>"; };
 		E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskClient.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 			children = (
 				80795C87F22049B3B20A7A10 /* DecisionLedgerTests.swift */,
 				3A8921D0D476A6FAFA2FAC58 /* DialEngineTests.swift */,
+				E4B817022DBE51871D40AB19 /* LaunchLedgerTests.swift */,
 				441A0FE71EB5BBEBAC710DD7 /* LineageTests.swift */,
 				2CAF88ED28879F2266F51F90 /* PromotionGateTests.swift */,
 				739E3E6383C542BEB2CC7D60 /* PromotionTests.swift */,
@@ -635,6 +638,7 @@
 			files = (
 				17ABABC948FD2DC365E65F87 /* DecisionLedgerTests.swift in Sources */,
 				9121ED46669901CC5F761ACE /* DialEngineTests.swift in Sources */,
+				D69E450F347CC3F3EF8FDABD /* LaunchLedgerTests.swift in Sources */,
 				6C2BF8A74EC73C90F4979952 /* LineageTests.swift in Sources */,
 				E8AD73C6FFEFBEDDBF624E28 /* PromotionGateTests.swift in Sources */,
 				E9574116A35BE4156A58EE74 /* PromotionTests.swift in Sources */,

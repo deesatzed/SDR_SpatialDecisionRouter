@@ -72,8 +72,23 @@ struct Handoff: Identifiable, Hashable {
     // unified decision record (SYMBIOSIS_PLAN §4): every HITM decision, every domain
     /// the app uses the shared device ledger; tests inject an isolated one (see init(ledger:))
     let ledger: DecisionLedger
+    /// Launch options: `-testLedger` → fresh isolated ledger under the app's tmp dir (UI tests; the device ledger is never touched);
+    /// `-ledgerPath <dir>` → ledger at <dir>/decision_ledger.jsonl; `-freshLedger` → wipe the device ledger (demos). Default: device ledger.
+    nonisolated static func isolatedLedgerURL(_ a: [String]) -> URL? {
+        if a.contains("-testLedger") {
+            let d = FileManager.default.temporaryDirectory.appendingPathComponent("uitest-ledger", isDirectory: true)
+            try? FileManager.default.removeItem(at: d)
+            return d.appendingPathComponent("decision_ledger.jsonl")
+        }
+        if let i = a.firstIndex(of: "-ledgerPath"), i + 1 < a.count {
+            return URL(fileURLWithPath: a[i + 1], isDirectory: true).appendingPathComponent("decision_ledger.jsonl")
+        }
+        return nil
+    }
     private static func appLedger() -> DecisionLedger {
-        if ProcessInfo.processInfo.arguments.contains("-freshLedger") { try? FileManager.default.removeItem(at: DecisionLedger.defaultURL) }
+        let a = ProcessInfo.processInfo.arguments
+        if let u = isolatedLedgerURL(a) { return DecisionLedger(url: u, signer: .device) }
+        if a.contains("-freshLedger") { try? FileManager.default.removeItem(at: DecisionLedger.defaultURL) }
         return DecisionLedger.shared
     }
     var unified: [UUID: UnifiedDecisionRecord] = [:]       // RoutingDecision.id -> sealed unified record

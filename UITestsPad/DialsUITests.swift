@@ -13,7 +13,7 @@ final class DialsUITests: XCTestCase {
     }
     func testEarnedRiseAndDemotion() {
         let app = XCUIApplication()
-        app.launchArguments += ["-demo", "-symbiosisDemo", "-demoAuto", "-speedup", "3", "-freshLedger", "-freshRegistry", "-hideSidebar", "-focus", "-noBridge"]
+        app.launchArguments += ["-demo", "-symbiosisDemo", "-demoAuto", "-speedup", "3", "-testLedger", "-freshRegistry", "-hideSidebar", "-focus", "-noBridge"]
         app.launch(); XCUIDevice.shared.orientation = .landscapeLeft
         XCTAssertTrue(app.descendants(matching: .any)["humanColumn"].waitForExistence(timeout: 30))
         sleep(2); shot("m2_01_no_moves_yet")

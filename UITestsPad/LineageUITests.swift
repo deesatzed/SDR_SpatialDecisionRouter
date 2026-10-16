@@ -13,13 +13,13 @@ final class LineageUITests: XCTestCase {
     }
     func testLineageReconstructsSession() {
         let app = XCUIApplication()
-        app.launchArguments += ["-demo", "-symbiosisDemo", "-demoAuto", "-speedup", "3", "-freshLedger", "-freshRegistry", "-hideSidebar", "-focus", "-noBridge"]
+        app.launchArguments += ["-demo", "-symbiosisDemo", "-demoAuto", "-speedup", "3", "-testLedger", "-freshRegistry", "-hideSidebar", "-focus", "-noBridge"]
         app.launch(); XCUIDevice.shared.orientation = .landscapeLeft
         if !has(app, "DEMOTION", 240) { shot("m5_fail_demo"); XCTFail("demo did not reach the demotion"); return }
         let any = app.descendants(matching: .any)
         // promotion (approve) so lineage has a generation
         let openP = app.buttons["openPromotions"].firstMatch; XCTAssertTrue(openP.waitForExistence(timeout: 20)); openP.tap()
-        app.buttons["runCritic"].firstMatch.tap()
+        let rc = app.buttons["runCritic"].firstMatch; XCTAssertTrue(rc.waitForExistence(timeout: 15)); rc.tap()
         let approve = app.buttons["principal_approve"].firstMatch; XCTAssertTrue(approve.waitForExistence(timeout: 10)); approve.tap()
         XCTAssertTrue(has(app, "CHAMPION gen 1")); app.buttons["closePromotion"].firstMatch.tap(); sleep(1)
         let openL = app.buttons["openLineage"].firstMatch; XCTAssertTrue(openL.waitForExistence(timeout: 20)); openL.tap()

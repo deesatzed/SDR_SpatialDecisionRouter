@@ -6,6 +6,8 @@ AI "doctors" now take histories and draft plans at scale. In this setting the ma
 
 Landing page: https://deesatzed.github.io/SDR_SpatialDecisionRouter/
 
+**New here? Read the [User Manual](docs/USER_MANUAL.md)** — plain-language guide for reviewers and clinicians on iPad and Vision Pro.
+
 | | |
 |---|---|
 | ![Crossroads](screens/30_crossroads_live.small.jpg) *The immersive crossroads: agents, handoffs and the live board.* | ![Card](screens/36_card.small.jpg) *Encounter card: the proposal, confidence, why it was queued, and trust chips.* |
@@ -92,7 +94,7 @@ tools/demo.sh --auto                # auto-plays the 6 scripted steps
 tools/demo.sh --auto --record 185   # also records screens/demo.mp4
 tools/ipad.sh --demo                # iPad simulator (needs the iOS 27 simulator runtime)
 ```
-A 3–5 minute talk track is in [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md). The app also accepts the launch flags `-demo`, `-noSidecar` and `-forceTrigger`.
+A 3–5 minute talk track is in [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md). The app also accepts the launch flags `-demo`, `-noSidecar`, `-forceTrigger`, `-freshLedger` (wipe the device ledger), `-testLedger` (throwaway ledger, used by UI tests) and `-ledgerPath <dir>`.
 
 Export the training data:
 ```bash

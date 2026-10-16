@@ -13,7 +13,7 @@ final class SharpnessUITests: XCTestCase {
     }
     private func launch(_ extra: [String]) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments += ["-demo", "-symbiosisDemo", "-freshLedger", "-freshRegistry", "-hideSidebar", "-focus", "-noBridge"] + extra
+        app.launchArguments += ["-demo", "-symbiosisDemo", "-testLedger", "-freshRegistry", "-hideSidebar", "-focus", "-noBridge"] + extra
         app.launch(); XCUIDevice.shared.orientation = .landscapeLeft
         return app
     }
