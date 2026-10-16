@@ -3,8 +3,9 @@ import CryptoKit
 @testable import SpatialDecisionRouter
 
 final class DecisionLedgerTests: XCTestCase {
+    override func tearDown() { TestTemp.cleanup(); super.tearDown() }
     private func tmpLedger() -> DecisionLedger {
-        let u = FileManager.default.temporaryDirectory.appendingPathComponent("ledger-\(UUID().uuidString).jsonl")
+        let u = TestTemp.url("ledger")
         return DecisionLedger(url: u, signer: LedgerSigner(key: Curve25519.Signing.PrivateKey()))
     }
     private func decision(_ domain: String, gesture: String = "pass", answer: String = "A", proposal: String = "A", truth: String? = "A") -> RoutingDecision {

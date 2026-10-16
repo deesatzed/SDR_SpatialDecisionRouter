@@ -70,10 +70,12 @@ struct Handoff: Identifiable, Hashable {
 
     var registryEvents: [RegistryEvent] = []
     // unified decision record (SYMBIOSIS_PLAN §4): every HITM decision, every domain
-    let ledger: DecisionLedger = {
+    /// the app uses the shared device ledger; tests inject an isolated one (see init(ledger:))
+    let ledger: DecisionLedger
+    private static func appLedger() -> DecisionLedger {
         if ProcessInfo.processInfo.arguments.contains("-freshLedger") { try? FileManager.default.removeItem(at: DecisionLedger.defaultURL) }
         return DecisionLedger.shared
-    }()
+    }
     var unified: [UUID: UnifiedDecisionRecord] = [:]       // RoutingDecision.id -> sealed unified record
     var pendingSplit: [String: SplitRating] = [:]           // item id -> split rating given before deciding
     var splitGiven: [String: SplitRating] = [:]             // item id -> last split rating (UI)
@@ -195,7 +197,8 @@ struct Handoff: Identifiable, Hashable {
     static func dec() -> JSONDecoder { let d = JSONDecoder(); d.dateDecodingStrategy = .iso8601; return d }
     var logURL: URL { FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("routing_log.jsonl") }
 
-    init() {
+    init(ledger: DecisionLedger? = nil) {
+        self.ledger = ledger ?? Self.appLedger()
         let a = ProcessInfo.processInfo.arguments
         if let i = a.firstIndex(of: "-speedup"), i + 1 < a.count, let v = Float(a[i + 1]) { speedup = v }
         let pick = a.firstIndex(of: "-domain").flatMap { $0 + 1 < a.count ? a[$0 + 1] : nil }

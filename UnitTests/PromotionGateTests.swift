@@ -1,4 +1,5 @@
 import XCTest
+import CryptoKit
 @testable import SpatialDecisionRouter
 
 /// M6 acceptance: the promotion gate cannot be bypassed. Only `principal(_, "approve_once")` on a fresh,
@@ -13,10 +14,17 @@ import XCTest
         XCTAssertEqual(ev.verdict, "passed")
         return PromotionEngine.line("policy_evaluation", area: "personal_finance", ref: nil, generation: e.championGeneration, ev, reason: "t")
     }
+    private var dir: URL!
+    override func setUp() {
+        dir = FileManager.default.temporaryDirectory.appendingPathComponent("gate-\(UUID().uuidString)", isDirectory: true)
+    }
+    override func tearDown() { try? FileManager.default.removeItem(at: dir); dir = nil }
+    /// fresh engine on an isolated temp ledger (never the app's device ledger)
     private func engine() -> RouterEngine {
-        let e = RouterEngine(); e.loadPromotion()
-        // start from a champion without the personal_finance rule (earlier runs may have promoted it)
-        while e.champion.contains(where: { $0.area == "personal_finance" }) { let g = e.championGeneration; e.rollbackChampion(); if e.championGeneration == g { break } }
+        let l = DecisionLedger(url: dir.appendingPathComponent("decision_ledger.jsonl"), signer: LedgerSigner(key: Curve25519.Signing.PrivateKey()))
+        let e = RouterEngine(ledger: l); e.loadPromotion()
+        XCTAssertNotEqual(e.ledger.url, DecisionLedger.defaultURL)
+        XCTAssertEqual(e.championGeneration, 0); XCTAssertTrue(e.champion.isEmpty)
         return e
     }
     private func assertNoPromotion(_ e: RouterEngine, _ rec: UnifiedDecisionRecord, _ decision: String, file: StaticString = #filePath, line: UInt = #line) {

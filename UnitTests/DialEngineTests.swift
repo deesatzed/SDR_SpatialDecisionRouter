@@ -3,8 +3,9 @@ import CryptoKit
 @testable import SpatialDecisionRouter
 
 final class DialEngineTests: XCTestCase {
+    override func tearDown() { TestTemp.cleanup(); super.tearDown() }
     private func ledger() -> DecisionLedger {
-        DecisionLedger(url: FileManager.default.temporaryDirectory.appendingPathComponent("dial-\(UUID().uuidString).jsonl"),
+        DecisionLedger(url: TestTemp.url("dial"),
                        signer: LedgerSigner(key: Curve25519.Signing.PrivateKey()))
     }
     /// one graded decision; agentRight decides whether the agent's proposal matched the outcome

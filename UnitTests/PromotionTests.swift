@@ -3,8 +3,9 @@ import CryptoKit
 @testable import SpatialDecisionRouter
 
 final class PromotionTests: XCTestCase {
+    override func tearDown() { TestTemp.cleanup(); super.tearDown() }
     private func ledger() -> DecisionLedger {
-        DecisionLedger(url: FileManager.default.temporaryDirectory.appendingPathComponent("promo-\(UUID().uuidString).jsonl"),
+        DecisionLedger(url: TestTemp.url("promo"),
                        signer: LedgerSigner(key: Curve25519.Signing.PrivateKey()))
     }
     private func cands(_ pack: ReplayPack, champion: [PolicyRule] = []) -> [String: Candidate] {
@@ -12,7 +13,7 @@ final class PromotionTests: XCTestCase {
         return Dictionary(uniqueKeysWithValues: PromotionEngine.critic(train: PromotionEngine.bundledTrain(), champion: champion, exclude: held).map { ($0.rule.area, $0) })
     }
     private func tmpPack() throws -> URL {
-        let d = FileManager.default.temporaryDirectory.appendingPathComponent("pack-\(UUID().uuidString)")
+        let d = TestTemp.url("pack", nil)
         try FileManager.default.createDirectory(at: d, withIntermediateDirectories: true)
         for (n, e) in [("replay_cases", "jsonl"), ("replay_answers", "jsonl"), ("replay_manifest", "json")] {
             try FileManager.default.copyItem(at: PromotionEngine.bundled(n, e)!, to: d.appendingPathComponent("\(n).\(e)"))
@@ -104,7 +105,7 @@ final class PromotionTests: XCTestCase {
     }
     @MainActor func testLosingCandidateCannotBePromotedEvenWithSignature() throws {
         // engine-level: principal approve on a failed evaluation writes the decision but no promotion
-        let e = RouterEngine(); let gen = e.championGeneration
+        let e = RouterEngine(ledger: TestTemp.ledger("promo-engine")); e.loadPromotion(); let gen = e.championGeneration
         let pack = try PromotionEngine.bundledPack(); let c = cands(pack)["ed_triage"]!
         var ev = try PromotionEngine.evaluate(c, champion: [], pack: pack); ev.champion_generation = gen
         let rec = PromotionEngine.line("policy_evaluation", area: "ed_triage", ref: nil, generation: gen, ev, reason: "e")

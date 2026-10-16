@@ -3,8 +3,9 @@ import CryptoKit
 @testable import SpatialDecisionRouter
 
 final class LineageTests: XCTestCase {
+    override func tearDown() { TestTemp.cleanup(); super.tearDown() }
     private func ledger() -> (DecisionLedger, URL) {
-        let u = FileManager.default.temporaryDirectory.appendingPathComponent("lin-\(UUID().uuidString).jsonl")
+        let u = TestTemp.url("lin")
         return (DecisionLedger(url: u, signer: LedgerSigner(key: Curve25519.Signing.PrivateKey())), u)
     }
     private let K = "symbiosis:personal_finance"
