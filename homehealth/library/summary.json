@@ -1,0 +1,333 @@
+{
+ "relabel_n": 34,
+ "tiers": {
+  "SUPPRESSED": 4,
+  "CONFIRM_FIRST": 25,
+  "ABSOLUTE": 5
+ },
+ "by_rule_tier": {
+  "HT_CHEST_PAIN_ECG:ABSOLUTE": 1,
+  "HT_CHEST_PAIN_VITALS:CONFIRM_FIRST": 4,
+  "HT_FALL_ANTICOAG:CONFIRM_FIRST": 8,
+  "HT_FALL_ANTICOAG:SUPPRESSED": 1,
+  "HT_FOCAL_NEURO:ABSOLUTE": 3,
+  "HT_FOCAL_NEURO:SUPPRESSED": 1,
+  "HT_GAP48_HIGHRISK:CONFIRM_FIRST": 7,
+  "HT_SPO2_LT88:CONFIRM_FIRST": 6,
+  "HT_SPO2_LT88:SUPPRESSED": 2,
+  "HT_SYNCOPE:ABSOLUTE": 1
+ },
+ "route_changes": [
+  [
+   "HK1-007",
+   "escalate_human",
+   "nurse_task",
+   "goals_of_care"
+  ],
+  [
+   "NV6-001",
+   "escalate_human",
+   "nurse_task",
+   "goals_of_care"
+  ],
+  [
+   "NV6-010",
+   "escalate_human",
+   "nurse_task",
+   "goals_of_care"
+  ],
+  [
+   "GC2-001",
+   "escalate_human",
+   "nurse_task",
+   "goals_of_care"
+  ]
+ ],
+ "alternate_changes": [
+  [
+   "HK5-002",
+   "",
+   "wake_specialist"
+  ]
+ ],
+ "rule_renames": {
+  "HT_CHEST_PAIN_CHANGE->HT_CHEST_PAIN_VITALS": 4,
+  "HT_CHEST_PAIN_CHANGE->HT_CHEST_PAIN_ECG": 1
+ },
+ "confirm_steps": {
+  "already_confirmed": 15,
+  "caregiver_ping": 6,
+  "patient_call": 4
+ },
+ "grader_disagree_route": [],
+ "grader_disagree_tier": [
+  "AC1-003",
+  "AC1-005",
+  "AC2-001"
+ ],
+ "relabel_merge": {
+  "accepted": 34
+ },
+ "pairs_generated": 38,
+ "pairs_accepted": 28,
+ "complete_pairs_accepted": 11,
+ "pairs_queue": {
+  "ST1-002": "ROUTE_DISAGREE",
+  "ST1-004": "CRITICAL_MISS|ROUTE_DISAGREE",
+  "ST1-008": "ROUTE_DISAGREE",
+  "ST1-010": "CRITICAL_MISS|ROUTE_DISAGREE|HARD_TRIGGER_DISPUTE|REJECT",
+  "ST2-009": "TIER_DISPUTE",
+  "ST4-002": "TIER_DISPUTE"
+ },
+ "pairs_fix": [
+  "ST1-003",
+  "ST1-006",
+  "ST4-001",
+  "ST4-007"
+ ],
+ "pairs_by_batch": {
+  "ST1": {
+   "generated": 10,
+   "accepted": 4,
+   "complete_pairs": 0
+  },
+  "ST2": {
+   "generated": 10,
+   "accepted": 9,
+   "complete_pairs": 4
+  },
+  "ST3": {
+   "generated": 10,
+   "accepted": 10,
+   "complete_pairs": 5
+  },
+  "ST4": {
+   "generated": 8,
+   "accepted": 5,
+   "complete_pairs": 2
+  }
+ },
+ "st3_layers": {
+  "ST3-001": [
+   "learning_period",
+   "CONFIRM_FIRST",
+   "escalate_human"
+  ],
+  "ST3-002": [
+   null,
+   "SUPPRESSED",
+   "silent_log"
+  ],
+  "ST3-003": [
+   "hard_limit_artifact",
+   "ARTIFACT",
+   "silent_log"
+  ],
+  "ST3-004": [
+   "hard_limit_danger",
+   "ABSOLUTE",
+   "escalate_human"
+  ],
+  "ST3-005": [
+   "baseline_reset",
+   null,
+   "silent_log"
+  ],
+  "ST3-006": [
+   null,
+   null,
+   "wake_specialist"
+  ],
+  "ST3-007": [
+   "drift_not_absorbed",
+   null,
+   "wake_specialist"
+  ],
+  "ST3-008": [
+   null,
+   null,
+   "silent_log"
+  ],
+  "ST3-009": [
+   "hard_limit_artifact",
+   "ARTIFACT",
+   "silent_log"
+  ],
+  "ST3-010": [
+   null,
+   "CONFIRM_FIRST",
+   "escalate_human"
+  ]
+ },
+ "library_v2_smart_n": 261,
+ "spend_usd": 1.0961,
+ "calls": [
+  [
+   "RC_GRADE_0",
+   "google/gemini-4-argon",
+   0.065756
+  ],
+  [
+   "RC_PROP_0",
+   "anthropic/claude-haiku-5.5",
+   0.0140256
+  ],
+  [
+   "RC_PROP_1",
+   "anthropic/claude-haiku-5.5",
+   0.0131907
+  ],
+  [
+   "RC_PROP_2",
+   "anthropic/claude-haiku-5.5",
+   0.0142308
+  ],
+  [
+   "RC_PROP_3",
+   "anthropic/claude-haiku-5.5",
+   0.0164768
+  ],
+  [
+   "gen_ST1",
+   "anthropic/claude-haiku-5.5",
+   0.0330229
+  ],
+  [
+   "gen_ST2",
+   "anthropic/claude-haiku-5.5",
+   0.0330624
+  ],
+  [
+   "gen_ST3",
+   "anthropic/claude-haiku-5.5",
+   0.0318817
+  ],
+  [
+   "gen_ST4",
+   "anthropic/claude-haiku-5.5",
+   0.0236586
+  ],
+  [
+   "grade_CPRL",
+   "google/gemini-4-argon",
+   0.058534
+  ],
+  [
+   "grade_CPRL2",
+   "google/gemini-4-argon",
+   0.049816
+  ],
+  [
+   "grade_RELABEL-1",
+   "google/gemini-4-argon",
+   0.13904
+  ],
+  [
+   "grade_RELABEL-2",
+   "google/gemini-4-argon",
+   0.139154
+  ],
+  [
+   "grade_ST1",
+   "google/gemini-4-argon",
+   0.128952
+  ],
+  [
+   "grade_ST2",
+   "google/gemini-4-argon",
+   0.105132
+  ],
+  [
+   "grade_ST3",
+   "google/gemini-4-argon",
+   0.109736
+  ],
+  [
+   "grade_ST4",
+   "google/gemini-4-argon",
+   0.09806
+  ],
+  [
+   "relabel_1",
+   "anthropic/claude-haiku-5.5",
+   0.0114903
+  ],
+  [
+   "relabel_2",
+   "anthropic/claude-haiku-5.5",
+   0.0108639
+  ]
+ ],
+ "relabel_n_total": 36,
+ "crescendo_relabels": [
+  "AC1-002",
+  "AC2-005"
+ ],
+ "recheck": {
+  "n_checked": 200,
+  "det_scoreable": 195,
+  "det_with_findings": 12,
+  "model_trigger_present": 11,
+  "graded": 11,
+  "applied": 4,
+  "applied_by_tier_reason": {
+   "SUPPRESSED/explained": 1,
+   "SUPPRESSED/unreliable_reading": 3
+  },
+  "applied_by_rule": {
+   "HT_GAP48_HIGHRISK": 1,
+   "HT_VS_DANGER": 3
+  },
+  "proposed_by_tier_reason": {
+   "SUPPRESSED/below_band_threshold": 1,
+   "CONFIRM_FIRST/None": 2,
+   "SUPPRESSED/explained": 2,
+   "ABSOLUTE/None": 2,
+   "SUPPRESSED/unreliable_reading": 3,
+   "SUPPRESSED/goals_of_care": 1
+  },
+  "route_changes_proposed": [
+   "HK7-009",
+   "GC2-003"
+  ],
+  "eval_model_disagree": [],
+  "critical_miss": [
+   "HK7-009"
+  ],
+  "critical_miss_evaluator_only": [],
+  "drift_miss": [],
+  "grader_disagree": [
+   "HK5-001",
+   "HK6-001",
+   "HK6-002",
+   "HK7-009",
+   "NV2-015",
+   "GC2-003",
+   "GL1-005"
+  ],
+  "script_check": [
+   "HK6-001",
+   "HK7-009",
+   "NV2-015",
+   "GC2-003",
+   "GL1-005"
+  ],
+  "review_rows": 7,
+  "soft_notes": {
+   "HK8-006": [
+    "evaluator candidate HT_GAP48_HIGHRISK (longest_gap_h 50) not adopted by model"
+   ],
+   "HK8-010": [
+    "evaluator candidate HT_GAP48_HIGHRISK (longest_gap_h 60) not adopted by model"
+   ],
+   "NV3-024": [
+    "evaluator candidate HT_GAP48_HIGHRISK (longest_gap_h 54) not adopted by model"
+   ],
+   "NV7-006": [
+    "evaluator candidate HT_GAP48_HIGHRISK (longest_gap_h 72) not adopted by model"
+   ]
+  },
+  "applied_in_library": 4
+ },
+ "library_hard_trigger_n": 65
+}

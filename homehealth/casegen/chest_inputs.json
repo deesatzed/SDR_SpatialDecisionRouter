@@ -1,0 +1,295 @@
+{
+ "_note": "Evaluator inputs extracted by hand from the case text (quotes given). Peak value at or near symptom onset; activity from the text. SYNTHETIC.",
+ "cases": {
+  "HK5-002": {
+   "inp": {
+    "activity_state": "active",
+    "minutes_since_exertion": 0,
+    "vitals": {
+     "hr": {
+      "value": 116
+     },
+     "sbp": {
+      "value": 158
+     }
+    },
+    "symptoms": {
+     "chest_pain": true,
+     "severity": "mild",
+     "red_flags": [],
+     "concordant": null,
+     "ecg_change": false,
+     "ecg_reliable": true
+    },
+    "already_confirmed": false
+   },
+   "ctx": {
+    "rate_control_med": false
+   },
+   "quote": "chest tightness while carrying laundry up stairs, about 10 minutes; watch HR 116 at 20:05 ... Seated BP 158/94 ... ECG ... sinus rhythm without ST change. Eased after sitting",
+   "kind": "relabel"
+  },
+  "AC1-003": {
+   "inp": {
+    "activity_state": "active",
+    "minutes_since_exertion": 0,
+    "vitals": {
+     "hr": {
+      "value": 116
+     },
+     "sbp": {
+      "value": 134
+     }
+    },
+    "symptoms": {
+     "chest_pain": true,
+     "severity": "moderate",
+     "red_flags": [
+      "crescendo_pattern"
+     ],
+     "concordant": null,
+     "ecg_change": false
+    },
+    "already_confirmed": true
+   },
+   "ctx": {
+    "rate_control_med": true
+   },
+   "quote": "fourth episode since Day -6 ... watch HR 110 bpm at onset, peak 116 ... seated cuff 134/80; Phone check: tightness is coming more often (bisoprolol 5 mg)",
+   "kind": "relabel"
+  },
+  "AC1-005": {
+   "inp": {
+    "activity_state": "rest",
+    "minutes_since_exertion": null,
+    "vitals": {
+     "hr": {
+      "value": 118
+     },
+     "sbp": {
+      "value": 96
+     }
+    },
+    "symptoms": {
+     "chest_pain": true,
+     "severity": "severe",
+     "red_flags": [
+      "diaphoresis",
+      "pallor"
+     ],
+     "concordant": true,
+     "ecg_change": false
+    },
+    "already_confirmed": true
+   },
+   "ctx": {
+    "rate_control_med": false
+   },
+   "quote": "central chest pressure with sweating ... watch HR 118 bpm at 07:15 and rising; seated cuff 96/60; neighbour: grey and sweating",
+   "kind": "relabel"
+  },
+  "AC2-001": {
+   "inp": {
+    "activity_state": "rest",
+    "minutes_since_exertion": null,
+    "vitals": {
+     "hr": {
+      "value": 124
+     },
+     "sbp": {
+      "value": 146
+     }
+    },
+    "symptoms": {
+     "chest_pain": true,
+     "severity": "severe",
+     "red_flags": [
+      "diaphoresis",
+      "pallor"
+     ],
+     "concordant": true,
+     "ecg_change": false
+    },
+    "already_confirmed": true
+   },
+   "ctx": {
+    "rate_control_med": false
+   },
+   "quote": "chest pressure with sweating, watch HR 124 at onset ... BP 146/92; spouse: pale and sweating ... not eased after ten minutes sitting",
+   "kind": "relabel"
+  },
+  "AC2-003": {
+   "inp": {
+    "activity_state": "active",
+    "minutes_since_exertion": 0,
+    "vitals": {
+     "hr": {
+      "value": 112
+     },
+     "sbp": {
+      "value": 148
+     }
+    },
+    "symptoms": {
+     "chest_pain": true,
+     "severity": "moderate",
+     "red_flags": [
+      "crescendo_pattern"
+     ],
+     "concordant": null,
+     "ecg_change": true,
+     "ecg_reliable": true
+    },
+    "already_confirmed": false
+   },
+   "ctx": {
+    "rate_control_med": true
+   },
+   "quote": "watch single-lead ECG strip ... shows ST-segment depression (no quality flag on that strip)",
+   "kind": "relabel_ecg"
+  },
+  "ST1-009": {
+   "inp": {
+    "activity_state": "active",
+    "minutes_since_exertion": 5,
+    "vitals": {
+     "hr": {
+      "value": 102
+     },
+     "sbp": {
+      "value": 156
+     }
+    },
+    "symptoms": {
+     "chest_pain": true,
+     "severity": "moderate",
+     "red_flags": [
+      "diaphoresis",
+      "persistent_ge_15min"
+     ],
+     "concordant": true,
+     "ecg_change": true,
+     "ecg_reliable": true
+    },
+    "already_confirmed": false
+   },
+   "ctx": {
+    "rate_control_med": true
+   },
+   "quote": "repeat watch ECG strip, clean trace, shows ST-segment depression; HR 102; cuff 156/94; sweating, came on climbing stairs",
+   "kind": "pair_ecg"
+  },
+  "HK5-001": {
+   "inp": {
+    "activity_state": "active",
+    "minutes_since_exertion": 0,
+    "vitals": {
+     "hr": {
+      "value": 88
+     },
+     "sbp": {
+      "value": 130
+     }
+    },
+    "symptoms": {
+     "chest_pain": true,
+     "severity": "mild",
+     "red_flags": [],
+     "concordant": null,
+     "ecg_change": false
+    },
+    "already_confirmed": false
+   },
+   "ctx": {
+    "rate_control_med": false
+   },
+   "quote": "pair partner of HK5-002: watch HR peak 88 during the climb; BP 130/78; ECG without ST change",
+   "kind": "pair_partner"
+  },
+  "AC1-002": {
+   "inp": {
+    "activity_state": "active",
+    "minutes_since_exertion": 0,
+    "vitals": {
+     "hr": {
+      "value": 74
+     },
+     "sbp": {
+      "value": 134
+     }
+    },
+    "symptoms": {
+     "chest_pain": true,
+     "severity": "moderate",
+     "red_flags": [
+      "crescendo_pattern"
+     ],
+     "concordant": null,
+     "ecg_change": false
+    },
+    "already_confirmed": true
+   },
+   "ctx": {
+    "rate_control_med": true
+   },
+   "quote": "pair partner of AC1-003: fourth episode since Day -6 ... HR 66 at onset, peak 74; tightness is coming more often",
+   "kind": "relabel_crescendo"
+  },
+  "AC2-005": {
+   "inp": {
+    "activity_state": "active",
+    "minutes_since_exertion": 0,
+    "vitals": {
+     "hr": {
+      "value": 96
+     },
+     "sbp": {
+      "value": 132
+     }
+    },
+    "symptoms": {
+     "chest_pain": true,
+     "severity": "moderate",
+     "red_flags": [
+      "crescendo_pattern"
+     ],
+     "concordant": null,
+     "ecg_change": false
+    },
+    "already_confirmed": false
+   },
+   "ctx": {
+    "rate_control_med": true
+   },
+   "quote": "stair-climb episodes Day -2 two, Day -1 three, Day 0 two; HR 94-96 on stairs; Hb 12.9 -> 9.8 (visit); spouse: 'the squeeze comes on climbing stairs' (no confirmation of the frequency change)",
+   "kind": "relabel_crescendo"
+  },
+  "AC1-012": {
+   "inp": {
+    "activity_state": "active",
+    "minutes_since_exertion": 0,
+    "vitals": {
+     "hr": {
+      "value": 74
+     },
+     "sbp": {
+      "value": 134
+     }
+    },
+    "symptoms": {
+     "chest_pain": true,
+     "severity": "moderate",
+     "red_flags": [],
+     "concordant": null,
+     "ecg_change": false
+    },
+    "already_confirmed": false
+   },
+   "ctx": {
+    "rate_control_med": true
+   },
+   "quote": "Day -6, -3, 0 episodes, 'the same as it has been for the past year ... no more often'; HR 66 at onset, peak 74; cuff 134/80",
+   "kind": "new_partner"
+  }
+ }
+}

@@ -1,0 +1,94 @@
+{
+ "cases": [
+  {
+   "case_id": "AC1-012",
+   "pair_id": "AC1-P01",
+   "age_band": "70-74",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "ischaemic heart disease with drug-eluting stent to LAD 2 years ago",
+    "hypertension",
+    "hyperlipidaemia"
+   ],
+   "function_baseline": "walks 1 km on level ground, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "75 mg daily",
+     "started_day": -730
+    },
+    {
+     "name": "clopidogrel",
+     "dose": "75 mg daily",
+     "started_day": -730
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "80 mg nightly",
+     "started_day": -730
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "5 mg daily",
+     "started_day": -700
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -700
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 38,
+    "sleep_h": 7.1,
+    "steps": 4200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -7 to -5: steps 4000-4300, resting HR 60-64. Day -6: chest tightness walking uphill to the postbox, eased within 5 min of rest. Day -3: one episode walking uphill, eased with rest. Day -1: steps 3400, resting HR 66. Day 0 09:30: chest tightness walking uphill to the shop, watch HR 66 bpm at onset, peak 74 bpm, eased after 8 min rest; seated cuff 134/80 at 10:05; steps 3100 by 14:00. Wear time 96%.",
+   "caregiver_or_nurse_note": "Phone check Day 0 11:00: he says the tightness is the same as it has been for the past year, two or three episodes a week and only on hills, no more often, and he is keeping up the hill walk. Spouse reports no resting episodes. No ECG strip taken.",
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [],
+    "missing_hours_last_48": 1,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age 70-74 man, Fitzpatrick V-VI, lives with spouse; ischaemic heart disease with LAD drug-eluting stent 2 years ago, hypertension, hyperlipidaemia. Meds: aspirin 75 mg daily, clopidogrel 75 mg daily, atorvastatin 80 mg nightly, bisoprolol 5 mg daily, ramipril 5 mg daily; no recent med changes. Devices: watch, BP cuff. 30-day baseline: rest HR 62 bpm, HRV 38 ms, sleep 7.1 h, steps 4200, night SpO2 minimum 93%, cuff 128/76. Last 7 days: steps 4000-4300 and rest HR 60-64 on Day -7 to -5; Day -6 chest tightness walking uphill, eased within 5 min of rest; Day -3 one episode walking uphill, eased with rest; Day -1 steps 3400, rest HR 66; Day 0 09:30 chest tightness walking uphill to the shop, watch HR 66 bpm at onset, peak 74 bpm, eased after 8 min rest; cuff 134/80 at 10:05; steps 3100 by 14:00. Day 0 11:00 phone check: tightness unchanged for the past year, two or three episodes a week on hills only, no more often, still doing the hill walk, spouse reports no resting episodes, no ECG strip taken. Wear 96%, 1 h missing in 48 h, longest gap 1 h.",
+   "expected_route": "wake_specialist",
+   "acceptable_alternates": [
+    "escalate_human"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "acs"
+   ],
+   "rationale": "Stable exertional angina in a stented man: the episodes on Day -6, Day -3 and Day 0 match the pattern he describes as unchanged for a year, each eases with rest, and vitals stay flat at onset (watch HR 66 bpm, cuff 134/80). Under the banded chest-pain rule every vital is band D and there is no crescendo pattern or other red flag, so HT_CHEST_PAIN_VITALS is suppressed below the band threshold and logged for a nurse review of his angina plan, not escalated. Naive-model trap: paging a clinician for any chest tightness in a stent patient, or treating it as identical to the paired crescendo case; the frequency is unchanged, which is the decisive difference.",
+   "decisive_feature": "Exertional chest tightness at his usual, unchanged frequency (two or three hill episodes a week for a year, confirmed on the phone check), with watch HR 66 bpm at onset and no vital-sign change; the paired case is the same picture with a crescendo pattern.",
+   "src": "smart_triggers_manual",
+   "src_model": "manual (deterministic edit of AC1-002, frequency facts only)",
+   "src_batch": "AC1",
+   "src_module": "chest_pain_crescendo_pair",
+   "src_prompt": "n/a (hand-derived)",
+   "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.3 rev c (CPRL2)",
+   "src_library": "library_v2_smart"
+  }
+ ],
+ "_note": "SYNTHETIC. Stable-pattern partner for AC1-002 after Wayne's crescendo decision (2026-10-17). Only the episode frequency, the phone-check content and the derived fields (decisive_feature, rationale, labels) differ from AC1-002."
+}

@@ -1,0 +1,559 @@
+{
+ "version": "0.4-placeholder",
+ "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
+ "change_log": [
+  {
+   "ts": "2026-10-17T16:51:19-04:00",
+   "keys": [
+    "chest_pain",
+    "crescendo_rule"
+   ],
+   "old": null,
+   "new": {
+    "enabled": true,
+    "min_band": "C",
+    "no_exertion_timeout_factor_when_vitals_normal": true,
+    "_note": "DECIDED RULE (not a placeholder decision): a crescendo angina pattern (episodes becoming more frequent, or new onset in recent days) with normal vitals triggers HT_CHEST_PAIN_VITALS CONFIRM_FIRST (band C at least). min_band and the timeout remain placeholder values. With normal vitals the post-exertion timeout factor is not applied, because the trigger is the pattern."
+   },
+   "approved_by": "Wayne",
+   "reason": "Clinical owner decision 2026-10-17 16:49 EDT: crescendo angina pattern with normal vitals SHOULD trigger CONFIRM_FIRST"
+  },
+  {
+   "ts": "2026-10-17T16:51:19-04:00",
+   "keys": [
+    "version"
+   ],
+   "old": "0.2-placeholder",
+   "new": "0.3-placeholder",
+   "approved_by": "Wayne",
+   "reason": "crescendo rule added (approved by Wayne)"
+  },
+  {
+   "ts": "2026-10-17T19:50:36-04:00",
+   "keys": [
+    "cgm_pressure_low"
+   ],
+   "old": null,
+   "new": {
+    "_note": "PLACEHOLDERS. CGM pressure-low (compression) artifact rule, applied to CGM readings at or below hard_limits.glucose.danger_low. A suspected pressure low becomes ARTIFACT with a fingerstick recheck. A fingerstick-confirmed or symptomatic low stays ABSOLUTE. A fingerstick above the danger limit makes it SUPPRESSED unreliable_reading.",
+    "enabled": true,
+    "fingerstick_window_min": 60,
+    "discordant_abs_mg_dl": 15,
+    "discordant_pct": 0.2,
+    "overnight_hours": [
+     22,
+     7
+    ],
+    "rapid_drop_mg_dl_per_min": 2.0,
+    "rebound_within_min": 60,
+    "pressure_cues": [
+     "pinned",
+     "pressed",
+     "compression",
+     "under the bed rail/body/arm/pillow",
+     "lying/sleeping on the sensor side"
+    ],
+    "symptoms": [
+     "sweaty/clammy",
+     "shaky/tremor",
+     "confused",
+     "drowsy/hard to rouse",
+     "seizure",
+     "unresponsive"
+    ],
+    "recheck_step": "fingerstick_recheck",
+    "recheck_timeout_min": 15
+   },
+   "approved_by": "Wayne",
+   "reason": "Next step approved 2026-10-17 19:49 EDT: CGM pressure-low artifact rule (placeholders)"
+  },
+  {
+   "ts": "2026-10-17T19:50:36-04:00",
+   "keys": [
+    "version"
+   ],
+   "old": "0.3-placeholder",
+   "new": "0.4-placeholder",
+   "approved_by": "Wayne",
+   "reason": "cgm_pressure_low added"
+  }
+ ],
+ "hard_limits": {
+  "_note": "Layer 1. Fixed, never learned. implausible -> ARTIFACT (auto recheck, no page). danger -> ABSOLUTE regardless of baseline (goals of care still apply).",
+  "hr": {
+   "unit": "bpm",
+   "implausible_low": 20,
+   "implausible_high": 250,
+   "danger_low": 35,
+   "danger_high": 180,
+   "max_rate_per_s": 30,
+   "flatline_s": 60
+  },
+  "spo2": {
+   "unit": "%",
+   "implausible_low": 50,
+   "implausible_high": 100,
+   "danger_low": 80,
+   "danger_high": null,
+   "max_rate_per_s": 2.0,
+   "flatline_s": null
+  },
+  "rr": {
+   "unit": "/min",
+   "implausible_low": 3,
+   "implausible_high": 70,
+   "danger_low": 6,
+   "danger_high": 35,
+   "max_rate_per_s": null,
+   "flatline_s": null
+  },
+  "sbp": {
+   "unit": "mmHg",
+   "implausible_low": 50,
+   "implausible_high": 300,
+   "danger_low": 80,
+   "danger_high": 200,
+   "max_rate_per_s": null,
+   "flatline_s": null
+  },
+  "glucose": {
+   "unit": "mg/dL",
+   "implausible_low": 20,
+   "implausible_high": 600,
+   "danger_low": 54,
+   "danger_high": 400,
+   "max_rate_per_s": 0.1,
+   "flatline_s": null
+  },
+  "temp_c": {
+   "unit": "C",
+   "implausible_low": 30,
+   "implausible_high": 43,
+   "danger_low": 35.0,
+   "danger_high": 40.0,
+   "max_rate_per_s": null,
+   "flatline_s": null
+  }
+ },
+ "population_defaults": {
+  "_note": "Conservative bands used during learning and as the fallback when a stratum has too few samples. Outside the band during learning -> CONFIRM_FIRST (confirm-first widened).",
+  "hr": {
+   "sleep": [
+    40,
+    90
+   ],
+   "rest": [
+    50,
+    100
+   ],
+   "active": [
+    60,
+    140
+   ]
+  },
+  "spo2": {
+   "sleep": [
+    90,
+    100
+   ],
+   "rest": [
+    92,
+    100
+   ],
+   "active": [
+    92,
+    100
+   ]
+  },
+  "rr": {
+   "sleep": [
+    8,
+    20
+   ],
+   "rest": [
+    10,
+    22
+   ],
+   "active": [
+    12,
+    30
+   ]
+  },
+  "sbp": {
+   "sleep": [
+    90,
+    150
+   ],
+   "rest": [
+    95,
+    160
+   ],
+   "active": [
+    100,
+    180
+   ]
+  },
+  "glucose": {
+   "sleep": [
+    70,
+    180
+   ],
+   "rest": [
+    70,
+    180
+   ],
+   "active": [
+    70,
+    180
+   ]
+  },
+  "temp_c": {
+   "sleep": [
+    35.8,
+    37.8
+   ],
+   "rest": [
+    35.8,
+    37.8
+   ],
+   "active": [
+    35.8,
+    38.0
+   ]
+  }
+ },
+ "learning": {
+  "_note": "Layer 2. Per-patient onboarding window. Baselines per vital x activity_state x time_of_day.",
+  "onboarding_days": 10,
+  "onboarding_days_range": [
+   7,
+   14
+  ],
+  "activity_states": [
+   "sleep",
+   "rest",
+   "active"
+  ],
+  "time_of_day_bins": {
+   "night": [
+    0,
+    6
+   ],
+   "morning": [
+    6,
+    12
+   ],
+   "afternoon": [
+    12,
+    18
+   ],
+   "evening": [
+    18,
+    24
+   ]
+  },
+  "min_samples_per_stratum": 20,
+  "confirm_widening": {
+   "_note": "During learning, at_patient_baseline suppression is not allowed (unless clinician_set_baseline). Outside the population band -> CONFIRM_FIRST.",
+   "allow_at_baseline_suppression": false
+  }
+ },
+ "adaptation": {
+  "_note": "Layer 3. Rolling robust baseline (weighted median / MAD) with bounds, condition-change resets and a drift guard.",
+  "rolling_window_days": 28,
+  "z_confirm": 3.0,
+  "z_watch": 2.0,
+  "mad_floor": {
+   "hr": 3.0,
+   "spo2": 1.0,
+   "rr": 1.5,
+   "sbp": 6.0,
+   "glucose": 10.0,
+   "temp_c": 0.2
+  },
+  "learn_bounds": {
+   "_note": "A learned baseline median is clamped inside these bounds (always inside the hard limits); every clamp is logged.",
+   "hr": [
+    40,
+    120
+   ],
+   "spo2": [
+    85,
+    100
+   ],
+   "rr": [
+    8,
+    26
+   ],
+   "sbp": [
+    90,
+    170
+   ],
+   "glucose": [
+    70,
+    250
+   ],
+   "temp_c": [
+    35.5,
+    37.8
+   ]
+  },
+  "condition_change": {
+   "_note": "Partial reset: older samples of the affected vitals keep retain_weight, and a shortened learning period is re-entered. Constraint (validated): relearn_days > retain_weight x rolling_window_days, so that after relearning the new data outweigh a full window of old data.",
+   "retain_weight": 0.1,
+   "relearn_days": 4,
+   "affected_vitals": {
+    "rate_control_med": [
+     "hr"
+    ],
+    "new_diagnosis": [
+     "hr",
+     "spo2",
+     "rr",
+     "sbp",
+     "glucose",
+     "temp_c"
+    ],
+    "hospitalization": [
+     "hr",
+     "spo2",
+     "rr",
+     "sbp",
+     "glucose",
+     "temp_c"
+    ],
+    "hospice_enrollment": [
+     "hr",
+     "spo2",
+     "rr",
+     "sbp",
+     "glucose",
+     "temp_c"
+    ],
+    "diuretic_change": [
+     "sbp"
+    ],
+    "glucose_med_change": [
+     "glucose"
+    ],
+    "oxygen_change": [
+     "spo2",
+     "rr"
+    ]
+   }
+  },
+  "drift_guard": {
+   "_note": "A slow monotonic drift toward abnormal is NOT learned. It is flagged SUBTLE_DETERIORATION_TREND for review, and the drifting samples are excluded from the baseline. Total change = mean of the last k daily rest medians minus the first k in the window (k<=3); samples from the window start onward are excluded once the drift flag is raised (conservative).",
+   "enabled": true,
+   "window_days": 21,
+   "min_days": 7,
+   "min_kendall_tau": 0.6,
+   "min_total_change": {
+    "hr": 8,
+    "spo2": 3,
+    "rr": 3,
+    "sbp": 15,
+    "glucose": 30,
+    "temp_c": 0.5
+   },
+   "abnormal_direction": {
+    "hr": "up",
+    "spo2": "down",
+    "rr": "up",
+    "sbp": "both",
+    "glucose": "up",
+    "temp_c": "up"
+   },
+   "stratum": "rest",
+   "explained_by_condition_change_days": 14
+  }
+ },
+ "confirm_first": {
+  "spo2_population_threshold": 88,
+  "default_steps": {
+   "spo2": "fingertip_recheck",
+   "hr": "patient_call",
+   "rr": "patient_call",
+   "sbp": "patient_call",
+   "glucose": "patient_call",
+   "temp_c": "patient_call"
+  },
+  "timeouts_min": {
+   "fingertip_recheck": 15,
+   "patient_call": 10,
+   "caregiver_ping": 30,
+   "device_recheck": 10
+  }
+ },
+ "chest_pain": {
+  "_note": "HT_CHEST_PAIN_VITALS is a parametric rule, replacing the flat 10-min CONFIRM_FIRST, which the clinical owner rejected. ALL VALUES ARE PLACEHOLDERS. Order: hard limits (implausible -> recheck, danger -> ABSOLUTE) -> reliable ECG change -> ABSOLUTE -> per-vital band -> side-specific context modifiers -> symptom modifiers -> safety floors -> band -> output.",
+  "bands": {
+   "A": {
+    "tier": "ABSOLUTE"
+   },
+   "B": {
+    "tier": "CONFIRM_FIRST",
+    "timeout_min": 5
+   },
+   "C": {
+    "tier": "CONFIRM_FIRST",
+    "timeout_min": 15
+   },
+   "D": {
+    "tier": "LOG_ONLY",
+    "route": "nurse_task"
+   }
+  },
+  "vital_bands": {
+   "_note": "With chest pain present, population rest thresholds. high: value >= threshold; low: value <= threshold.",
+   "hr": {
+    "high": {
+     "A": 130,
+     "B": 110,
+     "C": 100
+    },
+    "low": {
+     "A": 40,
+     "B": 47,
+     "C": 54
+    }
+   },
+   "sbp": {
+    "high": {
+     "A": 180,
+     "B": 170,
+     "C": 160
+    },
+    "low": {
+     "A": 90,
+     "B": 99,
+     "C": 104
+    }
+   },
+   "spo2": {
+    "high": null,
+    "low": {
+     "A": 88,
+     "B": 91,
+     "C": 93
+    }
+   },
+   "rr": {
+    "high": {
+     "A": 30,
+     "B": 25,
+     "C": 21
+    },
+    "low": {
+     "A": 8,
+     "B": null,
+     "C": null
+    }
+   }
+  },
+  "modifiers": {
+   "_note": "Band shifts: -1 = one band less severe, +1 = one band more severe. Side-specific: *_low applies only when the vital is on its low side, *_high only on its high side.",
+   "sleep": {
+    "hr_low": -1,
+    "rr_low": -1
+   },
+   "post_exertion": {
+    "window_min": 20,
+    "hr_high": -1,
+    "rr_high": -1,
+    "sbp_high": -1,
+    "timeout_factor": 2.0
+   },
+   "rate_control_med": {
+    "hr_low": -1,
+    "hr_high": 1
+   },
+   "pacemaker": {
+    "_note": "HR at or above the programmed lower rate (within 2 bpm) -> the HR is not banded; below the lower rate -> +1 (possible pacing failure).",
+    "tolerance_bpm": 2,
+    "below_lower_rate": 1
+   },
+   "known_brady": {
+    "hr_low": -1,
+    "_note": "documented usual low HR range; applies when the HR is within the range minus 3 bpm"
+   },
+   "known_tachy": {
+    "hr_high": -1,
+    "_note": "documented usual high HR (e.g. rate-controlled AF); applies when the HR is within the range max + 10 bpm"
+   },
+   "red_flags": {
+    "features": [
+     "diaphoresis",
+     "radiation",
+     "dyspnea",
+     "syncope_or_presyncope",
+     "persistent_ge_15min",
+     "crescendo_pattern",
+     "pallor"
+    ],
+    "per_flag": 1,
+    "max_total": 2
+   },
+   "multi_vital": {
+    "min_vitals_at_B_or_worse": 2,
+    "shift": 1
+   },
+   "concordance": {
+    "concordant": 1,
+    "discordant": -1,
+    "_note": "discordant may only lower band B or C; it never lowers A"
+   },
+   "device_reliability": {
+    "_note": "A quality-flagged vital is not banded and the output becomes a recheck (CONFIRM_FIRST device_recheck) unless the reliable inputs already give band A.",
+    "recheck_step": "device_recheck",
+    "recheck_timeout_min": 5
+   }
+  },
+  "safety": {
+   "max_total_downgrade": 2,
+   "band_A_floor": "B",
+   "_note": "Context can lower a raw band by at most 2 and can never turn raw band A into log-only. Hard danger limits (HT_VS_DANGER) and a reliable ECG change are always ABSOLUTE (goals of care still apply)."
+  },
+  "timeout_bounds_min": [
+   5,
+   60
+  ],
+  "default_confirm_step": "patient_call",
+  "crescendo_rule": {
+   "enabled": true,
+   "min_band": "C",
+   "no_exertion_timeout_factor_when_vitals_normal": true,
+   "_note": "DECIDED RULE (not a placeholder decision): a crescendo angina pattern (episodes becoming more frequent, or new onset in recent days) with normal vitals triggers HT_CHEST_PAIN_VITALS CONFIRM_FIRST (band C at least). min_band and the timeout remain placeholder values. With normal vitals the post-exertion timeout factor is not applied, because the trigger is the pattern."
+  }
+ },
+ "cgm_pressure_low": {
+  "_note": "PLACEHOLDERS. CGM pressure-low (compression) artifact rule, applied to CGM readings at or below hard_limits.glucose.danger_low. A suspected pressure low becomes ARTIFACT with a fingerstick recheck. A fingerstick-confirmed or symptomatic low stays ABSOLUTE. A fingerstick above the danger limit makes it SUPPRESSED unreliable_reading.",
+  "enabled": true,
+  "fingerstick_window_min": 60,
+  "discordant_abs_mg_dl": 15,
+  "discordant_pct": 0.2,
+  "overnight_hours": [
+   22,
+   7
+  ],
+  "rapid_drop_mg_dl_per_min": 2.0,
+  "rebound_within_min": 60,
+  "pressure_cues": [
+   "pinned",
+   "pressed",
+   "compression",
+   "under the bed rail/body/arm/pillow",
+   "lying/sleeping on the sensor side"
+  ],
+  "symptoms": [
+   "sweaty/clammy",
+   "shaky/tremor",
+   "confused",
+   "drowsy/hard to rouse",
+   "seizure",
+   "unresponsive"
+  ],
+  "recheck_step": "fingerstick_recheck",
+  "recheck_timeout_min": 15
+ }
+}
