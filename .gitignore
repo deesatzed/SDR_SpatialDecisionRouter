@@ -9,3 +9,7 @@ screens/*.mp4
 __pycache__/
 .pytest_cache/
 .DS_Store
+
+# local secrets
+.env
+**/.env
