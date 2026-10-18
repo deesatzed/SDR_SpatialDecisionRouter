@@ -266,3 +266,6 @@ O-LIB-ST1-008,synthetic,LIB-ST1-008,silent_log,author_label,0,minor
 O-LIB-ST1-010,synthetic,LIB-ST1-010,escalate_human,author_label,0,critical
 O-LIB-ST2-009,synthetic,LIB-ST2-009,escalate_human,author_label,0,critical
 O-LIB-ST4-002,synthetic,LIB-ST4-002,escalate_human,author_label,0,critical
+O-LIB-ST1-003,synthetic,LIB-ST1-003,escalate_human,author_label,0,critical
+O-LIB-ST1-006,synthetic,LIB-ST1-006,nurse_task,author_label,0,minor
+O-LIB-ST1-011,synthetic,LIB-ST1-011,silent_log,author_label,0,minor

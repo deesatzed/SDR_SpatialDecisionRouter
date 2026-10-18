@@ -87,4 +87,6 @@ import subprocess as _sp; print(_sp.run(["python3", "apply_chest_pain.py"], capt
 import os as _os
 if _os.path.exists("recheck/decisions.json"): print(_sp.run(["python3", "apply_recheck.py"], capture_output=True, text=True).stdout)
 # Wayne's clinician rulings on the review queue (SMART_TRIGGERS v1.5), applied last
-if _os.path.exists("clinician_rulings.csv"): print(_sp.run(["python3", "apply_rulings.py"], capture_output=True, text=True).stdout[-600:])
+if _os.path.exists("clinician_rulings.csv"):
+    _r = _sp.run(["python3", "apply_rulings.py"], capture_output=True, text=True); print(_r.stdout[-700:])
+    if _r.returncode: print(_r.stderr[-2000:]); raise SystemExit("apply_rulings.py failed")

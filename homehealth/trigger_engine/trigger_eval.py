@@ -228,6 +228,7 @@ def urgent_comfort_basis(r, base, p, context=None):
     h = p["hard_limits"]["glucose"]; x = r.get("value")
     if h["danger_low"] is None or x is None or x > h["danger_low"]: return None
     if cond.get("hypoglycemia_symptomatic") and ((r.get("cgm") or {}).get("symptoms") or r.get("symptoms") or ctx.get("symptoms")): return "hypoglycemia_symptomatic"
+    # v1.7 (Wayne 2026-10-18): hypoglycemia_recurrent is DISABLED in params (only symptomatic lows qualify); the check stays for re-enabling.
     if cond.get("hypoglycemia_recurrent") and base is not None:
         win = uc["recurrent_window_h"] * 3600.0
         for e in base.log:

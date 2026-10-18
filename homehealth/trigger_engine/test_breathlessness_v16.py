@@ -10,7 +10,7 @@ def spo2(value, ctx, vital="spo2"):
 
 def test_params_list_breathlessness():
     uc = P["goals_of_care"]["urgent_comfort"]
-    assert P["version"] == "0.6-placeholder" and uc["conditions"]["breathlessness_distressing_home_treatable"] is True
+    assert P["version"] >= "0.6-placeholder" and uc["conditions"]["breathlessness_distressing_home_treatable"] is True
     assert any(e["approved_by"] == "Wayne" and "breathlessness" in str(e["keys"]) for e in P["change_log"])
 def test_hk1_007_like_breathlessness_in_hospice_pages_hospice_nurse_now():
     d = spo2(79, {"goals": "comfort_only", "breathlessness": BR})        # danger-level SpO2, few-word speech, comfort plan

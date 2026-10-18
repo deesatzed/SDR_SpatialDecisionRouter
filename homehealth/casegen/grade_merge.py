@@ -31,7 +31,8 @@ BANNED_V1 = [r"emergency", r"911", r"urgent(ly)?", r"red flags?", r"escalat\w*"]
 ANSWER_KEYS = {"rationale","decisive_feature","expected_route","acceptable_alternates","category","difficulty",
                "case_id","pair_id","hard_trigger_rule","hard_trigger","subtle_deterioration",
                "trigger_tier","confirm_step","confirm_timeout_min","suppression_reason","baseline_layer",
-               "escalation_target","secondary_triggers","route_basis"}   # last three: SMART_TRIGGERS v1.5
+               "escalation_target","secondary_triggers","route_basis",   # SMART_TRIGGERS v1.5
+               "clinician_override"}                                    # v1.7: label tier differs from the engine by clinician ruling
 META_KEYS = {"src", "grade", "relabel", "prev_labels", "prev_grade", "chest_pain_eval", "chest_pain_inputs", "clinician_ruling", "recheck", "pair_note"}  # provenance/metadata, not case text
 TIERS = {"ABSOLUTE", "CONFIRM_FIRST", "SUPPRESSED", "ARTIFACT"}
 RULE_TIER = {"HT_SYNCOPE": "ABSOLUTE", "HT_FOCAL_NEURO": "ABSOLUTE", "HT_CHEST_PAIN_ECG": "ABSOLUTE", "HT_CHEST_PAIN_VITALS": "CONFIRM_FIRST",
@@ -123,12 +124,36 @@ def smart_checks(c):
     iss += v15_checks(c)
     if rule in BANDED_RULES and isinstance(c.get("chest_pain_eval"), dict):
         band = c["chest_pain_eval"].get("band"); want = {"A": "ABSOLUTE", "B": "CONFIRM_FIRST", "C": "CONFIRM_FIRST", "D": "SUPPRESSED"}.get(band)
-        if want and tier not in (want, "SUPPRESSED" if sr == "goals_of_care" else want): iss.append(f"chest_pain_eval band {band} implies {want}, labelled {tier}")
+        if want and tier not in (want, "SUPPRESSED" if sr == "goals_of_care" else want):
+            ov = c.get("clinician_override") or {}
+            if not (ov.get("engine_tier") == want and ov.get("label_tier") == tier): iss.append(f"chest_pain_eval band {band} implies {want}, labelled {tier}")
     return iss
+
+OVERRIDE_KEYS = {"engine_tier", "label_tier", "approved_by", "date", "reason"}
+def override_checks(c):
+    """v1.7: a clinician override of the engine tier must be complete, named-human, and match the label."""
+    ov = c.get("clinician_override")
+    if ov is None: return []
+    iss = []
+    if not isinstance(ov, dict): return ["clinician_override must be an object"]
+    miss = OVERRIDE_KEYS - set(ov)
+    if miss: iss.append("clinician_override missing " + ",".join(sorted(miss)))
+    ab = ov.get("approved_by") or ""
+    if not ab or ab.lower().startswith(("engine", "auto", "system", "model")): iss.append("clinician_override needs a named human approver")
+    if ov.get("label_tier") != c.get("trigger_tier"): iss.append("clinician_override label_tier does not match trigger_tier")
+    if ov.get("engine_tier") == ov.get("label_tier"): iss.append("clinician_override with no tier difference")
+    if ov.get("engine_tier") not in TIERS | {"LOG_ONLY"}: iss.append("clinician_override bad engine_tier")
+    return iss
+
+def override_note(c):
+    """Surface a clinician override as one line (for review/export/summary). None if absent."""
+    ov = c.get("clinician_override")
+    if not ov: return None
+    return f"CLINICIAN_OVERRIDE {c.get('case_id')}: engine {ov.get('engine_tier')} -> label {ov.get('label_tier')} ({ov.get('approved_by')} {ov.get('date')}: {ov.get('reason')})"
 
 def v15_checks(c):
     """SMART_TRIGGERS v1.5 fields: escalation_target (hospice narrowing), route_basis, secondary_triggers."""
-    iss = []; exp, tier = c.get("expected_route"), c.get("trigger_tier")
+    iss = override_checks(c); exp, tier = c.get("expected_route"), c.get("trigger_tier")
     et = c.get("escalation_target"); rb = c.get("route_basis")
     if et is not None:
         if et not in ESCALATION_TARGETS: iss.append(f"bad escalation_target {et!r}")

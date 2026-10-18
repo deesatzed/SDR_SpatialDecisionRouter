@@ -1,5 +1,5 @@
 {
- "version": "0.6-placeholder",
+ "version": "0.7-placeholder",
  "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
  "change_log": [
   {
@@ -195,6 +195,41 @@
    "new": "0.6-placeholder",
    "approved_by": "Wayne",
    "reason": "v1.6: breathlessness added to urgent hospice-comfort list (approved by Wayne)"
+  },
+  {
+   "ts": "2026-10-18T10:29:35-04:00",
+   "keys": [
+    "goals_of_care",
+    "urgent_comfort",
+    "conditions",
+    "hypoglycemia_recurrent"
+   ],
+   "old": true,
+   "new": false,
+   "approved_by": "Wayne",
+   "reason": "Clinician ruling 2026-10-18 (check 4, SMART_TRIGGERS v1.7): only SYMPTOMATIC danger-level lows page the hospice nurse urgently; recurrence within 6 h without symptoms -> SUPPRESSED goals_of_care, same-shift hospice nurse"
+  },
+  {
+   "ts": "2026-10-18T10:29:35-04:00",
+   "keys": [
+    "goals_of_care",
+    "urgent_comfort",
+    "_note"
+   ],
+   "old": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. v1.6 adds distressing breathlessness that can be treated at home (respiratory triggers; context breathlessness {distressing, home_treatable}). Other conditions (falls, focal deficits, syncope) are NOT on the list; a caller may declare context comfort_treatable explicitly.",
+   "new": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. v1.6 adds distressing breathlessness that can be treated at home (respiratory triggers; context breathlessness {distressing, home_treatable}). Other conditions (falls, focal deficits, syncope) are NOT on the list; a caller may declare context comfort_treatable explicitly. v1.7 (Wayne 2026-10-18): hypoglycemia_recurrent disabled; only a symptomatic danger-level low qualifies; recurrent_window_h is kept for when it is re-enabled.",
+   "approved_by": "Wayne",
+   "reason": "v1.7 note"
+  },
+  {
+   "ts": "2026-10-18T10:29:35-04:00",
+   "keys": [
+    "version"
+   ],
+   "old": "0.6-placeholder",
+   "new": "0.7-placeholder",
+   "approved_by": "Wayne",
+   "reason": "v1.7: hospice low rule narrowed to symptomatic lows (approved by Wayne)"
   }
  ],
  "hard_limits": {
@@ -698,11 +733,11 @@
    "route": "escalate_human",
    "conditions": {
     "hypoglycemia_symptomatic": true,
-    "hypoglycemia_recurrent": true,
+    "hypoglycemia_recurrent": false,
     "breathlessness_distressing_home_treatable": true
    },
    "recurrent_window_h": 6,
-   "_note": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. v1.6 adds distressing breathlessness that can be treated at home (respiratory triggers; context breathlessness {distressing, home_treatable}). Other conditions (falls, focal deficits, syncope) are NOT on the list; a caller may declare context comfort_treatable explicitly.",
+   "_note": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. v1.6 adds distressing breathlessness that can be treated at home (respiratory triggers; context breathlessness {distressing, home_treatable}). Other conditions (falls, focal deficits, syncope) are NOT on the list; a caller may declare context comfort_treatable explicitly. v1.7 (Wayne 2026-10-18): hypoglycemia_recurrent disabled; only a symptomatic danger-level low qualifies; recurrent_window_h is kept for when it is re-enabled.",
    "breathlessness_vitals": [
     "spo2",
     "rr"

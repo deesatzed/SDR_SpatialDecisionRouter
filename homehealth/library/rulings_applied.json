@@ -8,7 +8,9 @@
    "expected_route: \"wake_specialist\" -> \"escalate_human\"",
    "acceptable_alternates: [\"nurse_task\"] -> []",
    "route_basis: null -> \"clinical_presentation\"",
-   "rationale rewritten"
+   "router_input: 'no artifact flags' -> 'no device quality flags'",
+   "rationale rewritten",
+   "decisive_feature updated"
   ],
   "ST1-008": [
    "added to library (resolved from review queue)",
@@ -21,10 +23,13 @@
    "expected_route: \"wake_specialist\" -> \"escalate_human\"",
    "acceptable_alternates: [\"nurse_task\"] -> []",
    "hard_trigger_rule: \"HT_CHEST_PAIN_ECG\" -> \"HT_CHEST_PAIN_VITALS\"",
-   "trigger_tier: \"SUPPRESSED\" -> \"ABSOLUTE\"",
+   "trigger_tier: \"SUPPRESSED\" -> \"CONFIRM_FIRST\"",
+   "confirm_step: null -> \"patient_call\"",
+   "confirm_timeout_min: null -> 5",
    "suppression_reason: \"unreliable_reading\" -> null",
    "pair_id: \"ST1-P05\" -> null",
    "secondary_triggers: null -> [{\"hard_trigger_rule\": \"HT_CHEST_PAIN_ECG\", \"trigger_tier\": \"SUPPRESSED\", \"suppression_reason\": \"unreliable_reading\", \"evidence\": \"06:41 strip poor-contact flag; clean repeat strip 06:47 shows no ST change\"}]",
+   "clinician_override: null -> {\"engine_tier\": \"ABSOLUTE\", \"engine_band\": \"A\", \"label_tier\": \"CONFIRM_FIRST\", \"approved_by\": \"Wayne\", \"date\": \"2026-10-18\", \"reason\": \"Clinical owner ruling (pending check 2): label CONFIRM_FIRST although the band math gives A/ABSOLUTE; the engine is unchanged. confirm_step = chest_pain.default_confirm_step (patient_call); confirm_timeout_min = chest_pain.bands.B.timeout_min (5), the shortest CONFIRM_FIRST band timeout; no post-exertion timeout factor because symptoms are ongoing. Route stays escalate_human.\"}",
    "chest_pain_eval band: None -> A",
    "rationale rewritten",
    "decisive_feature updated"
@@ -68,6 +73,8 @@
    "hard_trigger_rule: null -> \"HT_FALL_ANTICOAG\"",
    "trigger_tier: null -> \"SUPPRESSED\"",
    "suppression_reason: null -> \"unreliable_reading\"",
+   "caregiver_or_nurse_note: 'she said she got up on her own and is fine.' -> 'she said, 'I was just up for the bathroom, I'm fine.''",
+   "router_input: 'she said she got up on her own and is fine.' -> 'she said, 'I was just up for the bathroom, I'm fine.''",
    "rationale rewritten"
   ],
   "HK7-009": [
@@ -124,6 +131,22 @@
   ],
   "ST1-009": [
    "pair_id: \"ST1-P05\" -> null (partner ST1-010 made standalone)"
+  ],
+  "ST1-003": [
+   "added to library (fix list resolved)",
+   "router_input: 'no artifact flags' -> 'no device quality flags' (banned word)",
+   "pair_id: ST1-P02 -> null (ST1-P02 re-formed as ST1-004 vs new ST1-011)"
+  ],
+  "ST1-006": [
+   "added to library (fix list resolved)",
+   "caregiver_or_nurse_note/router_input/rationale/decisive_feature: recycled 'Day -1 13:15 ... lunch and a short walk' contact -> 'Day -1 19:40 video call ... supper and evening tablets'",
+   "subtle_deterioration: false -> true (2.3 kg weight rise and HR 84 after an HF discharge; matches partner ST1-005)",
+   "category suggestion 'hf,missing_data' already equal (no change)"
+  ],
+  "ST1-011": [
+   "added to library (new pair partner)",
+   "new: hand-derived from ST1-004 (no generation); differs only in Day 0 HR 96->78, RR 26->18 and the daughter's report (breathless/short sentences -> usual pace/full sentences)",
+   "labels: SUPPRESSED at_patient_baseline, silent_log, alternates [nurse_task]; pair ST1-P02 with ST1-004"
   ]
  },
  "engine_checks": {
@@ -248,6 +271,14 @@
    "notify": "hospice_nurse_urgent_page",
    "goals_basis": "breathlessness_distressing_home_treatable",
    "confirm_result": "confirmed"
+  },
+  "GC2-003_cf_v17_no_symptoms": {
+   "rule": "HT_VS_DANGER",
+   "tier": "SUPPRESSED",
+   "reason": "goals_of_care",
+   "route": "nurse_task",
+   "page": false,
+   "notify": "hospice_nurse_same_shift"
   }
  }
 }

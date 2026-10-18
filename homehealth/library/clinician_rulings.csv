@@ -1,16 +1,18 @@
-case_id,ruling,note
-ST1-002,nurse_task,keep label (Wayne 2026-10-17)
-ST1-004,escalate_human,grader right; suppressed SpO2 trigger but acute decompensation (Wayne 2026-10-17)
-ST1-008,silent_log,grader right; dropped watch confirmed fine (Wayne 2026-10-17)
-ST1-010,escalate_human,keep as standalone trap case (unpaired); single-lead ECG cannot rule out ACS (Wayne 2026-10-17)
-ST2-009,escalate_human,already_confirmed: unanswered watch prompt counts as failed confirm; escalate now (Wayne 2026-10-17; generalize as policy rule)
-ST4-002,escalate_human,band C 15 min; POLICY: net modifiers first then clamp (Wayne 2026-10-17)
-HK5-001,nurse_task,band D stable angina; no escalate alternate (Wayne 2026-10-17)
-HK6-001,escalate_human,confirmed fall (already_confirmed); no alternates; fix rationale contradiction (Wayne 2026-10-17)
-HK6-002,wake_specialist,SUPPRESSED unreliable_reading (watch on charger); drop escalate_human alternate; keep nurse_task alternate (Wayne 2026-10-18)
-HK7-009,nurse_task,fall trigger SUPPRESSED explained (witnessed near-fall); ADD separate CONFIRM_FIRST HR recheck for possible AFib RVR (HR 112 at 02:55 vs baseline 72); escalate if recheck stays high (Wayne 2026-10-18)
-NV2-015,escalate_human,ABSOLUTE (symptomatic hypoglycemia; symptoms precede fingerstick check); no alternates; keep categories incl noise (Wayne 2026-10-18)
-GC2-003,escalate_human,urgent hospice nurse page now (route to hospice); POLICY: hospice goals suppress hospital-directed escalation, not urgent treatable goal-consistent comfort issues (Wayne 2026-10-18)
-GL1-005,escalate_human,ABSOLUTE (hard_limit_danger; meter 44 + fall); no alternates; add fall category (Wayne 2026-10-18)
-HK1-007,escalate_human,urgent hospice nurse page now (escalation_target hospice_nurse); POLICY v1.6: distressing breathlessness that can be treated at home is on the urgent hospice-comfort list (Wayne 2026-10-18)
-NV6-010,escalate_human,urgent hospice nurse page now (escalation_target hospice_nurse); POLICY v1.6: distressing breathlessness that can be treated at home is on the urgent hospice-comfort list (Wayne 2026-10-18)
+case_id,ruling,note,followup_2026_10_18
+ST1-002,nurse_task,keep label (Wayne 2026-10-17),
+ST1-004,escalate_human,grader right; suppressed SpO2 trigger but acute decompensation (Wayne 2026-10-17),"check 1 (Wayne 2026-10-18): alternates [] confirmed, no change; pair ST1-P02 re-formed with new benign partner ST1-011; 'artifact' banned word removed from router_input"
+ST1-008,silent_log,grader right; dropped watch confirmed fine (Wayne 2026-10-17),"check 1 (Wayne 2026-10-18): alternates [nurse_task] confirmed, no change"
+ST1-010,escalate_human,keep as standalone trap case (unpaired); single-lead ECG cannot rule out ACS (Wayne 2026-10-17),"check 2 (Wayne 2026-10-18): label tier CONFIRM_FIRST by clinician override of the engine's band-A ABSOLUTE (engine unchanged); confirm_step patient_call (chest_pain.default_confirm_step), timeout 5 min (band B timeout); route escalate_human"
+ST2-009,escalate_human,already_confirmed: unanswered watch prompt counts as failed confirm; escalate now (Wayne 2026-10-17; generalize as policy rule),
+ST4-002,escalate_human,band C 15 min; POLICY: net modifiers first then clamp (Wayne 2026-10-17),
+HK5-001,nurse_task,band D stable angina; no escalate alternate (Wayne 2026-10-17),
+HK6-001,escalate_human,confirmed fall (already_confirmed); no alternates; fix rationale contradiction (Wayne 2026-10-17),
+HK6-002,wake_specialist,SUPPRESSED unreliable_reading (watch on charger); drop escalate_human alternate; keep nurse_task alternate (Wayne 2026-10-18),"check 6 (Wayne 2026-10-18): caregiver statement reworded so the reply does not suggest a fall ('I was just up for the bathroom, I'm fine'); label kept"
+HK7-009,nurse_task,fall trigger SUPPRESSED explained (witnessed near-fall); ADD separate CONFIRM_FIRST HR recheck for possible AFib RVR (HR 112 at 02:55 vs baseline 72); escalate if recheck stays high (Wayne 2026-10-18),"check 3 (Wayne 2026-10-18): device_recheck timeout 10 min confirmed, no change"
+NV2-015,escalate_human,ABSOLUTE (symptomatic hypoglycemia; symptoms precede fingerstick check); no alternates; keep categories incl noise (Wayne 2026-10-18),
+GC2-003,escalate_human,"urgent hospice nurse page now (route to hospice); POLICY: hospice goals suppress hospital-directed escalation, not urgent treatable goal-consistent comfort issues (Wayne 2026-10-18)","check 1 (Wayne 2026-10-18): alternates [] confirmed, no change; check 4 (v1.7): label unchanged because the 03:40 low is symptomatic"
+GL1-005,escalate_human,ABSOLUTE (hard_limit_danger; meter 44 + fall); no alternates; add fall category (Wayne 2026-10-18),
+HK1-007,escalate_human,urgent hospice nurse page now (escalation_target hospice_nurse); POLICY v1.6: distressing breathlessness that can be treated at home is on the urgent hospice-comfort list (Wayne 2026-10-18),
+NV6-010,escalate_human,urgent hospice nurse page now (escalation_target hospice_nurse); POLICY v1.6: distressing breathlessness that can be treated at home is on the urgent hospice-comfort list (Wayne 2026-10-18),
+POLICY-v15d-hard_limit_baseline_status,policy,v1.5d validator change,check 5 (Wayne 2026-10-18): keep: labels with a hard_limit_* baseline_layer do not need baseline_status
+POLICY-v17-hospice_recurrent_low,policy,SMART_TRIGGERS v1.7,"check 4 (Wayne 2026-10-18): only SYMPTOMATIC danger-level lows page the hospice nurse urgently; a recurrence within 6 h without symptoms -> SUPPRESSED goals_of_care, same-shift hospice nurse"

@@ -66,11 +66,16 @@ def test_gc2_003_recurrent_symptomatic_low_pages_hospice_nurse_now():
     again = cgm(b, 49, 55, symptoms=True)         # 03:05 CGM 49 after gel, drowsy
     assert again["tier"] == "ABSOLUTE" and again["route"] == "escalate_human" and again["page"] is True
     assert again["escalation_target"] == "hospice_nurse" and again["notify"] == "hospice_nurse_urgent_page" and again["hospital_directed"] is False
-def test_recurrent_low_alone_is_urgent_but_old_low_outside_window_is_not():
+def test_v17_recurrent_low_without_symptoms_is_suppressed_same_shift():
+    # v1.7 (Wayne 2026-10-18): recurrence within 6 h WITHOUT symptoms no longer pages urgently
+    assert P["goals_of_care"]["urgent_comfort"]["conditions"]["hypoglycemia_recurrent"] is False
     b = T.Baseline("SYN-GC2", 0.0, P); cgm(b, 46, 0)
-    assert cgm(b, 50, 60)["goals_basis"] == "hypoglycemia_recurrent"
+    d = cgm(b, 50, 60)
+    assert d["tier"] == "SUPPRESSED" and d["reason"] == "goals_of_care" and d["notify"] == "hospice_nurse_same_shift" and "escalation_target" not in d
+    s = cgm(b, 49, 90, symptoms=True)                    # a symptomatic low still pages the hospice nurse now
+    assert s["tier"] == "ABSOLUTE" and s["escalation_target"] == "hospice_nurse" and s["goals_basis"] == "hypoglycemia_symptomatic"
     b2 = T.Baseline("SYN-GC3", 0.0, P); cgm(b2, 46, 0)
-    assert cgm(b2, 50, 60 * 7)["tier"] == "SUPPRESSED"    # 7 h later: outside recurrent_window_h (6)
+    assert cgm(b2, 50, 60 * 7)["tier"] == "SUPPRESSED"
 def test_artifact_or_unreliable_low_does_not_count_as_recurrent():
     b = T.Baseline("SYN-GC4", 0.0, P)
     assert cgm(b, 48, 0, pressure_documented=True)["tier"] == "ARTIFACT"
@@ -126,3 +131,18 @@ def test_hard_limit_layer_does_not_need_baseline_status():
     assert G.smart_checks(c) + G.layer_checks(c) == []
     assert any("baseline_status" in i for i in G.layer_checks({**c, "baseline_layer": "learning_period", "trigger_tier": "SUPPRESSED"}))
     assert any("baseline_status" in i for i in G.layer_checks({**c, "baseline_status": {"phase": "bogus"}}))
+
+# ---- v1.7 clinician override of the engine tier (ST1-010, Wayne 2026-10-18)
+OV_CASE = {"case_id": "SYN-OV", "hard_trigger": True, "hard_trigger_rule": "HT_CHEST_PAIN_VITALS", "trigger_tier": "CONFIRM_FIRST", "confirm_step": "patient_call", "confirm_timeout_min": 5,
+           "suppression_reason": None, "expected_route": "escalate_human", "acceptable_alternates": [], "category": ["acs"],
+           "chest_pain_eval": {"band": "A", "raw_band": "C", "tier": "ABSOLUTE"}}
+OV = {"engine_tier": "ABSOLUTE", "label_tier": "CONFIRM_FIRST", "approved_by": "Wayne", "date": "2026-10-18", "reason": "clinician ruling"}
+def test_band_a_labelled_confirm_first_needs_override():
+    assert any("implies ABSOLUTE" in i for i in G.smart_checks(OV_CASE))
+    ok = {**OV_CASE, "clinician_override": OV}
+    assert G.smart_checks(ok) == [] and G.override_note(ok).startswith("CLINICIAN_OVERRIDE SYN-OV: engine ABSOLUTE -> label CONFIRM_FIRST")
+def test_override_must_be_complete_named_and_match():
+    assert any("named human" in i for i in G.smart_checks({**OV_CASE, "clinician_override": {**OV, "approved_by": "engine"}}))
+    assert any("does not match" in i for i in G.smart_checks({**OV_CASE, "clinician_override": {**OV, "label_tier": "ABSOLUTE"}}))
+    assert any("missing" in i for i in G.smart_checks({**OV_CASE, "clinician_override": {"engine_tier": "ABSOLUTE", "label_tier": "CONFIRM_FIRST"}}))
+    assert G.override_note({"case_id": "x"}) is None

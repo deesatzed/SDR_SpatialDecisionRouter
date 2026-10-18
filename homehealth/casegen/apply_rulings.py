@@ -10,14 +10,14 @@ sys.path.insert(0, "../../casegen/prompts_v2"); import grade_merge as G
 P = T.load_params("../../casegen/trigger_engine/trigger_params.json")
 DAY = T.DAY
 
-# ---- rulings file (the GC2-003 note contains an unquoted comma -> rejoin overflow columns)
-RUL = {}
+# ---- rulings file (csv-quoted since 2026-10-18; followup_2026_10_18 = Wayne's answers to the pending checks; POLICY-* rows are policy notes)
+RUL, POLICY_NOTES = {}, {}
 with open("clinician_rulings.csv", newline="") as f:
-    rd = csv.reader(f); hdr = next(rd)
-    for row in rd:
-        if not row: continue
-        RUL[row[0]] = {"ruling": row[1], "note": ",".join(row[2:]).strip()}   # rows 1-13 unquoted (GC2-003 note has a bare comma); later rows csv-quoted
+    for row in csv.DictReader(f):
+        if row["case_id"].startswith("POLICY-"): POLICY_NOTES[row["case_id"]] = row["followup_2026_10_18"]; continue
+        RUL[row["case_id"]] = {"ruling": row["ruling"], "note": row["note"].strip(), "followup": (row.get("followup_2026_10_18") or "").strip() or None}
 assert len(RUL) == 15, len(RUL)   # 13 review-queue rulings + 2 v1.6 hospice relabels (HK1-007, NV6-010)
+assert len(POLICY_NOTES) == 2, POLICY_NOTES
 
 lib = json.load(open("library_v2_smart_accepted.json")); L = {c["case_id"]: c for c in lib["cases"]}
 B, V = {}, {}
@@ -62,6 +62,15 @@ assert EC["GL1-005"]["tier"] == "ABSOLUTE" and EC["GL1-005"]["reason"] == "hard_
 for cid in ("HK1-007", "NV6-010"):
     assert EC[cid]["tier"] == "CONFIRM_FIRST" and EC[cid]["escalation_target"] == "hospice_nurse" and EC[cid]["confirm_step"] == "already_confirmed", EC[cid]
 assert EC["GC2-003_0210"]["tier"] == "SUPPRESSED" and EC["GC2-003"]["tier"] == "ABSOLUTE" and EC["GC2-003"]["escalation_target"] == "hospice_nurse"
+assert EC["GC2-003"]["goals_basis"] == "hypoglycemia_symptomatic"   # v1.7: GC2-003 rests on the symptomatic low, not on recurrence -> unaffected
+# v1.7 counterfactual (check 4): the same recurrence WITHOUT symptoms is now SUPPRESSED goals_of_care with a same-shift hospice nurse contact
+bg2 = T.Baseline("SYN-GC2-003-cf", 0.0, P)
+T.evaluate({"vital": "glucose", "value": 46, "ts": 99 * DAY + 2 * 3600 + 600, "source": "cgm", "cgm": {"overnight": True}}, bg2, P, {"goals": "comfort_only"})
+EC["GC2-003_cf_v17_no_symptoms"] = T.evaluate({"vital": "glucose", "value": 49, "ts": 99 * DAY + 3 * 3600 + 2400, "source": "cgm", "cgm": {"overnight": True, "symptoms": False}}, bg2, P, {"goals": "comfort_only"})
+assert EC["GC2-003_cf_v17_no_symptoms"]["tier"] == "SUPPRESSED" and EC["GC2-003_cf_v17_no_symptoms"]["notify"] == "hospice_nurse_same_shift"
+# ST1-010 (check 2): engine stays band A ABSOLUTE; the label overrides to CONFIRM_FIRST. Confirm step/timeout from existing chest-pain band params:
+CP = P["chest_pain"]; OV_STEP = CP["default_confirm_step"]; OV_TMO = CP["bands"]["B"]["timeout_min"]   # band B = most severe CONFIRM_FIRST band
+assert OV_STEP == "patient_call" and OV_TMO == 5
 TMO_DEV = P["confirm_first"]["timeouts_min"]["device_recheck"]
 def cpe(d): return {"band": d["band"], "raw_band": d["raw_band"], "modifiers": d["modifiers"], "tier": d["tier"], "timeout_min": d.get("timeout_min"), "engine": "trigger_eval.evaluate_chest_pain params " + P["version"] + " (net-then-clamp)"}
 
@@ -69,17 +78,24 @@ NO = dict(confirm_step=None, confirm_timeout_min=None, suppression_reason=None)
 SPEC = {
  "ST1-002": dict(labels={}, rationale=None),
  "ST1-004": dict(labels=dict(expected_route="escalate_human", acceptable_alternates=[], route_basis="clinical_presentation"),
+   text={"router_input": [("no artifact flags", "no device quality flags")]},   # fix-list banned word (same sentence as ST1-003)
+   decisive_feature="Same 87% fingertip reading inside her own 86-88% range, but since this morning she is breathless walking to the kitchen and speaking in short sentences, with resting HR 96 bpm and RR 26/min.",
    rationale="Check 1 (reliable reading) passes: fingertip repeats at 09:40 and 09:43 both read 87% with good waveforms. Check 2 (change from own baseline) fails: her own fingertip rest readings over 30 days sit at 86-88%, so the saturation rule is SUPPRESSED with at_patient_baseline. The route does not come from the saturation rule: since this morning she is breathless walking to the kitchen and speaking in short sentences, with resting HR 96 bpm (from 76-80) and RR 26/min, which is an acute decompensation in its own right, so a clinician needs to see her now and the route is escalate_human with no alternate (route_basis clinical_presentation). Naive-model trap: a shallow model correctly suppresses the 87% reading as her usual range and stops there with a same-day review, missing that her breathing effort, heart rate and respiratory rate have changed acutely."),
  "ST1-008": dict(labels=dict(expected_route="silent_log", acceptable_alternates=["nurse_task"]),
    rationale="Check 1 passes as a device state: the watch logged an impact at 06:55 and then an off-wrist flag. Check 3 (no explanation) fails: the spouse heard the watch clatter on the kitchen tiles at about 06:55, and at a timed check at 07:00 she was standing at the sink, walking and pain-free, so the impact was the dropped watch, not a fall, and HT_FALL_ANTICOAG is SUPPRESSED with explained. Check 4 (goals of care) passes. With no fall and no clinical change the event is logged (silent_log); a nurse call about watch fit is an acceptable alternate. Naive-model trap: a shallow model reads a watch impact on apixaban as a fall and sends it to a human, which the spouse's timed check at 07:00 contradicts."),
- "ST1-010": dict(labels=dict(expected_route="escalate_human", acceptable_alternates=[], hard_trigger_rule="HT_CHEST_PAIN_VITALS", trigger_tier="ABSOLUTE", **NO,
+ "ST1-010": dict(labels=dict(expected_route="escalate_human", acceptable_alternates=[], hard_trigger_rule="HT_CHEST_PAIN_VITALS", trigger_tier="CONFIRM_FIRST",
+                             confirm_step=OV_STEP, confirm_timeout_min=OV_TMO, suppression_reason=None,
+                             clinician_override={"engine_tier": "ABSOLUTE", "engine_band": "A", "label_tier": "CONFIRM_FIRST", "approved_by": "Wayne", "date": "2026-10-18",
+                                                 "reason": "Clinical owner ruling (pending check 2): label CONFIRM_FIRST although the band math gives A/ABSOLUTE; the engine is unchanged. "
+                                                           "confirm_step = chest_pain.default_confirm_step (patient_call); confirm_timeout_min = chest_pain.bands.B.timeout_min (5), the shortest CONFIRM_FIRST band timeout; "
+                                                           "no post-exertion timeout factor because symptoms are ongoing. Route stays escalate_human."},
                              secondary_triggers=[{"hard_trigger_rule": "HT_CHEST_PAIN_ECG", "trigger_tier": "SUPPRESSED", "suppression_reason": "unreliable_reading",
                                                   "evidence": "06:41 strip poor-contact flag; clean repeat strip 06:47 shows no ST change"}],
                              pair_id=None, pair_complete_in_accepted=None),
-   chest="ST1-010",
+   chest="ST1-010", policy="SMART_TRIGGERS v1.7",
    pair_note="Unpaired 2026-10-18 (Wayne): kept as a standalone trap case; its former partner ST1-009 also routes escalate_human, so the pair no longer contrasts.",
    decisive_feature="Clean repeat single-lead strip with no ST change, but central chest pressure for about 15 minutes with ongoing sweating and HR 102 bpm on bisoprolol, so the vital-sign chest-pain rule still fires.",
-   rationale="Check 1 (reliable reading) fails for the ECG only: the 06:41 strip carries a poor-contact flag and the clean repeat strip at 06:47 shows no ST change, so HT_CHEST_PAIN_ECG is SUPPRESSED with unreliable_reading. A single-lead watch strip cannot rule out an acute coronary syndrome, so the chest-pain vital rule still applies: central chest pressure on the stairs for about 15 minutes with sweating that continues, and watch HR 102 bpm despite bisoprolol (raw band C; post-exertion -1, tachycardia on rate control +1), plus two red flags (sweating, duration of 15 minutes or more, +2) net to band A, so HT_CHEST_PAIN_VITALS is ABSOLUTE and the route is escalate_human with no alternate. BP 156/94 is above her 128/78 baseline but below the BP bands. Checks 3 and 4 pass (no timed contact; full treatment goals). This is a standalone case, not part of a pair. Naive-model trap: a shallow model takes the clean repeat strip as reassurance and routes a same-day review, but a normal single-lead trace does not exclude ACS while symptoms continue."),
+   rationale="Check 1 (reliable reading) fails for the ECG only: the 06:41 strip carries a poor-contact flag and the clean repeat strip at 06:47 shows no ST change, so HT_CHEST_PAIN_ECG is SUPPRESSED with unreliable_reading. A single-lead watch strip cannot rule out an acute coronary syndrome, so the chest-pain vital rule still applies: central chest pressure on the stairs for about 15 minutes with sweating that continues, and watch HR 102 bpm despite bisoprolol (raw band C; post-exertion -1, tachycardia on rate control +1), plus two red flags (sweating, duration of 15 minutes or more, +2). The engine's band math gives band A (ABSOLUTE); by clinical-owner override (Wayne, 2026-10-18; recorded in clinician_override) the label tier is CONFIRM_FIRST: a patient_call with a 5-minute timeout (the band-B timeout), paging on a confirmed symptom, no answer or timeout. Either way the route is escalate_human with no alternate. BP 156/94 is above her 128/78 baseline but below the BP bands. Checks 3 and 4 pass (no timed contact; full treatment goals). This is a standalone case, not part of a pair. Naive-model trap: a shallow model takes the clean repeat strip as reassurance and routes a same-day review, but a normal single-lead trace does not exclude ACS while symptoms continue."),
  "ST2-009": dict(labels=dict(expected_route="escalate_human", acceptable_alternates=[], trigger_tier="CONFIRM_FIRST", confirm_step="already_confirmed", confirm_timeout_min=None, suppression_reason=None),
    decisive_feature="Watch impact on-wrist at 22:10 on edoxaban with HR 118 bpm, in a woman living alone who did not answer the tap-to-confirm prompt, which counts as a failed confirm.",
    rationale="Check 1 passes: the impact was logged while the watch was on-wrist, with HR 118 bpm and no poor-contact flag. Check 2 passes: HR rose from her 66-70 bpm range and steps stayed at zero for 30 minutes after the impact. Check 3 passes: no timed contact or watch removal explains the event. Check 4 passes: no goals of care are documented. Edoxaban is current, so HT_FALL_ANTICOAG applies. She lives alone and did not answer the watch tap-to-confirm prompt by 22:15; under the policy an unanswered patient prompt in a person living alone counts as a failed confirm, so the tier is CONFIRM_FIRST with confirm_step already_confirmed and the route is escalate_human now, with no alternate. Naive-model trap: a shallow model reads the unanswered prompt as a possible false alarm and logs it, or waits for a caregiver ping that no one is there to answer."),
@@ -92,9 +108,11 @@ SPEC = {
  "HK6-001": dict(labels=dict(expected_route="escalate_human", acceptable_alternates=[], hard_trigger=True, hard_trigger_rule="HT_FALL_ANTICOAG", trigger_tier="CONFIRM_FIRST",
                              confirm_step="already_confirmed", confirm_timeout_min=None, suppression_reason=None),
    rationale="The watch logged an impact at 03:10 while it was on the wrist, followed by HR 124 bpm from 03:12 to 03:20 and no steps for 40 minutes, in a woman taking edoxaban with CKD 3b and a prior hip fracture who lives alone. She did not answer calls from 03:10 to 04:10, and at 04:10 she told a neighbour she got up on her own, which confirms she went down: HT_FALL_ANTICOAG fires and passes all four checks, and the fall is already confirmed (confirm_step already_confirmed), so the route is escalate_human now with no alternate. A head injury or bleed on a DOAC can be silent, and HR was still 96 bpm at 04:05 against her 68-72 bpm range. Naive-model trap: a shallow model treats the 'I'm fine' reply as reassurance and logs it, when the same reply confirms a fall on an anticoagulant."),
- "HK6-002": dict(labels=dict(expected_route="wake_specialist", acceptable_alternates=["nurse_task"], hard_trigger=True, hard_trigger_rule="HT_FALL_ANTICOAG", trigger_tier="SUPPRESSED",
+ "HK6-002": dict(policy="SMART_TRIGGERS v1.5 (text v1.7 check 6)", labels=dict(expected_route="wake_specialist", acceptable_alternates=["nurse_task"], hard_trigger=True, hard_trigger_rule="HT_FALL_ANTICOAG", trigger_tier="SUPPRESSED",
                              confirm_step=None, confirm_timeout_min=None, suppression_reason="unreliable_reading"),
-   rationale="The impact event was logged at 03:10 while the watch sat off-wrist on the bedside charger, with no HR recorded from 02:55 to 04:30, so the impact reading is unreliable and HT_FALL_ANTICOAG is SUPPRESSED with unreliable_reading. She did not answer calls from 03:10 to 04:10, and her 04:10 reply to a neighbour that she got up on her own is not an observed account and, without on-wrist data, does not establish a fall. Because she takes edoxaban and lives alone, a possible unwitnessed fall still needs a same-day device check and clinician phone review (wake_specialist), with nurse_task as the alternate. Naive-model trap: a shallow model sees 'impact' plus 'anticoagulant' and treats it as a confirmed fall for a human now, even though the watch was not on the body."),
+   text={"caregiver_or_nurse_note": [("she said she got up on her own and is fine.", "she said, 'I was just up for the bathroom, I'm fine.'")],
+         "router_input": [("she said she got up on her own and is fine.", "she said, 'I was just up for the bathroom, I'm fine.'")]},
+   rationale="The impact event was logged at 03:10 while the watch sat off-wrist on the bedside charger, with no HR recorded from 02:55 to 04:30, so the impact reading is unreliable and HT_FALL_ANTICOAG is SUPPRESSED with unreliable_reading. When a neighbour phoned at 04:10 she said, 'I was just up for the bathroom, I'm fine': an ordinary night-time trip, not a report of a fall, and without on-wrist data nothing establishes that she went down. She did not answer calls from 03:10 to 04:10, though, and she takes edoxaban and lives alone, so an unwitnessed fall cannot be fully excluded: the route is a same-day device check and clinician phone review (wake_specialist), with nurse_task as the alternate. Naive-model trap: a shallow model sees 'impact' plus 'anticoagulant' and treats it as a confirmed fall for a human now, even though the watch was not on the body."),
  "HK7-009": dict(labels=dict(expected_route="nurse_task", acceptable_alternates=["wake_specialist"], hard_trigger=True, hard_trigger_rule="HT_FALL_ANTICOAG", trigger_tier="SUPPRESSED",
                              confirm_step=None, confirm_timeout_min=None, suppression_reason="explained",
                              secondary_triggers=[{"hard_trigger_rule": "HT_VS_BASELINE", "trigger_tier": "CONFIRM_FIRST", "confirm_step": "device_recheck", "confirm_timeout_min": TMO_DEV,
@@ -104,9 +122,9 @@ SPEC = {
    rationale="The watch impact at 02:39, the bed exit at 02:38 and HR 124 bpm mirror the floor-fall case, but the spouse saw her catch the bathroom door frame and stay on her feet, so there was no fall: HT_FALL_ANTICOAG is SUPPRESSED with explained, and the near-fall itself needs a next-day nurse call about balance, dizziness and bleeding signs on dabigatran (nurse_task, wake_specialist as alternate). Separately, HR was still 112 bpm at 02:55 against her 72 bpm baseline, in a woman with atrial fibrillation on no rate-control drug, which could be AF with a rapid ventricular rate: a second trigger (HT_VS_BASELINE, CONFIRM_FIRST) asks for an HR recheck and escalates to a human if the rate stays high. Naive-model trap: a shallow model escalates the near-fall because any impact on dabigatran looks like a hard trigger, or logs it because she feels fine, missing the persistent fast heart rate."),
  "NV2-015": dict(labels=dict(expected_route="escalate_human", acceptable_alternates=[], hard_trigger=True, hard_trigger_rule="HT_VS_DANGER", trigger_tier="ABSOLUTE", **NO),
    rationale="The daylight-saving transition offers a plausible explanation for her grogginess, but the objective data show a real problem: bedtime insulin glargine was increased to 20 units on Day -6, followed by nocturnal CGM readings of 50-62 mg/dL (at or below the 54 mg/dL danger limit), a fingerstick of 58 mg/dL at 05:00, and the caregiver finding her confused and sweaty at 05:30. Hypoglycaemia symptoms are checked before a fingerstick that reads just above the limit, so this is symptomatic hypoglycaemia: HT_VS_DANGER is ABSOLUTE and the route is escalate_human with no alternate. Naive-model trap: attributing the confusion and low glucose to the time change, or reading the 58 mg/dL fingerstick as refuting the CGM low, and missing the insulin-dose-related nocturnal hypoglycaemia."),
- "GC2-003": dict(labels=dict(expected_route="escalate_human", acceptable_alternates=[], hard_trigger=True, hard_trigger_rule="HT_VS_DANGER", trigger_tier="ABSOLUTE", **NO, escalation_target="hospice_nurse"),
-   decisive_feature="Recurrent nocturnal CGM low (46, then 49 mg/dL after gel) with drowsiness on glargine in a hospice patient: an urgent, treatable comfort problem for the hospice nurse now.",
-   rationale="Recurrent nocturnal hypoglycaemia on basal insulin after a glargine cut from 18 to 14 units on Day -3: CGM 46 mg/dL at 02:10, then 49 mg/dL at 03:05 after glucose gel, with drowsiness and response only to her name. HT_VS_DANGER fires and the low is symptomatic and recurrent. Her hospice plan declines hospital admission, which suppresses hospital-directed escalation only; a recurrent symptomatic low is urgent, treatable at home and consistent with her comfort goals, so it is not suppressed: the route is escalate_human to the hospice nurse now (escalation_target hospice_nurse), not a same-shift contact, with no alternate. The 71 mg/dL reading at 02:45 was a treatment response, not resolution, since it fell again within 20 minutes. Naive-model trap: a shallow model sees the 71 mg/dL recovery and the comfort goals and routes nurse_task for a routine insulin review, or sends her to a hospital team against her wishes."),
+ "GC2-003": dict(policy="SMART_TRIGGERS v1.7", labels=dict(expected_route="escalate_human", acceptable_alternates=[], hard_trigger=True, hard_trigger_rule="HT_VS_DANGER", trigger_tier="ABSOLUTE", **NO, escalation_target="hospice_nurse"),
+   decisive_feature="Symptomatic nocturnal CGM low (46, then 49 mg/dL after gel, with drowsiness) on glargine in a hospice patient: an urgent, treatable comfort problem for the hospice nurse now.",
+   rationale="Recurrent nocturnal hypoglycaemia on basal insulin after a glargine cut from 18 to 14 units on Day -3: CGM 46 mg/dL at 02:10, then 49 mg/dL at 03:05 after glucose gel, with drowsiness and response only to her name. HT_VS_DANGER fires and the low is symptomatic (drowsy, responding only to her name). Her hospice plan declines hospital admission, which suppresses hospital-directed escalation only; a symptomatic danger-level low is urgent, treatable at home and consistent with her comfort goals, so it is not suppressed: the route is escalate_human to the hospice nurse now (escalation_target hospice_nurse), not a same-shift contact, with no alternate. The 71 mg/dL reading at 02:45 was a treatment response, not resolution, since it fell again within 20 minutes. Under SMART_TRIGGERS v1.7 it is the symptoms, not the recurrence, that make this urgent: the same recurrence without symptoms would be SUPPRESSED goals_of_care with a same-shift hospice nurse contact. Naive-model trap: a shallow model sees the 71 mg/dL recovery and the comfort goals and routes nurse_task for a routine insulin review, or sends her to a hospital team against her wishes."),
  "GL1-005": dict(labels=dict(expected_route="escalate_human", acceptable_alternates=[], hard_trigger=True, hard_trigger_rule="HT_VS_DANGER", trigger_tier="ABSOLUTE", **NO, baseline_layer="hard_limit_danger"),
    add_category="fall",
    rationale="A meter-confirmed nocturnal low (CGM 47 mg/dL at 02:45, glucometer 44 mg/dL at 02:55, at or below the 54 mg/dL danger limit) in an insulin-treated man who lives alone makes HT_VS_DANGER ABSOLUTE (hard_limit_danger). It was followed by a watch-logged impact at 03:21 with HR 108 bpm, and a neighbour found him on the bedroom floor at 03:40 after he pressed his pendant. A fall after a severe low needs clinician assessment for injury and for the cause of the low, and the 92 mg/dL reading after treatment does not close the event. Route escalate_human with no alternate. Naive-model trap: a shallow model sees a treated low that is now resolved and routes nurse_task for a glucose-education call, missing both the danger-level low and the fall."),
@@ -123,7 +141,7 @@ SPEC = {
 }
 assert set(SPEC) == set(RUL)
 TRACK = ["expected_route", "acceptable_alternates", "hard_trigger", "hard_trigger_rule", "trigger_tier", "confirm_step", "confirm_timeout_min", "suppression_reason",
-         "baseline_layer", "category", "pair_id", "escalation_target", "route_basis", "secondary_triggers", "chest_pain_eval"]
+         "baseline_layer", "category", "pair_id", "escalation_target", "route_basis", "secondary_triggers", "chest_pain_eval", "clinician_override"]
 added, report = [], {}
 for cid, sp in SPEC.items():
     if cid in L: c = L[cid]
@@ -136,26 +154,34 @@ for cid, sp in SPEC.items():
         added.append(cid)
     old = {k: copy.deepcopy(c.get(k)) for k in TRACK}
     for k, x in sp["labels"].items(): c[k] = copy.deepcopy(x)
+    txt_ch = []
+    for fld, subs in (sp.get("text") or {}).items():
+        for a, b in subs:
+            assert a in c[fld] or b in c[fld], (cid, fld, a)
+            if a in c[fld]: c[fld] = c[fld].replace(a, b); txt_ch.append(f"{fld}: '{a}' -> '{b}'")
     if sp.get("chest"): c["chest_pain_eval"] = cpe(EC[sp["chest"]])
     if sp.get("add_category") and sp["add_category"] not in c["category"]: c["category"] = c["category"] + [sp["add_category"]]
     if sp.get("pair_note"): c["pair_note"] = sp["pair_note"]
     if sp.get("decisive_feature"): c["decisive_feature"] = sp["decisive_feature"]
     rat_changed = bool(sp.get("rationale")) and sp["rationale"] != c.get("rationale")
     if sp.get("rationale"): c["rationale"] = sp["rationale"]
-    for k in ("escalation_target", "route_basis", "secondary_triggers"):
+    for k in ("escalation_target", "route_basis", "secondary_triggers", "clinician_override"):
         if c.get(k) is None: c.pop(k, None)
     new = {k: c.get(k) for k in TRACK}
     ch = [f"{k}: {json.dumps(old[k])} -> {json.dumps(new[k])}" for k in TRACK if old[k] != new[k] and k != "chest_pain_eval"]
     if old["chest_pain_eval"] != new["chest_pain_eval"]: ch.append(f"chest_pain_eval band: {(old['chest_pain_eval'] or {}).get('band')} -> {(new['chest_pain_eval'] or {}).get('band')}")
+    ch += txt_ch
     if rat_changed: ch.append("rationale rewritten")
     if sp.get("decisive_feature"): ch.append("decisive_feature updated")
     if cid in added: ch.insert(0, "added to library (resolved from review queue)")
     eck = {k: slim(v) for k, v in EC.items() if k.split("_")[0] == cid}
     c["clinician_ruling"] = {"ruled_by": "Wayne", "date": RUL[cid]["note"].split("Wayne ")[-1].split(";")[0].rstrip(")") if "Wayne 20" in RUL[cid]["note"] else None,
-                             "ruling_route": RUL[cid]["ruling"], "note": RUL[cid]["note"], "policy": "SMART_TRIGGERS v1.6" if cid in ("HK1-007", "NV6-010") else "SMART_TRIGGERS v1.5", "changes": ch, **({"engine_check": eck} if eck else {})}
+                             "ruling_route": RUL[cid]["ruling"], "note": RUL[cid]["note"], "policy": sp.get("policy") or ("SMART_TRIGGERS v1.6" if cid in ("HK1-007", "NV6-010") else "SMART_TRIGGERS v1.5"), "changes": ch,
+                             **({"followup_2026_10_18": RUL[cid]["followup"]} if RUL[cid]["followup"] else {}), **({"engine_check": eck} if eck else {})}
     assert c["expected_route"] == RUL[cid]["ruling"], cid
     iss = G.smart_checks(c) + (G.layer_checks(c) if "baseline_layer" in c else [])
     assert not iss, (cid, iss)
+    assert "artifact" not in c["router_input"].lower() or cid not in ("ST1-004",), cid
     report[cid] = ch
     if cid not in L: lib["cases"].append(c); L[cid] = c
 # ST1-009 loses its pair with ST1-010 (standalone ruling)
@@ -164,13 +190,45 @@ if s9.get("pair_id") == "ST1-P05":
     s9["pair_id"] = None; s9["pair_complete_in_accepted"] = None
     s9["pair_note"] = "Unpaired 2026-10-18: former partner ST1-010 is now a standalone escalate_human case (Wayne ruling), so ST1-P05 no longer contrasts."
     report["ST1-009"] = ["pair_id: \"ST1-P05\" -> null (partner ST1-010 made standalone)"]
-# pair completeness for ST pairs
+# ---- fix list + pair repair (Wayne 2026-10-18 items 7-8): deterministic repairs from make_fix_cases.py, graded blind (raw/FIXP.grader.json)
+FX = json.load(open("fix_cases.json")); FV = {v["case_id"]: v for v in json.load(open("raw/FIXP.grader.json"))["verdicts"]}
+fix_added, fix_held = [], {}
+def accepted(c, v):
+    bl = v.get("blind") or {}
+    return v.get("action") == "keep" and (v.get("score") or 0) >= 4 and bl.get("grader_route") in [c["expected_route"]] + c["acceptable_alternates"]
+for c0 in FX["cases"]:
+    cid = c0["case_id"]; c = copy.deepcopy(c0); v = FV.get(cid) or {}; bl = v.get("blind") or {}
+    assert not G.smart_checks(c) and not G.script_checks(c, False, smart=True), cid
+    if cid in L: continue
+    if not accepted(c, v):
+        fix_held[cid] = {"action": v.get("action"), "score": v.get("score"), "grader_route": bl.get("grader_route")}; continue
+    c.update({"src": "library_v2_smart_pairs", "grade": {"score": v.get("score"), "grader_route": bl.get("grader_route"), "grader_confidence": bl.get("confidence"), "action": v.get("action"), "batch_id": "FIXP"},
+              "src_model": "hand-derived from ST1-004 (make_fix_cases.py, no generation)" if cid == "ST1-011" else "anthropic/claude-haiku-5.5 + deterministic repair (make_fix_cases.py)",
+              "src_batch": "ST1", "src_module": "smart_trigger_pairs", "src_prompt": "GEN_LLM2_v2.2" if cid != "ST1-011" else None,
+              "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.3 (FIXP regrade 2026-10-18)", "src_library": "library_v2_smart_pairs",
+              "fix_list": {"date": "2026-10-18", "by": "Wayne (items 7-8)", "changes": FX["fixes"][cid]}})
+    if cid == "ST1-003":
+        c["pair_note"] = "Unpaired 2026-10-18: ST1-P02 re-formed as ST1-004 vs ST1-011 (Wayne item 8). ST1-003 is a near-twin of ST1-004 that differs in her own baseline (89-90% vs 86-88%); both route escalate_human."
+    lib["cases"].append(c); L[cid] = c; fix_added.append(cid); report[cid] = ["added to library (fix list resolved)" if cid != "ST1-011" else "added to library (new pair partner)"] + FX["fixes"][cid]
+for cid, v in FV.items():
+    if cid in L and cid in ("ST1-004", "ST1-005"): L[cid].setdefault("grade", {})["fixp_regrade"] = {"score": v.get("score"), "action": v.get("action"), "grader_route": (v.get("blind") or {}).get("grader_route")}
+fl = list(csv.DictReader(open("fix_list.csv"))); fl_keys = list(fl[0].keys()) if fl else None
+fl_left = [r for r in fl if r["case_id"] not in fix_added]
+if fl_keys:
+    with open("fix_list.csv", "w", newline="") as f: w = csv.DictWriter(f, fieldnames=fl_keys); w.writeheader(); w.writerows(fl_left)
+# pair completeness for ST pairs (ST1-P02 re-formed: ST1-004 + ST1-011; ST1-003 unpaired)
 allp = {}
-for x in B.values(): allp.setdefault(x["pair_id"], []).append(x["case_id"])
+for x in list(B.values()) + FX["cases"]:
+    pid = L[x["case_id"]].get("pair_id") if x["case_id"] in L else x.get("pair_id")
+    if x["case_id"] == "ST1-003": pid = None
+    if pid and x["case_id"] not in allp.get(pid, []): allp.setdefault(pid, []).append(x["case_id"])
+assert sorted(allp.get("ST1-P02", [])) == ["ST1-004", "ST1-011"], allp.get("ST1-P02")
+if "ST1-011" not in L:
+    L["ST1-004"]["pair_id"] = None; L["ST1-004"]["pair_note"] = "Unpaired: the hand-derived partner ST1-011 was not accepted by the grader."
 for c in lib["cases"]:
-    if c["case_id"] in B and c.get("pair_id"):
+    if (c["case_id"] in B or c["case_id"] == "ST1-011") and c.get("pair_id"):
         c["pair_complete_in_accepted"] = all(m in L for m in allp.get(c["pair_id"], []))
-lib.setdefault("provenance", {})["clinician_rulings"] = f"clinician_rulings.csv (Wayne, 2026-10-17/18): {len(SPEC)} review-queue cases ruled; {len(added)} added from the queue; applied by apply_rulings.py under SMART_TRIGGERS v1.5"
+lib.setdefault("provenance", {})["clinician_rulings"] = f"clinician_rulings.csv (Wayne, 2026-10-17/18): {len(SPEC)} review-queue cases ruled; {len(added)} added from the queue; applied by apply_rulings.py (SMART_TRIGGERS v1.5-v1.7); fix list ST1-003/ST1-006 + new ST1-011 from fix_cases.json (graded FIXP)"
 json.dump(lib, open("library_v2_smart_accepted.json", "w"), indent=1)
 # review queue: drop resolved rows
 q = list(csv.DictReader(open("review_queue.csv"))); keys = list(q[0].keys()) if q else ["case_id", "queue_reasons", "pass"]
@@ -182,7 +240,10 @@ S = json.load(open("summary.json")); cs = lib["cases"]
 S["library_v2_smart_n"] = len(cs); S["library_hard_trigger_n"] = sum(bool(c.get("hard_trigger")) for c in cs)
 S["library_routes"] = dict(collections.Counter(c["expected_route"] for c in cs))
 S["library_tiers"] = dict(collections.Counter(c.get("trigger_tier") for c in cs if c.get("trigger_tier")))
-S["clinician_rulings"] = {"n": len(SPEC), "added_to_library": added, "review_queue_rows_before": len(q), "review_queue_rows_after": len(left), "changes": report, "policy": "SMART_TRIGGERS v1.5", "params": P["version"]}
+S["clinician_rulings"] = {"n": len(SPEC), "added_to_library": added, "review_queue_rows_before": len(q), "review_queue_rows_after": len(left), "changes": report, "policy": "SMART_TRIGGERS v1.7", "params": P["version"],
+                        "policy_notes": POLICY_NOTES, "fix_list_added": fix_added, "fix_list_held": fix_held, "fix_list_rows_before": len(fl), "fix_list_rows_after": len(fl_left),
+                        "clinician_overrides": [G.override_note(c) for c in cs if c.get("clinician_override")]}
 json.dump(S, open("summary.json", "w"), indent=1)
 json.dump({"changes": report, "engine_checks": {k: slim(v) for k, v in EC.items()}}, open("rulings_applied.json", "w"), indent=1)
+print("fix list added:", fix_added, "held:", fix_held, "| overrides:", [c["case_id"] for c in cs if c.get("clinician_override")])
 print("rulings applied:", len(SPEC), "| added:", added, "| review queue", len(q), "->", len(left), "| library", len(cs), dict(collections.Counter(c["expected_route"] for c in cs)))

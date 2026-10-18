@@ -156,4 +156,11 @@ if __name__ == "__main__":
             cs = [L[i] for i in ("AC1-002", "AC1-012", "AC2-005")]
             o = grade("CPRL2", cs, {"n": 3, "purpose": "relabel QA of chest-pain cases after the decided crescendo rule (AC1-002/AC1-012 are a near-miss pair). No route mix or minimums; novelty not in scope.", "routes": None, "hard_plus_adversarial_min_pct": 0, "minimums": {}}, [], GRADER3)
             if o: json.dump(o, open("raw/CPRL2.grader.json", "w"), indent=1)
+    elif step == "fixp":   # blind v1.3 grade of the fix-list repairs + hand-derived ST1-011 partner (Wayne 2026-10-18 items 7-8)
+        if not os.path.exists("raw/FIXP.grader.json"):
+            F = json.load(open("fix_cases.json")); cs = F["cases"] + F["grade_context"]
+            ids = {c["case_id"] for c in cs}
+            dnr = [short(c.get("decisive_feature"), (c.get("category") or ["?"])[0]) for c in json.load(open("library_v2_smart_accepted.json"))["cases"] if c["case_id"] not in ids]
+            o = grade("FIXP", cs, {"n": len(cs), "purpose": "QA of repaired and hand-derived cases. Near-miss pairs: ST1-P02 = ST1-004 vs ST1-011 (should differ only in the acute decompensation signs); ST1-P03 = ST1-005 vs ST1-006 (timed contact inside the gap). ST1-003 is a standalone case. No route mix or minimums.", "routes": None, "hard_plus_adversarial_min_pct": 0, "minimums": {}}, dnr, GRADER3)
+            if o: json.dump(o, open("raw/FIXP.grader.json", "w"), indent=1)
     log(f"STEP {step} end spend=${spend():.3f}")
