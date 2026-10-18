@@ -34,8 +34,12 @@ def test_stale_fingerstick_outside_window_is_ignored():
     d = ev(52, {"overnight": True, "pressure_documented": True, "fingerstick": {"value": 110, "minutes_apart": 240}})
     assert d["tier"] == "ARTIFACT"
 def test_goals_of_care_still_apply_to_confirmed_low():
-    d = ev(46, {"symptoms": True}, goals="comfort_only")
-    assert d["tier"] == "SUPPRESSED" and d["reason"] == "goals_of_care" and d["route"] == "nurse_task"
+    # v1.5 hospice narrowing (Wayne 2026-10-18): a single asymptomatic danger low is still suppressed to the same-shift hospice nurse ...
+    d = ev(46, {"fingerstick": {"value": 45, "minutes_apart": 5}}, goals="comfort_only")
+    assert d["tier"] == "SUPPRESSED" and d["reason"] == "goals_of_care" and d["route"] == "nurse_task" and d["notify"] == "hospice_nurse_same_shift"
+    # ... but a SYMPTOMATIC low is an urgent, treatable, goal-consistent comfort problem: not suppressed, urgent hospice-nurse page now
+    s = ev(46, {"symptoms": True}, goals="comfort_only")
+    assert s["tier"] == "ABSOLUTE" and s["route"] == "escalate_human" and s["escalation_target"] == "hospice_nurse" and s["notify"] == "hospice_nurse_urgent_page"
 def test_rule_only_applies_at_or_below_danger_and_only_for_cgm():
     assert ev(60, {"pressure_documented": True})["tier"] not in ("ARTIFACT", "ABSOLUTE")
     b = T.Baseline("p", 0.0, P)

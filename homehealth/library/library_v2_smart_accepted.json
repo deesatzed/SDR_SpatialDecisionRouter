@@ -4160,18 +4160,18 @@
     "longest_gap_h": 1
    },
    "router_input": "Age band 75-79, F, Fitzpatrick I-IV, lives with spouse. PMH: stable exertional angina on medication, hypertension, CKD 3a. Walks outdoors with rollator, independent ADLs. Meds: aspirin 81 mg daily, atorvastatin 40 mg nightly, amlodipine 5 mg daily, nitroglycerin SL 0.4 mg as needed; no recent medication changes. Devices: watch, BP cuff. Baseline 30 days: rest HR 70, HRV 34 ms, sleep 7.0 h, steps 3800, night SpO2 minimum 93%, skin temperature deviation 0.0 C, seated BP 130/78. Last 7 days: Day -7 to -1 rest HR 66-72, steps 3200-4100, sleep 6.6-7.2 h, night SpO2 minimum 92-94%, skin temperature deviation 0.0 C. Day 0 20:00-20:10 chest tightness while carrying laundry up stairs, about 10 minutes; watch HR peak 88 during climb and 76 at 20:30; seated BP 130/78 at 20:15; single-lead ECG at 20:08 sinus rhythm, no ST change; eased after sitting, no further symptoms by 21:30. Spouse text 20:50: 'same tight feeling as before, went off when she sat down'. Wear time 94% over 7 days; missing 0 h in last 48; longest gap 1 h.",
-   "expected_route": "wake_specialist",
+   "expected_route": "nurse_task",
    "acceptable_alternates": [
-    "escalate_human"
+    "wake_specialist"
    ],
-   "hard_trigger": false,
-   "hard_trigger_rule": null,
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
    "subtle_deterioration": false,
    "difficulty": "adversarial",
    "category": [
     "acs"
    ],
-   "rationale": "Exertional chest tightness in a patient with known stable angina needs same-day clinician review, but this episode resolved within about 10 minutes of sitting. The watch recorded a peak HR of 88 bpm, seated BP stayed at 130/78 (the 30-day baseline), and the single-lead ECG showed sinus rhythm with no ST change. No vital sign moved during the symptom, which is the decisive fact. Naive-model trap: a shallow model that sees chest tightness goes straight to escalate_human, but the chest-pain trigger needs an ECG or vital-sign change, and neither is present, so wake_specialist fits.",
+   "rationale": "Exertional chest tightness in a patient with known stable angina, the same tight feeling as before, eased within about 10 minutes of sitting. The watch peak HR was 88 bpm, seated BP stayed at 130/78 (her 30-day baseline) and the single-lead ECG showed sinus rhythm with no ST change, so every vital is in band D and there are no red flags: HT_CHEST_PAIN_VITALS fires but is SUPPRESSED with below_band_threshold, and the route is nurse_task (a call to review her angina pattern and medication), with wake_specialist as the alternate. Naive-model trap: a shallow model that sees chest tightness goes straight to escalate_human, but a typical, stable episode with unchanged vitals and frequency is band D.",
    "decisive_feature": "Pair difference vs HK5-002: exertional chest tightness Day 0 with peak HR 88 and seated BP 130/78 at baseline, sinus ECG with no ST change.",
    "src": "library_v1",
    "grade": {
@@ -4200,17 +4200,46 @@
    "src_prompt": "GEN_LLM2_v2.1+GEN_LLM3_hardslice",
    "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.1",
    "src_library": "library_v1",
-   "trigger_tier": null,
+   "trigger_tier": "SUPPRESSED",
    "confirm_step": null,
    "confirm_timeout_min": null,
-   "suppression_reason": null,
+   "suppression_reason": "below_band_threshold",
    "chest_pain_eval": {
     "band": "D",
     "raw_band": "D",
     "modifiers": [],
     "tier": "LOG_ONLY",
     "timeout_min": null,
-    "note": "non-trigger case: evaluator output recorded, labels NOT changed"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder (net-then-clamp)"
+   },
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-17",
+    "ruling_route": "nurse_task",
+    "note": "band D stable angina; no escalate alternate (Wayne 2026-10-17)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "expected_route: \"wake_specialist\" -> \"nurse_task\"",
+     "acceptable_alternates: [\"escalate_human\"] -> [\"wake_specialist\"]",
+     "hard_trigger: false -> true",
+     "hard_trigger_rule: null -> \"HT_CHEST_PAIN_VITALS\"",
+     "trigger_tier: null -> \"SUPPRESSED\"",
+     "suppression_reason: null -> \"below_band_threshold\"",
+     "chest_pain_eval band: D -> D",
+     "rationale rewritten"
+    ],
+    "engine_check": {
+     "HK5-001": {
+      "rule": "HT_CHEST_PAIN_VITALS",
+      "tier": "LOG_ONLY",
+      "band": "D",
+      "raw_band": "D",
+      "modifiers": [],
+      "reason": "below_band_threshold",
+      "route": "nurse_task",
+      "page": false
+     }
+    }
    }
   },
   {
@@ -4359,7 +4388,7 @@
     ],
     "tier": "CONFIRM_FIRST",
     "timeout_min": 30,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.4-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
    }
   },
   {
@@ -4979,18 +5008,16 @@
    },
    "router_input": "Woman aged 80-84, Fitzpatrick I-IV, lives alone. PMH AFib, CKD 3b, prior hip fracture; walks indoors with frame, independent ADLs. Meds: edoxaban 30 mg daily (started Day -400), metoprolol succinate 47.5 mg daily (started Day -300), furosemide 20 mg daily (started Day -200); no recent changes. Devices: watch, scale. Baseline 30 d: resting HR 70 bpm, HRV 34 ms, sleep 6.9 h, steps 2600, night SpO2 minimum 92%, weight 66.4 kg. Days -6 to -1: steps 2400-2800, resting HR 68-72, sleep 6.5-7.2 h, scale weight 66.2-66.5 kg. Day 0 03:10: watch on-wrist, impact event logged; HR 124 bpm 03:12-03:20 and 96 bpm at 04:05; steps 0 from 03:10 to 03:50, 14 steps 03:50-06:40, 340 steps by 10:00. Note: she did not answer calls 03:10-04:10 Day 0; a neighbour phoned at 04:10 and she said she got up on her own and is fine. Wear 92% of 7 d. Flags: watch on-wrist at impact event Day 0 03:10; charger contact Day -4 22:00-06:30. Missing 0 h in last 48 h; longest gap 1 h.",
    "expected_route": "escalate_human",
-   "acceptable_alternates": [
-    "wake_specialist"
-   ],
-   "hard_trigger": false,
-   "hard_trigger_rule": null,
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
    "subtle_deterioration": false,
    "difficulty": "adversarial",
    "category": [
     "fall",
     "conflicting"
    ],
-   "rationale": "The watch logged an impact at 03:10 while it was on the wrist, followed by a heart-rate rise to 124 bpm and no steps for 40 minutes, in a woman taking edoxaban with CKD 3b and a prior hip fracture. Her 04:10 reply that she got up on her own does not establish whether she reached the floor, so this is a possible fall rather than a confirmed one and hard_trigger stays false. A head injury or bleed on a DOAC can be silent, and HR had not fully settled by 04:05, so a clinician should review her now rather than wait for a routine call. Naive-model trap: a shallow model may treat the impact as a confirmed fall and set the hard trigger, or treat the 'I'm fine' reply as reassurance and silent_log it, when the on-wrist signature with the HR surge makes escalate_human the honest route.",
+   "rationale": "The watch logged an impact at 03:10 while it was on the wrist, followed by HR 124 bpm from 03:12 to 03:20 and no steps for 40 minutes, in a woman taking edoxaban with CKD 3b and a prior hip fracture who lives alone. She did not answer calls from 03:10 to 04:10, and at 04:10 she told a neighbour she got up on her own, which confirms she went down: HT_FALL_ANTICOAG fires and passes all four checks, and the fall is already confirmed (confirm_step already_confirmed), so the route is escalate_human now with no alternate. A head injury or bleed on a DOAC can be silent, and HR was still 96 bpm at 04:05 against her 68-72 bpm range. Naive-model trap: a shallow model treats the 'I'm fine' reply as reassurance and logs it, when the same reply confirms a fall on an anticoagulant.",
    "decisive_feature": "Impact logged while the watch was on-wrist, with HR 124 bpm afterwards and no steps for 40 minutes, in an edoxaban-treated patient.",
    "src": "library_v1",
    "grade": {
@@ -5019,10 +5046,25 @@
    "src_prompt": "GEN_LLM2_v2.1+GEN_LLM3_hardslice",
    "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.1",
    "src_library": "library_v1",
-   "trigger_tier": null,
-   "confirm_step": null,
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
    "confirm_timeout_min": null,
-   "suppression_reason": null
+   "suppression_reason": null,
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-17",
+    "ruling_route": "escalate_human",
+    "note": "confirmed fall (already_confirmed); no alternates; fix rationale contradiction (Wayne 2026-10-17)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "acceptable_alternates: [\"wake_specialist\"] -> []",
+     "hard_trigger: false -> true",
+     "hard_trigger_rule: null -> \"HT_FALL_ANTICOAG\"",
+     "trigger_tier: null -> \"CONFIRM_FIRST\"",
+     "confirm_step: null -> \"already_confirmed\"",
+     "rationale rewritten"
+    ]
+   }
   },
   {
    "case_id": "HK6-002",
@@ -5087,18 +5129,17 @@
    "router_input": "Woman aged 80-84, Fitzpatrick I-IV, lives alone. PMH AFib, CKD 3b, prior hip fracture; walks indoors with frame, independent ADLs. Meds: edoxaban 30 mg daily (started Day -400), metoprolol succinate 47.5 mg daily (started Day -300), furosemide 20 mg daily (started Day -200); no recent changes. Devices: watch, scale. Baseline 30 d: resting HR 70 bpm, HRV 34 ms, sleep 6.9 h, steps 2600, night SpO2 minimum 92%, weight 66.4 kg. Days -6 to -1: steps 2400-2800, resting HR 68-72, sleep 6.5-7.2 h, scale weight 66.2-66.5 kg. Day 0 02:55-04:30: watch off-wrist on bedside charger, no HR recorded; impact event logged 03:10; steps 0 from 03:10 to 03:50, 14 steps 03:50-06:40, 340 steps by 10:00. Note: she did not answer calls 03:10-04:10 Day 0; a neighbour phoned at 04:10 and she said she got up on her own and is fine. Wear 91% of 7 d. Flags: watch off-wrist 02:55-04:30 Day 0 (bedside charger); charger contact Day -4 22:00-06:30. Missing 2 h in last 48 h; longest gap 2 h.",
    "expected_route": "wake_specialist",
    "acceptable_alternates": [
-    "nurse_task",
-    "escalate_human"
+    "nurse_task"
    ],
-   "hard_trigger": false,
-   "hard_trigger_rule": null,
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
    "subtle_deterioration": false,
    "difficulty": "adversarial",
    "category": [
     "fall",
     "conflicting"
    ],
-   "rationale": "The impact event was logged while the watch sat off-wrist on the bedside charger, so the accelerometer record has no heart-rate or wear-state confirmation for the event window. The patient's 04:10 reply that she got up on her own is not an observed account, and no ground contact is confirmed. Because she takes edoxaban, a possible unwitnessed fall still needs a same-day device check and clinician phone review rather than a silent log. Naive-model trap: a shallow model sees 'impact' plus 'anticoagulant' and escalates as a hard-trigger fall, even though the watch was not on the body and the trigger requires a confirmed fall, so wake_specialist fits.",
+   "rationale": "The impact event was logged at 03:10 while the watch sat off-wrist on the bedside charger, with no HR recorded from 02:55 to 04:30, so the impact reading is unreliable and HT_FALL_ANTICOAG is SUPPRESSED with unreliable_reading. She did not answer calls from 03:10 to 04:10, and her 04:10 reply to a neighbour that she got up on her own is not an observed account and, without on-wrist data, does not establish a fall. Because she takes edoxaban and lives alone, a possible unwitnessed fall still needs a same-day device check and clinician phone review (wake_specialist), with nurse_task as the alternate. Naive-model trap: a shallow model sees 'impact' plus 'anticoagulant' and treats it as a confirmed fall for a human now, even though the watch was not on the body.",
    "decisive_feature": "Impact registered by a watch that was off-wrist on the bedside charger with no heart-rate data during the event, in an edoxaban-treated patient.",
    "src": "library_v1",
    "grade": {
@@ -5127,10 +5168,25 @@
    "src_prompt": "GEN_LLM2_v2.1+GEN_LLM3_hardslice",
    "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.1",
    "src_library": "library_v1",
-   "trigger_tier": null,
+   "trigger_tier": "SUPPRESSED",
    "confirm_step": null,
    "confirm_timeout_min": null,
-   "suppression_reason": null
+   "suppression_reason": "unreliable_reading",
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-18",
+    "ruling_route": "wake_specialist",
+    "note": "SUPPRESSED unreliable_reading (watch on charger); drop escalate_human alternate; keep nurse_task alternate (Wayne 2026-10-18)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "acceptable_alternates: [\"nurse_task\", \"escalate_human\"] -> [\"nurse_task\"]",
+     "hard_trigger: false -> true",
+     "hard_trigger_rule: null -> \"HT_FALL_ANTICOAG\"",
+     "trigger_tier: null -> \"SUPPRESSED\"",
+     "suppression_reason: null -> \"unreliable_reading\"",
+     "rationale rewritten"
+    ]
+   }
   },
   {
    "case_id": "HK6-003",
@@ -6717,15 +6773,15 @@
    "acceptable_alternates": [
     "wake_specialist"
    ],
-   "hard_trigger": false,
-   "hard_trigger_rule": null,
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
    "subtle_deterioration": false,
    "difficulty": "adversarial",
    "category": [
     "fall"
    ],
-   "rationale": "The watch impact at 02:39, the bed exit at 02:38 and heart rate 124 bpm mirror the floor-fall case, but the spouse reports she caught the door frame and stayed on her feet, so no ground contact occurred and the anticoagulant fall rule is not met. Heart rate falls to 112 bpm by 02:55 and the patient says she feels fine, which supports a next-day nurse call to re-check balance, dizziness and bleeding signs. Naive-model trap: escalate_human, because any impact logged on dabigatran looks like a hard-trigger fall, when the decisive difference is the absence of floor contact.",
-   "decisive_feature": "Same night impact log and HR 124 bpm as the fall case, but the spouse reports she caught a door frame and stayed on her feet, with no floor contact.",
+   "rationale": "The watch impact at 02:39, the bed exit at 02:38 and HR 124 bpm mirror the floor-fall case, but the spouse saw her catch the bathroom door frame and stay on her feet, so there was no fall: HT_FALL_ANTICOAG is SUPPRESSED with explained, and the near-fall itself needs a next-day nurse call about balance, dizziness and bleeding signs on dabigatran (nurse_task, wake_specialist as alternate). Separately, HR was still 112 bpm at 02:55 against her 72 bpm baseline, in a woman with atrial fibrillation on no rate-control drug, which could be AF with a rapid ventricular rate: a second trigger (HT_VS_BASELINE, CONFIRM_FIRST) asks for an HR recheck and escalates to a human if the rate stays high. Naive-model trap: a shallow model escalates the near-fall because any impact on dabigatran looks like a hard trigger, or logs it because she feels fine, missing the persistent fast heart rate.",
+   "decisive_feature": "The spouse saw her catch the door frame and stay on her feet, so the impact was a near-fall, but HR was still 112 bpm at 02:55 against her 72 bpm baseline with atrial fibrillation.",
    "src": "library_v1",
    "grade": {
     "score": 5,
@@ -6753,10 +6809,52 @@
    "src_prompt": "GEN_LLM2_v2.1+GEN_LLM3_hardslice",
    "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.1",
    "src_library": "library_v1",
-   "trigger_tier": null,
+   "trigger_tier": "SUPPRESSED",
    "confirm_step": null,
    "confirm_timeout_min": null,
-   "suppression_reason": null
+   "suppression_reason": "explained",
+   "secondary_triggers": [
+    {
+     "hard_trigger_rule": "HT_VS_BASELINE",
+     "trigger_tier": "CONFIRM_FIRST",
+     "confirm_step": "device_recheck",
+     "confirm_timeout_min": 10,
+     "if_confirmed_route": "escalate_human",
+     "if_refuted_route": "nurse_task",
+     "purpose": "HR recheck for possible AF with rapid ventricular rate",
+     "evidence": "HR 124 at 02:40, 118 at 02:44, 112 at 02:55 vs 30-day resting baseline 72 (7-day 70-74); atrial fibrillation, no rate-control drug"
+    }
+   ],
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-18",
+    "ruling_route": "nurse_task",
+    "note": "fall trigger SUPPRESSED explained (witnessed near-fall); ADD separate CONFIRM_FIRST HR recheck for possible AFib RVR (HR 112 at 02:55 vs baseline 72); escalate if recheck stays high (Wayne 2026-10-18)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "hard_trigger: false -> true",
+     "hard_trigger_rule: null -> \"HT_FALL_ANTICOAG\"",
+     "trigger_tier: null -> \"SUPPRESSED\"",
+     "suppression_reason: null -> \"explained\"",
+     "secondary_triggers: null -> [{\"hard_trigger_rule\": \"HT_VS_BASELINE\", \"trigger_tier\": \"CONFIRM_FIRST\", \"confirm_step\": \"device_recheck\", \"confirm_timeout_min\": 10, \"if_confirmed_route\": \"escalate_human\", \"if_refuted_route\": \"nurse_task\", \"purpose\": \"HR recheck for possible AF with rapid ventricular rate\", \"evidence\": \"HR 124 at 02:40, 118 at 02:44, 112 at 02:55 vs 30-day resting baseline 72 (7-day 70-74); atrial fibrillation, no rate-control drug\"}]",
+     "rationale rewritten",
+     "decisive_feature updated"
+    ],
+    "engine_check": {
+     "HK7-009": {
+      "rule": "HT_VS_BASELINE",
+      "tier": "CONFIRM_FIRST",
+      "reason": "baseline_deviation",
+      "route": "escalate_human",
+      "page": "if_confirmed_or_timeout",
+      "recheck": {
+       "step": "patient_call",
+       "timeout_min": 10
+      },
+      "z": 8.99
+     }
+    }
+   }
   },
   {
    "case_id": "HK7-010",
@@ -9134,11 +9232,9 @@
    },
    "router_input": "80-84 F with type 2 diabetes and HFpEF, living with adult child. Devices: watch, ring, CGM, glucometer (no bp cuff, no scale). Baseline: HR 72, HRV 31 ms, sleep 7.0 h, steps 2200, night SpO2 min 94%, weight not measured (no scale), glucose mean 150 mg/dL. Meds: insulin glargine 20 units at bedtime (started Day -6), metformin 500 mg BID (Day -400). Recent change: insulin glargine dose increased from 16 units to 20 units at bedtime on Day -6 (the night clocks sprang forward). Day -7: CGM mean about 150 mg/dL, fasting fingersticks 130-145 mg/dL. Day -5 to Day 0: nocturnal CGM readings 50-62 mg/dL between 01:00-05:00; fingerstick at 05:00 on Day 0 = 58 mg/dL; caregiver found the patient confused and sweaty at 05:30 on Day 0; daytime glucose 110-140 mg/dL; HR 70-80 bpm; no fever. Note: adult child reports the clocks sprang forward and the evening insulin may have been given too close to the previous night's dose; patient was confused and sweaty early this morning. Wear time 94%. No gaps.",
    "expected_route": "escalate_human",
-   "acceptable_alternates": [
-    "wake_specialist"
-   ],
-   "hard_trigger": false,
-   "hard_trigger_rule": null,
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
    "subtle_deterioration": false,
    "difficulty": "hard",
    "category": [
@@ -9146,7 +9242,7 @@
     "noise",
     "med_change"
    ],
-   "rationale": "The daylight-saving transition provides a plausible explanation for the patient's grogginess, but the objective data show a real problem: the bedtime insulin glargine was increased to 20 units on Day -6, followed by nocturnal CGM readings of 50-62 mg/dL, a confirmatory fingerstick of 58 mg/dL, and observed confusion with sweating. This is symptomatic hypoglycemia needing prompt clinician review. Naive-model trap: attributing the confusion and low glucose to the time change and missing the insulin dose-related nocturnal hypoglycemia.",
+   "rationale": "The daylight-saving transition offers a plausible explanation for her grogginess, but the objective data show a real problem: bedtime insulin glargine was increased to 20 units on Day -6, followed by nocturnal CGM readings of 50-62 mg/dL (at or below the 54 mg/dL danger limit), a fingerstick of 58 mg/dL at 05:00, and the caregiver finding her confused and sweaty at 05:30. Hypoglycaemia symptoms are checked before a fingerstick that reads just above the limit, so this is symptomatic hypoglycaemia: HT_VS_DANGER is ABSOLUTE and the route is escalate_human with no alternate. Naive-model trap: attributing the confusion and low glucose to the time change, or reading the 58 mg/dL fingerstick as refuting the CGM low, and missing the insulin-dose-related nocturnal hypoglycaemia.",
    "decisive_feature": "Insulin glargine dose increase to 20 units at bedtime on Day -6 followed by confirmed nocturnal hypoglycemia (CGM 50-62 mg/dL, fingerstick 58 mg/dL) with observed confusion and sweating.",
    "src": "library_v1",
    "grade": {
@@ -9175,10 +9271,33 @@
    "src_prompt": "GEN_LLM2_v2.1",
    "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.1",
    "src_library": "library_v1",
-   "trigger_tier": null,
+   "trigger_tier": "ABSOLUTE",
    "confirm_step": null,
    "confirm_timeout_min": null,
-   "suppression_reason": null
+   "suppression_reason": null,
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-18",
+    "ruling_route": "escalate_human",
+    "note": "ABSOLUTE (symptomatic hypoglycemia; symptoms precede fingerstick check); no alternates; keep categories incl noise (Wayne 2026-10-18)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "acceptable_alternates: [\"wake_specialist\"] -> []",
+     "hard_trigger: false -> true",
+     "hard_trigger_rule: null -> \"HT_VS_DANGER\"",
+     "trigger_tier: null -> \"ABSOLUTE\"",
+     "rationale rewritten"
+    ],
+    "engine_check": {
+     "NV2-015": {
+      "rule": "HT_VS_DANGER",
+      "tier": "ABSOLUTE",
+      "reason": "hard_limit_danger_symptomatic",
+      "route": "escalate_human",
+      "page": true
+     }
+    }
+   }
   },
   {
    "case_id": "NV2-020",
@@ -14363,7 +14482,7 @@
     ],
     "tier": "CONFIRM_FIRST",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.4-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
    },
    "relabel": {
     "model": "deterministic (trigger_eval.evaluate_chest_pain + decided crescendo rule)",
@@ -14484,7 +14603,7 @@
     "modifiers": [],
     "tier": "LOG_ONLY",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.4-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
    },
    "grade": {
     "grader": "google/gemini-4-argon GRADER_LLM3_v1.3 rev c",
@@ -14653,7 +14772,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.4-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
    },
    "pair_note": "Unpaired 2026-10-17: former partner AC1-002 now also escalates (crescendo rule); AC1-P01 is now AC1-002 (crescendo) vs AC1-012 (stable)."
   },
@@ -14904,11 +15023,12 @@
     "raw_band": "B",
     "modifiers": [
      "multi-vital (>=2 at band B or worse) +1",
-     "red flags ['diaphoresis', 'pallor'] +2"
+     "red flags ['diaphoresis', 'pallor'] +2",
+     "net band index 5 clamped to A"
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.4-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
    }
   },
   {
@@ -15723,11 +15843,12 @@
     "band": "A",
     "raw_band": "B",
     "modifiers": [
-     "red flags ['diaphoresis', 'pallor'] +2"
+     "red flags ['diaphoresis', 'pallor'] +2",
+     "net band index 4 clamped to A"
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.4-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
    }
   },
   {
@@ -15980,7 +16101,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.4-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
    }
   },
   {
@@ -16106,7 +16227,7 @@
     ],
     "tier": "CONFIRM_FIRST",
     "timeout_min": 15,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.4-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
    },
    "relabel": {
     "model": "deterministic (trigger_eval.evaluate_chest_pain + decided crescendo rule)",
@@ -22639,11 +22760,9 @@
    },
    "router_input": "Age band 78-82, female, Fitzpatrick I-IV, lives with spouse. PMH: type 2 diabetes on basal insulin, COPD, metastatic colorectal cancer with hospice enrolled Day -14. Discharged Day -11 for pneumonia. Goals: hospice comfort plan; declines hospital admission; home glucose management preferred. Function: bed-bound most of day; drinks with help. Meds: insulin glargine 14 units at bedtime (started Day -3), mirtazapine 15 mg at bedtime, acetaminophen 500 mg as needed. Changes: glargine reduced from 18 to 14 units at bedtime Day -3. Devices: CGM, watch, scale. Baseline 30 d: CGM mean 132 mg/dL, resting HR 84, HRV 20 ms, sleep 7.5 h, steps 800, night SpO2 nadir 91%, weight 58.4 kg. Last 7 d: Day -6 to -4 CGM mean 128-140 mg/dL, overnight 96-120 mg/dL, steps 150-220, weight 58.3-58.5 kg. Day -2 to -1 overnight CGM nadirs 62-74 mg/dL at 03:00, weight 58.1 kg Day -1, steps 120-180. Day 0: CGM 46 mg/dL at 02:10 with falling trend; spouse gave glucose gel 02:25; CGM 71 mg/dL at 02:45; CGM 49 mg/dL at 03:05, patient drowsy and responding only to her name. Spouse says she drank juice at 02:50, now sleeping, refuses more gel, does not want hospital. CGM sensor replaced Day -8; CGM wear 98%; longest gap 1 h.",
    "expected_route": "escalate_human",
-   "acceptable_alternates": [
-    "wake_specialist"
-   ],
-   "hard_trigger": false,
-   "hard_trigger_rule": null,
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
    "subtle_deterioration": false,
    "difficulty": "hard",
    "category": [
@@ -22651,8 +22770,8 @@
     "goals_of_care",
     "med_change"
    ],
-   "rationale": "Recurrent nocturnal hypoglycaemia on basal insulin followed a glargine cut from 18 to 14 units on Day -3: CGM 46 at 02:10, then 49 at 03:05 after gel, with drowsiness and response only to name. Hospice goals decline admission, so the human must treat at home and act now on the glucose and insulin plan rather than wait for a routine call. The 71 mg/dL reading at 02:45 is a treatment response, not resolution, since it fell again within 20 minutes. Naive-model trap: a shallow model sees the 71 mg/dL recovery and the comfort goals and routes nurse_task as a routine insulin review. Acceptable alternate is wake_specialist only if the clinician confirms a same-hour insulin review.",
-   "decisive_feature": "Recurrent nocturnal CGM 49 mg/dL after treatment with drowsiness, on glargine cut from 18 to 14 units, while declining admission.",
+   "rationale": "Recurrent nocturnal hypoglycaemia on basal insulin after a glargine cut from 18 to 14 units on Day -3: CGM 46 mg/dL at 02:10, then 49 mg/dL at 03:05 after glucose gel, with drowsiness and response only to her name. HT_VS_DANGER fires and the low is symptomatic and recurrent. Her hospice plan declines hospital admission, which suppresses hospital-directed escalation only; a recurrent symptomatic low is urgent, treatable at home and consistent with her comfort goals, so it is not suppressed: the route is escalate_human to the hospice nurse now (escalation_target hospice_nurse), not a same-shift contact, with no alternate. The 71 mg/dL reading at 02:45 was a treatment response, not resolution, since it fell again within 20 minutes. Naive-model trap: a shallow model sees the 71 mg/dL recovery and the comfort goals and routes nurse_task for a routine insulin review, or sends her to a hospital team against her wishes.",
+   "decisive_feature": "Recurrent nocturnal CGM low (46, then 49 mg/dL after gel) with drowsiness on glargine in a hospice patient: an urgent, treatable comfort problem for the hospice nurse now.",
    "src": "library_v2_fill",
    "grade": {
     "score": 5,
@@ -22677,10 +22796,47 @@
    "src_prompt": "GEN_LLM2_v2.1 (+fill module)",
    "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.1",
    "src_library": "library_v2_fill",
-   "trigger_tier": null,
+   "trigger_tier": "ABSOLUTE",
    "confirm_step": null,
    "confirm_timeout_min": null,
-   "suppression_reason": null
+   "suppression_reason": null,
+   "escalation_target": "hospice_nurse",
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-18",
+    "ruling_route": "escalate_human",
+    "note": "urgent hospice nurse page now (route to hospice); POLICY: hospice goals suppress hospital-directed escalation, not urgent treatable goal-consistent comfort issues (Wayne 2026-10-18)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "acceptable_alternates: [\"wake_specialist\"] -> []",
+     "hard_trigger: false -> true",
+     "hard_trigger_rule: null -> \"HT_VS_DANGER\"",
+     "trigger_tier: null -> \"ABSOLUTE\"",
+     "escalation_target: null -> \"hospice_nurse\"",
+     "rationale rewritten",
+     "decisive_feature updated"
+    ],
+    "engine_check": {
+     "GC2-003_0210": {
+      "rule": "HT_VS_DANGER",
+      "tier": "SUPPRESSED",
+      "reason": "goals_of_care",
+      "route": "nurse_task",
+      "page": false,
+      "notify": "hospice_nurse_same_shift"
+     },
+     "GC2-003": {
+      "rule": "HT_VS_DANGER",
+      "tier": "ABSOLUTE",
+      "reason": "hard_limit_danger_symptomatic",
+      "route": "escalate_human",
+      "page": true,
+      "escalation_target": "hospice_nurse",
+      "notify": "hospice_nurse_urgent_page",
+      "goals_basis": "hypoglycemia_symptomatic"
+     }
+    }
+   }
   },
   {
    "case_id": "GC2-004",
@@ -23842,17 +23998,16 @@
    },
    "router_input": "Male 85-89, Fitzpatrick V-VI, lives alone with personal alarm pendant. PMH: T2DM 25 y, CKD G3b, osteoarthritis, hypertension. Meds: insulin glargine 12 units at bedtime, amlodipine 5 mg daily; no recent changes. Devices: watch, CGM, glucometer, BP cuff. Baseline 30 d: resting HR 68, HRV 30 ms, sleep 6.8 h, steps 1800, night SpO2 min 93%, skin temp dev 0.0 C, CGM mean 136 mg/dL, SBP 148, DBP 82. Last 7 d: Day -4 CGM 58 mg/dL at 02:30. Day 0 CGM 47 mg/dL at 02:45; glucometer 44 mg/dL at 02:55; watch impact logged 03:21 with HR 108 bpm at 03:22 (baseline 68); glucometer 92 mg/dL at 04:30 after carbohydrate treatment; BP cuff 128/76 at 04:15. Steps 0 from 03:21 to 04:30. Patient reports he got up for the toilet, slipped on a rug and remembers the whole event. Pendant pressed 03:38; neighbour found him on bedroom floor 03:40. Wear 93%, 0 h missing last 48 h, longest gap 1 h.",
    "expected_route": "escalate_human",
-   "acceptable_alternates": [
-    "wake_specialist"
-   ],
-   "hard_trigger": false,
-   "hard_trigger_rule": null,
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
    "subtle_deterioration": false,
    "difficulty": "hard",
    "category": [
-    "hypoglycemia"
+    "hypoglycemia",
+    "fall"
    ],
-   "rationale": "A meter-confirmed 44 mg/dL nocturnal low preceded a watch-logged impact at 03:21 with HR 108 bpm, and he was found on the floor after a pendant alarm at 03:40. A fall in an insulin-treated 85-year-old who lives alone needs clinician assessment for injury and for the cause of the low. The glucose recovered to 92 mg/dL after treatment, but that does not close the event. Naive-model trap: a shallow model sees a treated low that is now resolved and routes nurse_task for a glucose-education call, missing the fall. Route escalate_human; wake_specialist is the acceptable alternate.",
+   "rationale": "A meter-confirmed nocturnal low (CGM 47 mg/dL at 02:45, glucometer 44 mg/dL at 02:55, at or below the 54 mg/dL danger limit) in an insulin-treated man who lives alone makes HT_VS_DANGER ABSOLUTE (hard_limit_danger). It was followed by a watch-logged impact at 03:21 with HR 108 bpm, and a neighbour found him on the bedroom floor at 03:40 after he pressed his pendant. A fall after a severe low needs clinician assessment for injury and for the cause of the low, and the 92 mg/dL reading after treatment does not close the event. Route escalate_human with no alternate. Naive-model trap: a shallow model sees a treated low that is now resolved and routes nurse_task for a glucose-education call, missing both the danger-level low and the fall.",
    "decisive_feature": "Watch impact at 03:21 Day 0 with HR 108 bpm after a meter-confirmed 44 mg/dL nocturnal low, in an insulin-treated patient who lives alone.",
    "src": "library_v2_fill",
    "grade": {
@@ -23878,10 +24033,36 @@
    "src_prompt": "GEN_LLM2_v2.1 (+fill module)",
    "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.1",
    "src_library": "library_v2_fill",
-   "trigger_tier": null,
+   "trigger_tier": "ABSOLUTE",
    "confirm_step": null,
    "confirm_timeout_min": null,
-   "suppression_reason": null
+   "suppression_reason": null,
+   "baseline_layer": "hard_limit_danger",
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-18",
+    "ruling_route": "escalate_human",
+    "note": "ABSOLUTE (hard_limit_danger; meter 44 + fall); no alternates; add fall category (Wayne 2026-10-18)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "acceptable_alternates: [\"wake_specialist\"] -> []",
+     "hard_trigger: false -> true",
+     "hard_trigger_rule: null -> \"HT_VS_DANGER\"",
+     "trigger_tier: null -> \"ABSOLUTE\"",
+     "baseline_layer: null -> \"hard_limit_danger\"",
+     "category: [\"hypoglycemia\"] -> [\"hypoglycemia\", \"fall\"]",
+     "rationale rewritten"
+    ],
+    "engine_check": {
+     "GL1-005": {
+      "rule": "HT_VS_DANGER",
+      "tier": "ABSOLUTE",
+      "reason": "hard_limit_danger_fingerstick_confirmed",
+      "route": "escalate_human",
+      "page": true
+     }
+    }
+   }
   },
   {
    "case_id": "GL1-006",
@@ -25810,7 +25991,7 @@
      "ST4"
     ]
    },
-   "pair_complete_in_accepted": false,
+   "pair_complete_in_accepted": true,
    "src_model": "anthropic/claude-haiku-5.5",
    "src_batch": "ST1",
    "src_module": "smart_trigger_pairs",
@@ -26020,7 +26201,7 @@
      "ST4"
     ]
    },
-   "pair_complete_in_accepted": false,
+   "pair_complete_in_accepted": true,
    "src_model": "anthropic/claude-haiku-5.5",
    "src_batch": "ST1",
    "src_module": "smart_trigger_pairs",
@@ -26030,7 +26211,7 @@
   },
   {
    "case_id": "ST1-009",
-   "pair_id": "ST1-P05",
+   "pair_id": null,
    "age_band": "70-74",
    "sex": "F",
    "skin_tone_note": "Fitzpatrick V-VI",
@@ -26119,7 +26300,7 @@
      "ST4"
     ]
    },
-   "pair_complete_in_accepted": false,
+   "pair_complete_in_accepted": null,
    "src_model": "anthropic/claude-haiku-5.5",
    "src_batch": "ST1",
    "src_module": "smart_trigger_pairs",
@@ -26134,8 +26315,9 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.4-placeholder"
-   }
+    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
+   },
+   "pair_note": "Unpaired 2026-10-18: former partner ST1-010 is now a standalone escalate_human case (Wayne ruling), so ST1-P05 no longer contrasts."
   },
   {
    "case_id": "ST2-001",
@@ -27008,7 +27190,7 @@
      "ST4"
     ]
    },
-   "pair_complete_in_accepted": false,
+   "pair_complete_in_accepted": true,
    "src_model": "anthropic/claude-haiku-5.5",
    "src_batch": "ST2",
    "src_module": "smart_trigger_pairs",
@@ -28560,6 +28742,736 @@
    "src_prompt": "GEN_LLM2_v2.3 rev b",
    "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.2",
    "src_library": "library_v2_smart_pairs"
+  },
+  {
+   "case_id": "ST1-002",
+   "pair_id": "ST1-P01",
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "HFrEF EF 35%",
+    "CKD 3a",
+    "hypertension"
+   ],
+   "function_baseline": "walks indoors with rollator, independent with bathing supervision",
+   "patient_goals": "wants hospital care if needed, prefers to stay at home",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "sacubitril-valsartan",
+     "dose": "97/103 mg BID",
+     "started_day": -300
+    },
+    {
+     "name": "metoprolol succinate",
+     "dose": "50 mg daily",
+     "started_day": -300
+    },
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -200
+    },
+    {
+     "name": "spironolactone",
+     "dose": "25 mg daily",
+     "started_day": -200
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "fingertip_oximeter",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 66,
+    "hrv_ms": 34,
+    "sleep_h": 6.5,
+    "steps": 3100,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 84.0,
+    "glucose_mean": null,
+    "sbp": 118,
+    "dbp": 72
+   },
+   "trend_last_7d": "Day -6 to -1: wrist resting SpO2 93-95%, resting HR 64-68 bpm, steps 2800-3300 per day, sleep 6.2-6.8 h, watch worn 95-97% of hours. Day -1 scale weight 84.3 kg. Day 0 10:20 watch wrist SpO2 86% at rest with motion-during-sample flag, watch HR 82 bpm. Day 0 10:24 fingertip oximeter SpO2 95%, good waveform; 10:26 repeat 95%, good waveform. Day 0 10:30 cuff 124/76 mmHg.",
+   "caregiver_or_nurse_note": "Spouse says he is sitting in the kitchen, breathing normally, no cough, no chest tightness.",
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [
+     "motion during SpO2 sample Day 0 10:20"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 75-79, male, Fitzpatrick V-VI, lives with spouse. HFrEF EF 35%, CKD 3a, hypertension. Walks indoors with rollator, independent with bathing supervision. Goals: wants hospital care if needed, prefers to stay at home. Meds: sacubitril-valsartan 97/103 mg BID, metoprolol succinate 50 mg daily, furosemide 40 mg daily, spironolactone 25 mg daily. No recent med changes. Devices: watch, fingertip oximeter, scale, BP cuff. 30-day baseline: resting HR 66 bpm, HRV 34 ms, sleep 6.5 h, steps 3100, night SpO2 min 93%, skin-temp deviation 0.0 C, weight 84.0 kg, SBP 118 mmHg, DBP 72 mmHg. Last 7 days: wrist resting SpO2 93-95%, resting HR 64-68 bpm, steps 2800-3300 per day, sleep 6.2-6.8 h, watch worn 95-97%. Day -1 scale weight 84.3 kg. Day 0 10:20 watch wrist SpO2 86% at rest with motion-during-sample flag, watch HR 82 bpm. Day 0 10:24 fingertip oximeter SpO2 95%, good waveform; 10:26 repeat 95%, good waveform. Day 0 10:30 cuff 124/76 mmHg. Spouse: sitting in kitchen, breathing normally, no cough, no chest tightness. Data: wear 96% over 7 days; flag motion during SpO2 sample Day 0 10:20; longest gap 1 h; 0 h missing in last 48 h.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "wake_specialist"
+   ],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_SPO2_LT88",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "unreliable_reading",
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "respiratory",
+    "spo2_bias"
+   ],
+   "rationale": "Check 1 (reliable reading) fails: the wrist value carries a motion flag and both fingertip repeats read 95% with a good waveform, so the 86% wrist dip is unreliable and the tier is SUPPRESSED with unreliable_reading. Check 2 would be a change from his own 93-95% baseline, but it cannot carry the trigger without a reliable reading. Check 3 (no explanation) and check 4 (goals of care) pass, since he wants hospital care if needed. Routing to nurse_task means a call within 24 h to check watch fit and repeat the wrist reading, with wake_specialist as the alternate. Naive-model trap: a shallow model sees 86% under 88% and escalates to a human now, which the normal fingertip repeats do not support.",
+   "decisive_feature": "Fingertip repeat at 10:26 reads 95%, so the flagged wrist dip to 86% is not confirmed against a 93-95% own baseline.",
+   "src": "library_v2_smart_pairs",
+   "grade": {
+    "score": 3,
+    "grader_route": "silent_log",
+    "grader_confidence": 0.9,
+    "action": "fix",
+    "batch_id": "ST1"
+   },
+   "src_model": "anthropic/claude-haiku-5.5",
+   "src_batch": "ST1",
+   "src_module": "smart_trigger_pairs",
+   "src_prompt": "GEN_LLM2_v2.2",
+   "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.2",
+   "src_library": "library_v2_smart_pairs",
+   "pair_complete_in_accepted": true,
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-17",
+    "ruling_route": "nurse_task",
+    "note": "keep label (Wayne 2026-10-17)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "added to library (resolved from review queue)"
+    ]
+   }
+  },
+  {
+   "case_id": "ST1-004",
+   "pair_id": "ST1-P02",
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "lives alone",
+   "pmh": [
+    "COPD GOLD 3",
+    "pulmonary hypertension",
+    "hypertension"
+   ],
+   "function_baseline": "walks to kitchen with stick, independent ADLs with some help for socks",
+   "patient_goals": "prefers to stay at home, no comfort-only plan",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "tiotropium",
+     "dose": "18 mcg inhaled daily",
+     "started_day": -500
+    },
+    {
+     "name": "budesonide-formoterol",
+     "dose": "200/6 mcg 2 puffs BID",
+     "started_day": -500
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -300
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "fingertip_oximeter",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 78,
+    "hrv_ms": 24,
+    "sleep_h": 6.9,
+    "steps": 2100,
+    "spo2_night_min": 87,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 61.0,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -30 to -1: fingertip oximeter resting readings on most mornings 86-88%. Day -6 to -1: watch wrist resting SpO2 88-90%, resting HR 76-80 bpm, steps 1900-2300 per day, watch worn 94%. Day -1 scale weight 61.2 kg. Day 0 09:40 fingertip oximeter SpO2 87% at rest, good waveform; 09:43 repeat 87%, good waveform. Day 0 09:40 watch wrist SpO2 88%, resting HR 96 bpm, RR 26/min.",
+   "caregiver_or_nurse_note": "Daughter says she is breathless walking to the kitchen and speaking in short sentences since this morning; no fever reported.",
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2
+   },
+   "router_input": "Age band 70-74, female, Fitzpatrick I-IV, lives alone. COPD GOLD 3, pulmonary hypertension, hypertension. Walks to kitchen with stick, independent ADLs with some help for socks. Goals: prefers to stay at home, no comfort-only plan. Meds: tiotropium 18 mcg inhaled daily, budesonide-formoterol 200/6 mcg 2 puffs BID, amlodipine 5 mg daily. No recent med changes. Devices: watch, fingertip oximeter, scale, BP cuff. 30-day baseline: resting HR 78 bpm, HRV 24 ms, sleep 6.9 h, steps 2100, night SpO2 min 87%, skin-temp deviation 0.0 C, weight 61.0 kg, SBP 128 mmHg, DBP 76 mmHg. Fingertip oximeter resting readings on most mornings Day -30 to -1: 86-88%. Last 7 days: watch wrist resting SpO2 88-90%, resting HR 76-80 bpm, steps 1900-2300 per day, watch worn 94%. Day -1 scale weight 61.2 kg. Day 0 09:40 fingertip oximeter SpO2 87% at rest, good waveform; 09:43 repeat 87%, good waveform. Day 0 09:40 watch wrist SpO2 88%, resting HR 96 bpm, RR 26/min. Daughter: breathless walking to kitchen and speaking in short sentences since this morning; no fever reported. Data: wear 94% over 7 days; no artifact flags; 0 h missing in last 48 h; longest gap 2 h.",
+   "expected_route": "escalate_human",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_SPO2_LT88",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "at_patient_baseline",
+   "subtle_deterioration": true,
+   "difficulty": "adversarial",
+   "category": [
+    "respiratory"
+   ],
+   "rationale": "Check 1 (reliable reading) passes: fingertip repeats at 09:40 and 09:43 both read 87% with good waveforms. Check 2 (change from own baseline) fails: her own fingertip rest readings over 30 days sit at 86-88%, so the saturation rule is SUPPRESSED with at_patient_baseline. The route does not come from the saturation rule: since this morning she is breathless walking to the kitchen and speaking in short sentences, with resting HR 96 bpm (from 76-80) and RR 26/min, which is an acute decompensation in its own right, so a clinician needs to see her now and the route is escalate_human with no alternate (route_basis clinical_presentation). Naive-model trap: a shallow model correctly suppresses the 87% reading as her usual range and stops there with a same-day review, missing that her breathing effort, heart rate and respiratory rate have changed acutely.",
+   "decisive_feature": "Usual daytime fingertip pattern of 86-88% at rest makes today's 87% her own range, not a drop.",
+   "src": "library_v2_smart_pairs",
+   "grade": {
+    "score": 4,
+    "grader_route": "escalate_human",
+    "grader_confidence": 0.8,
+    "action": "keep",
+    "batch_id": "ST1"
+   },
+   "src_model": "anthropic/claude-haiku-5.5",
+   "src_batch": "ST1",
+   "src_module": "smart_trigger_pairs",
+   "src_prompt": "GEN_LLM2_v2.2",
+   "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.2",
+   "src_library": "library_v2_smart_pairs",
+   "pair_complete_in_accepted": false,
+   "route_basis": "clinical_presentation",
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-17",
+    "ruling_route": "escalate_human",
+    "note": "grader right; suppressed SpO2 trigger but acute decompensation (Wayne 2026-10-17)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "added to library (resolved from review queue)",
+     "expected_route: \"wake_specialist\" -> \"escalate_human\"",
+     "acceptable_alternates: [\"nurse_task\"] -> []",
+     "route_basis: null -> \"clinical_presentation\"",
+     "rationale rewritten"
+    ]
+   }
+  },
+  {
+   "case_id": "ST1-008",
+   "pair_id": "ST1-P04",
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "AFib",
+    "hypertension",
+    "osteoporosis"
+   ],
+   "function_baseline": "walks indoors unaided, independent ADLs, uses bath stool",
+   "patient_goals": "wants to keep walking at home, full treatment",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -700
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -300
+    },
+    {
+     "name": "levothyroxine",
+     "dose": "75 mcg daily",
+     "started_day": -800
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 30,
+    "sleep_h": 7.1,
+    "steps": 3300,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -6 to -1: steps 3000-3400 per day, resting HR 70-74 bpm, sleep 6.8-7.3 h, watch worn 93-95%. Day 0 06:55 watch fall impact logged. Watch off-wrist 06:55-07:20 Day 0, found on kitchen floor. Day 0 07:45 cuff 142/84 mmHg.",
+   "caregiver_or_nurse_note": "Spouse heard the watch clatter on the kitchen tiles at about 06:55 and did not see her fall; at a timed check at 07:00 she was standing at the sink, walking, and said she had no pain.",
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "off-wrist 06:55-07:20 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "Age band 75-79, female, Fitzpatrick I-IV, lives with spouse. AFib, hypertension, osteoporosis. Walks indoors unaided, independent ADLs, uses bath stool. Goals: wants to keep walking at home, full treatment. Meds: apixaban 5 mg BID, amlodipine 5 mg daily, levothyroxine 75 mcg daily. No recent med changes. Devices: watch, BP cuff. 30-day baseline: resting HR 72 bpm, HRV 30 ms, sleep 7.1 h, steps 3300, night SpO2 min 94%, skin-temp deviation 0.0 C, SBP 128 mmHg, DBP 78 mmHg. Last 7 days: steps 3000-3400 per day, resting HR 70-74 bpm, sleep 6.8-7.3 h, watch worn 93-95%. Day 0 06:55 watch fall impact logged. Watch off-wrist 06:55-07:20 Day 0, found on kitchen floor. Day 0 07:45 cuff 142/84 mmHg. Spouse: heard the watch clatter on the kitchen tiles at about 06:55 and did not see the fall; at timed check 07:00 she was standing at the sink, walking, and said she had no pain. Data: wear 94% over 7 days; flag off-wrist 06:55-07:20 Day 0; longest gap 0.5 h; 0 h missing in last 48 h.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "explained",
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "fall",
+    "conflicting"
+   ],
+   "rationale": "Check 1 passes as a device state: the watch logged an impact at 06:55 and then an off-wrist flag. Check 3 (no explanation) fails: the spouse heard the watch clatter on the kitchen tiles at about 06:55, and at a timed check at 07:00 she was standing at the sink, walking and pain-free, so the impact was the dropped watch, not a fall, and HT_FALL_ANTICOAG is SUPPRESSED with explained. Check 4 (goals of care) passes. With no fall and no clinical change the event is logged (silent_log); a nurse call about watch fit is an acceptable alternate. Naive-model trap: a shallow model reads a watch impact on apixaban as a fall and sends it to a human, which the spouse's timed check at 07:00 contradicts.",
+   "decisive_feature": "Watch clatter and a timed check at 07:00 finding her walking pain-free explain the impact on apixaban, so no witnessed fall.",
+   "src": "library_v2_smart_pairs",
+   "grade": {
+    "score": 3,
+    "grader_route": "silent_log",
+    "grader_confidence": 0.9,
+    "action": "fix",
+    "batch_id": "ST1"
+   },
+   "src_model": "anthropic/claude-haiku-5.5",
+   "src_batch": "ST1",
+   "src_module": "smart_trigger_pairs",
+   "src_prompt": "GEN_LLM2_v2.2",
+   "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.2",
+   "src_library": "library_v2_smart_pairs",
+   "pair_complete_in_accepted": true,
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-17",
+    "ruling_route": "silent_log",
+    "note": "grader right; dropped watch confirmed fine (Wayne 2026-10-17)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "added to library (resolved from review queue)",
+     "expected_route: \"nurse_task\" -> \"silent_log\"",
+     "acceptable_alternates: [\"wake_specialist\"] -> [\"nurse_task\"]",
+     "rationale rewritten"
+    ]
+   }
+  },
+  {
+   "case_id": "ST1-010",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "lives alone",
+   "pmh": [
+    "CAD with stent 2 years ago",
+    "hypertension"
+   ],
+   "function_baseline": "walks daily to shops, independent",
+   "patient_goals": "full treatment",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "75 mg daily",
+     "started_day": -700
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "40 mg nightly",
+     "started_day": -700
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "5 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 42,
+    "sleep_h": 7.0,
+    "steps": 4200,
+    "spo2_night_min": 95,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -6 to -1: resting HR 62-66 bpm, steps 3900-4400 per day, watch worn 95%. Day 0 06:40 patient reports pressure in the centre of the chest with sweating, about 15 minutes. Day 0 06:41 watch single-lead ECG strip with poor-contact flag shows ST-segment depression; 06:42 watch HR 102 bpm. Day 0 06:47 repeat watch ECG strip, clean trace, shows no ST-segment change. Day 0 06:50 cuff 156/94 mmHg.",
+   "caregiver_or_nurse_note": "Patient texted at 06:55 that the pressure is easing, still sweating, and it came on while climbing the stairs.",
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [
+     "poor contact during ECG strip Day 0 06:41"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 70-74, female, Fitzpatrick V-VI, lives alone. CAD with stent 2 years ago, hypertension. Walks daily to shops, independent. Goals: full treatment. Meds: aspirin 75 mg daily, atorvastatin 40 mg nightly, bisoprolol 5 mg daily, ramipril 5 mg daily. No recent med changes. Devices: watch, BP cuff. 30-day baseline: resting HR 64 bpm, HRV 42 ms, sleep 7.0 h, steps 4200, night SpO2 min 95%, skin-temp deviation 0.0 C, SBP 128 mmHg, DBP 78 mmHg. Last 7 days: resting HR 62-66 bpm, steps 3900-4400 per day, watch worn 95%. Day 0 06:40 patient reports pressure in centre of chest with sweating, about 15 minutes. Day 0 06:41 watch single-lead ECG strip with poor-contact flag shows ST-segment depression; 06:42 watch HR 102 bpm. Day 0 06:47 repeat watch ECG strip, clean trace, shows no ST-segment change. Day 0 06:50 cuff 156/94 mmHg. Patient texted at 06:55: pressure easing, still sweating, came on while climbing the stairs. Data: wear 95% over 7 days; flag poor contact during ECG strip Day 0 06:41; longest gap 1 h; 0 h missing in last 48 h.",
+   "expected_route": "escalate_human",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "acs",
+    "conflicting"
+   ],
+   "rationale": "Check 1 (reliable reading) fails for the ECG only: the 06:41 strip carries a poor-contact flag and the clean repeat strip at 06:47 shows no ST change, so HT_CHEST_PAIN_ECG is SUPPRESSED with unreliable_reading. A single-lead watch strip cannot rule out an acute coronary syndrome, so the chest-pain vital rule still applies: central chest pressure on the stairs for about 15 minutes with sweating that continues, and watch HR 102 bpm despite bisoprolol (raw band C; post-exertion -1, tachycardia on rate control +1), plus two red flags (sweating, duration of 15 minutes or more, +2) net to band A, so HT_CHEST_PAIN_VITALS is ABSOLUTE and the route is escalate_human with no alternate. BP 156/94 is above her 128/78 baseline but below the BP bands. Checks 3 and 4 pass (no timed contact; full treatment goals). This is a standalone case, not part of a pair. Naive-model trap: a shallow model takes the clean repeat strip as reassurance and routes a same-day review, but a normal single-lead trace does not exclude ACS while symptoms continue.",
+   "decisive_feature": "Clean repeat single-lead strip with no ST change, but central chest pressure for about 15 minutes with ongoing sweating and HR 102 bpm on bisoprolol, so the vital-sign chest-pain rule still fires.",
+   "src": "library_v2_smart_pairs",
+   "grade": {
+    "score": 2,
+    "grader_route": "escalate_human",
+    "grader_confidence": 0.98,
+    "action": "reject",
+    "batch_id": "ST1"
+   },
+   "src_model": "anthropic/claude-haiku-5.5",
+   "src_batch": "ST1",
+   "src_module": "smart_trigger_pairs",
+   "src_prompt": "GEN_LLM2_v2.2",
+   "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.2",
+   "src_library": "library_v2_smart_pairs",
+   "pair_complete_in_accepted": null,
+   "secondary_triggers": [
+    {
+     "hard_trigger_rule": "HT_CHEST_PAIN_ECG",
+     "trigger_tier": "SUPPRESSED",
+     "suppression_reason": "unreliable_reading",
+     "evidence": "06:41 strip poor-contact flag; clean repeat strip 06:47 shows no ST change"
+    }
+   ],
+   "chest_pain_eval": {
+    "band": "A",
+    "raw_band": "C",
+    "modifiers": [
+     "post-exertion (5 min) hr_high -1",
+     "rate-control med hr_high +1",
+     "red flags ['diaphoresis', 'persistent_ge_15min'] +2"
+    ],
+    "tier": "ABSOLUTE",
+    "timeout_min": null,
+    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder (net-then-clamp)"
+   },
+   "pair_note": "Unpaired 2026-10-18 (Wayne): kept as a standalone trap case; its former partner ST1-009 also routes escalate_human, so the pair no longer contrasts.",
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-17",
+    "ruling_route": "escalate_human",
+    "note": "keep as standalone trap case (unpaired); single-lead ECG cannot rule out ACS (Wayne 2026-10-17)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "added to library (resolved from review queue)",
+     "expected_route: \"wake_specialist\" -> \"escalate_human\"",
+     "acceptable_alternates: [\"nurse_task\"] -> []",
+     "hard_trigger_rule: \"HT_CHEST_PAIN_ECG\" -> \"HT_CHEST_PAIN_VITALS\"",
+     "trigger_tier: \"SUPPRESSED\" -> \"ABSOLUTE\"",
+     "suppression_reason: \"unreliable_reading\" -> null",
+     "pair_id: \"ST1-P05\" -> null",
+     "secondary_triggers: null -> [{\"hard_trigger_rule\": \"HT_CHEST_PAIN_ECG\", \"trigger_tier\": \"SUPPRESSED\", \"suppression_reason\": \"unreliable_reading\", \"evidence\": \"06:41 strip poor-contact flag; clean repeat strip 06:47 shows no ST change\"}]",
+     "chest_pain_eval band: None -> A",
+     "rationale rewritten",
+     "decisive_feature updated"
+    ],
+    "engine_check": {
+     "ST1-010": {
+      "rule": "HT_CHEST_PAIN_VITALS",
+      "tier": "ABSOLUTE",
+      "band": "A",
+      "raw_band": "C",
+      "modifiers": [
+       "post-exertion (5 min) hr_high -1",
+       "rate-control med hr_high +1",
+       "red flags ['diaphoresis', 'persistent_ge_15min'] +2"
+      ],
+      "route": "escalate_human",
+      "page": true
+     }
+    }
+   }
+  },
+  {
+   "case_id": "ST2-009",
+   "pair_id": "ST2-P05",
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "lives alone",
+   "pmh": [
+    "AFib",
+    "hypertension",
+    "osteoarthritis of both hips"
+   ],
+   "function_baseline": "walks indoors with frame, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "edoxaban",
+     "dose": "60 mg daily",
+     "started_day": -180
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 33,
+    "sleep_h": 6.6,
+    "steps": 1300,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 132,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -7 to -1: watch rest HR 66-70 bpm, HRV 30-36 ms, steps 1200-1700, sleep 6.2-6.8 h. Day 0 22:10 watch fall impact logged with HR 118 bpm; HR 96 bpm at 22:20; steps 0 from 22:10 to 22:40.",
+   "caregiver_or_nurse_note": "Watch tap-to-confirm prompt not answered by 22:15; no reply yet.",
+   "data_quality": {
+    "wear_time_pct_7d": 97,
+    "artifact_flags": [
+     "on-wrist during impact Day 0 22:10"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 80-84, female, Fitzpatrick I-IV, lives alone. PMH: AFib, hypertension, osteoarthritis of both hips. Function: walks indoors with frame, independent ADLs. Meds: edoxaban 60 mg daily (started Day -180), amlodipine 5 mg daily (started Day -400); no recent changes. Devices: watch, bp_cuff. 30-day baseline: rest HR 68 bpm, HRV 33 ms, sleep 6.6 h, steps 1300, night SpO2 minimum 94%, skin-temp deviation 0.0 C, seated SBP 132 and DBP 76 mmHg. Trend Day -7 to -1: watch rest HR 66-70 bpm, HRV 30-36 ms, steps 1200-1700, sleep 6.2-6.8 h. Day 0 22:10 watch fall impact logged with HR 118 bpm; HR 96 bpm at 22:20; steps 0 from 22:10 to 22:40. Caregiver: watch tap-to-confirm prompt not answered by 22:15; no reply yet. Flag: watch on-wrist during the impact Day 0 22:10. Wear time 97% over 7 days; missing hours last 48: 0; longest gap 0 h.",
+   "expected_route": "escalate_human",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "fall"
+   ],
+   "rationale": "Check 1 passes: the impact was logged while the watch was on-wrist, with HR 118 bpm and no poor-contact flag. Check 2 passes: HR rose from her 66-70 bpm range and steps stayed at zero for 30 minutes after the impact. Check 3 passes: no timed contact or watch removal explains the event. Check 4 passes: no goals of care are documented. Edoxaban is current, so HT_FALL_ANTICOAG applies. She lives alone and did not answer the watch tap-to-confirm prompt by 22:15; under the policy an unanswered patient prompt in a person living alone counts as a failed confirm, so the tier is CONFIRM_FIRST with confirm_step already_confirmed and the route is escalate_human now, with no alternate. Naive-model trap: a shallow model reads the unanswered prompt as a possible false alarm and logs it, or waits for a caregiver ping that no one is there to answer.",
+   "decisive_feature": "Watch impact on-wrist at 22:10 on edoxaban with HR 118 bpm, in a woman living alone who did not answer the tap-to-confirm prompt, which counts as a failed confirm.",
+   "src": "library_v2_smart_pairs",
+   "grade": {
+    "score": 4,
+    "grader_route": "escalate_human",
+    "grader_confidence": 0.95,
+    "action": "keep",
+    "batch_id": "ST2"
+   },
+   "src_model": "anthropic/claude-haiku-5.5",
+   "src_batch": "ST2",
+   "src_module": "smart_trigger_pairs",
+   "src_prompt": "GEN_LLM2_v2.2",
+   "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.2",
+   "src_library": "library_v2_smart_pairs",
+   "pair_complete_in_accepted": true,
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-17",
+    "ruling_route": "escalate_human",
+    "note": "already_confirmed: unanswered watch prompt counts as failed confirm; escalate now (Wayne 2026-10-17; generalize as policy rule)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "added to library (resolved from review queue)",
+     "acceptable_alternates: [\"nurse_task_with_recheck\"] -> []",
+     "confirm_step: \"caregiver_ping\" -> \"already_confirmed\"",
+     "confirm_timeout_min: 30 -> null",
+     "rationale rewritten",
+     "decisive_feature updated"
+    ],
+    "engine_check": {
+     "ST2-009": {
+      "rule": "HT_FALL_ANTICOAG",
+      "tier": "CONFIRM_FIRST",
+      "route": "escalate_human",
+      "page": true,
+      "confirm_step": "already_confirmed",
+      "confirm_result": "unanswered_prompt_lives_alone"
+     }
+    }
+   }
+  },
+  {
+   "case_id": "ST4-002",
+   "pair_id": "ST4-P01",
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "AFib on rate control",
+    "hypertension",
+    "CKD 3a"
+   ],
+   "function_baseline": "walks indoors and outdoors unaided, independent ADLs",
+   "patient_goals": "full active treatment",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "bisoprolol",
+     "dose": "5 mg daily",
+     "started_day": -600
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -900
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "20 mg nightly",
+     "started_day": -900
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 38,
+    "sleep_h": 7.1,
+    "steps": 3900,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 124,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -6 to -1: sleeping HR 54-58 on watch, daytime resting HR 62-66, steps 3600-4200, cuff seated 122-128/74-78 on Day -2 and Day -1. Day 0 03:10 asleep: watch HR 50; cuff 03:12 118/72. Watch wear 94% over 7 days.",
+   "caregiver_or_nurse_note": "Spouse woke at 03:10 when he rubbed the middle of his chest; he describes mild chest discomfort there, rated 2 of 10. Spouse reports he was sweating and short of breath.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "band replaced Day -9"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.5
+   },
+   "router_input": "Male, age band 75-79, Fitzpatrick V-VI, lives with spouse. PMH: AFib on rate control, hypertension, CKD 3a. Function: walks indoors and outdoors unaided, independent ADLs. Goals: full active treatment. Meds: bisoprolol 5 mg daily (started Day -600), amlodipine 5 mg daily (started Day -900), atorvastatin 20 mg nightly (started Day -900). No recent medication changes. Devices: watch, bp_cuff. Baseline 30 days: resting HR 64, HRV 38 ms, sleep 7.1 h, steps 3900, night SpO2 minimum 93%, skin-temperature deviation 0.0 C, SBP 124, DBP 76. Trend last 7 days: Day -6 to -1 sleeping HR 54-58, daytime resting HR 62-66, steps 3600-4200, cuff seated 122-128/74-78 on Day -2 and Day -1. Day 0 03:10 asleep: watch HR 50; cuff 03:12 118/72. Watch wear 94% over 7 days, longest gap 1.5 h, band replaced Day -9. Spouse woke him at 03:10 when he rubbed the middle of his chest; mild chest discomfort rated 2 of 10; spouse reports he was sweating and short of breath. Baseline status: established, monitoring day 120.",
+   "expected_route": "escalate_human",
+   "acceptable_alternates": [
+    "nurse_task_with_recheck"
+   ],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "patient_call",
+   "confirm_timeout_min": 15,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "C",
+    "raw_band": "C",
+    "modifiers": [
+     "sleep hr_low -1",
+     "rate-control med hr_low -1",
+     "red flags ['diaphoresis', 'dyspnea'] +2"
+    ],
+    "tier": "CONFIRM_FIRST",
+    "timeout_min": 15,
+    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder (net-then-clamp)"
+   },
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "acs"
+   ],
+   "rationale": "Checks: the watch and cuff are reliable with no poor-contact flag (check 1 passes), and HR 50 is below his usual sleeping 54-58, a real change from his own baseline (check 2 passes). No timed contact explains the episode (check 3 passes), and full treatment goals pass (check 4). Raw band C (HR 50) with sleep -1, rate control -1 and two red flags (sweating, breathlessness) +2 nets to 0, so the band stays C and HT_CHEST_PAIN_VITALS is CONFIRM_FIRST with a 15-minute patient call before a clinician looks. Naive-model trap: a shallow model reads HR 50 with BP 118/72 as mild and sends a nurse task, but the sweating and breathlessness keep the banded score above threshold.",
+   "decisive_feature": "Sweating and breathlessness added to the same 03:10 sleeping episode offset the sleep and rate-control modifiers, so the band stays C with a 15-minute patient call.",
+   "src": "library_v2_smart_pairs",
+   "grade": {
+    "score": 4,
+    "grader_route": "escalate_human",
+    "grader_confidence": 0.9,
+    "action": "fix",
+    "batch_id": "ST4"
+   },
+   "src_model": "anthropic/claude-haiku-5.5",
+   "src_batch": "ST4",
+   "src_module": "smart_trigger_pairs",
+   "src_prompt": "GEN_LLM2_v2.3 rev b",
+   "src_grader": "google/gemini-4-argon GRADER_LLM3_v1.3",
+   "src_library": "library_v2_smart_pairs",
+   "pair_complete_in_accepted": false,
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-17",
+    "ruling_route": "escalate_human",
+    "note": "band C 15 min; POLICY: net modifiers first then clamp (Wayne 2026-10-17)",
+    "policy": "SMART_TRIGGERS v1.5",
+    "changes": [
+     "added to library (resolved from review queue)",
+     "confirm_timeout_min: 5 -> 15",
+     "chest_pain_eval band: B -> C",
+     "rationale rewritten",
+     "decisive_feature updated"
+    ],
+    "engine_check": {
+     "ST4-002": {
+      "rule": "HT_CHEST_PAIN_VITALS",
+      "tier": "CONFIRM_FIRST",
+      "band": "C",
+      "raw_band": "C",
+      "modifiers": [
+       "sleep hr_low -1",
+       "rate-control med hr_low -1",
+       "red flags ['diaphoresis', 'dyspnea'] +2"
+      ],
+      "route": "escalate_human",
+      "page": "if_confirmed_or_timeout",
+      "confirm_step": "patient_call",
+      "timeout_min": 15
+     }
+    }
+   }
   }
  ],
  "provenance": {
@@ -28568,6 +29480,7 @@
   "new_pairs": "smart_triggers/new_pairs.json",
   "synthetic": true,
   "manual": "smart_triggers/manual_cases.json (AC1-012, hand-derived stable partner of AC1-002)",
-  "recheck": "recheck/decisions.json: 4 non-trigger cases gained agreed trigger metadata (no route changes)"
+  "recheck": "recheck/decisions.json: 4 non-trigger cases gained agreed trigger metadata (no route changes)",
+  "clinician_rulings": "clinician_rulings.csv (Wayne, 2026-10-17/18): 13 review-queue cases ruled; 6 added from the queue; applied by apply_rulings.py under SMART_TRIGGERS v1.5"
  }
 }

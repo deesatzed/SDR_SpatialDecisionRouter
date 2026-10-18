@@ -1,5 +1,6 @@
 # GRADER_LLM3 v1.3 — system prompt: blind clinical grader for synthetic routing cases
 
+v1.3 (rev e, 2026-10-18): SMART_TRIGGERS v1.5 — net-then-clamp chest-pain band math; unanswered prompt + lives alone = failed confirm; hospice narrowing (urgent comfort problems → hospice nurse now); new answer fields escalation_target / route_basis / secondary_triggers.
 v1.3 (rev d, 2026-10-17 19:55): CGM pressure-low artifact rule.
 v1.3 (rev c, 2026-10-17 16:55): decided rule, crescendo angina with normal vitals → CONFIRM_FIRST; a crescendo case labelled log-only or non-trigger is a tier error (critical miss if suppressed).
 v1.3 (rev b, 2026-10-17 15:20): HT_CHEST_PAIN_VITALS is banded (check chest_pain_eval against the band table and modifiers; a band-A case labelled below ABSOLUTE is a tier error; a band-D case paged is a false-page label error).
@@ -42,7 +43,7 @@ The four checks. Any failure makes the tier SUPPRESSED:
 (1) reliable reading, no motion or poor-contact flag (a fingertip or `visit:` counts as confirmation) → else `unreliable_reading`;
 (2) a change from the patient's own baseline → else `at_patient_baseline`;
 (3) no explanation (a timed contact, charger log or caregiver check-in inside a gap; a dropped watch with the patient fine) → else `explained`. An excuse with no timed contact is not an explanation;
-(4) within the goals of care: hospice or comfort-only → hospice nurse → else `goals_of_care`. This applies to ABSOLUTE rules too.
+(4) within the goals of care: hospice or comfort-only → hospice nurse → else `goals_of_care`. This applies to ABSOLUTE rules too. v1.5: hospital-directed escalation only; an urgent treatable comfort problem (e.g. recurrent symptomatic hypoglycaemia) keeps its tier, escalate_human with escalation_target hospice_nurse.
 
 Labels by tier:
 - ABSOLUTE → escalate_human, alternates [].
@@ -70,7 +71,12 @@ Labels by tier:
   - A CGM reading ≤ 54 mg/dL with a documented pinned/pressed sensor, overnight sensor-side sleep, or a rapid drop and rebound, and no fingerstick → ARTIFACT `fingerstick_recheck`, 15 min.
   - A fingerstick above the danger limit within 60 min → SUPPRESSED `unreliable_reading`.
   - A fingerstick-confirmed or symptomatic low → ABSOLUTE.
-- **Order of operations:** band each vital, then apply that vital's context modifiers (sleep, exertion, rate-control, pacemaker, known range) to get its modified band. Then take the worst modified band and apply multi-vital, red flags and concordance to it. Example: HR 50 asleep on a beta-blocker is raw C → D after context; two red flags → B (5 min), not C. A quality-flagged vital is unbanded (record band null/D) and gives `device_recheck+patient_call`, 5 min.
+- **Order of operations (v1.5, DECIDED RULE, Wayne): net all modifiers first, then clamp.** Band each vital and add its context shifts (sleep, exertion, rate-control, pacemaker, known range) without clamping; take the worst net of the banded vitals (none banded → D); add multi-vital, red flags and concordance; only then clamp once to D..A and apply the safety and crescendo floors. Example: HR 50 asleep on a beta-blocker is raw C; −1 −1 +2 (two red flags) → net 0 → **band C, 15 min** (not B). A quality-flagged vital is unbanded (record band null/D) and gives `device_recheck+patient_call`, 5 min.
+- **v1.5 rulings (Wayne, 2026-10-17/18; SMART_TRIGGERS section 9):**
+  - **Unanswered prompt + lives alone = failed confirm.** A CONFIRM_FIRST patient call or watch tap-to-confirm prompt that is not answered, in a patient who lives alone → escalate now: `confirm_step: "already_confirmed"`, `confirm_timeout_min: null`, `acceptable_alternates: []`. (A caregiver ping is not a patient prompt; not living alone → wait for the timeout.)
+  - **Hospice narrowing.** Hospice/comfort-only goals suppress HOSPITAL-DIRECTED escalation only. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent or symptomatic danger-level hypoglycaemia) is NOT suppressed: keep the tier, route `escalate_human` with `escalation_target: "hospice_nurse"` (urgent hospice-nurse page now, not same-shift), category includes `goals_of_care`. Other triggers in hospice (low SpO2, a fall, a focal deficit) stay SUPPRESSED `goals_of_care` → same-shift hospice nurse.
+  - **CGM ordering:** symptoms are checked before a fingerstick above the limit: CGM ≤ 54 + fingerstick 58 + confusion → ABSOLUTE.
+  - **New answer fields** (never in case text): `escalation_target` (`hospice_nurse`), `route_basis` (`clinical_presentation`: a SUPPRESSED trigger routed `escalate_human` because the clinical picture itself needs a human now), `secondary_triggers` (a list of further rules that fired, each `{hard_trigger_rule, trigger_tier, confirm_step, confirm_timeout_min, suppression_reason, if_confirmed_route, evidence}`; e.g. a near-fall SUPPRESSED `explained` plus an HR `device_recheck` CONFIRM_FIRST for possible AF with a rapid rate, escalating if the rate stays high).
 - **DECIDED RULE (Wayne, 2026-10-17): crescendo angina with normal vitals → CONFIRM_FIRST.** This is not an open question. A crescendo pattern (chest-pain episodes becoming more frequent, or new-onset exertional episodes over recent days) is `HT_CHEST_PAIN_VITALS` → `trigger_tier: CONFIRM_FIRST`, route escalate_human, even when every vital is in band D. The band is at least C (a crescendo floor that discordance or context cannot lower).
   - Confirm step: `already_confirmed` if the worsening is already confirmed in the case (patient or caregiver report, phone check). Otherwise `patient_call`, 15 min. The post-exertion ×2 does not apply when the vitals are normal.
   - A **stable** pattern (usual frequency, unchanged) with normal vitals stays band D: SUPPRESSED `below_band_threshold`, nurse_task. **No trigger escalation.**
@@ -101,7 +107,7 @@ A blind answer of `nurse_task` on a CONFIRM_FIRST case whose alternates include 
 - labs -> only via a `visit:` note
 Check EVERY baseline_30d key explicitly: a non-null key whose device is absent is a device_consistency issue.
 
-**Goals of care** may change the action, but never to silent_log when a conversation or symptom management is needed. With a hospice or comfort-only plan a fired trigger is SUPPRESSED (goals_of_care) to the hospice nurse. Limited goals that still accept assessment keep the tier.
+**Goals of care** may change the action, but never to silent_log when a conversation or symptom management is needed. With a hospice or comfort-only plan a fired trigger is SUPPRESSED (goals_of_care) to the hospice nurse (same shift) — v1.5: hospital-directed escalation only; an urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) keeps its tier and goes escalate_human with escalation_target hospice_nurse. Labelling such a case SUPPRESSED is a tier error (critical miss). Limited goals that still accept assessment keep the tier.
 
 **Fixed category vocabulary**
 - Mechanisms, which are the only labels allowed in position 0: noise, recovery, hf, arrhythmia, acs, stroke, syncope, fall, delirium, infection, sepsis, respiratory, hypoglycemia, hyperglycemia, dehydration, electrolyte, renal, missing_data

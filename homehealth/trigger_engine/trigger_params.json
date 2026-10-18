@@ -1,5 +1,5 @@
 {
- "version": "0.4-placeholder",
+ "version": "0.5-placeholder",
  "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
  "change_log": [
   {
@@ -76,6 +76,75 @@
    "new": "0.4-placeholder",
    "approved_by": "Wayne",
    "reason": "cgm_pressure_low added"
+  },
+  {
+   "ts": "2026-10-18T09:17:48-04:00",
+   "keys": [
+    "chest_pain",
+    "band_math"
+   ],
+   "old": null,
+   "new": {
+    "method": "net_then_clamp",
+    "_note": "DECIDED RULE (Wayne 2026-10-17, ST4-002): sum ALL band shifts first (the worst banded vital's own context modifiers, then multi-vital, red flags and concordance), then clamp once to D..A and apply the safety floors (max_total_downgrade, band_A_floor) and the crescendo floor. Replaces sequential clamping at each step. Unbanded vitals do not contribute to the base; with no banded vital the base is band D. Shift sizes remain placeholders."
+   },
+   "approved_by": "Wayne",
+   "reason": "Clinician ruling ST4-002 (2026-10-17): net modifiers first, then clamp; band C 15 min"
+  },
+  {
+   "ts": "2026-10-18T09:17:48-04:00",
+   "keys": [
+    "confirm_first",
+    "unanswered_prompt"
+   ],
+   "old": null,
+   "new": {
+    "enabled": true,
+    "prompt_steps": [
+     "patient_call",
+     "watch_prompt"
+    ],
+    "lives_alone_required": true,
+    "_note": "DECIDED RULE (Wayne 2026-10-17, ST2-009): an unanswered patient-directed confirm prompt (patient call or watch tap-to-confirm) when the patient lives alone counts as a FAILED confirm -> escalate now (confirm_step already_confirmed). Not living alone -> wait for the timeout as before. Caregiver pings are not patient prompts."
+   },
+   "approved_by": "Wayne",
+   "reason": "Clinician ruling ST2-009 (2026-10-17): unanswered watch prompt counts as failed confirm; generalize as policy rule"
+  },
+  {
+   "ts": "2026-10-18T09:17:48-04:00",
+   "keys": [
+    "goals_of_care"
+   ],
+   "old": null,
+   "new": {
+    "suppresses": "hospital_directed_escalation_only",
+    "default_notify": "hospice_nurse_same_shift",
+    "urgent_comfort": {
+     "enabled": true,
+     "escalation_target": "hospice_nurse",
+     "notify": "hospice_nurse_urgent_page",
+     "route": "escalate_human",
+     "conditions": {
+      "hypoglycemia_symptomatic": true,
+      "hypoglycemia_recurrent": true
+     },
+     "recurrent_window_h": 6,
+     "_note": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. Other conditions (e.g. distressing breathlessness) are NOT on the list until Wayne adds them; a caller may declare context comfort_treatable explicitly."
+    },
+    "_note": "DECIDED RULE (Wayne 2026-10-18, GC2-003): hospice/comfort-only goals suppress hospital-directed escalation only."
+   },
+   "approved_by": "Wayne",
+   "reason": "Clinician ruling GC2-003 (2026-10-18): hospice goals suppress hospital-directed escalation, not urgent treatable goal-consistent comfort issues"
+  },
+  {
+   "ts": "2026-10-18T09:17:48-04:00",
+   "keys": [
+    "version"
+   ],
+   "old": "0.4-placeholder",
+   "new": "0.5-placeholder",
+   "approved_by": "Wayne",
+   "reason": "v1.5 rulings: band math, unanswered prompt, hospice narrowing (approved by Wayne)"
   }
  ],
  "hard_limits": {
@@ -383,6 +452,15 @@
    "patient_call": 10,
    "caregiver_ping": 30,
    "device_recheck": 10
+  },
+  "unanswered_prompt": {
+   "enabled": true,
+   "prompt_steps": [
+    "patient_call",
+    "watch_prompt"
+   ],
+   "lives_alone_required": true,
+   "_note": "DECIDED RULE (Wayne 2026-10-17, ST2-009): an unanswered patient-directed confirm prompt (patient call or watch tap-to-confirm) when the patient lives alone counts as a FAILED confirm -> escalate now (confirm_step already_confirmed). Not living alone -> wait for the timeout as before. Caregiver pings are not patient prompts."
   }
  },
  "chest_pain": {
@@ -524,6 +602,10 @@
    "min_band": "C",
    "no_exertion_timeout_factor_when_vitals_normal": true,
    "_note": "DECIDED RULE (not a placeholder decision): a crescendo angina pattern (episodes becoming more frequent, or new onset in recent days) with normal vitals triggers HT_CHEST_PAIN_VITALS CONFIRM_FIRST (band C at least). min_band and the timeout remain placeholder values. With normal vitals the post-exertion timeout factor is not applied, because the trigger is the pattern."
+  },
+  "band_math": {
+   "method": "net_then_clamp",
+   "_note": "DECIDED RULE (Wayne 2026-10-17, ST4-002): sum ALL band shifts first (the worst banded vital's own context modifiers, then multi-vital, red flags and concordance), then clamp once to D..A and apply the safety floors (max_total_downgrade, band_A_floor) and the crescendo floor. Replaces sequential clamping at each step. Unbanded vitals do not contribute to the base; with no banded vital the base is band D. Shift sizes remain placeholders."
   }
  },
  "cgm_pressure_low": {
@@ -555,5 +637,22 @@
   ],
   "recheck_step": "fingerstick_recheck",
   "recheck_timeout_min": 15
+ },
+ "goals_of_care": {
+  "suppresses": "hospital_directed_escalation_only",
+  "default_notify": "hospice_nurse_same_shift",
+  "urgent_comfort": {
+   "enabled": true,
+   "escalation_target": "hospice_nurse",
+   "notify": "hospice_nurse_urgent_page",
+   "route": "escalate_human",
+   "conditions": {
+    "hypoglycemia_symptomatic": true,
+    "hypoglycemia_recurrent": true
+   },
+   "recurrent_window_h": 6,
+   "_note": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. Other conditions (e.g. distressing breathlessness) are NOT on the list until Wayne adds them; a caller may declare context comfort_treatable explicitly."
+  },
+  "_note": "DECIDED RULE (Wayne 2026-10-18, GC2-003): hospice/comfort-only goals suppress hospital-directed escalation only."
  }
 }

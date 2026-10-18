@@ -86,3 +86,5 @@ json.dump(S, open("summary.json", "w"), indent=1); print(json.dumps({k: v for k,
 import subprocess as _sp; print(_sp.run(["python3", "apply_chest_pain.py"], capture_output=True, text=True).stdout)
 import os as _os
 if _os.path.exists("recheck/decisions.json"): print(_sp.run(["python3", "apply_recheck.py"], capture_output=True, text=True).stdout)
+# Wayne's clinician rulings on the review queue (SMART_TRIGGERS v1.5), applied last
+if _os.path.exists("clinician_rulings.csv"): print(_sp.run(["python3", "apply_rulings.py"], capture_output=True, text=True).stdout[-600:])

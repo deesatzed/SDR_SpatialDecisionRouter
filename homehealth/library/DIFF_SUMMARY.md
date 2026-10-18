@@ -161,3 +161,28 @@ Earlier: **$0.742** in total over 10 calls, none retried: relabel $0.022 (Haiku 
   - Superseded: the flat chest-pain CONFIRM_FIRST 10 min was rejected by Wayne and replaced by the banded rule. All band cut-offs, modifiers, timeouts and the 'rate-control med makes tachycardia +1' choice are placeholders for Wayne.
   - (confirmed by Wayne) A goals_of_care suppression maps to `nurse_task`, with the meaning "same-shift hospice nurse".
   - Goals of care can also suppress ABSOLUTE rules.
+
+## Clinician rulings on the review queue and SMART_TRIGGERS v1.5 (2026-10-18)
+Wayne ruled all 13 review-queue cases (`clinician_rulings.csv`). `apply_rulings.py` applied them; each case carries `clinician_ruling` (note, changes, engine re-derivation). No model calls in this step (pass total still $1.096).
+
+| case | route | alternates | trigger | notes |
+|---|---|---|---|---|
+| ST1-002 | nurse_task | wake_specialist | HT_SPO2_LT88 SUPPRESSED unreliable_reading | label kept; the grader's `noise` category change NOT applied |
+| ST1-004 | escalate_human | [] | HT_SPO2_LT88 SUPPRESSED at_patient_baseline | `route_basis: clinical_presentation` (acute decompensation) |
+| ST1-008 | silent_log | nurse_task | HT_FALL_ANTICOAG SUPPRESSED explained | dropped watch, patient fine |
+| ST1-010 | escalate_human | [] | HT_CHEST_PAIN_VITALS ABSOLUTE (engine band A) | secondary HT_CHEST_PAIN_ECG SUPPRESSED unreliable_reading; standalone (unpaired); ST1-009 unpaired too |
+| ST2-009 | escalate_human | [] | HT_FALL_ANTICOAG CONFIRM_FIRST already_confirmed | unanswered watch prompt, lives alone |
+| ST4-002 | escalate_human | nurse_task_with_recheck | HT_CHEST_PAIN_VITALS CONFIRM_FIRST patient_call 15 min | band C (net-then-clamp) |
+| HK5-001 | nurse_task | wake_specialist | HT_CHEST_PAIN_VITALS SUPPRESSED below_band_threshold | band D stable angina |
+| HK6-001 | escalate_human | [] | HT_FALL_ANTICOAG CONFIRM_FIRST already_confirmed | rationale rewritten (fall confirmed) |
+| HK6-002 | wake_specialist | nurse_task | HT_FALL_ANTICOAG SUPPRESSED unreliable_reading | watch on charger |
+| HK7-009 | nurse_task | wake_specialist | HT_FALL_ANTICOAG SUPPRESSED explained | secondary HT_VS_BASELINE CONFIRM_FIRST device_recheck 10 min (possible AF-RVR, HR 112 vs 72) → escalate if it stays high |
+| NV2-015 | escalate_human | [] | HT_VS_DANGER ABSOLUTE | symptomatic low; categories kept (incl. noise) |
+| GC2-003 | escalate_human | [] | HT_VS_DANGER ABSOLUTE | `escalation_target: hospice_nurse` (urgent hospice page now) |
+| GL1-005 | escalate_human | [] | HT_VS_DANGER ABSOLUTE | baseline_layer hard_limit_danger; `fall` category added |
+
+- The 6 ST cases were queued (not accepted) and are now in the library: **267 cases** (was 261). Routes: escalate_human 80, nurse_task 71, silent_log 66, wake_specialist 50. Hard-trigger cases: 78 (was 65). Tiers: CONFIRM_FIRST 35, SUPPRESSED 24, ABSOLUTE 17, ARTIFACT 2.
+- review_queue.csv: 13 → 0 rows.
+- Policy (SMART_TRIGGERS v1.5 section 9, params 0.5-placeholder): (a) chest-pain band math nets all modifiers, then clamps; (b) unanswered patient prompt + lives alone = failed confirm; (c) hospice goals suppress hospital-directed escalation only, and urgent treatable comfort problems page the hospice nurse now; (d) CGM ordering (symptoms before a refuting fingerstick) is tested. New answer fields: `escalation_target`, `route_basis`, `secondary_triggers` (grade_merge validates them; convert_casegen adds them to the runner JSON and notes).
+- Net-then-clamp re-run on every other chest-pain input in the library: no band or tier changed.
+- Hospice re-check under the narrowed rule (HK1-007, NV6-001, NV6-010, GC2-001, plus ST2-002 and ST2-010): **no route changed**. Only hypoglycaemia is on the urgent-comfort list. **Borderline for Wayne:** HK1-007 and NV6-010, both with distressing breathlessness that is treatable at home (SpO2 86-87%). They stay SUPPRESSED → same-shift hospice nurse unless breathlessness is added to the list.

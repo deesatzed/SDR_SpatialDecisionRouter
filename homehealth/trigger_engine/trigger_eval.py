@@ -209,6 +209,59 @@ def _cgm_pressure_low(r, p):
         return _decision("ARTIFACT", "cgm_pressure_low_suspected", "silent_log", False, "HT_VS_IMPLAUSIBLE", {"step": cp["recheck_step"], "timeout_min": cp["recheck_timeout_min"]}, cgm_signs=signs)
     return None
 
+# ---------------- goals of care (v1.5 hospice narrowing, Wayne 2026-10-18, GC2-003) ----------------
+def urgent_comfort_basis(r, base, p, context=None):
+    """Return the reason a fired trigger in a comfort-only/hospice patient is an URGENT, treatable, goal-consistent comfort problem
+    (-> urgent hospice-nurse page now), or None. trigger_params.json -> goals_of_care.urgent_comfort (placeholders).
+    context["comfort_treatable"] = True lets the caller (or a clinician-set plan) declare one explicitly."""
+    ctx = context or {}; uc = (p.get("goals_of_care") or {}).get("urgent_comfort") or {}
+    if not uc.get("enabled"): return None
+    if ctx.get("comfort_treatable"): return "declared_comfort_treatable"
+    if not r or r.get("vital") != "glucose": return None
+    h = p["hard_limits"]["glucose"]; x = r.get("value")
+    if h["danger_low"] is None or x is None or x > h["danger_low"]: return None
+    cond = uc.get("conditions") or {}
+    if cond.get("hypoglycemia_symptomatic") and ((r.get("cgm") or {}).get("symptoms") or r.get("symptoms") or ctx.get("symptoms")): return "hypoglycemia_symptomatic"
+    if cond.get("hypoglycemia_recurrent") and base is not None:
+        win = uc["recurrent_window_h"] * 3600.0
+        for e in base.log:
+            if e.get("type") == "DECISION" and e.get("vital") == "glucose" and isinstance(e.get("value"), (int, float)) and e["value"] <= h["danger_low"] \
+               and 0 < r["ts"] - e["ts"] <= win and e.get("tier") not in ("ARTIFACT",) and e.get("reason") != "unreliable_reading":
+                return "hypoglycemia_recurrent"
+    return None
+
+def apply_goals_of_care(d, p, context=None, basis=None):
+    """SMART_TRIGGERS check 4 (v1.5). With a comfort-only/hospice plan, goals-of-care suppression applies to HOSPITAL-DIRECTED escalation only.
+    basis (from urgent_comfort_basis) set -> keep the tier, page the hospice nurse NOW (escalate_human, escalation_target hospice_nurse).
+    Otherwise -> SUPPRESSED goals_of_care, nurse_task (same-shift hospice nurse contact), as before."""
+    ctx = context or {}
+    if ctx.get("goals") != "comfort_only" or d["tier"] not in ("ABSOLUTE", "CONFIRM_FIRST"): return d
+    gc = p.get("goals_of_care") or {}; uc = gc.get("urgent_comfort") or {}
+    if basis:
+        return {**d, "route": "escalate_human", "page": True, "escalation_target": uc.get("escalation_target", "hospice_nurse"), "notify": uc.get("notify", "hospice_nurse_urgent_page"),
+                "hospital_directed": False, "goals_basis": basis, "confirm_step": None if d["tier"] == "ABSOLUTE" else d.get("confirm_step")}
+    return {**d, "tier": "SUPPRESSED", "reason": "goals_of_care", "route": "nurse_task", "page": False, "notify": gc.get("default_notify", "hospice_nurse_same_shift"),
+            "original_tier": d["tier"], "hitm_sample": True, "confirm_step": None, "timeout_min": None, "recheck": None}
+
+# ---------------- confirm-step outcome (v1.5, Wayne 2026-10-17, ST2-009) ----------------
+def resolve_confirm(d, outcome, p, context=None):
+    """Resolve a CONFIRM_FIRST decision once its confirm step has an outcome.
+    outcome: 'confirmed' -> escalate now. 'no_answer' -> if the step is a patient-directed prompt (patient_call / watch_prompt) and the
+    patient LIVES ALONE, the unanswered prompt counts as a FAILED confirm -> escalate now (confirm_step already_confirmed);
+    otherwise keep waiting for the timeout. 'pending' -> unchanged. trigger_params.json -> confirm_first.unanswered_prompt."""
+    ctx = context or {}
+    if d.get("tier") != "CONFIRM_FIRST": return d
+    step = d.get("confirm_step") or (d.get("recheck") or {}).get("step")
+    if outcome == "pending": return d
+    if outcome == "confirmed":
+        return {**d, "page": True, "confirm_step": "already_confirmed", "timeout_min": None, "confirm_result": "confirmed"}
+    if outcome == "no_answer":
+        up = p["confirm_first"].get("unanswered_prompt") or {}
+        if up.get("enabled") and ctx.get("lives_alone") and step in up.get("prompt_steps", []):
+            return {**d, "page": True, "confirm_step": "already_confirmed", "timeout_min": None, "confirm_result": "unanswered_prompt_lives_alone", "prompt_step": step}
+        return {**d, "confirm_result": "no_answer_waiting_for_timeout"}
+    raise ValueError(f"unknown confirm outcome {outcome!r}")
+
 def evaluate(r, base, p, context=None):
     """r: {vital, value, ts, activity_state, quality_flags, motion, prev:{value, dt_s}, flat_s}. context: {goals: None|'comfort_only'}.
     Returns a decision; non-NORMAL decisions are appended to base.log."""
@@ -263,8 +316,8 @@ def evaluate(r, base, p, context=None):
             else:
                 d = _decision("NORMAL", "within_patient_baseline", "silent_log", False, phase=ph, z=round(z, 2))
     # goals of care apply to every tier (SMART_TRIGGERS check 4)
-    if ctx.get("goals") == "comfort_only" and d["tier"] in ("ABSOLUTE", "CONFIRM_FIRST"):
-        d = _decision("SUPPRESSED", "goals_of_care", "nurse_task", False, d["rule"], None, notify="hospice_nurse_same_shift", original_tier=d["tier"], hitm_sample=True)
+    if ctx.get("goals") == "comfort_only" and d["tier"] in ("ABSOLUTE", "CONFIRM_FIRST"):   # v1.5: narrowed to hospital-directed escalation
+        d = apply_goals_of_care(d, p, ctx, urgent_comfort_basis(r, base, p, ctx))
     # drift review flag (layer 3)
     if v in base.frozen:
         d["drift_flag"] = base.frozen[v]
@@ -302,8 +355,8 @@ def evaluate_chest_pain(inp, p, base=None, context=None):
         d = {"rule": rule, "tier": tier, "band": band, "raw_band": raw, "modifiers": mods, "unreliable_vitals": unreliable, **kw}
         if tier == "ABSOLUTE": d.update(route="escalate_human", page=True, confirm_step=None, timeout_min=None)
         elif tier == "LOG_ONLY": d.update(route=cp["bands"]["D"]["route"], page=False, confirm_step=None, timeout_min=None)
-        if ctx.get("goals") == "comfort_only" and tier in ("ABSOLUTE", "CONFIRM_FIRST"):
-            d = {**d, "tier": "SUPPRESSED", "reason": "goals_of_care", "route": "nurse_task", "page": False, "notify": "hospice_nurse_same_shift", "original_tier": tier, "confirm_step": None, "timeout_min": None}
+        if ctx.get("goals") == "comfort_only" and tier in ("ABSOLUTE", "CONFIRM_FIRST"):   # v1.5 narrowing; chest pain is urgent-comfort only if declared
+            d = apply_goals_of_care(d, p, ctx, urgent_comfort_basis(None, None, p, ctx))
         if base is not None: base._log(ts, "CHEST_PAIN_DECISION", tier=d["tier"], band=band, raw_band=raw, modifiers=mods, route=d["route"])
         return d
     # 1. hard limits (reliable danger -> ABSOLUTE; implausible -> treated as unreliable)
@@ -321,15 +374,15 @@ def evaluate_chest_pain(inp, p, base=None, context=None):
     # 3. per-vital band + side-specific context modifiers
     act = inp.get("activity_state", "rest"); mse = inp.get("minutes_since_exertion")
     post_ex = mse is not None and mse <= M["post_exertion"]["window_min"]
-    vb = {}; raw_worst = "D"
+    net = {}; raw_worst = "D"
     for v, x in reliable.items():
         b, side = _vital_band(v, x, cp)
         if BAND_ORDER.index(b) > BAND_ORDER.index(raw_worst): raw_worst = b
-        if side is None: vb[v] = "D"; continue
+        if side is None: continue                 # unbanded vital: no contribution
         s = 0; key = f"{v}_{side}"
         if v == "hr" and ctx.get("pacemaker_lower_rate"):
             lr = ctx["pacemaker_lower_rate"]; tol = M["pacemaker"]["tolerance_bpm"]
-            if side == "low" and x >= lr - tol: mods.append(f"pacemaker: HR {x} at lower rate {lr} -> not banded"); vb[v] = "D"; continue
+            if side == "low" and x >= lr - tol: mods.append(f"pacemaker: HR {x} at lower rate {lr} -> not banded"); continue
             if x < lr - tol: s += M["pacemaker"]["below_lower_rate"]; mods.append(f"pacemaker: HR {x} below lower rate {lr} +1")
         if act == "sleep" and key in M["sleep"]: s += M["sleep"][key]; mods.append(f"sleep {key} {M['sleep'][key]:+d}")
         if post_ex and key in M["post_exertion"]: s += M["post_exertion"][key]; mods.append(f"post-exertion ({mse} min) {key} {M['post_exertion'][key]:+d}")
@@ -338,21 +391,23 @@ def evaluate_chest_pain(inp, p, base=None, context=None):
         if v == "hr" and side == "low" and kb and x >= kb[0] - 3: s += M["known_brady"]["hr_low"]; mods.append(f"known brady {kb} -1")
         kt = ctx.get("known_tachy_range")
         if v == "hr" and side == "high" and kt and x <= kt[1] + 10: s += M["known_tachy"]["hr_high"]; mods.append(f"known tachy {kt} -1")
-        nb = _shift(b, s)
-        if b == "A" and nb in ("C", "D"): nb = cp["safety"]["band_A_floor"]; mods.append(f"{v}: band A floor -> {nb}")
-        vb[v] = nb
-    band = "D"
-    for v, b in vb.items():
-        if BAND_ORDER.index(b) > BAND_ORDER.index(band): band = b
-    # 4. symptom-level modifiers
+        net[v] = BAND_ORDER.index(b) + s          # v1.5: net, NOT clamped yet
+    # v1.5 band math (Wayne 2026-10-17, ST4-002): net ALL modifiers first, then apply the floor/ceiling clamps once.
+    # base = worst net of the BANDED vitals (unbanded vitals do not contribute); no banded vital -> band D (0).
+    total = max(net.values()) if net else 0
+    clampi = lambda i: max(0, min(3, i))
+    vb = {v: BAND_ORDER[clampi(n)] for v, n in net.items()}   # per-vital (clamped) only for the multi-vital count / reporting
+    # 4. symptom-level modifiers (conditions read the provisional clamped band; shifts are added to the unclamped net)
     if sum(1 for b in vb.values() if b in ("A", "B")) >= M["multi_vital"]["min_vitals_at_B_or_worse"]:
-        band = _shift(band, M["multi_vital"]["shift"]); mods.append("multi-vital (>=2 at band B or worse) +1")
+        total += M["multi_vital"]["shift"]; mods.append("multi-vital (>=2 at band B or worse) +1")
     rf = [f for f in (sym.get("red_flags") or []) if f in M["red_flags"]["features"]]
     if rf:
-        n = min(len(rf) * M["red_flags"]["per_flag"], M["red_flags"]["max_total"]); band = _shift(band, n); mods.append(f"red flags {rf} +{n}")
-    if sym.get("concordant") is True and band != "A": band = _shift(band, M["concordance"]["concordant"]); mods.append("symptom-vital concordant +1")
-    elif sym.get("concordant") is False and band in ("B", "C"): band = _shift(band, M["concordance"]["discordant"]); mods.append("symptom-vital discordant -1")
-    # 5. safety floors
+        n = min(len(rf) * M["red_flags"]["per_flag"], M["red_flags"]["max_total"]); total += n; mods.append(f"red flags {rf} +{n}")
+    if sym.get("concordant") is True and BAND_ORDER[clampi(total)] != "A": total += M["concordance"]["concordant"]; mods.append("symptom-vital concordant +1")
+    elif sym.get("concordant") is False and BAND_ORDER[clampi(total)] in ("B", "C"): total += M["concordance"]["discordant"]; mods.append("symptom-vital discordant -1")
+    # 5. clamps, applied once to the net: ceiling A / floor D, then the safety floors
+    band = BAND_ORDER[clampi(total)]
+    if total != clampi(total): mods.append(f"net band index {total} clamped to {band}")
     floor = _shift(raw_worst, -cp["safety"]["max_total_downgrade"])
     if raw_worst == "A" and BAND_ORDER.index(floor) < BAND_ORDER.index(cp["safety"]["band_A_floor"]): floor = cp["safety"]["band_A_floor"]
     if BAND_ORDER.index(band) < BAND_ORDER.index(floor): mods.append(f"safety floor {band}->{floor}"); band = floor

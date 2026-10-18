@@ -30,12 +30,14 @@ BANNED_CS = [r"ER(?!\s*\d)", r"ED", r"EMS"]   # case-sensitive; "ER"+dose = exte
 BANNED_V1 = [r"emergency", r"911", r"urgent(ly)?", r"red flags?", r"escalat\w*"]
 ANSWER_KEYS = {"rationale","decisive_feature","expected_route","acceptable_alternates","category","difficulty",
                "case_id","pair_id","hard_trigger_rule","hard_trigger","subtle_deterioration",
-               "trigger_tier","confirm_step","confirm_timeout_min","suppression_reason","baseline_layer"}
-META_KEYS = {"src", "grade", "relabel", "prev_labels", "prev_grade", "chest_pain_eval", "chest_pain_inputs"}  # provenance/metadata, not case text
+               "trigger_tier","confirm_step","confirm_timeout_min","suppression_reason","baseline_layer",
+               "escalation_target","secondary_triggers","route_basis"}   # last three: SMART_TRIGGERS v1.5
+META_KEYS = {"src", "grade", "relabel", "prev_labels", "prev_grade", "chest_pain_eval", "chest_pain_inputs", "clinician_ruling", "recheck", "pair_note"}  # provenance/metadata, not case text
 TIERS = {"ABSOLUTE", "CONFIRM_FIRST", "SUPPRESSED", "ARTIFACT"}
 RULE_TIER = {"HT_SYNCOPE": "ABSOLUTE", "HT_FOCAL_NEURO": "ABSOLUTE", "HT_CHEST_PAIN_ECG": "ABSOLUTE", "HT_CHEST_PAIN_VITALS": "CONFIRM_FIRST",
              "HT_SPO2_LT88": "CONFIRM_FIRST", "HT_GAP48_HIGHRISK": "CONFIRM_FIRST", "HT_FALL_ANTICOAG": "CONFIRM_FIRST",
-             "HT_VS_DANGER": "ABSOLUTE", "HT_VS_IMPLAUSIBLE": "ARTIFACT"}   # last two: v2.3 VS layers
+             "HT_VS_DANGER": "ABSOLUTE", "HT_VS_IMPLAUSIBLE": "ARTIFACT",   # v2.3 VS layers
+             "HT_VS_BASELINE": "CONFIRM_FIRST"}   # v1.5: engine baseline deviation (|z| >= z_confirm); used in secondary_triggers
 CONFIRM_STEPS = {"fingertip_recheck", "patient_call", "caregiver_ping", "already_confirmed", "device_recheck+patient_call"}  # last: chest-pain rule with a quality-flagged vital
 ARTIFACT_STEPS = {"device_recheck", "fingertip_recheck", "fingerstick_recheck"}  # last: CGM pressure-low rule
 BASELINE_LAYERS = {"hard_limit_artifact", "hard_limit_danger", "learning_period", "baseline_reset", "drift_not_absorbed"}
@@ -43,6 +45,9 @@ PHASES = {"learning", "established", "relearning"}
 SUPP_REASONS = {"unreliable_reading", "at_patient_baseline", "explained", "goals_of_care", "below_band_threshold"}
 BANDED_RULES = {"HT_CHEST_PAIN_VITALS"}   # SMART_TRIGGERS.md section 7: ABSOLUTE / CONFIRM_FIRST / SUPPRESSED below_band_threshold
 CF_ALTS = {"nurse_task_with_recheck", "wake_specialist"}
+SECONDARY_CONFIRM_STEPS = CONFIRM_STEPS | {"device_recheck"}   # v1.5: e.g. an HR recheck attached to a suppressed primary trigger
+ESCALATION_TARGETS = {"hospice_nurse"}                          # v1.5 hospice narrowing
+ROUTE_BASES = {"trigger", "clinical_presentation"}              # v1.5: clinical_presentation = clinician-ruled escalation on a SUPPRESSED trigger
 SMART_FIELDS = ["trigger_tier", "confirm_step", "confirm_timeout_min", "suppression_reason"]
 
 V2_REQ = ["case_id","pair_id","age_band","sex","skin_tone_note","living","pmh","function_baseline","patient_goals",
@@ -99,7 +104,7 @@ def smart_checks(c):
         if bad: iss.append("CONFIRM_FIRST alternates outside {nurse_task_with_recheck, wake_specialist}: " + ",".join(bad))
         if sr: iss.append("CONFIRM_FIRST with suppression_reason")
     elif tier == "SUPPRESSED":
-        if exp == "escalate_human": iss.append("SUPPRESSED but expected escalate_human")
+        if exp == "escalate_human" and c.get("route_basis") != "clinical_presentation": iss.append("SUPPRESSED but expected escalate_human")
         if sr not in SUPP_REASONS: iss.append(f"SUPPRESSED bad suppression_reason {sr!r}")
         if sr == "goals_of_care" and exp == "silent_log": iss.append("goals_of_care suppression routed silent_log")
         if cs or to is not None: iss.append("SUPPRESSED with confirm fields set")
@@ -115,15 +120,49 @@ def smart_checks(c):
     if sr == "below_band_threshold":
         if rule not in BANDED_RULES: iss.append("below_band_threshold only for banded rules")
         if exp == "silent_log": iss.append("below_band_threshold chest pain routed silent_log")
+    iss += v15_checks(c)
     if rule in BANDED_RULES and isinstance(c.get("chest_pain_eval"), dict):
         band = c["chest_pain_eval"].get("band"); want = {"A": "ABSOLUTE", "B": "CONFIRM_FIRST", "C": "CONFIRM_FIRST", "D": "SUPPRESSED"}.get(band)
         if want and tier not in (want, "SUPPRESSED" if sr == "goals_of_care" else want): iss.append(f"chest_pain_eval band {band} implies {want}, labelled {tier}")
     return iss
 
+def v15_checks(c):
+    """SMART_TRIGGERS v1.5 fields: escalation_target (hospice narrowing), route_basis, secondary_triggers."""
+    iss = []; exp, tier = c.get("expected_route"), c.get("trigger_tier")
+    et = c.get("escalation_target"); rb = c.get("route_basis")
+    if et is not None:
+        if et not in ESCALATION_TARGETS: iss.append(f"bad escalation_target {et!r}")
+        if exp != "escalate_human": iss.append("escalation_target set but not escalate_human")
+        if tier not in ("ABSOLUTE", "CONFIRM_FIRST"): iss.append("escalation_target hospice_nurse needs a non-suppressed tier (urgent comfort issue)")
+        if "goals_of_care" not in (c.get("category") or []): iss.append("escalation_target hospice_nurse without goals_of_care category")
+    if rb is not None:
+        if rb not in ROUTE_BASES: iss.append(f"bad route_basis {rb!r}")
+        if rb == "clinical_presentation" and not (tier == "SUPPRESSED" and exp == "escalate_human"): iss.append("route_basis clinical_presentation only for SUPPRESSED + escalate_human")
+    st = c.get("secondary_triggers")
+    if st is not None:
+        if not isinstance(st, list): return iss + ["secondary_triggers must be a list"]
+        for i, t in enumerate(st):
+            r, tt = t.get("hard_trigger_rule"), t.get("trigger_tier")
+            if r not in RULE_TIER: iss.append(f"secondary_triggers[{i}] unknown rule {r!r}")
+            if tt not in TIERS: iss.append(f"secondary_triggers[{i}] bad tier {tt!r}"); continue
+            if r == c.get("hard_trigger_rule"): iss.append(f"secondary_triggers[{i}] repeats the primary rule")
+            if tt == "CONFIRM_FIRST":
+                cs, to = t.get("confirm_step"), t.get("confirm_timeout_min")
+                if cs not in SECONDARY_CONFIRM_STEPS: iss.append(f"secondary_triggers[{i}] bad confirm_step {cs!r}")
+                if cs != "already_confirmed" and not (isinstance(to, int) and 5 <= to <= 120): iss.append(f"secondary_triggers[{i}] timeout {to!r} not int 5-120")
+                if t.get("if_confirmed_route") != "escalate_human": iss.append(f"secondary_triggers[{i}] CONFIRM_FIRST needs if_confirmed_route escalate_human")
+                if cs == "already_confirmed" and exp != "escalate_human": iss.append(f"secondary_triggers[{i}] already confirmed but expected not escalate_human")
+                if exp == "silent_log": iss.append(f"secondary_triggers[{i}] pending CONFIRM_FIRST routed silent_log")
+            elif tt == "SUPPRESSED" and t.get("suppression_reason") not in SUPP_REASONS: iss.append(f"secondary_triggers[{i}] bad suppression_reason")
+            elif tt == "ABSOLUTE" and exp != "escalate_human": iss.append(f"secondary_triggers[{i}] ABSOLUTE but expected not escalate_human")
+    return iss
+
 def layer_checks(c):
     """v2.3 three-layer VS checks (SMART_TRIGGERS.md section 6). Only for cases that carry baseline_layer."""
     iss = []; bl = c.get("baseline_layer"); bs = c.get("baseline_status")
-    if not isinstance(bs, dict) or bs.get("phase") not in PHASES: iss.append("baseline_status missing or bad phase")
+    # v1.5: layer-1 hard limits are phase-independent, so a hard_limit_* label does not need baseline_status (if present it must be valid)
+    if (bl not in ("hard_limit_artifact", "hard_limit_danger") or bs is not None) and (not isinstance(bs, dict) or bs.get("phase") not in PHASES):
+        iss.append("baseline_status missing or bad phase")
     if bl is not None and bl not in BASELINE_LAYERS: return iss + [f"bad baseline_layer {bl!r}"]
     tier = c.get("trigger_tier"); exp = c.get("expected_route")
     if (bl == "hard_limit_artifact") != (tier == "ARTIFACT"): iss.append("hard_limit_artifact <-> ARTIFACT tier mismatch")

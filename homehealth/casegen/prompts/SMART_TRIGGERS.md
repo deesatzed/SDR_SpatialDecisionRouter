@@ -1,4 +1,4 @@
-# SMART_TRIGGERS — hard-trigger policy v1.4 (v1 approved by the clinical owner on 2026-10-17; section 6, the three-layer VS rule, added from Wayne's design note the same day; section 7, the banded chest-pain rule, after Wayne rejected a flat 10-min chest-pain confirm; v1.3 records Wayne's decided crescendo rule; v1.4 adds the CGM pressure-low artifact rule (section 8); Wayne confirmed the hospice/goals-of-care calls)
+# SMART_TRIGGERS — hard-trigger policy v1.5 (v1 approved by the clinical owner on 2026-10-17; section 6, the three-layer VS rule, added from Wayne's design note the same day; section 7, the banded chest-pain rule, after Wayne rejected a flat 10-min chest-pain confirm; v1.3 records Wayne's decided crescendo rule; v1.4 adds the CGM pressure-low artifact rule (section 8); v1.5 (2026-10-18) applies Wayne's review-queue rulings: net-then-clamp band math, unanswered prompt when living alone = failed confirm, hospice narrowing, and three new answer fields (section 9))
 
 This replaces the v2.1 default, under which every hard trigger was escalate_human with empty alternates. It applies to GEN_LLM2_v2.2/v2.3, GRADER_LLM3_v1.2/v1.3, grade_merge.py and convert_casegen.py. All data are synthetic.
 
@@ -8,7 +8,7 @@ A trigger rule can **fire** (its condition is met on the surface). Before paging
 1. **Reliable reading.** The reading comes from a reliable device with no motion or poor-contact flag. A fingertip check (`fingertip_oximeter`) or a nurse visit (`visit:` note) counts as confirmation.
 2. **Change from the patient's own baseline.** A population cutoff alone is not enough. Example: a COPD patient whose usual SpO2 is 88-90% and who reads 87% at rest is not a change.
 3. **No explanation.** For example, a data gap covered by a timed contact, a charger/dock log or a caregiver check-in inside the gap, or a fall event that was a dropped or removed watch.
-4. **Within the goals of care.** Hospice or comfort-focused care goes to the hospice nurse, not to emergency escalation.
+4. **Within the goals of care.** Hospice or comfort-focused goals suppress **hospital-directed** escalation: the trigger goes to the hospice nurse (same shift), not to emergency escalation. **v1.5:** an urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) is NOT suppressed: it pages the hospice nurse now (section 9c).
 
 ## 2. Tiers
 | tier | rules | action | route | acceptable_alternates |
@@ -21,7 +21,8 @@ Notes:
 - **Fall on an anticoagulant** escalates once confirmed (a patient or caregiver confirms the fall, or a visit) and once it is not a dropped watch. If the case data already shows a dropped or removed watch with the patient fine, the tier is SUPPRESSED (`explained`).
 - If **confirmation is already in the case** (for example, a fingertip recheck at 85% or a caregiver who saw the fall), the tier is CONFIRM_FIRST with `confirm_step: "already_confirmed"`, `confirm_timeout_min: null` and `acceptable_alternates: []`.
 - An ABSOLUTE sign seen **only on a flagged device** (e.g. a watch ECG with a poor-contact flag and no symptoms) does not count as ABSOLUTE. Treat it as CONFIRM_FIRST (patient call), or SUPPRESSED if the case already refutes it.
-- **Goals of care** apply to every tier, including ABSOLUTE. With a hospice or comfort-only plan the tier is SUPPRESSED, the `suppression_reason` is `goals_of_care`, and the route is `nurse_task` (meaning a same-shift hospice nurse contact, not a 24-72 h task). It is never `silent_log`.
+- **Goals of care** apply to every tier, including ABSOLUTE. With a hospice or comfort-only plan the tier is SUPPRESSED, the `suppression_reason` is `goals_of_care`, and the route is `nurse_task` (meaning a same-shift hospice nurse contact, not a 24-72 h task). It is never `silent_log`. **v1.5 exception:** an urgent, treatable, goal-consistent comfort problem keeps its tier, routes `escalate_human` with `escalation_target: "hospice_nurse"` (an urgent hospice-nurse page now), and is not suppressed (section 9c).
+- **v1.5: an unanswered patient prompt when the patient lives alone is a failed confirm.** If a CONFIRM_FIRST patient-directed prompt (patient call or watch tap-to-confirm) gets no answer and the patient lives alone, escalate now: `confirm_step: "already_confirmed"`, timeout null, alternates `[]` (section 9b). A caregiver ping is not a patient prompt.
 - **High-risk** (for `HT_GAP48_HIGHRISK`) has the same meaning as in v2.1: HF; discharge within 30 days; home O2; dementia living alone; insulin or sulfonylurea; anticoagulant with a fall history.
 
 ## 3. Case fields (all are answer fields; never put them in case text or router_input)
@@ -32,12 +33,17 @@ Notes:
 | `trigger_tier` | `ABSOLUTE` \| `CONFIRM_FIRST` \| `SUPPRESSED` \| null | null if and only if hard_trigger is false |
 | `confirm_step` | `fingertip_recheck` \| `caregiver_ping` \| `patient_call` \| `already_confirmed` \| null | required for CONFIRM_FIRST, null otherwise |
 | `confirm_timeout_min` | integer \| null | required for CONFIRM_FIRST unless `already_confirmed`. Defaults: fingertip_recheck 15, patient_call 10, caregiver_ping 30 (a gap: 60). Range 5-120 |
-| `suppression_reason` | `unreliable_reading` \| `at_patient_baseline` \| `explained` \| `goals_of_care` \| null | required for SUPPRESSED, null otherwise |
+| `suppression_reason` | `unreliable_reading` \| `at_patient_baseline` \| `explained` \| `goals_of_care` \| `below_band_threshold` \| null | required for SUPPRESSED, null otherwise |
+| `escalation_target` (v1.5) | `hospice_nurse` or absent | urgent comfort problem in a hospice/comfort-only patient: ABSOLUTE or CONFIRM_FIRST, `escalate_human`, category includes `goals_of_care` |
+| `route_basis` (v1.5) | `clinical_presentation` or absent | only on a SUPPRESSED trigger routed `escalate_human` by clinician ruling because the clinical picture (not the trigger) needs a human now (e.g. ST1-004) |
+| `secondary_triggers` (v1.5) | list or absent | further rules that fired on the same case, each `{hard_trigger_rule, trigger_tier, confirm_step, confirm_timeout_min, suppression_reason, if_confirmed_route, evidence}`. The primary fields above describe the trigger that sets the route now. A pending secondary CONFIRM_FIRST (e.g. an HR `device_recheck`) escalates if confirmed or at timeout (`if_confirmed_route: escalate_human`) and makes the route at least nurse_task |
 
 ## 4. Route and alternate mapping (validated by grade_merge.py)
 - ABSOLUTE → expected `escalate_human`, alternates `[]`, confirm/suppression fields null.
 - CONFIRM_FIRST → expected `escalate_human`, alternates ⊆ {`nurse_task_with_recheck`, `wake_specialist`}, `confirm_step` set; timeout set unless `already_confirmed`, in which case alternates are `[]`.
-- SUPPRESSED → expected ∈ {`silent_log`, `nurse_task`, `wake_specialist`}, `suppression_reason` set. `goals_of_care` → `nurse_task` (or `wake_specialist`), never `silent_log`.
+- SUPPRESSED → expected ∈ {`silent_log`, `nurse_task`, `wake_specialist`}, `suppression_reason` set. `goals_of_care` → `nurse_task` (or `wake_specialist`), never `silent_log`. v1.5: `escalate_human` only with `route_basis: "clinical_presentation"`.
+- `escalation_target: hospice_nurse` → expected `escalate_human`, tier ABSOLUTE or CONFIRM_FIRST, `goals_of_care` in category.
+- `secondary_triggers` → each entry is validated like a trigger; a CONFIRM_FIRST entry needs a confirm step (CONFIRM_FIRST steps or `device_recheck`), a 5-120 min timeout unless already confirmed, `if_confirmed_route: escalate_human`, and the case may not be `silent_log`.
 - `nurse_task_with_recheck` is an alternate token only, never an expected_route. A grader or router answering `nurse_task` on a CONFIRM_FIRST case whose alternates include `nurse_task_with_recheck` counts as an acceptable alternate, **provided** the recheck and timeout are part of that answer. In script scoring, the recheck is taken as implied by the confirm_step label.
 
 ## 5. Scoring
@@ -76,7 +82,7 @@ The reference implementation is `casegen/trigger_engine/trigger_eval.py`, with p
 
 **Case fields (GEN v2.3 / GRADER v1.3)**
 - Fact (allowed in router_input): `baseline_status` = `{"phase": "learning|established|relearning", "monitoring_day": int, "learning_days_total": int, "last_condition_change": {"type": "...", "day": int} | null}`.
-- Answer: `baseline_layer` ∈ null | `hard_limit_artifact` | `hard_limit_danger` | `learning_period` | `baseline_reset` | `drift_not_absorbed`.
+- Answer: `baseline_layer` ∈ null | `hard_limit_artifact` | `hard_limit_danger` | `learning_period` | `baseline_reset` | `drift_not_absorbed`. v1.5: `hard_limit_*` labels do not require `baseline_status` (hard limits are phase-independent); the other layers do.
 - New tier **ARTIFACT**: rule `HT_VS_IMPLAUSIBLE`, route `silent_log` (or `wake_specialist` for repeated artifacts needing a device check), confirm_step `device_recheck` or `fingertip_recheck` with a timeout, suppression_reason null. `HT_VS_DANGER` is ABSOLUTE.
 - `learning_period` cases are never SUPPRESSED `at_patient_baseline` unless a clinician-set baseline is documented. `drift_not_absorbed` cases have `subtle_deterioration: true` and are never `silent_log`. `baseline_reset` cases have a non-null `baseline_status.last_condition_change`.
 - Scoring: a missed drift (routed `silent_log`) or a learned-away drift counts as a subtle-deterioration miss. An ARTIFACT that pages is a false page.
@@ -115,7 +121,7 @@ A flat CONFIRM_FIRST with a 10-minute timeout was rejected. `HT_CHEST_PAIN_VITAL
 | ≥ 2 vitals at band B or worse | +1 |
 | symptom–vital concordance | concordant +1; discordant −1 (only lowers B/C, never A) |
 
-- **Order of operations:** band each vital, then apply that vital's context modifiers (sleep, exertion, rate-control, pacemaker, known range) to get its modified band. Then take the worst modified band and apply multi-vital, red flags and concordance to it. Example: HR 50 asleep on a beta-blocker is raw C → D after context; two red flags → B (5 min), not C. A quality-flagged vital is unbanded (record band null/D) and gives `device_recheck+patient_call`, 5 min.
+- **Order of operations (v1.5, DECIDED RULE, Wayne 2026-10-17, ST4-002): net all modifiers first, then clamp.** Band each vital and add that vital's context shifts (sleep, exertion, rate-control, pacemaker, known range) WITHOUT clamping. Take the worst net of the banded vitals (unbanded vitals do not contribute; none banded → band D), add multi-vital, red flags and concordance, and only then clamp once to D..A and apply the safety floors and the crescendo floor. Example: HR 50 asleep on a beta-blocker is raw C; sleep −1, rate control −1, two red flags +2 → net 0 → **band C, 15 min** (sequential clamping at D gave B, 5 min, which is replaced). A quality-flagged vital is unbanded (record band null/D) and gives `device_recheck+patient_call`, 5 min.
 - **DECIDED RULE (Wayne, 2026-10-17): crescendo angina with normal vitals → CONFIRM_FIRST.** This is not an open question. A crescendo pattern (chest-pain episodes becoming more frequent, or new-onset exertional episodes over recent days) is `HT_CHEST_PAIN_VITALS` → `trigger_tier: CONFIRM_FIRST`, route escalate_human, even when every vital is in band D. The band is at least C (a crescendo floor that discordance or context cannot lower).
   - Confirm step: `already_confirmed` if the worsening is already confirmed in the case (patient or caregiver report, phone check). Otherwise `patient_call`, 15 min. The post-exertion ×2 does not apply when the vitals are normal.
   - A **stable** pattern (usual frequency, unchanged) with normal vitals stays band D: SUPPRESSED `below_band_threshold`, nurse_task. **No trigger escalation.**
@@ -146,3 +152,16 @@ This applies to a **CGM** glucose reading at or below the glucose danger limit (
 5. Otherwise the danger value stands → ABSOLUTE.
 
 Goals of care still apply (comfort-only → hospice nurse). Fingerstick readings themselves are never treated as pressure artifacts.
+
+## 9. v1.5 rulings (Wayne, review queue of 13 cases, 2026-10-17/18)
+Engine: `trigger_eval.py`; params `trigger_params.json` 0.5-placeholder (change_log entries approved by Wayne); tests `test_rulings_v15.py`. The per-case rulings are in `clinician_rulings.csv` and each ruled case carries `clinician_ruling` with the changes and an engine re-derivation.
+
+**a. Band math: net, then clamp** (`chest_pain.band_math.method = net_then_clamp`). See section 7. ST4-002 → band C, CONFIRM_FIRST `patient_call` 15 min. Re-running the engine on every other chest-pain input in the library changed no band or tier.
+
+**b. Unanswered prompt + lives alone = failed confirm** (`confirm_first.unanswered_prompt`). `resolve_confirm(decision, "no_answer", params, {"lives_alone": True})` on a `patient_call` or `watch_prompt` step → page now, `confirm_step: already_confirmed`. Not living alone → wait for the timeout as before. A caregiver ping is excluded. ST2-009 → CONFIRM_FIRST `already_confirmed`, alternates `[]`.
+
+**c. Hospice narrowing** (`goals_of_care`). Goals-of-care suppression applies to hospital-directed escalation only. An urgent, treatable, goal-consistent comfort problem keeps its tier and pages the hospice nurse now (`escalate_human`, `escalation_target: hospice_nurse`, notify `hospice_nurse_urgent_page`), not same-shift. Placeholder condition list: a danger-level low glucose that is symptomatic, or recurrent within 6 h (artifact and unreliable lows do not count). A caller may also declare `comfort_treatable`. Everything else (e.g. low SpO2 with breathlessness, a fall, a focal deficit) stays SUPPRESSED `goals_of_care` → same-shift hospice nurse until Wayne adds it to the list. GC2-003 → HT_VS_DANGER ABSOLUTE, hospice nurse now.
+
+**d. CGM ordering confirmed.** Symptoms are checked before a fingerstick that reads above the danger limit: CGM 50 + fingerstick 58 + confusion → ABSOLUTE `hard_limit_danger_symptomatic` (NV2-015); the same data without symptoms → SUPPRESSED `unreliable_reading`.
+
+**Fields:** `escalation_target`, `route_basis`, `secondary_triggers` (section 3). HK7-009 is the first `secondary_triggers` case: the fall is SUPPRESSED `explained` (nurse_task), plus HT_VS_BASELINE CONFIRM_FIRST `device_recheck` 10 min for possible AF with a rapid rate (HR 112 vs baseline 72), escalating if the rate stays high.
