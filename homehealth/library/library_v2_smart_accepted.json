@@ -613,7 +613,7 @@
     "longest_gap_h": 1
    },
    "router_input": "HK1-007. Age 80-84, F, Fitzpatrick I-IV, lives with adult child. PMH: recurrent malignant pleural effusion (left), metastatic breast cancer with treatment paused. In bed or chair, needs help to walk short distances. Goals: comfort-focused, wants to stay at home, no transfer to hospital. Discharged Day -12 after pleural drainage to home comfort plan. Meds: dexamethasone 4 mg daily and oxycodone 2.5 mg PRN, both started Day -12. Devices: watch, fingertip oximeter. Baseline: rest HR 78, HRV 24 ms, sleep 6.2 h, steps 1200, night SpO2 min 92%. Trend: Day -7 to -4 watch resting SpO2 93-94%, RR 18-20, HR 78-82, steps 1100-1400. Day -3 SpO2 92-93%, steps 900. Day -2 SpO2 91-92%, RR 22, HR 90. Day -1 SpO2 90-91%, RR 24, HR 98, steps 600. Day 0 watch resting 07:30 SpO2 88-89%, RR 26, HR 104. Fingertip Day 0 09:40 SpO2 86%, good waveform, no motion flag; Day 0 10:00 SpO2 87%, good waveform, no motion flag. Note: adult child reports only a few words before stopping for breath, sleeping upright. Wear 90% over 7 days; fingertip readings Day 0 09:40 and 10:00 with good waveform; 0 h missing in 48 h; longest gap 1 h.",
-   "expected_route": "nurse_task",
+   "expected_route": "escalate_human",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_SPO2_LT88",
@@ -623,8 +623,8 @@
     "respiratory",
     "goals_of_care"
    ],
-   "rationale": "Two fingertip readings of 86% at 09:40 and 87% at 10:00 on Day 0 have good waveform and no motion flag, so both are reliable and sit below the 88% threshold. The watch trend supports a real decline, with resting SpO2 falling from 93-94% on Day -7 to 88-89% on Day 0, RR rising to 26 and HR to 104, and the adult child reporting few-word speech and sleeping upright. Recurrent malignant pleural effusion is the likely cause, and the comfort-focused goals shape how the clinician responds but do not change the route. Naive-model trap: a shallow model sees the documented comfort plan and routes to nurse_task or wake_specialist for symptom review, when a confirmed hard trigger always requires a clinician to look now. Smart-trigger review: Two good-waveform fingertip readings of 86% and 87% are reliable and a real fall from a 92% baseline. The patient is on a home comfort plan with no hospital transfer wanted, so goals of care suppress emergency paging and a same-shift hospice nurse contact is routed.",
-   "decisive_feature": "Two good-waveform fingertip readings of 86% and 87% on Day 0 from recurrent malignant pleural effusion, below 88%, in a comfort-focused patient.",
+   "rationale": "Two fingertip readings of 86% at 09:40 and 87% at 10:00 on Day 0 have good waveform and no motion flag, so both are reliable and sit below the 88% threshold, and the watch trend shows a real decline from 93-94% on Day -7, with RR rising to 26 and HR to 104. The confirmation is already in the case, so HT_SPO2_LT88 is CONFIRM_FIRST with confirm_step already_confirmed. Her adult child reports she can only say a few words before stopping for breath and has slept sitting up: distressing breathlessness from recurrent malignant pleural effusion. Her comfort plan declines hospital transfer, which suppresses hospital-directed escalation only; breathlessness that can be eased at home (opioid, positioning, hospice-led care) is an urgent, goal-consistent comfort problem, so the route is escalate_human to the hospice nurse now (escalation_target hospice_nurse), not a same-shift contact, with no alternate. Naive-model trap: a shallow model reads the comfort plan as a reason to wait for a routine hospice visit, or sends her to a hospital team against her wishes.",
+   "decisive_feature": "Two good-waveform fingertip readings of 86% and 87% from recurrent malignant pleural effusion, with few-word speech, in a comfort-focused patient: distressing breathlessness that can be treated at home.",
    "src": "library_v1",
    "src_model": "anthropic/claude-haiku-5.5",
    "src_batch": "HK1",
@@ -658,10 +658,10 @@
      "NV8"
     ]
    },
-   "trigger_tier": "SUPPRESSED",
-   "confirm_step": null,
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
    "confirm_timeout_min": null,
-   "suppression_reason": "goals_of_care",
+   "suppression_reason": null,
    "relabel": {
     "model": "anthropic/claude-haiku-5.5",
     "checks": {
@@ -682,6 +682,41 @@
     "action": "keep",
     "score": 5,
     "merge_status": "accepted"
+   },
+   "escalation_target": "hospice_nurse",
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-18",
+    "ruling_route": "escalate_human",
+    "note": "urgent hospice nurse page now (escalation_target hospice_nurse); POLICY v1.6: distressing breathlessness that can be treated at home is on the urgent hospice-comfort list (Wayne 2026-10-18)",
+    "policy": "SMART_TRIGGERS v1.6",
+    "changes": [
+     "expected_route: \"nurse_task\" -> \"escalate_human\"",
+     "trigger_tier: \"SUPPRESSED\" -> \"CONFIRM_FIRST\"",
+     "confirm_step: null -> \"already_confirmed\"",
+     "suppression_reason: \"goals_of_care\" -> null",
+     "escalation_target: null -> \"hospice_nurse\"",
+     "rationale rewritten",
+     "decisive_feature updated"
+    ],
+    "engine_check": {
+     "HK1-007": {
+      "rule": "HT_SPO2_LT88",
+      "tier": "CONFIRM_FIRST",
+      "reason": "outside_population_default_learning",
+      "route": "escalate_human",
+      "page": true,
+      "confirm_step": "already_confirmed",
+      "recheck": {
+       "step": "fingertip_recheck",
+       "timeout_min": 15
+      },
+      "escalation_target": "hospice_nurse",
+      "notify": "hospice_nurse_urgent_page",
+      "goals_basis": "breathlessness_distressing_home_treatable",
+      "confirm_result": "confirmed"
+     }
+    }
    }
   },
   {
@@ -4210,7 +4245,7 @@
     "modifiers": [],
     "tier": "LOG_ONLY",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder (net-then-clamp)"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.6-placeholder (net-then-clamp)"
    },
    "clinician_ruling": {
     "ruled_by": "Wayne",
@@ -4388,7 +4423,7 @@
     ],
     "tier": "CONFIRM_FIRST",
     "timeout_min": 30,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.6-placeholder"
    }
   },
   {
@@ -12818,7 +12853,7 @@
     "longest_gap_h": 0
    },
    "router_input": "85-89 F alone. PMH COPD, pulmonary fibrosis, home oxygen. Comfort-focused hospice, declines hospital. Meds: morphine sulfate 5 mg every 4 hours as needed (started -30). No recent med changes. Devices: watch, ring, scale, fingertip oximeter. Baseline: rest HR 82, HRV 24 ms, sleep 6.2 h, steps 500, night SpO2 min 89%, weight 64.0 kg. Trend Day -1: SpO2 90-92% on oxygen (fingertip), rest HR 80-86 bpm, RR 20 per minute, steps 400, weight 64.0 kg. Day 0: resting fingertip SpO2 86% on repeat, HR 98 bpm, RR 26 per minute, steps 200, weight 64.0 kg, increased dyspnoea. Note: patient: I cannot catch my breath, but I do not want to go to the hospital. Data: wear 87%, no flags, missing hours last 48 0, longest gap 0 h.",
-   "expected_route": "nurse_task",
+   "expected_route": "escalate_human",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_SPO2_LT88",
@@ -12828,8 +12863,8 @@
     "respiratory",
     "goals_of_care"
    ],
-   "rationale": "Confirmed resting fingertip SpO2 of 86% on repeat is below 88% and meets the hypoxemia hard trigger, requiring clinician review now. The patient is comfort-focused and declines hospital, so the responding clinician will assess and manage symptoms while honouring goals and avoiding default transfer. Naive-model trap: a shallow model might take no action because the patient is comfort-focused and declines hospital, missing the confirmed sub-88% saturation hard trigger. Smart-trigger review: Fingertip SpO2 86% on repeat is a real change from 90-92% on oxygen and the saturation rule fired. The patient is on comfort-focused hospice and declines hospital, so goals_of_care applies and the route is a same-shift hospice nurse contact. Sampled 100% to HITM.",
-   "decisive_feature": "Confirmed resting fingertip SpO2 86% (below 88%) in a comfort-focused hospice patient, meeting HT_SPO2_LT88.",
+   "rationale": "A resting fingertip SpO2 of 86% on repeat is below 88% and a real change from 90-92% on oxygen the day before, with HR 98 bpm and RR 26 per minute, so HT_SPO2_LT88 fires and the confirmation is already in the case (CONFIRM_FIRST, confirm_step already_confirmed). She says she cannot catch her breath but does not want to go to hospital, and she lives alone with PRN morphine and home oxygen. Her hospice goals suppress hospital-directed escalation only; distressing breathlessness that can be treated at home is an urgent, goal-consistent comfort problem, so the route is escalate_human to the hospice nurse now (escalation_target hospice_nurse), not a same-shift contact, with no alternate. Naive-model trap: a shallow model takes her refusal of hospital as a reason for a routine hospice call, or escalates to a hospital team against her wishes.",
+   "decisive_feature": "Confirmed resting fingertip SpO2 86% on repeat with increased dyspnoea in a comfort-focused hospice patient who lives alone: distressing breathlessness that can be treated at home.",
    "src": "library_v1",
    "src_model": "nvidia/nemotron-3.5-super-vl",
    "src_batch": "NV6",
@@ -12863,10 +12898,10 @@
      "NV8"
     ]
    },
-   "trigger_tier": "SUPPRESSED",
-   "confirm_step": null,
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
    "confirm_timeout_min": null,
-   "suppression_reason": "goals_of_care",
+   "suppression_reason": null,
    "relabel": {
     "model": "anthropic/claude-haiku-5.5",
     "checks": {
@@ -12887,6 +12922,41 @@
     "action": "keep",
     "score": 5,
     "merge_status": "accepted"
+   },
+   "escalation_target": "hospice_nurse",
+   "clinician_ruling": {
+    "ruled_by": "Wayne",
+    "date": "2026-10-18",
+    "ruling_route": "escalate_human",
+    "note": "urgent hospice nurse page now (escalation_target hospice_nurse); POLICY v1.6: distressing breathlessness that can be treated at home is on the urgent hospice-comfort list (Wayne 2026-10-18)",
+    "policy": "SMART_TRIGGERS v1.6",
+    "changes": [
+     "expected_route: \"nurse_task\" -> \"escalate_human\"",
+     "trigger_tier: \"SUPPRESSED\" -> \"CONFIRM_FIRST\"",
+     "confirm_step: null -> \"already_confirmed\"",
+     "suppression_reason: \"goals_of_care\" -> null",
+     "escalation_target: null -> \"hospice_nurse\"",
+     "rationale rewritten",
+     "decisive_feature updated"
+    ],
+    "engine_check": {
+     "NV6-010": {
+      "rule": "HT_SPO2_LT88",
+      "tier": "CONFIRM_FIRST",
+      "reason": "outside_population_default_learning",
+      "route": "escalate_human",
+      "page": true,
+      "confirm_step": "already_confirmed",
+      "recheck": {
+       "step": "fingertip_recheck",
+       "timeout_min": 15
+      },
+      "escalation_target": "hospice_nurse",
+      "notify": "hospice_nurse_urgent_page",
+      "goals_basis": "breathlessness_distressing_home_treatable",
+      "confirm_result": "confirmed"
+     }
+    }
    }
   },
   {
@@ -14482,7 +14552,7 @@
     ],
     "tier": "CONFIRM_FIRST",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.6-placeholder"
    },
    "relabel": {
     "model": "deterministic (trigger_eval.evaluate_chest_pain + decided crescendo rule)",
@@ -14603,7 +14673,7 @@
     "modifiers": [],
     "tier": "LOG_ONLY",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.6-placeholder"
    },
    "grade": {
     "grader": "google/gemini-4-argon GRADER_LLM3_v1.3 rev c",
@@ -14772,7 +14842,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.6-placeholder"
    },
    "pair_note": "Unpaired 2026-10-17: former partner AC1-002 now also escalates (crescendo rule); AC1-P01 is now AC1-002 (crescendo) vs AC1-012 (stable)."
   },
@@ -15028,7 +15098,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.6-placeholder"
    }
   },
   {
@@ -15848,7 +15918,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.6-placeholder"
    }
   },
   {
@@ -16101,7 +16171,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.6-placeholder"
    }
   },
   {
@@ -16227,7 +16297,7 @@
     ],
     "tier": "CONFIRM_FIRST",
     "timeout_min": 15,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.6-placeholder"
    },
    "relabel": {
     "model": "deterministic (trigger_eval.evaluate_chest_pain + decided crescendo rule)",
@@ -26315,7 +26385,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.6-placeholder"
    },
    "pair_note": "Unpaired 2026-10-18: former partner ST1-010 is now a standalone escalate_human case (Wayne ruling), so ST1-P05 no longer contrasts."
   },
@@ -29180,7 +29250,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder (net-then-clamp)"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.6-placeholder (net-then-clamp)"
    },
    "pair_note": "Unpaired 2026-10-18 (Wayne): kept as a standalone trap case; its former partner ST1-009 also routes escalate_human, so the pair no longer contrasts.",
    "clinician_ruling": {
@@ -29417,7 +29487,7 @@
     ],
     "tier": "CONFIRM_FIRST",
     "timeout_min": 15,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.5-placeholder (net-then-clamp)"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.6-placeholder (net-then-clamp)"
    },
    "subtle_deterioration": false,
    "difficulty": "adversarial",
@@ -29481,6 +29551,6 @@
   "synthetic": true,
   "manual": "smart_triggers/manual_cases.json (AC1-012, hand-derived stable partner of AC1-002)",
   "recheck": "recheck/decisions.json: 4 non-trigger cases gained agreed trigger metadata (no route changes)",
-  "clinician_rulings": "clinician_rulings.csv (Wayne, 2026-10-17/18): 13 review-queue cases ruled; 6 added from the queue; applied by apply_rulings.py under SMART_TRIGGERS v1.5"
+  "clinician_rulings": "clinician_rulings.csv (Wayne, 2026-10-17/18): 15 review-queue cases ruled; 6 added from the queue; applied by apply_rulings.py under SMART_TRIGGERS v1.5"
  }
 }

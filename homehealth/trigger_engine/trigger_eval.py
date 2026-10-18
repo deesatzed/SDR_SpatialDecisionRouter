@@ -217,10 +217,16 @@ def urgent_comfort_basis(r, base, p, context=None):
     ctx = context or {}; uc = (p.get("goals_of_care") or {}).get("urgent_comfort") or {}
     if not uc.get("enabled"): return None
     if ctx.get("comfort_treatable"): return "declared_comfort_treatable"
+    cond = uc.get("conditions") or {}
+    # v1.6 (Wayne 2026-10-18): distressing breathlessness that can be treated at home (respiratory trigger + context
+    # breathlessness = {"distressing": True, "home_treatable": True}); treatment that needs a hospital stays hospital-directed.
+    br = ctx.get("breathlessness") or {}
+    if cond.get("breathlessness_distressing_home_treatable") and br.get("distressing") and br.get("home_treatable") \
+       and (r is None or r.get("vital") in uc.get("breathlessness_vitals", ["spo2", "rr"])) and ctx.get("trigger_family", "respiratory" if r else None) == "respiratory":
+        return "breathlessness_distressing_home_treatable"
     if not r or r.get("vital") != "glucose": return None
     h = p["hard_limits"]["glucose"]; x = r.get("value")
     if h["danger_low"] is None or x is None or x > h["danger_low"]: return None
-    cond = uc.get("conditions") or {}
     if cond.get("hypoglycemia_symptomatic") and ((r.get("cgm") or {}).get("symptoms") or r.get("symptoms") or ctx.get("symptoms")): return "hypoglycemia_symptomatic"
     if cond.get("hypoglycemia_recurrent") and base is not None:
         win = uc["recurrent_window_h"] * 3600.0

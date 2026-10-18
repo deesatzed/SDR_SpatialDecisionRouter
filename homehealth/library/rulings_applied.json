@@ -104,6 +104,24 @@
    "category: [\"hypoglycemia\"] -> [\"hypoglycemia\", \"fall\"]",
    "rationale rewritten"
   ],
+  "HK1-007": [
+   "expected_route: \"nurse_task\" -> \"escalate_human\"",
+   "trigger_tier: \"SUPPRESSED\" -> \"CONFIRM_FIRST\"",
+   "confirm_step: null -> \"already_confirmed\"",
+   "suppression_reason: \"goals_of_care\" -> null",
+   "escalation_target: null -> \"hospice_nurse\"",
+   "rationale rewritten",
+   "decisive_feature updated"
+  ],
+  "NV6-010": [
+   "expected_route: \"nurse_task\" -> \"escalate_human\"",
+   "trigger_tier: \"SUPPRESSED\" -> \"CONFIRM_FIRST\"",
+   "confirm_step: null -> \"already_confirmed\"",
+   "suppression_reason: \"goals_of_care\" -> null",
+   "escalation_target: null -> \"hospice_nurse\"",
+   "rationale rewritten",
+   "decisive_feature updated"
+  ],
   "ST1-009": [
    "pair_id: \"ST1-P05\" -> null (partner ST1-010 made standalone)"
   ]
@@ -198,6 +216,38 @@
    "escalation_target": "hospice_nurse",
    "notify": "hospice_nurse_urgent_page",
    "goals_basis": "hypoglycemia_symptomatic"
+  },
+  "HK1-007": {
+   "rule": "HT_SPO2_LT88",
+   "tier": "CONFIRM_FIRST",
+   "reason": "outside_population_default_learning",
+   "route": "escalate_human",
+   "page": true,
+   "confirm_step": "already_confirmed",
+   "recheck": {
+    "step": "fingertip_recheck",
+    "timeout_min": 15
+   },
+   "escalation_target": "hospice_nurse",
+   "notify": "hospice_nurse_urgent_page",
+   "goals_basis": "breathlessness_distressing_home_treatable",
+   "confirm_result": "confirmed"
+  },
+  "NV6-010": {
+   "rule": "HT_SPO2_LT88",
+   "tier": "CONFIRM_FIRST",
+   "reason": "outside_population_default_learning",
+   "route": "escalate_human",
+   "page": true,
+   "confirm_step": "already_confirmed",
+   "recheck": {
+    "step": "fingertip_recheck",
+    "timeout_min": 15
+   },
+   "escalation_target": "hospice_nurse",
+   "notify": "hospice_nurse_urgent_page",
+   "goals_basis": "breathlessness_distressing_home_treatable",
+   "confirm_result": "confirmed"
   }
  }
 }

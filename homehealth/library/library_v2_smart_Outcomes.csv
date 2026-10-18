@@ -4,7 +4,7 @@ O-LIB-HK1-002,synthetic,LIB-HK1-002,wake_specialist,author_label,0,minor
 O-LIB-HK1-004,synthetic,LIB-HK1-004,nurse_task,author_label,0,minor
 O-LIB-HK1-005,synthetic,LIB-HK1-005,silent_log,author_label,0,minor
 O-LIB-HK1-006,synthetic,LIB-HK1-006,silent_log,author_label,0,minor
-O-LIB-HK1-007,synthetic,LIB-HK1-007,nurse_task,author_label,0,minor
+O-LIB-HK1-007,synthetic,LIB-HK1-007,escalate_human,author_label,0,critical
 O-LIB-HK1-008,synthetic,LIB-HK1-008,wake_specialist,author_label,0,minor
 O-LIB-HK1-009,synthetic,LIB-HK1-009,nurse_task,author_label,0,minor
 O-LIB-HK1-010,synthetic,LIB-HK1-010,escalate_human,author_label,0,major
@@ -114,7 +114,7 @@ O-LIB-NV6-001,synthetic,LIB-NV6-001,nurse_task,author_label,0,minor
 O-LIB-NV6-002,synthetic,LIB-NV6-002,nurse_task,author_label,0,minor
 O-LIB-NV6-004,synthetic,LIB-NV6-004,wake_specialist,author_label,0,minor
 O-LIB-NV6-005,synthetic,LIB-NV6-005,nurse_task,author_label,0,minor
-O-LIB-NV6-010,synthetic,LIB-NV6-010,nurse_task,author_label,0,minor
+O-LIB-NV6-010,synthetic,LIB-NV6-010,escalate_human,author_label,0,critical
 O-LIB-NV6-025,synthetic,LIB-NV6-025,escalate_human,author_label,0,critical
 O-LIB-NV7-006,synthetic,LIB-NV7-006,silent_log,author_label,0,minor
 O-LIB-NV7-008,synthetic,LIB-NV7-008,silent_log,author_label,0,minor

@@ -33,7 +33,7 @@ This folder holds the home-monitoring side of the Spatial Decision Router:
 - **v1.5 (clinician rulings, 2026-10-18):**
   - Chest-pain band math nets all modifiers first, then clamps once (replaces sequential clamping).
   - An unanswered patient prompt (patient call or watch tap-to-confirm) when the patient lives alone is a failed confirm → escalate now (`resolve_confirm`).
-  - Hospice/comfort-only goals suppress hospital-directed escalation only. An urgent, treatable, goal-consistent comfort problem (placeholder list: symptomatic or recurrent danger-level hypoglycaemia) pages the hospice nurse now (`escalation_target: hospice_nurse`).
+  - Hospice/comfort-only goals suppress hospital-directed escalation only. An urgent, treatable, goal-consistent comfort problem (placeholder list: symptomatic or recurrent danger-level hypoglycaemia; v1.6: distressing breathlessness treatable at home on an SpO2/RR trigger) pages the hospice nurse now (`escalation_target: hospice_nurse`).
   - New answer fields: `escalation_target`, `route_basis`, `secondary_triggers`.
 
 ## Running the tests
@@ -41,7 +41,7 @@ From the repo root (Python 3.13; pytest only, no other dependencies):
 ```
 python -m pytest -q homehealth/trigger_engine
 ```
-`conftest.py` puts the engine and `casegen/grade_merge.py` on the path. The suites cover the engine, chest pain, the CGM pressure rule, the v1.5 rulings (`test_rulings_v15.py`) and the grade_merge label checks.
+`conftest.py` puts the engine and `casegen/grade_merge.py` on the path. The suites cover the engine, chest pain, the CGM pressure rule, the v1.5/v1.6 rulings (`test_rulings_v15.py`, `test_breathlessness_v16.py`) and the grade_merge label checks.
 
 ## Notes
 - The pipeline scripts in `casegen/` (`smart_run.py`, `build_outputs.py`, `apply_*.py`, `recheck/`) are included for provenance. They use the relative paths of the original working layout (`casegen/prompts_v2/`, `library_v2/smart_triggers/`) and call OpenRouter through `orcall.py`, which reads `OPENROUTER_API_KEY` from the environment. No keys, `.env` files or raw API responses are committed.

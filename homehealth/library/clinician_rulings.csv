@@ -12,3 +12,5 @@ HK7-009,nurse_task,fall trigger SUPPRESSED explained (witnessed near-fall); ADD 
 NV2-015,escalate_human,ABSOLUTE (symptomatic hypoglycemia; symptoms precede fingerstick check); no alternates; keep categories incl noise (Wayne 2026-10-18)
 GC2-003,escalate_human,urgent hospice nurse page now (route to hospice); POLICY: hospice goals suppress hospital-directed escalation, not urgent treatable goal-consistent comfort issues (Wayne 2026-10-18)
 GL1-005,escalate_human,ABSOLUTE (hard_limit_danger; meter 44 + fall); no alternates; add fall category (Wayne 2026-10-18)
+HK1-007,escalate_human,urgent hospice nurse page now (escalation_target hospice_nurse); POLICY v1.6: distressing breathlessness that can be treated at home is on the urgent hospice-comfort list (Wayne 2026-10-18)
+NV6-010,escalate_human,urgent hospice nurse page now (escalation_target hospice_nurse); POLICY v1.6: distressing breathlessness that can be treated at home is on the urgent hospice-comfort list (Wayne 2026-10-18)

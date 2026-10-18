@@ -331,19 +331,19 @@
  },
  "library_hard_trigger_n": 78,
  "library_routes": {
-  "escalate_human": 80,
+  "escalate_human": 82,
   "wake_specialist": 50,
-  "nurse_task": 71,
+  "nurse_task": 69,
   "silent_log": 66
  },
  "library_tiers": {
-  "SUPPRESSED": 24,
-  "CONFIRM_FIRST": 35,
+  "CONFIRM_FIRST": 37,
+  "SUPPRESSED": 22,
   "ABSOLUTE": 17,
   "ARTIFACT": 2
  },
  "clinician_rulings": {
-  "n": 13,
+  "n": 15,
   "added_to_library": [
    "ST1-002",
    "ST1-004",
@@ -459,11 +459,29 @@
     "category: [\"hypoglycemia\"] -> [\"hypoglycemia\", \"fall\"]",
     "rationale rewritten"
    ],
+   "HK1-007": [
+    "expected_route: \"nurse_task\" -> \"escalate_human\"",
+    "trigger_tier: \"SUPPRESSED\" -> \"CONFIRM_FIRST\"",
+    "confirm_step: null -> \"already_confirmed\"",
+    "suppression_reason: \"goals_of_care\" -> null",
+    "escalation_target: null -> \"hospice_nurse\"",
+    "rationale rewritten",
+    "decisive_feature updated"
+   ],
+   "NV6-010": [
+    "expected_route: \"nurse_task\" -> \"escalate_human\"",
+    "trigger_tier: \"SUPPRESSED\" -> \"CONFIRM_FIRST\"",
+    "confirm_step: null -> \"already_confirmed\"",
+    "suppression_reason: \"goals_of_care\" -> null",
+    "escalation_target: null -> \"hospice_nurse\"",
+    "rationale rewritten",
+    "decisive_feature updated"
+   ],
    "ST1-009": [
     "pair_id: \"ST1-P05\" -> null (partner ST1-010 made standalone)"
    ]
   },
   "policy": "SMART_TRIGGERS v1.5",
-  "params": "0.5-placeholder"
+  "params": "0.6-placeholder"
  }
 }

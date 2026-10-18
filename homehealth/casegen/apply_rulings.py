@@ -16,8 +16,8 @@ with open("clinician_rulings.csv", newline="") as f:
     rd = csv.reader(f); hdr = next(rd)
     for row in rd:
         if not row: continue
-        RUL[row[0]] = {"ruling": row[1], "note": ",".join(row[2:]).strip()}
-assert len(RUL) == 13, len(RUL)
+        RUL[row[0]] = {"ruling": row[1], "note": ",".join(row[2:]).strip()}   # rows 1-13 unquoted (GC2-003 note has a bare comma); later rows csv-quoted
+assert len(RUL) == 15, len(RUL)   # 13 review-queue rulings + 2 v1.6 hospice relabels (HK1-007, NV6-010)
 
 lib = json.load(open("library_v2_smart_accepted.json")); L = {c["case_id"]: c for c in lib["cases"]}
 B, V = {}, {}
@@ -47,6 +47,10 @@ EC["GL1-005"] = T.evaluate({"vital": "glucose", "value": 47, "ts": 99 * DAY, "so
 bg = T.Baseline("SYN-GC2-003", 0.0, P)
 EC["GC2-003_0210"] = T.evaluate({"vital": "glucose", "value": 46, "ts": 99 * DAY + 2 * 3600 + 600, "source": "cgm", "cgm": {"overnight": True}}, bg, P, {"goals": "comfort_only"})
 EC["GC2-003"] = T.evaluate({"vital": "glucose", "value": 49, "ts": 99 * DAY + 3 * 3600 + 300, "source": "cgm", "cgm": {"overnight": True, "symptoms": True}}, bg, P, {"goals": "comfort_only"})
+BR = {"distressing": True, "home_treatable": True}   # v1.6 urgent comfort: distressing breathlessness treatable at home
+for cid, x in (("HK1-007", 86), ("NV6-010", 86)):
+    d0 = T.evaluate({"vital": "spo2", "value": x, "ts": 99 * DAY, "activity_state": "rest"}, T.Baseline("SYN-" + cid, 98 * DAY, P), P, {"goals": "comfort_only", "breathlessness": BR})
+    EC[cid] = T.resolve_confirm(d0, "confirmed", P)   # repeat good-waveform fingertip readings already in the case
 def slim(d): return {k: d.get(k) for k in ("rule", "tier", "band", "raw_band", "modifiers", "reason", "route", "page", "confirm_step", "timeout_min", "recheck", "escalation_target", "notify", "goals_basis", "confirm_result", "z") if d.get(k) is not None}
 assert EC["ST4-002"]["tier"] == "CONFIRM_FIRST" and EC["ST4-002"]["band"] == "C" and EC["ST4-002"]["timeout_min"] == 15
 assert EC["ST1-010"]["tier"] == "ABSOLUTE" and EC["ST1-010"]["rule"] == "HT_CHEST_PAIN_VITALS"
@@ -55,6 +59,8 @@ assert EC["ST2-009"]["confirm_step"] == "already_confirmed" and EC["ST2-009"]["p
 assert EC["HK7-009"]["tier"] == "CONFIRM_FIRST" and EC["HK7-009"]["rule"] == "HT_VS_BASELINE"
 assert EC["NV2-015"]["tier"] == "ABSOLUTE" and EC["NV2-015"]["reason"] == "hard_limit_danger_symptomatic"
 assert EC["GL1-005"]["tier"] == "ABSOLUTE" and EC["GL1-005"]["reason"] == "hard_limit_danger_fingerstick_confirmed"
+for cid in ("HK1-007", "NV6-010"):
+    assert EC[cid]["tier"] == "CONFIRM_FIRST" and EC[cid]["escalation_target"] == "hospice_nurse" and EC[cid]["confirm_step"] == "already_confirmed", EC[cid]
 assert EC["GC2-003_0210"]["tier"] == "SUPPRESSED" and EC["GC2-003"]["tier"] == "ABSOLUTE" and EC["GC2-003"]["escalation_target"] == "hospice_nurse"
 TMO_DEV = P["confirm_first"]["timeouts_min"]["device_recheck"]
 def cpe(d): return {"band": d["band"], "raw_band": d["raw_band"], "modifiers": d["modifiers"], "tier": d["tier"], "timeout_min": d.get("timeout_min"), "engine": "trigger_eval.evaluate_chest_pain params " + P["version"] + " (net-then-clamp)"}
@@ -104,6 +110,16 @@ SPEC = {
  "GL1-005": dict(labels=dict(expected_route="escalate_human", acceptable_alternates=[], hard_trigger=True, hard_trigger_rule="HT_VS_DANGER", trigger_tier="ABSOLUTE", **NO, baseline_layer="hard_limit_danger"),
    add_category="fall",
    rationale="A meter-confirmed nocturnal low (CGM 47 mg/dL at 02:45, glucometer 44 mg/dL at 02:55, at or below the 54 mg/dL danger limit) in an insulin-treated man who lives alone makes HT_VS_DANGER ABSOLUTE (hard_limit_danger). It was followed by a watch-logged impact at 03:21 with HR 108 bpm, and a neighbour found him on the bedroom floor at 03:40 after he pressed his pendant. A fall after a severe low needs clinician assessment for injury and for the cause of the low, and the 92 mg/dL reading after treatment does not close the event. Route escalate_human with no alternate. Naive-model trap: a shallow model sees a treated low that is now resolved and routes nurse_task for a glucose-education call, missing both the danger-level low and the fall."),
+
+ # ---- v1.6 (Wayne 2026-10-18): distressing breathlessness treatable at home -> urgent hospice nurse page now
+ "HK1-007": dict(labels=dict(expected_route="escalate_human", acceptable_alternates=[], hard_trigger=True, hard_trigger_rule="HT_SPO2_LT88", trigger_tier="CONFIRM_FIRST",
+                             confirm_step="already_confirmed", confirm_timeout_min=None, suppression_reason=None, escalation_target="hospice_nurse"),
+   decisive_feature="Two good-waveform fingertip readings of 86% and 87% from recurrent malignant pleural effusion, with few-word speech, in a comfort-focused patient: distressing breathlessness that can be treated at home.",
+   rationale="Two fingertip readings of 86% at 09:40 and 87% at 10:00 on Day 0 have good waveform and no motion flag, so both are reliable and sit below the 88% threshold, and the watch trend shows a real decline from 93-94% on Day -7, with RR rising to 26 and HR to 104. The confirmation is already in the case, so HT_SPO2_LT88 is CONFIRM_FIRST with confirm_step already_confirmed. Her adult child reports she can only say a few words before stopping for breath and has slept sitting up: distressing breathlessness from recurrent malignant pleural effusion. Her comfort plan declines hospital transfer, which suppresses hospital-directed escalation only; breathlessness that can be eased at home (opioid, positioning, hospice-led care) is an urgent, goal-consistent comfort problem, so the route is escalate_human to the hospice nurse now (escalation_target hospice_nurse), not a same-shift contact, with no alternate. Naive-model trap: a shallow model reads the comfort plan as a reason to wait for a routine hospice visit, or sends her to a hospital team against her wishes."),
+ "NV6-010": dict(labels=dict(expected_route="escalate_human", acceptable_alternates=[], hard_trigger=True, hard_trigger_rule="HT_SPO2_LT88", trigger_tier="CONFIRM_FIRST",
+                             confirm_step="already_confirmed", confirm_timeout_min=None, suppression_reason=None, escalation_target="hospice_nurse"),
+   decisive_feature="Confirmed resting fingertip SpO2 86% on repeat with increased dyspnoea in a comfort-focused hospice patient who lives alone: distressing breathlessness that can be treated at home.",
+   rationale="A resting fingertip SpO2 of 86% on repeat is below 88% and a real change from 90-92% on oxygen the day before, with HR 98 bpm and RR 26 per minute, so HT_SPO2_LT88 fires and the confirmation is already in the case (CONFIRM_FIRST, confirm_step already_confirmed). She says she cannot catch her breath but does not want to go to hospital, and she lives alone with PRN morphine and home oxygen. Her hospice goals suppress hospital-directed escalation only; distressing breathlessness that can be treated at home is an urgent, goal-consistent comfort problem, so the route is escalate_human to the hospice nurse now (escalation_target hospice_nurse), not a same-shift contact, with no alternate. Naive-model trap: a shallow model takes her refusal of hospital as a reason for a routine hospice call, or escalates to a hospital team against her wishes."),
 }
 assert set(SPEC) == set(RUL)
 TRACK = ["expected_route", "acceptable_alternates", "hard_trigger", "hard_trigger_rule", "trigger_tier", "confirm_step", "confirm_timeout_min", "suppression_reason",
@@ -136,7 +152,7 @@ for cid, sp in SPEC.items():
     if cid in added: ch.insert(0, "added to library (resolved from review queue)")
     eck = {k: slim(v) for k, v in EC.items() if k.split("_")[0] == cid}
     c["clinician_ruling"] = {"ruled_by": "Wayne", "date": RUL[cid]["note"].split("Wayne ")[-1].split(";")[0].rstrip(")") if "Wayne 20" in RUL[cid]["note"] else None,
-                             "ruling_route": RUL[cid]["ruling"], "note": RUL[cid]["note"], "policy": "SMART_TRIGGERS v1.5", "changes": ch, **({"engine_check": eck} if eck else {})}
+                             "ruling_route": RUL[cid]["ruling"], "note": RUL[cid]["note"], "policy": "SMART_TRIGGERS v1.6" if cid in ("HK1-007", "NV6-010") else "SMART_TRIGGERS v1.5", "changes": ch, **({"engine_check": eck} if eck else {})}
     assert c["expected_route"] == RUL[cid]["ruling"], cid
     iss = G.smart_checks(c) + (G.layer_checks(c) if "baseline_layer" in c else [])
     assert not iss, (cid, iss)
