@@ -36,6 +36,15 @@
         <label>Fingerstick value <input name="fingerstick_value" type="number" step="any" value="{{ payload.reading.cgm.fingerstick.value if payload.reading.cgm and payload.reading.cgm.fingerstick else '' }}" required></label>
         <button type="submit">Save local edit and recompute</button>
       </form>
+      <h2>Route this conversion</h2>
+      <form method="post" action="{{ url_for('disposition', case_id=case.case_id) }}">
+        <label>Reviewer ID <input name="reviewer" required></label>
+        <label>Disposition
+          <select name="action"><option value="needs_clinician_review">Needs clinician review</option><option value="excluded">Exclude from corpus</option></select>
+        </label>
+        <label>Reason <input name="note" required></label>
+        <button type="submit">Record local disposition</button>
+      </form>
       {% if audit_events %}
       <h2>Local review audit</h2>
       <ul>{% for event in audit_events %}<li>{{ event.created_at }} · {{ event.reviewer }} · {{ event.action }}</li>{% endfor %}</ul>

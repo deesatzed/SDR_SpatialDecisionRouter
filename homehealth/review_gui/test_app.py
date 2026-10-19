@@ -74,3 +74,16 @@ class ReviewAppTests(unittest.TestCase):
         self.assertIn("Status: edited", page)
         self.assertIn("80", page)
         self.assertIn("reviewer-2", page)
+
+    def test_reviewer_can_mark_case_for_clinician_review_without_approving_it(self):
+        response = self.client.post("/cases/GL1-005/disposition", data={
+            "reviewer": "reviewer-3", "action": "needs_clinician_review", "note": "Confirm synthetic conversion.",
+        })
+        self.assertEqual(response.status_code, 302)
+        page = self.client.get("/cases/GL1-005").get_data(as_text=True)
+        self.assertIn("Status: needs_clinician_review", page)
+        self.assertIn("reviewer-3", page)
+
+    def test_disposition_requires_a_known_action_and_reason(self):
+        response = self.client.post("/cases/GL1-005/disposition", data={"reviewer": "reviewer-3", "action": "approved"})
+        self.assertEqual(response.status_code, 400)

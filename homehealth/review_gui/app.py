@@ -7,6 +7,7 @@ from pathlib import Path
 from flask import Flask, abort, redirect, render_template, request, url_for
 
 from homehealth.aether_review.trigger_adapter import review_request_from_trigger_input
+from homehealth.jev_baseline.phi_guard import phi_hits
 
 from .queue import QueueCase, load_queue
 from .store import ReviewStore
@@ -79,6 +80,22 @@ def create_app(queue_path: Path | str, db_path: Path | str, params_path: Path | 
         store.set_draft(case_id, draft)
         store.set_status(case_id, "edited")
         store.audit(case_id, reviewer, "edited_conversion", {"changed_fields": list(draft)})
+        return redirect(url_for("case_detail", case_id=case_id))
+
+    @app.post("/cases/<case_id>/disposition")
+    def disposition(case_id: str):
+        if case_id not in cases:
+            abort(404)
+        reviewer = request.form.get("reviewer", "").strip()
+        action = request.form.get("action", "")
+        note = request.form.get("note", "").strip()
+        allowed = {"needs_clinician_review", "excluded"}
+        if not reviewer or action not in allowed or not note:
+            abort(400, "reviewer, supported disposition, and reason are required")
+        if phi_hits(note):
+            abort(400, "reason contains PHI-like input")
+        store.set_status(case_id, action)
+        store.audit(case_id, reviewer, action, {"reason": note})
         return redirect(url_for("case_detail", case_id=case_id))
 
     return app
