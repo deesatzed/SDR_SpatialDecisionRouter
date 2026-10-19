@@ -32,3 +32,12 @@ def evaluate_outcomes(cases: list[dict[str, str]]) -> EvaluationReport:
 def require_safety_gate(report: EvaluationReport) -> None:
     if not report.safety_gate_passed:
         raise AssertionError("unsafe agreement in frozen challenge set")
+
+
+def run_frozen_cases(cases: list[dict], runner) -> EvaluationReport:
+    """Run frozen synthetic payloads through an injected local workflow runner."""
+    observed = []
+    for case in cases:
+        actual = runner(case["input"])
+        observed.append({"actual": actual, "expected": case["expected"], "challenge": case.get("challenge")})
+    return evaluate_outcomes(observed)
