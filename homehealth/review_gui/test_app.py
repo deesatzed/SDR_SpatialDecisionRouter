@@ -64,3 +64,13 @@ class ReviewAppTests(unittest.TestCase):
             "check_expected": "on", "check_recomputed": "on",
         })
         self.assertEqual(response.status_code, 400)
+
+    def test_editing_one_reading_stays_local_and_recomputes(self):
+        response = self.client.post("/cases/GL1-005/edit", data={
+            "reviewer": "reviewer-2", "reading_value": "80", "fingerstick_value": "44",
+        })
+        self.assertEqual(response.status_code, 302)
+        page = self.client.get("/cases/GL1-005").get_data(as_text=True)
+        self.assertIn("Status: edited", page)
+        self.assertIn("80", page)
+        self.assertIn("reviewer-2", page)

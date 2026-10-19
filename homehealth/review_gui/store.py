@@ -18,7 +18,8 @@ class ReviewStore:
                 CREATE TABLE IF NOT EXISTS review_cases (
                     case_id TEXT PRIMARY KEY,
                     status TEXT NOT NULL,
-                    updated_at TEXT NOT NULL
+                    updated_at TEXT NOT NULL,
+                    draft_json TEXT
                 );
                 CREATE TABLE IF NOT EXISTS audit_events (
                     event_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,6 +30,9 @@ class ReviewStore:
                     created_at TEXT NOT NULL
                 );
             """)
+            columns = {row[1] for row in connection.execute("PRAGMA table_info(review_cases)")}
+            if "draft_json" not in columns:
+                connection.execute("ALTER TABLE review_cases ADD COLUMN draft_json TEXT")
 
     def _connect(self):
         connection = sqlite3.connect(self.path)
@@ -51,6 +55,24 @@ class ReviewStore:
         with self._connect() as connection:
             row = connection.execute("SELECT status FROM review_cases WHERE case_id = ?", (case_id,)).fetchone()
         return None if row is None else row["status"]
+
+    def set_draft(self, case_id: str, draft: dict) -> None:
+        if not isinstance(draft, dict):
+            raise ValueError("draft must be an object")
+        with self._connect() as connection:
+            result = connection.execute(
+                "UPDATE review_cases SET draft_json = ?, updated_at = ? WHERE case_id = ?",
+                (json.dumps(draft, sort_keys=True), self._now(), case_id),
+            )
+            if result.rowcount != 1:
+                raise ValueError("unknown review case")
+
+    def draft_for(self, case_id: str) -> dict:
+        with self._connect() as connection:
+            row = connection.execute("SELECT draft_json FROM review_cases WHERE case_id = ?", (case_id,)).fetchone()
+        if row is None or row["draft_json"] is None:
+            return {}
+        return json.loads(row["draft_json"])
 
     def audit(self, case_id: str, reviewer: str, action: str, detail: dict) -> None:
         if not reviewer.strip() or not action.strip():

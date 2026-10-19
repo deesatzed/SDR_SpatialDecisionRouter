@@ -26,3 +26,9 @@ class ReviewStoreTests(unittest.TestCase):
         self.store.ensure_case("SYN-001", "ready")
         with self.assertRaises(ValueError):
             self.store.set_status("SYN-001", "mutate_source")
+
+    def test_draft_is_local_and_separate_from_audit(self):
+        self.store.ensure_case("SYN-001", "ready")
+        self.store.set_draft("SYN-001", {"reading_value": 45})
+        self.assertEqual(self.store.draft_for("SYN-001"), {"reading_value": 45})
+        self.assertEqual(self.store.audit_for("SYN-001"), [])

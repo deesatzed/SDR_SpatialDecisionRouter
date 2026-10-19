@@ -7,6 +7,7 @@
       <h1>Synthetic clinician review</h1>
       <p><strong>Case:</strong> {{ case.case_id }}</p>
       <p>{{ case.summary }}</p>
+      <p><strong>Structured reading:</strong> {{ payload.reading.vital }} {{ payload.reading.value }}{% if payload.reading.cgm and payload.reading.cgm.fingerstick %}; fingerstick {{ payload.reading.cgm.fingerstick.value }}{% endif %}</p>
       <h2>Preconfigured conversion</h2>
       <dl>
         <dt>Expected tier</dt><dd>{{ case.expected.tier }}</dd>
@@ -27,6 +28,13 @@
         <p><label><input type="checkbox" name="check_expected"> The preconfigured expected tier and rule are shown above.</label></p>
         <p><label><input type="checkbox" name="check_recomputed"> I reviewed the freshly recomputed trigger result.</label></p>
         <button type="submit">Agree with all 5 checks</button>
+      </form>
+      <h2>Edit one conversion field</h2>
+      <form method="post" action="{{ url_for('edit', case_id=case.case_id) }}">
+        <label>Reviewer ID <input name="reviewer" required></label>
+        <label>Reading value <input name="reading_value" type="number" step="any" value="{{ payload.reading.value }}" required></label>
+        <label>Fingerstick value <input name="fingerstick_value" type="number" step="any" value="{{ payload.reading.cgm.fingerstick.value if payload.reading.cgm and payload.reading.cgm.fingerstick else '' }}" required></label>
+        <button type="submit">Save local edit and recompute</button>
       </form>
       {% if audit_events %}
       <h2>Local review audit</h2>
