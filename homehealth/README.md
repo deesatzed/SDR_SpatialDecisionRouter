@@ -45,5 +45,6 @@ python -m pytest -q homehealth/trigger_engine
 `conftest.py` puts the engine and `casegen/grade_merge.py` on the path. The suites cover the engine, chest pain, the CGM pressure rule, the v1.5-v1.7 rulings and the clinician override (`test_rulings_v15.py`, `test_breathlessness_v16.py`) and the grade_merge label checks.
 
 ## Notes
+- `aether_review/` is a local-only synthetic clinician-review layer. It may report agreement, clinician review, a named missing case input, or system review unavailability. It does not change trigger parameters, clinician rulings, cases, or escalation targets, and it does not make live model calls by default. See `docs/AETHER_REVIEW_OPERATIONS.md`.
 - The pipeline scripts in `casegen/` (`smart_run.py`, `build_outputs.py`, `apply_*.py`, `recheck/`) are included for provenance. They use the relative paths of the original working layout (`casegen/prompts_v2/`, `library_v2/smart_triggers/`) and call OpenRouter through `orcall.py`, which reads `OPENROUTER_API_KEY` from the environment. No keys, `.env` files or raw API responses are committed.
 - `library/DIFF_SUMMARY.md` records every relabel, rule change, review item and API cost. Open clinical review items are in `library/review_queue.csv`.

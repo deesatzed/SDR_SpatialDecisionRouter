@@ -55,6 +55,10 @@ class ReviewSchemaTests(unittest.TestCase):
         outcome, _ = derive_outcome(self.request(), [reference], {"outcome": "agree_with_engine", "probability": 0.8})
         self.assertEqual(outcome, ReviewOutcome.AGREE_WITH_ENGINE)
 
+    def test_packet_never_persists_full_case_text(self):
+        packet = build_review_packet(self.request(), ReviewOutcome.SYSTEM_REVIEW_UNAVAILABLE, "local-only failure")
+        self.assertNotIn("case_text", packet.__dict__)
+
 
 if __name__ == "__main__":
     unittest.main()
