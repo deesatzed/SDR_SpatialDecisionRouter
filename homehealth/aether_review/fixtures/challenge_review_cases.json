@@ -1,0 +1,1 @@
+[{"case_id":"CHALLENGE-SYN-001","challenge":"unsafe_agreement","expected":"needs_required_case_input","input":{"synthetic":true,"case_id":"CHALLENGE-SYN-001","reading":{"vital":"hr","value":112,"ts":3600,"activity_state":"rest"}}}]

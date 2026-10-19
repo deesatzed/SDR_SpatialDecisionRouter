@@ -1,0 +1,21 @@
+[
+  {
+    "case_id": "GL1-005",
+    "synthetic": true,
+    "summary": "Synthetic confirmed low glucose reading for structured review.",
+    "clinician_ruling_ref": "GL1-005",
+    "input": {
+      "synthetic": true,
+      "case_id": "GL1-005",
+      "reading": {
+        "vital": "glucose",
+        "value": 47,
+        "ts": 9900,
+        "activity_state": "rest",
+        "source": "cgm",
+        "cgm": {"fingerstick": {"value": 44, "minutes_apart": 10}}
+      }
+    },
+    "expected": {"tier": "ABSOLUTE", "rule": "HT_VS_DANGER"}
+  }
+]
