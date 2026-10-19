@@ -42,3 +42,25 @@ class ReviewAppTests(unittest.TestCase):
 
     def test_app_binds_only_to_loopback_when_run(self):
         self.assertEqual(self.app.config["REVIEW_HOST"], "127.0.0.1")
+
+    def test_agree_requires_all_five_conversion_checks_then_audits(self):
+        incomplete = self.client.post("/cases/GL1-005/agree", data={"reviewer": "reviewer-1"})
+        self.assertEqual(incomplete.status_code, 400)
+        response = self.client.post("/cases/GL1-005/agree", data={
+            "reviewer": "reviewer-1",
+            "check_synthetic": "on", "check_source": "on", "check_ruling": "on",
+            "check_expected": "on", "check_recomputed": "on",
+        })
+        self.assertEqual(response.status_code, 302)
+        page = self.client.get("/cases/GL1-005").get_data(as_text=True)
+        self.assertIn("Status: approved", page)
+        self.assertIn("reviewer-1", page)
+
+    def test_agree_refuses_an_engine_result_that_differs_from_preconfigured_expectation(self):
+        self.app.config["CASES"]["GL1-005"].expected["rule"] = "WRONG"
+        response = self.client.post("/cases/GL1-005/agree", data={
+            "reviewer": "reviewer-1",
+            "check_synthetic": "on", "check_source": "on", "check_ruling": "on",
+            "check_expected": "on", "check_recomputed": "on",
+        })
+        self.assertEqual(response.status_code, 400)
