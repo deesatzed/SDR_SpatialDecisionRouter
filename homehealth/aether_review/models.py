@@ -19,6 +19,7 @@ class ReviewRequest:
     rule_version: str
     engine_reasons: list[str]
     case_text: str
+    required_case_inputs: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         if not self.synthetic:
