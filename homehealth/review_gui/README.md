@@ -8,7 +8,7 @@ Run it from the repository root:
 python -m homehealth.review_gui.app
 ```
 
-It binds only to `127.0.0.1:5000`. Local review state and the append-only event record are stored in `~/.homehealth-review/review.sqlite3`.
+It binds only to `127.0.0.1:5000`. Local review state and the append-only event record are stored in `~/.homehealth-review/review.sqlite3`. The interface does not ask for an evaluator ID; audit records use `local_session` with a timestamp.
 
 Each case shows the preconfigured expected trigger result beside a fresh result from `aether_review.trigger_adapter`. A reviewer can approve a conversion only after all five checks are selected and the recomputed result matches. They can also retain a local structured edit, route a conversion for clinician review, or exclude it. These actions create local audit records; they do not promote a result into the frozen corpus.
 

@@ -12,6 +12,8 @@ from homehealth.jev_baseline.phi_guard import phi_hits
 from .queue import QueueCase, load_queue
 from .store import ReviewStore
 
+LOCAL_ACTOR = "local_session"
+
 
 def create_app(queue_path: Path | str, db_path: Path | str, params_path: Path | str) -> Flask:
     app = Flask(__name__)
@@ -42,6 +44,7 @@ def create_app(queue_path: Path | str, db_path: Path | str, params_path: Path | 
             case_count=len(queue),
             case_position=queue.index(case) + 1,
             computed=computed,
+            results_match=computed == case.expected,
             status=store.status_for(case.case_id),
             audit_events=store.audit_for(case.case_id),
             payload=payload,
@@ -52,15 +55,14 @@ def create_app(queue_path: Path | str, db_path: Path | str, params_path: Path | 
         case = cases.get(case_id)
         if case is None:
             abort(404)
-        reviewer = request.form.get("reviewer", "").strip()
         checks = ("check_synthetic", "check_source", "check_ruling", "check_expected", "check_recomputed")
-        if not reviewer or any(request.form.get(check) != "on" for check in checks):
-            abort(400, "reviewer and all five conversion checks are required")
+        if any(request.form.get(check) != "on" for check in checks):
+            abort(400, "all five conversion checks are required")
         computed = _computed_result(case, params_path, _payload_with_draft(case, store.draft_for(case_id)))
         if computed != case.expected:
             abort(400, "recomputed engine result does not match the preconfigured expectation")
         store.set_status(case_id, "approved")
-        store.audit(case_id, reviewer, "approved_conversion", {"checks": list(checks), "computed": computed, "expected": case.expected})
+        store.audit(case_id, LOCAL_ACTOR, "approved_conversion", {"checks": list(checks), "computed": computed, "expected": case.expected})
         return redirect(url_for("case_detail", case_id=case_id))
 
     @app.post("/cases/<case_id>/edit")
@@ -68,9 +70,6 @@ def create_app(queue_path: Path | str, db_path: Path | str, params_path: Path | 
         case = cases.get(case_id)
         if case is None:
             abort(404)
-        reviewer = request.form.get("reviewer", "").strip()
-        if not reviewer:
-            abort(400, "reviewer is required")
         try:
             draft = {
                 "reading_value": _finite_number(request.form.get("reading_value")),
@@ -80,23 +79,22 @@ def create_app(queue_path: Path | str, db_path: Path | str, params_path: Path | 
             abort(400, str(error))
         store.set_draft(case_id, draft)
         store.set_status(case_id, "edited")
-        store.audit(case_id, reviewer, "edited_conversion", {"changed_fields": list(draft)})
+        store.audit(case_id, LOCAL_ACTOR, "edited_conversion", {"changed_fields": list(draft)})
         return redirect(url_for("case_detail", case_id=case_id))
 
     @app.post("/cases/<case_id>/disposition")
     def disposition(case_id: str):
         if case_id not in cases:
             abort(404)
-        reviewer = request.form.get("reviewer", "").strip()
         action = request.form.get("action", "")
         note = request.form.get("note", "").strip()
         allowed = {"needs_clinician_review", "excluded"}
-        if not reviewer or action not in allowed or not note:
-            abort(400, "reviewer, supported disposition, and reason are required")
+        if action not in allowed or not note:
+            abort(400, "supported disposition and reason are required")
         if phi_hits(note):
             abort(400, "reason contains PHI-like input")
         store.set_status(case_id, action)
-        store.audit(case_id, reviewer, action, {"reason": note})
+        store.audit(case_id, LOCAL_ACTOR, action, {"reason": note})
         return redirect(url_for("case_detail", case_id=case_id))
 
     return app

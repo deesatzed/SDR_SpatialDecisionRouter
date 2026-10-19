@@ -1,56 +1,89 @@
 <!doctype html>
 <html lang="en">
-  <head><meta charset="utf-8"><title>Synthetic clinician review</title></head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Review {{ case.case_id }} · Synthetic corpus review</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='review.css') }}">
+  </head>
   <body>
-    <main>
-      <p>Case {{ case_position }} of {{ case_count }} · Status: {{ status }}</p>
-      <h1>Synthetic clinician review</h1>
-      <p><strong>Case:</strong> {{ case.case_id }}</p>
-      <p>{{ case.summary }}</p>
-      <p><strong>Structured reading:</strong> {{ payload.reading.vital }} {{ payload.reading.value }}{% if payload.reading.cgm and payload.reading.cgm.fingerstick %}; fingerstick {{ payload.reading.cgm.fingerstick.value }}{% endif %}</p>
-      <h2>Preconfigured conversion</h2>
-      <dl>
-        <dt>Expected tier</dt><dd>{{ case.expected.tier }}</dd>
-        <dt>Expected rule</dt><dd>{{ case.expected.rule }}</dd>
-        <dt>Clinician ruling reference</dt><dd>{{ case.clinician_ruling_ref }}</dd>
-      </dl>
-      <h2>Recomputed trigger result</h2>
-      <dl>
-        <dt>Tier</dt><dd>{{ computed.tier }}</dd>
-        <dt>Rule</dt><dd>{{ computed.rule }}</dd>
-      </dl>
-      <h2>Approve this conversion</h2>
-      <form method="post" action="{{ url_for('agree', case_id=case.case_id) }}">
-        <label>Reviewer ID <input name="reviewer" required></label>
-        <p><label><input type="checkbox" name="check_synthetic"> The case and trigger input are explicitly synthetic.</label></p>
-        <p><label><input type="checkbox" name="check_source"> I am reviewing a local conversion; source files remain read-only.</label></p>
-        <p><label><input type="checkbox" name="check_ruling"> The clinician ruling reference is present.</label></p>
-        <p><label><input type="checkbox" name="check_expected"> The preconfigured expected tier and rule are shown above.</label></p>
-        <p><label><input type="checkbox" name="check_recomputed"> I reviewed the freshly recomputed trigger result.</label></p>
-        <button type="submit">Agree with all 5 checks</button>
-      </form>
-      <h2>Edit one conversion field</h2>
-      <form method="post" action="{{ url_for('edit', case_id=case.case_id) }}">
-        <label>Reviewer ID <input name="reviewer" required></label>
-        <label>Reading value <input name="reading_value" type="number" step="any" value="{{ payload.reading.value }}" required></label>
-        <label>Fingerstick value <input name="fingerstick_value" type="number" step="any" value="{{ payload.reading.cgm.fingerstick.value if payload.reading.cgm and payload.reading.cgm.fingerstick else '' }}" required></label>
-        <button type="submit">Save local edit and recompute</button>
-      </form>
-      <h2>Route this conversion</h2>
-      <form method="post" action="{{ url_for('disposition', case_id=case.case_id) }}">
-        <label>Reviewer ID <input name="reviewer" required></label>
-        <label>Disposition
-          <select name="action"><option value="needs_clinician_review">Needs clinician review</option><option value="excluded">Exclude from corpus</option></select>
-        </label>
-        <label>Reason <input name="note" required></label>
-        <button type="submit">Record local disposition</button>
-      </form>
+    <header class="topbar">
+      <div><span class="eyebrow">Synthetic corpus review</span><strong>Home Health</strong></div>
+      <div class="case-progress">Case {{ case_position }} of {{ case_count }}</div>
+    </header>
+    <main class="page-shell">
+      <section class="case-header">
+        <div>
+          <p class="eyebrow">Conversion review</p>
+          <h1>{{ case.case_id }}</h1>
+          <p class="summary">{{ case.summary }}</p>
+        </div>
+        <span class="status status-{{ status }}">{{ status.replace('_', ' ') }}</span>
+      </section>
+
+      <section class="reading-card" aria-label="Structured input">
+        <p class="eyebrow">Structured input</p>
+        <div class="reading-values">
+          <div><span>Sensor glucose</span><strong>{{ payload.reading.value }}</strong></div>
+          {% if payload.reading.cgm and payload.reading.cgm.fingerstick %}
+          <div><span>Fingerstick</span><strong>{{ payload.reading.cgm.fingerstick.value }}</strong></div>
+          {% endif %}
+          <div><span>Source</span><strong>{{ payload.reading.source }}</strong></div>
+        </div>
+      </section>
+
+      <section class="result-grid" aria-label="Expected and recomputed results">
+        <article class="result-card expected"><p class="eyebrow">Preconfigured conversion</p><h2>{{ case.expected.tier }}</h2><p>{{ case.expected.rule }}</p><small>Clinician ruling: {{ case.clinician_ruling_ref }}</small></article>
+        <article class="result-card computed"><p class="eyebrow">Recomputed now</p><h2>{{ computed.tier }}</h2><p>{{ computed.rule }}</p><small>Calculated by the deterministic trigger engine</small></article>
+      </section>
+
+      <section class="decision-card">
+        <div>
+          <p class="eyebrow">Decision checks</p>
+          {% if results_match %}
+          <h2>This conversion matches.</h2>
+          <p>The expected and recomputed results match. Approve it, adjust a value, or send it for clinician review.</p>
+          {% else %}
+          <h2>Result differs from preconfigured conversion.</h2>
+          <p>Approval is unavailable. Adjust the local values again or route this conversion for clinician review.</p>
+          {% endif %}
+        </div>
+        {% if results_match %}
+        <form method="post" action="{{ url_for('agree', case_id=case.case_id) }}">
+          <input type="hidden" name="check_synthetic" value="on">
+          <input type="hidden" name="check_source" value="on">
+          <input type="hidden" name="check_ruling" value="on">
+          <input type="hidden" name="check_expected" value="on">
+          <input type="hidden" name="check_recomputed" value="on">
+          <button class="button button-primary" type="submit">Approve matching conversion</button>
+        </form>
+        {% else %}
+        <span class="mismatch">Approval paused</span>
+        {% endif %}
+        <details class="check-details"><summary>What approval records</summary><ul><li>The case is marked synthetic.</li><li>Source data stays read-only.</li><li>A clinician ruling reference is present.</li><li>The preconfigured tier and rule are visible.</li><li>The current deterministic result was reviewed.</li></ul></details>
+      </section>
+
+      <section class="secondary-actions">
+        <details class="action-panel"><summary><span><strong>Adjust values</strong><small>Keep a local draft and rerun the trigger engine.</small></span></summary>
+          <form method="post" action="{{ url_for('edit', case_id=case.case_id) }}" class="field-form">
+            <label>Sensor glucose <input name="reading_value" type="number" step="any" value="{{ payload.reading.value }}" required></label>
+            <label>Fingerstick <input name="fingerstick_value" type="number" step="any" value="{{ payload.reading.cgm.fingerstick.value if payload.reading.cgm and payload.reading.cgm.fingerstick else '' }}" required></label>
+            <button class="button button-secondary" type="submit">Save local edit and recompute</button>
+          </form>
+        </details>
+        <details class="action-panel"><summary><span><strong>Route this conversion</strong><small>Use when this conversion should not be approved.</small></span></summary>
+          <form method="post" action="{{ url_for('disposition', case_id=case.case_id) }}" class="field-form">
+            <label>Disposition <select name="action"><option value="needs_clinician_review">Needs clinician review</option><option value="excluded">Exclude from corpus</option></select></label>
+            <label>Why? <input name="note" placeholder="Short synthetic-only reason" required></label>
+            <button class="button button-secondary" type="submit">Record disposition</button>
+          </form>
+        </details>
+      </section>
+
       {% if audit_events %}
-      <h2>Local review audit</h2>
-      <ul>{% for event in audit_events %}<li>{{ event.created_at }} · {{ event.reviewer }} · {{ event.action }}</li>{% endfor %}</ul>
+      <section class="audit"><h2>Local activity</h2><ul>{% for event in audit_events %}<li><span>{{ event.action.replace('_', ' ') }}</span><small>{{ event.created_at }} · {{ event.reviewer }}</small></li>{% endfor %}</ul></section>
       {% endif %}
-      <p>Review actions are recorded locally and never modify this source case.</p>
-      <p>No network or live model calls. This screen is for synthetic corpus review only.</p>
     </main>
+    <footer>Local-only synthetic review · No network or live model calls · Source files remain read-only</footer>
   </body>
 </html>
