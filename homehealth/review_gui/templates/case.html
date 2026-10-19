@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8"><title>Synthetic clinician review</title></head>
+  <body>
+    <main>
+      <p>Case {{ case_count }} of {{ case_count }} · Status: {{ status }}</p>
+      <h1>Synthetic clinician review</h1>
+      <p><strong>Case:</strong> {{ case.case_id }}</p>
+      <p>{{ case.summary }}</p>
+      <h2>Preconfigured conversion</h2>
+      <dl>
+        <dt>Expected tier</dt><dd>{{ case.expected.tier }}</dd>
+        <dt>Expected rule</dt><dd>{{ case.expected.rule }}</dd>
+        <dt>Clinician ruling reference</dt><dd>{{ case.clinician_ruling_ref }}</dd>
+      </dl>
+      <h2>Recomputed trigger result</h2>
+      <dl>
+        <dt>Tier</dt><dd>{{ computed.tier }}</dd>
+        <dt>Rule</dt><dd>{{ computed.rule }}</dd>
+      </dl>
+      <p>Review actions are recorded locally and never modify this source case.</p>
+      <p>No network or live model calls. This screen is for synthetic corpus review only.</p>
+    </main>
+  </body>
+</html>
