@@ -40,6 +40,7 @@ def create_app(queue_path: Path | str, db_path: Path | str, params_path: Path | 
             "case.html",
             case=case,
             case_count=len(queue),
+            case_position=queue.index(case) + 1,
             computed=computed,
             status=store.status_for(case.case_id),
             audit_events=store.audit_for(case.case_id),
@@ -135,3 +136,7 @@ def run_local() -> None:
         root / "trigger_engine" / "trigger_params.json",
     )
     app.run(host=app.config["REVIEW_HOST"], port=app.config["REVIEW_PORT"])
+
+
+if __name__ == "__main__":
+    run_local()
