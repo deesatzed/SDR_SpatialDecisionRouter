@@ -14,3 +14,4 @@ jobs:
       - run: python -m pytest -q risk_engine/tests
       - run: python -m pytest -q homehealth/trigger_engine   # stdlib + pytest only
       - run: python -m pytest -q homehealth/jev_baseline     # stdlib + pytest only; no API calls
+      - run: python -m pytest -q homehealth/fly_layer        # stdlib + pytest only; the GoalJevFly end-to-end test skips in CI
