@@ -1,0 +1,364 @@
+{
+ "label_pages_per_100": 30.7407,
+ "prompt": "v1.8",
+ "variants": 4,
+ "models": {
+  "liquid/d1-ultra": {
+   "alone": {
+    "accuracy": 0.8815,
+    "critical_misses": 1,
+    "critical_miss_ids": [
+     "LIB-HK8-005"
+    ],
+    "critical_miss_weighted": 3,
+    "pages_per_100": 38.1481,
+    "false_pages_per_100": 6.2963,
+    "over_escalation_ids": [
+     "LIB-HK6-002",
+     "LIB-HK7-009",
+     "LIB-NV6-001",
+     "LIB-AC1-009",
+     "LIB-GC1-008",
+     "LIB-GC2-001",
+     "LIB-GC2-004",
+     "LIB-GC2-007",
+     "LIB-GC2-008",
+     "LIB-RN1-002",
+     "LIB-RN1-005",
+     "LIB-ST2-002",
+     "LIB-ST2-008",
+     "LIB-ST2-010",
+     "LIB-ST4-006",
+     "LIB-ST4-008",
+     "LIB-ST1-008"
+    ],
+    "pairs_both_correct": 21,
+    "pairs_complete": 39,
+    "escalation_sensitivity": 0.988,
+    "suppressed": "9/24",
+    "hospice": "3/7",
+    "hospice_wrong": [
+     "LIB-NV6-001",
+     "LIB-GC2-001",
+     "LIB-ST2-002",
+     "LIB-ST2-010"
+    ]
+   },
+   "l1": {
+    "all": {
+     "accuracy": 0.9259,
+     "critical_misses": 0,
+     "critical_miss_ids": [],
+     "critical_miss_weighted": 0,
+     "pages_per_100": 35.1852,
+     "false_pages_per_100": 2.5926,
+     "over_escalation_ids": [
+      "LIB-AC1-009",
+      "LIB-GC1-008",
+      "LIB-GC2-004",
+      "LIB-GC2-007",
+      "LIB-GC2-008",
+      "LIB-RN1-002",
+      "LIB-RN1-005"
+     ],
+     "pairs_both_correct": 30,
+     "pairs_complete": 39,
+     "escalation_sensitivity": 1.0,
+     "suppressed": "20/24",
+     "hospice": "7/7",
+     "hitm_flags": 0,
+     "hitm_flags_on_stack_errors": 0
+    },
+    "heldout": {
+     "accuracy": 0.8913,
+     "critical_misses": 0,
+     "critical_miss_ids": [],
+     "critical_miss_weighted": 0,
+     "pages_per_100": 40.2174,
+     "false_pages_per_100": 3.2609,
+     "over_escalation_ids": [
+      "LIB-AC1-009",
+      "LIB-RN1-002",
+      "LIB-RN1-005"
+     ],
+     "pairs_both_correct": 15,
+     "pairs_complete": 19,
+     "escalation_sensitivity": 1.0,
+     "suppressed": "7/8",
+     "hospice": "3/3",
+     "hitm_flags": 0,
+     "hitm_flags_on_stack_errors": 0
+    }
+   },
+   "l1_fly_flag_only": {
+    "all": {
+     "accuracy": 0.9259,
+     "critical_misses": 0,
+     "critical_miss_ids": [],
+     "critical_miss_weighted": 0,
+     "pages_per_100": 35.1852,
+     "false_pages_per_100": 2.5926,
+     "over_escalation_ids": [
+      "LIB-AC1-009",
+      "LIB-GC1-008",
+      "LIB-GC2-004",
+      "LIB-GC2-007",
+      "LIB-GC2-008",
+      "LIB-RN1-002",
+      "LIB-RN1-005"
+     ],
+     "pairs_both_correct": 30,
+     "pairs_complete": 39,
+     "escalation_sensitivity": 1.0,
+     "suppressed": "20/24",
+     "hospice": "7/7",
+     "hitm_flags": 32,
+     "hitm_flags_on_stack_errors": 7
+    },
+    "heldout": {
+     "accuracy": 0.8913,
+     "critical_misses": 0,
+     "critical_miss_ids": [],
+     "critical_miss_weighted": 0,
+     "pages_per_100": 40.2174,
+     "false_pages_per_100": 3.2609,
+     "over_escalation_ids": [
+      "LIB-AC1-009",
+      "LIB-RN1-002",
+      "LIB-RN1-005"
+     ],
+     "pairs_both_correct": 15,
+     "pairs_complete": 19,
+     "escalation_sensitivity": 1.0,
+     "suppressed": "7/8",
+     "hospice": "3/3",
+     "hitm_flags": 10,
+     "hitm_flags_on_stack_errors": 2
+    },
+    "tuned_on_train": {
+     "leak": 0.5,
+     "threshold": 0.841072
+    }
+   },
+   "robustness": {
+    "reversed_same_pick": 0.9,
+    "reversed_n": 270,
+    "key_deleted_pick_changed": 0.2815,
+    "key_deleted_escalate_or_veto": 0.4259,
+    "missing_all_escalate": 0.7333,
+    "missing_all_escalate_or_veto": 0.8963,
+    "missing_all_n": 270
+   },
+   "calibration": {
+    "brier_escalate": 0.0936,
+    "brier_multiclass": 0.4094,
+    "n": 270
+   },
+   "calls": 1080,
+   "calls_without_pick": 0,
+   "retried_calls": 0,
+   "errors": {},
+   "cost_usd": 0.034502,
+   "alone_heldout": {
+    "accuracy": 0.837,
+    "critical_misses": 0,
+    "critical_miss_ids": [],
+    "critical_miss_weighted": 0,
+    "pages_per_100": 44.5652,
+    "false_pages_per_100": 7.6087,
+    "over_escalation_ids": [
+     "LIB-HK6-002",
+     "LIB-AC1-009",
+     "LIB-RN1-002",
+     "LIB-RN1-005",
+     "LIB-ST2-002",
+     "LIB-ST2-008",
+     "LIB-ST2-010"
+    ],
+    "pairs_both_correct": 10,
+    "pairs_complete": 19,
+    "escalation_sensitivity": 1.0
+   }
+  },
+  "perplexity/pplx-decider-v1.2": {
+   "alone": {
+    "accuracy": 0.8815,
+    "critical_misses": 8,
+    "critical_miss_ids": [
+     "LIB-HK5-002",
+     "LIB-HK8-004",
+     "LIB-NV3-005",
+     "LIB-GL1-005",
+     "LIB-ST1-001",
+     "LIB-ST1-005",
+     "LIB-ST3-001",
+     "LIB-ST4-004"
+    ],
+    "critical_miss_weighted": 24,
+    "pages_per_100": 29.6296,
+    "false_pages_per_100": 4.4444,
+    "over_escalation_ids": [
+     "LIB-HK7-009",
+     "LIB-HK8-006",
+     "LIB-NV6-001",
+     "LIB-GC1-008",
+     "LIB-GC2-001",
+     "LIB-GC2-008",
+     "LIB-RN1-005",
+     "LIB-ST2-002",
+     "LIB-ST2-008",
+     "LIB-ST2-010",
+     "LIB-ST4-006",
+     "LIB-ST1-008"
+    ],
+    "pairs_both_correct": 22,
+    "pairs_complete": 39,
+    "escalation_sensitivity": 0.9036,
+    "suppressed": "14/24",
+    "hospice": "3/7",
+    "hospice_wrong": [
+     "LIB-NV6-001",
+     "LIB-GC2-001",
+     "LIB-ST2-002",
+     "LIB-ST2-010"
+    ]
+   },
+   "l1": {
+    "all": {
+     "accuracy": 0.937,
+     "critical_misses": 0,
+     "critical_miss_ids": [],
+     "critical_miss_weighted": 0,
+     "pages_per_100": 29.6296,
+     "false_pages_per_100": 1.4815,
+     "over_escalation_ids": [
+      "LIB-HK8-006",
+      "LIB-GC1-008",
+      "LIB-GC2-008",
+      "LIB-RN1-005"
+     ],
+     "pairs_both_correct": 32,
+     "pairs_complete": 39,
+     "escalation_sensitivity": 1.0,
+     "suppressed": "21/24",
+     "hospice": "7/7",
+     "hitm_flags": 0,
+     "hitm_flags_on_stack_errors": 0
+    },
+    "heldout": {
+     "accuracy": 0.9348,
+     "critical_misses": 0,
+     "critical_miss_ids": [],
+     "critical_miss_weighted": 0,
+     "pages_per_100": 33.6957,
+     "false_pages_per_100": 1.087,
+     "over_escalation_ids": [
+      "LIB-RN1-005"
+     ],
+     "pairs_both_correct": 15,
+     "pairs_complete": 19,
+     "escalation_sensitivity": 1.0,
+     "suppressed": "7/8",
+     "hospice": "3/3",
+     "hitm_flags": 0,
+     "hitm_flags_on_stack_errors": 0
+    }
+   },
+   "l1_fly_flag_only": {
+    "all": {
+     "accuracy": 0.937,
+     "critical_misses": 0,
+     "critical_miss_ids": [],
+     "critical_miss_weighted": 0,
+     "pages_per_100": 29.6296,
+     "false_pages_per_100": 1.4815,
+     "over_escalation_ids": [
+      "LIB-HK8-006",
+      "LIB-GC1-008",
+      "LIB-GC2-008",
+      "LIB-RN1-005"
+     ],
+     "pairs_both_correct": 32,
+     "pairs_complete": 39,
+     "escalation_sensitivity": 1.0,
+     "suppressed": "21/24",
+     "hospice": "7/7",
+     "hitm_flags": 33,
+     "hitm_flags_on_stack_errors": 5
+    },
+    "heldout": {
+     "accuracy": 0.9348,
+     "critical_misses": 0,
+     "critical_miss_ids": [],
+     "critical_miss_weighted": 0,
+     "pages_per_100": 33.6957,
+     "false_pages_per_100": 1.087,
+     "over_escalation_ids": [
+      "LIB-RN1-005"
+     ],
+     "pairs_both_correct": 15,
+     "pairs_complete": 19,
+     "escalation_sensitivity": 1.0,
+     "suppressed": "7/8",
+     "hospice": "3/3",
+     "hitm_flags": 8,
+     "hitm_flags_on_stack_errors": 0
+    },
+    "tuned_on_train": {
+     "leak": 0.5,
+     "threshold": 0.623713
+    }
+   },
+   "robustness": {
+    "reversed_same_pick": 0.9481,
+    "reversed_n": 270,
+    "key_deleted_pick_changed": 0.2963,
+    "key_deleted_escalate_or_veto": 0.2778,
+    "missing_all_escalate": 0.5259,
+    "missing_all_escalate_or_veto": 0.6704,
+    "missing_all_n": 270
+   },
+   "calibration": {
+    "brier_escalate": 0.0893,
+    "brier_multiclass": 0.3691,
+    "n": 270
+   },
+   "calls": 1080,
+   "calls_without_pick": 0,
+   "retried_calls": 0,
+   "errors": {},
+   "cost_usd": 0.018298,
+   "alone_heldout": {
+    "accuracy": 0.8913,
+    "critical_misses": 1,
+    "critical_miss_ids": [
+     "LIB-ST3-001"
+    ],
+    "critical_miss_weighted": 3,
+    "pages_per_100": 35.8696,
+    "false_pages_per_100": 4.3478,
+    "over_escalation_ids": [
+     "LIB-RN1-005",
+     "LIB-ST2-002",
+     "LIB-ST2-008",
+     "LIB-ST2-010"
+    ],
+    "pairs_both_correct": 11,
+    "pairs_complete": 19,
+    "escalation_sensitivity": 0.9688
+   }
+  }
+ },
+ "heldout_batches": [
+  "AC1",
+  "DM2",
+  "HK1",
+  "HK6",
+  "HK9",
+  "NV1",
+  "NV5",
+  "RN1",
+  "ST2",
+  "ST3"
+ ]
+}
