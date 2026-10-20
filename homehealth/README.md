@@ -36,11 +36,13 @@ This folder holds the home-monitoring side of the Spatial Decision Router:
   - Hospice/comfort-only goals suppress hospital-directed escalation only. An urgent, treatable, goal-consistent comfort problem (placeholder list: symptomatic danger-level hypoglycaemia — v1.7 removed recurrence alone, which now stays SUPPRESSED goals_of_care → same-shift hospice nurse; v1.6: distressing breathlessness treatable at home on an SpO2/RR trigger) pages the hospice nurse now (`escalation_target: hospice_nurse`).
   - New answer fields: `escalation_target`, `route_basis`, `secondary_triggers`.
 - **v1.7 (2026-10-18):** hospice lows page urgently only when symptomatic (params 0.7-placeholder), and a new answer field `clinician_override` records a label tier the clinical owner set against the engine (engine unchanged; validated by grade_merge and surfaced by convert_casegen). First use: ST1-010 (engine band A ABSOLUTE → label CONFIRM_FIRST, patient_call 5 min). Fix-list repairs and the hand-derived ST1-011 partner come from `casegen/make_fix_cases.py` (`fix_cases.json`).
+- **v1.8 (2026-10-18):** learning-period rule formalised (params 0.8-placeholder): while no own baseline is learned, a reading beyond the population default band is CONFIRM_FIRST, never silent. `jev_baseline/` adds the Layer 2 decision-model baseline (default liquid/d1-ultra), a deterministic Layer 1 adapter for every library case and the Layer 1 + Jev router; results in `jev_baseline/results/` and `jev_baseline/results_v18/`.
 
 ## Running the tests
 From the repo root (Python 3.13; pytest only, no other dependencies):
 ```
 python -m pytest -q homehealth/trigger_engine
+python -m pytest -q homehealth/jev_baseline
 ```
 `conftest.py` puts the engine and `casegen/grade_merge.py` on the path. The suites cover the engine, chest pain, the CGM pressure rule, the v1.5-v1.7 rulings and the clinician override (`test_rulings_v15.py`, `test_breathlessness_v16.py`) and the grade_merge label checks.
 

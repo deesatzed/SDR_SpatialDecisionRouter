@@ -30,6 +30,8 @@ def validate_params(p):
         if not (dl <= b[0] < b[1] <= dh): raise ValueError(f"{v}: learn_bounds {b} not inside hard limits [{dl},{dh}]")
         for st, band in p["population_defaults"][v].items():
             if not (lo < band[0] < band[1] <= hi): raise ValueError(f"{v}/{st}: population band outside implausible limits")
+    lt = p["learning"].get("outside_population_default_tier", "CONFIRM_FIRST")   # v1.8: never silent during learning
+    if lt not in ("CONFIRM_FIRST", "ABSOLUTE"): raise ValueError("learning.outside_population_default_tier must be CONFIRM_FIRST or ABSOLUTE (a reading beyond the population defaults is never silent while learning)")
     cc = p["adaptation"]["condition_change"]
     if not cc["relearn_days"] > cc["retain_weight"] * p["adaptation"]["rolling_window_days"]:
         raise ValueError("relearn_days must exceed retain_weight x rolling_window_days so new data outweighs the old baseline after relearning")
@@ -305,8 +307,10 @@ def evaluate(r, base, p, context=None):
         if cs and cs[0] <= x <= cs[1] and spo2_low:   # clinician-set baseline allows at-baseline suppression even while learning
             d = _decision("SUPPRESSED", "at_patient_baseline", "silent_log", False, rule, None, basis="clinician_set_baseline", hitm_sample=True)
         elif ph == "learning" or st is None:
-            if not (pop[0] <= x <= pop[1]) or spo2_low:
-                d = _decision("CONFIRM_FIRST", "outside_population_default_" + ph, "escalate_human", "if_confirmed_or_timeout", rule, conf, phase=ph)
+            if not (pop[0] <= x <= pop[1]) or spo2_low:   # v1.8 learning-period rule (Wayne): beyond population defaults -> CONFIRM_FIRST, not silent
+                lt = p["learning"].get("outside_population_default_tier", "CONFIRM_FIRST")
+                if lt == "ABSOLUTE": d = _decision("ABSOLUTE", "outside_population_default_" + ph, "escalate_human", True, rule, phase=ph)
+                else: d = _decision("CONFIRM_FIRST", "outside_population_default_" + ph, "escalate_human", "if_confirmed_or_timeout", rule, conf, phase=ph, learning_rule="v1.8")
             else:
                 d = _decision("NORMAL", "within_population_default_" + ph, "silent_log", False, phase=ph)
         else:

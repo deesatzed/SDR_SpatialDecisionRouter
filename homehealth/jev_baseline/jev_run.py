@@ -6,7 +6,8 @@
 - 600 s per-call timeout; backoff on 429/5xx; per-model checkpoint (results/parsed/<model>.jsonl, resume skips done keys).
 - Spend = sum of usage.cost in the checkpoints; hard cap SPEND_CAP (default $0.50) checked before every call -> stop.
 - Stored per call: parsed pick/probabilities/confidence/veto, token counts, cost, latency, error code. No raw responses.
-Never prints the key. Usage: python3 jev_run.py [model ...]"""
+Default model liquid/d1-ultra (Wayne 2026-10-18). JEV_OUT=<dir> keeps runs apart; JEV_PROMPT=v1.7|v1.8.
+Never prints the key. Usage: python3 jev_run.py [model ...] [--check-only]"""
 import json, os, re, sys, time, threading, urllib.request, urllib.error
 from concurrent.futures import ThreadPoolExecutor
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
@@ -18,8 +19,10 @@ def find_input(env, name):
     for p in (os.environ.get(env), os.path.join(_HERE, "..", "library", name), os.path.join(_BOX, name)):
         if p and os.path.exists(p): return p
     raise SystemExit(f"{name} not found: set {env} (the runner JSON is written by casegen/convert_casegen.py via build_outputs.py)")
-OUT = os.path.join(HERE, "results"); PARSED = os.path.join(OUT, "parsed")
-DEFAULT_MODELS = ["typesafe/jev-1.14", "liquid/d1-ultra", "openai/gpt-6-luna-decisions", "cloudflare/clef"]
+OUT = os.path.join(HERE, os.environ.get("JEV_OUT", "results")); PARSED = os.path.join(OUT, "parsed")
+# Default Jev model (Wayne 2026-10-18): liquid/d1-ultra. The 4-model baseline (results/) remains reproducible by naming the models.
+DEFAULT_MODELS = ["liquid/d1-ultra"]
+PROMPT_VERSION = os.environ.get("JEV_PROMPT", "v1.8")   # v1.7 = the 4-model baseline prompt (no monitoring-status line, no v1.8 sentences)
 SPEND_CAP = float(os.environ.get("SPEND_CAP", "0.50")); PRIOR_SPEND = float(os.environ.get("PRIOR_SPEND", "0"))
 TIMEOUT = 600; WORKERS_PER_MODEL = int(os.environ.get("WORKERS", "4"))
 ROUTES = {"silent_log": "Log only; no human action needed",
@@ -36,6 +39,24 @@ POLICY = ("Elder-care home wearable triage (synthetic case). Judge every reading
  "A trigger that fails a check is not paged but still gets the route its clinical picture needs; an acute decompensation needs a human now even without a trigger. "
  "Device values that are physiologically implausible are device problems. An unanswered prompt in someone who lives alone counts as a failed confirmation. "
  "Missing critical data in a high-risk person needs a human.")
+POLICY_V18_ADD = (" Recurrent chest discomfort that is coming more often (a crescendo pattern) needs a clinician now even when vitals are normal. "
+ "During the learning period of monitoring (no personal baseline learned yet) a reading beyond population defaults, such as a resting SpO2 below 88%, "
+ "cannot be called the person's baseline: it needs confirmation and a clinician, never silence.")
+def policy(): return POLICY + (POLICY_V18_ADD if PROMPT_VERSION == "v1.8" else "")
+def monitoring_status(bs):
+    """one fact sentence from the case's baseline_status (a FACT field that may appear in router input); None when not documented"""
+    if not bs or not bs.get("phase"): return None
+    ph, day, tot = bs["phase"], bs.get("monitoring_day"), bs.get("learning_days_total")
+    if ph == "learning": return f"Monitoring status: day {day} of a {tot}-day learning period; no personal baseline learned yet."
+    if ph == "relearning": return f"Monitoring status: re-learning the personal baseline after a condition change (monitoring day {day})."
+    return f"Monitoring status: personal baseline established (monitoring day {day})."
+_FACTS = None
+def facts():
+    global _FACTS
+    if _FACTS is None:
+        try: _FACTS = {"LIB-" + c["case_id"]: c for c in json.load(open(find_input("CASES_JSON", "library_v2_smart_accepted.json")))["cases"]}
+        except SystemExit: _FACTS = {}
+    return _FACTS
 LEAK = re.compile(r"escalate_human|wake_specialist|nurse_task|silent_log|\bHT_[A-Z]|CONFIRM_FIRST|ABSOLUTE|SUPPRESSED|LOG_ONLY|goals_of_care|at_patient_baseline|unreliable_reading|below_band|already_confirmed|expected_route|acceptable_alternates")
 LOCK = threading.Lock(); STOP = threading.Event()
 def slug(m): return re.sub(r"[^A-Za-z0-9._-]+", "_", m)
@@ -57,13 +78,16 @@ def spend():
                 if l.strip(): s += json.loads(l).get("cost") or 0
     return s + PRIOR_SPEND
 def variants(c):
-    L = c["lines"]; fwd = list(ROUTES); rev = fwd[::-1]
+    L = list(c["lines"]); fwd = list(ROUTES); rev = fwd[::-1]
+    if PROMPT_VERSION == "v1.8":
+        ms = monitoring_status((facts().get(c["id"]) or {}).get("baseline_status"))
+        if ms: L[0] = L[0].rstrip() + " " + ms   # appended to the header line so key_line indices are unchanged
     v = {"base": ("\n".join(L), fwd), "reversed": ("\n".join(L), rev),
          "missing_all": (L[0] + "\nNo wearable data, meds or caregiver note available.", fwd)}
     if c.get("key_line") is not None: v["key_deleted"] = ("\n".join(l for i, l in enumerate(L) if i != c["key_line"]), fwd)
     return v
 def body(model, state, order):
-    return {"model": model, "state": POLICY + "\n\n" + state,
+    return {"model": model, "state": policy() + "\n\n" + state,
             "questions": {"route": {"type": "choice", "instructions": "Which route should this case take?", "criteria": {k: ROUTES[k] for k in order}},
                           "veto": {"type": "noul", "instructions": "Is there a danger sign or missing critical data that requires a human now?",
                                    "true": "Human must review now", "false": "No human needed now"}}}
@@ -104,13 +128,13 @@ def run_model(model, cases, key):
     log(f"{model}: done {len(rows)} rows, {errs} without a pick, spend ${spend():.4f}")
 def main():
     os.makedirs(PARSED, exist_ok=True)
-    cases = json.load(open(find_input("RUNNER_JSON", "library_v2_smart_runner.json"))); models = sys.argv[1:] or DEFAULT_MODELS
+    cases = json.load(open(find_input("RUNNER_JSON", "library_v2_smart_runner.json"))); models = [a for a in sys.argv[1:] if not a.startswith("--")] or DEFAULT_MODELS
     blocked = {}; leak = []
     for c in cases:
         for v, (s, o) in variants(c).items():
-            h = phi_hits(POLICY + "\n\n" + s)
+            h = phi_hits(policy() + "\n\n" + s)
             if h: blocked.setdefault(c["id"], []).extend(f"{v}:{lab}" for lab, _ in h)
-            if LEAK.search(POLICY + "\n\n" + s): leak.append((c["id"], v))
+            if LEAK.search(policy() + "\n\n" + s): leak.append((c["id"], v))
     json.dump({"cases": len(cases), "variants_checked": sum(len(variants(c)) for c in cases), "phi_blocked_cases": len(blocked), "phi_hits": blocked,
                "label_leak_hits": leak, "allowance": "relative day references (Day -N, Days -N to -M, Day -N hh:mm to Day M) removed before matching; case-sensitive titles"},
               open(os.path.join(OUT, "phi_report.json"), "w"), indent=1)
@@ -119,7 +143,7 @@ def main():
     send = [c for c in cases if c["id"] not in blocked]
     if "--check-only" in sys.argv: return
     key = os.environ.get("OPENROUTER_API_KEY") or sys.exit("OPENROUTER_API_KEY not set; nothing was sent.")
-    log(f"start: models {models}, cap ${SPEND_CAP:.2f}, spend so far ${spend():.4f}")
+    log(f"start: models {models}, prompt {PROMPT_VERSION}, cap ${SPEND_CAP:.2f}, spend so far ${spend():.4f}")
     with ThreadPoolExecutor(len(models)) as ex: list(ex.map(lambda m: run_model(m, send, key), models))
     log(f"end: spend ${spend():.4f}" + (" (STOPPED AT CAP)" if STOP.is_set() else ""))
 if __name__ == "__main__": main()

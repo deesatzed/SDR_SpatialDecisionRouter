@@ -510,7 +510,7 @@
    ]
   },
   "policy": "SMART_TRIGGERS v1.7",
-  "params": "0.7-placeholder",
+  "params": "0.8-placeholder",
   "policy_notes": {
    "POLICY-v15d-hard_limit_baseline_status": "check 5 (Wayne 2026-10-18): keep: labels with a hard_limit_* baseline_layer do not need baseline_status",
    "POLICY-v17-hospice_recurrent_low": "check 4 (Wayne 2026-10-18): only SYMPTOMATIC danger-level lows page the hospice nurse urgently; a recurrence within 6 h without symptoms -> SUPPRESSED goals_of_care, same-shift hospice nurse"

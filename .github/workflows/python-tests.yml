@@ -13,3 +13,4 @@ jobs:
       - run: pip install -r risk_engine/requirements.txt
       - run: python -m pytest -q risk_engine/tests
       - run: python -m pytest -q homehealth/trigger_engine   # stdlib + pytest only
+      - run: python -m pytest -q homehealth/jev_baseline     # stdlib + pytest only; no API calls

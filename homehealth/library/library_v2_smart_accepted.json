@@ -4245,7 +4245,7 @@
     "modifiers": [],
     "tier": "LOG_ONLY",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.7-placeholder (net-then-clamp)"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.8-placeholder (net-then-clamp)"
    },
    "clinician_ruling": {
     "ruled_by": "Wayne",
@@ -4423,7 +4423,7 @@
     ],
     "tier": "CONFIRM_FIRST",
     "timeout_min": 30,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.7-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.8-placeholder"
    }
   },
   {
@@ -14556,7 +14556,7 @@
     ],
     "tier": "CONFIRM_FIRST",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.7-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.8-placeholder"
    },
    "relabel": {
     "model": "deterministic (trigger_eval.evaluate_chest_pain + decided crescendo rule)",
@@ -14677,7 +14677,7 @@
     "modifiers": [],
     "tier": "LOG_ONLY",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.7-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.8-placeholder"
    },
    "grade": {
     "grader": "google/gemini-4-argon GRADER_LLM3_v1.3 rev c",
@@ -14846,7 +14846,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.7-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.8-placeholder"
    },
    "pair_note": "Unpaired 2026-10-17: former partner AC1-002 now also escalates (crescendo rule); AC1-P01 is now AC1-002 (crescendo) vs AC1-012 (stable)."
   },
@@ -15102,7 +15102,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.7-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.8-placeholder"
    }
   },
   {
@@ -15922,7 +15922,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.7-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.8-placeholder"
    }
   },
   {
@@ -16175,7 +16175,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.7-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.8-placeholder"
    }
   },
   {
@@ -16301,7 +16301,7 @@
     ],
     "tier": "CONFIRM_FIRST",
     "timeout_min": 15,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.7-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.8-placeholder"
    },
    "relabel": {
     "model": "deterministic (trigger_eval.evaluate_chest_pain + decided crescendo rule)",
@@ -26403,7 +26403,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.7-placeholder"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.8-placeholder"
    },
    "pair_note": "Unpaired 2026-10-18: former partner ST1-010 is now a standalone escalate_human case (Wayne ruling), so ST1-P05 no longer contrasts."
   },
@@ -29285,7 +29285,7 @@
     ],
     "tier": "ABSOLUTE",
     "timeout_min": null,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.7-placeholder (net-then-clamp)"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.8-placeholder (net-then-clamp)"
    },
    "pair_note": "Unpaired 2026-10-18 (Wayne): kept as a standalone trap case; its former partner ST1-009 also routes escalate_human, so the pair no longer contrasts.",
    "clinician_ruling": {
@@ -29526,7 +29526,7 @@
     ],
     "tier": "CONFIRM_FIRST",
     "timeout_min": 15,
-    "engine": "trigger_eval.evaluate_chest_pain params 0.7-placeholder (net-then-clamp)"
+    "engine": "trigger_eval.evaluate_chest_pain params 0.8-placeholder (net-then-clamp)"
    },
    "subtle_deterioration": false,
    "difficulty": "adversarial",

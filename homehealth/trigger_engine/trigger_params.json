@@ -1,5 +1,5 @@
 {
- "version": "0.7-placeholder",
+ "version": "0.8-placeholder",
  "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
  "change_log": [
   {
@@ -230,6 +230,27 @@
    "new": "0.7-placeholder",
    "approved_by": "Wayne",
    "reason": "v1.7: hospice low rule narrowed to symptomatic lows (approved by Wayne)"
+  },
+  {
+   "ts": "2026-10-18T11:54:18-04:00",
+   "keys": [
+    "learning",
+    "outside_population_default_tier"
+   ],
+   "old": null,
+   "new": "CONFIRM_FIRST",
+   "approved_by": "Wayne",
+   "reason": "v1.8 learning-period rule (Wayne 2026-10-18, fixes ST3-001): during the onboarding/learning period (no learned baseline), a reading beyond the population default band, or SpO2 below the population threshold, goes CONFIRM_FIRST (never silent); at-baseline suppression is not allowed while learning unless a clinician set the baseline."
+  },
+  {
+   "ts": "2026-10-18T11:54:18-04:00",
+   "keys": [
+    "version"
+   ],
+   "old": "0.7-placeholder",
+   "new": "0.8-placeholder",
+   "approved_by": "Wayne",
+   "reason": "v1.8: learning-period rule formalised (approved by Wayne)"
   }
  ],
  "hard_limits": {
@@ -410,7 +431,8 @@
   "confirm_widening": {
    "_note": "During learning, at_patient_baseline suppression is not allowed (unless clinician_set_baseline). Outside the population band -> CONFIRM_FIRST.",
    "allow_at_baseline_suppression": false
-  }
+  },
+  "outside_population_default_tier": "CONFIRM_FIRST"
  },
  "adaptation": {
   "_note": "Layer 3. Rolling robust baseline (weighted median / MAD) with bounds, condition-change resets and a drift guard.",

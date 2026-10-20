@@ -3,3 +3,5 @@
 - `score_jev.py` - scores Jev alone and Layer1+Jev: accuracy with alternates, severity-weighted critical misses, over-escalation and pages/100, breakdowns, engine-tier agreement, robustness, Brier, the clinician_override and hospice cases.
 - Inputs: `RUNNER_JSON` (written by casegen/convert_casegen.py via build_outputs.py), `ACCEPTED_JSON` and `OUTCOMES_CSV` (default `../library/`).
 - Tests: `python -m pytest -q homehealth/jev_baseline`. Results: `results/REPORT.md`.
+- v1.8 (2026-10-18): default model `liquid/d1-ultra`; `JEV_PROMPT=v1.8` (default) adds the learning-period and crescendo sentences and a one-line monitoring status from the `baseline_status` fact; `JEV_OUT=results_v18` keeps runs apart.
+- `layer1_adapter.py` - deterministic Layer 1 on every case: derives trigger_eval inputs from fact fields only and routes with `route()` (Layer 1 owns triggers; Jev decides non-trigger cases and, capped, suppressed ones). `score_l1jev.py` compares baseline / v1.8 / Layer1+Jev. Report: `results_v18/REPORT.md`.

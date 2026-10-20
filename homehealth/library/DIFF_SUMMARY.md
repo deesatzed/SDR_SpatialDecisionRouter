@@ -208,3 +208,8 @@ Wayne ruled all 13 review-queue cases (`clinician_rulings.csv`). `apply_rulings.
 - Grading: one blind google/gemini-4-argon GRADER_LLM3_v1.3 call (`smart_run.py fixp`) on ST1-003, ST1-006, ST1-011 plus partners ST1-004 and ST1-005: **5/5 keep, score 5**, blind route agreed on all 5, both pairs valid (differing only on the intended feature), no novelty overlap, no critical miss. Cost **$0.091** (run total $1.187).
 - fix_list.csv: 4 → 2 rows (ST4-001, ST4-007 remain; not in scope). review_queue.csv stays at 0.
 - Library: **270 cases** (was 267). Routes: escalate_human 83, nurse_task 70, silent_log 67, wake_specialist 50. Tiers: CONFIRM_FIRST 39, SUPPRESSED 24, ABSOLUTE 16, ARTIFACT 2. Hard-trigger cases: 81.
+
+## SMART_TRIGGERS v1.8: learning-period rule formalised; Layer 1 on every case (Wayne, 2026-10-18)
+- Rule: while no own baseline is learned, a reading beyond the population default band (or SpO2 below 88%) is CONFIRM_FIRST → escalate_human on confirmation or timeout. It is never silent and never `at_patient_baseline` unless a clinician set the baseline. Params 0.8-placeholder (`learning.outside_population_default_tier`, change_log: Wayne); `validate_params` rejects a non-paging value. Tests: `test_learning_v18.py` (11).
+- Library: **no label changes** (ST3-001 was already CONFIRM_FIRST `fingertip_recheck`). The rebuild only updated the engine version string in 12 `chest_pain_eval` blocks. Still 270 cases; routes escalate_human 83, nurse_task 70, silent_log 67, wake_specialist 50.
+- Jev: liquid/d1-ultra is the default; it was rerun with the v1.8 prompt ($0.0345). Layer 1 + d1-ultra has 0 critical misses and 2.6 false pages per 100 (see `jev_baseline/results_v18/REPORT.md`).

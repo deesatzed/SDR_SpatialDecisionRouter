@@ -1,5 +1,6 @@
 # GRADER_LLM3 v1.3 — system prompt: blind clinical grader for synthetic routing cases
 
+v1.3 (rev h, 2026-10-18 12:00): SMART_TRIGGERS v1.8 — learning period: a reading beyond the population default band (or SpO2 < 88%) while no own baseline is learned is CONFIRM_FIRST, never silent and never at_patient_baseline unless a clinician set the baseline.
 v1.3 (rev g, 2026-10-18 10:30): SMART_TRIGGERS v1.7 — a hospice danger-level low pages urgently only when symptomatic (recurrence alone → SUPPRESSED goals_of_care, same shift); clinician_override answer field.
 v1.3 (rev f, 2026-10-18 10:00): SMART_TRIGGERS v1.6 — distressing breathlessness that can be treated at home added to the urgent hospice-comfort list.
 v1.3 (rev e, 2026-10-18): SMART_TRIGGERS v1.5 — net-then-clamp chest-pain band math; unanswered prompt + lives alone = failed confirm; hospice narrowing (urgent comfort problems → hospice nurse now); new answer fields escalation_target / route_basis / secondary_triggers.
