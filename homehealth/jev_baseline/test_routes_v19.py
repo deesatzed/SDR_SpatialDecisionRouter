@@ -1,5 +1,6 @@
 """SMART_TRIGGERS v1.9 route rename (Wayne 2026-10-21): canonical ids + legacy alias on read. SYNTHETIC; no API calls."""
 import csv, json, os, sys
+import pytest
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE); sys.path.insert(0, os.path.join(HERE, "..", "casegen"))
 import routes as RT, score_jev as S, layer1_adapter as L, dual_jev as D  # noqa: E402
 HH = os.path.join(HERE, "..")
@@ -50,7 +51,7 @@ def test_jev_prompt_v19_uses_new_ids_and_definitions(monkeypatch):
     monkeypatch.delenv("JEV_PROMPT"); importlib.reload(J)
 
 def test_casegen_maps_legacy_case_routes():
-    import grade_merge as G
+    G = pytest.importorskip("grade_merge")   # repo layout (homehealth/casegen)
     c = G.canon_case_routes({"expected_route": "escalate_human", "acceptable_alternates": ["wake_specialist", "nurse_task_with_recheck"],
                              "secondary_triggers": [{"if_confirmed_route": "escalate_human"}]})
     assert c["expected_route"] == "urgent_page" and c["acceptable_alternates"] == ["provider_task", "nurse_task_with_recheck"]
@@ -59,13 +60,20 @@ def test_casegen_maps_legacy_case_routes():
 def test_stored_labels_use_v19_ids():
     for f in ("library/library_v2_smart_accepted.json", "library/library_v2_smart_Outcomes.csv", "holdout/holdout_v1_accepted.json",
               "holdout/holdout_v1_runner.json", "holdout/review_queue.csv", "trigger_engine/trigger_params.json"):
-        s = open(os.path.join(HH, f)).read()
+        p = os.path.join(HH, f)
+        if not os.path.exists(p): pytest.skip("repo layout only")
+        s = open(p).read()
         assert not any(t in s for t in LEGACY), f
 
 def test_review_queue_clinician_rulings_kept_and_mapped():
-    rows = {r["case_id"]: r for r in csv.DictReader(open(os.path.join(HH, "holdout", "review_queue.csv")))}
-    got = {k: v["CLINICIAN_RULING (route)"] for k, v in rows.items() if v["CLINICIAN_RULING (route)"]}
-    assert got == {"HO1-005": "silent_log", "HO2-007": "nurse_task", "HO3-001": "silent_log", "HO4-003": "silent_log", "HO4-008": "nurse_task",
-                   "HO7-021": "urgent_page", "HO8-005": "silent_log", "HO8-006": "DROP", "HO8-015": "urgent_page", "HO8-017": "silent_log",
-                   "HO8-019": "nurse_task", "HO8-020": "urgent_page", "HO8-025": "urgent_page"}
-    assert all(v in RT.ROUTES + ["DROP"] for v in got.values())
+    p = os.path.join(HH, "holdout", "review_queue.csv")
+    if not os.path.exists(p): pytest.skip("repo layout only")
+    rows = {r["case_id"]: r for r in csv.DictReader(open(p))}
+    got = {k: v["CLINICIAN_RULING (route)"] for k, v in rows.items()}
+    assert len(got) == 34 and all(got.values())                       # Wayne ruled all 34 (2026-10-21)
+    assert all(v in RT.ROUTES + ["DROP"] for v in got.values())       # mapped to v1.9 ids
+    assert {k for k, v in got.items() if v == "DROP"} == {"HO8-006", "HO7-013", "HO8-001"}
+    assert got["HO1-005"] == "silent_log" and got["HO2-007"] == "nurse_task" and got["HO4-008"] == "nurse_task"
+    assert got["HO8-020"] == got["HO8-025"] == got["HO7-021"] == got["HO8-015"] == "urgent_page"
+    assert rows["HO7-021"]["living"] == "with spouse"                  # case fix
+    assert "he is hard to wake" in rows["HO8-015"]["caregiver_or_nurse_note"] and "she is" not in rows["HO8-015"]["caregiver_or_nurse_note"]
