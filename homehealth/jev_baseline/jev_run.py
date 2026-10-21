@@ -6,7 +6,7 @@
 - 600 s per-call timeout; backoff on 429/5xx; per-model checkpoint (results/parsed/<model>.jsonl, resume skips done keys).
 - Spend = sum of usage.cost in the checkpoints; hard cap SPEND_CAP (default $0.50) checked before every call -> stop.
 - Stored per call: parsed pick/probabilities/confidence/veto, token counts, cost, latency, error code. No raw responses.
-Default model liquid/d1-ultra (Wayne 2026-10-18). JEV_OUT=<dir> keeps runs apart; JEV_PROMPT=v1.7|v1.8.
+Default models liquid/d1-ultra + perplexity/pplx-decider-v1.2 (dual-model Jev behind Layer 1, rule cautious_max_hitm; Wayne 2026-10-20; see dual_jev.py). JEV_OUT=<dir> keeps runs apart; JEV_PROMPT=v1.7|v1.8.
 Never prints the key. Usage: python3 jev_run.py [model ...] [--check-only]"""
 import json, os, re, sys, time, threading, urllib.request, urllib.error
 from concurrent.futures import ThreadPoolExecutor
@@ -21,7 +21,7 @@ def find_input(env, name):
     raise SystemExit(f"{name} not found: set {env} (the runner JSON is written by casegen/convert_casegen.py via build_outputs.py)")
 OUT = os.path.join(HERE, os.environ.get("JEV_OUT", "results")); PARSED = os.path.join(OUT, "parsed")
 # Default Jev model (Wayne 2026-10-18): liquid/d1-ultra. The 4-model baseline (results/) remains reproducible by naming the models.
-DEFAULT_MODELS = ["liquid/d1-ultra"]
+DEFAULT_MODELS = ["liquid/d1-ultra", "perplexity/pplx-decider-v1.2"]   # 2026-10-20: dual-model Jev (dual_jev.DUAL_MODELS; lead first)
 PROMPT_VERSION = os.environ.get("JEV_PROMPT", "v1.8")   # v1.7 = the 4-model baseline prompt (no monitoring-status line, no v1.8 sentences)
 SPEND_CAP = float(os.environ.get("SPEND_CAP", "0.50")); PRIOR_SPEND = float(os.environ.get("PRIOR_SPEND", "0"))
 TIMEOUT = 600; WORKERS_PER_MODEL = int(os.environ.get("WORKERS", "4"))
