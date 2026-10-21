@@ -1,0 +1,6051 @@
+{
+ "leaks": [
+  0.5,
+  0.8,
+  0.95
+ ],
+ "n_cases": 60,
+ "cases": {
+  "HO1-001": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": true,
+     "why": [
+      "hr",
+      "sbp",
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "ABSOLUTE",
+    "reason": "new_focal_deficit",
+    "rule": "HT_FOCAL_NEURO",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO1-002": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": true,
+     "why": [
+      "hr",
+      "rr",
+      "sbp",
+      "temp",
+      "steps",
+      "symptom"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "ABSOLUTE",
+    "reason": "hard_limit_danger",
+    "rule": "HT_VS_DANGER",
+    "acute_presentation": true
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO1-003": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "sbp",
+      "symptom",
+      "l1_confirm_first"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "CONFIRM_FIRST",
+    "reason": null,
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO1-004": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "hr",
+      "steps",
+      "l1_confirm_first"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "CONFIRM_FIRST",
+    "reason": "fall_on_anticoagulant",
+    "rule": "HT_FALL_ANTICOAG",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO1-006": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "spo2"
+     ]
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": true,
+     "verified": false,
+     "why": [
+      "spo2"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "SUPPRESSED",
+    "reason": "at_patient_baseline",
+    "rule": "HT_SPO2_LT88",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.623713
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.869549
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.92924
+    ]
+   }
+  },
+  "HO1-007": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO1-008": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO1-009": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO1-010": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "hr",
+      "temp",
+      "steps",
+      "symptom"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO1-011": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO2-001": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "spo2"
+     ]
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": true,
+     "verified": false,
+     "why": [
+      "hr",
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "SUPPRESSED",
+    "reason": "goals_of_care",
+    "rule": "HT_FALL_ANTICOAG",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.623713
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.869549
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.92924
+    ]
+   }
+  },
+  "HO2-002": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": true,
+     "why": [
+      "hr",
+      "glucose",
+      "steps",
+      "symptom"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "ABSOLUTE",
+    "reason": "hard_limit_danger_fingerstick_confirmed",
+    "rule": "HT_VS_DANGER",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO2-004": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": true,
+     "verified": false,
+     "why": [
+      "spo2",
+      "l1_confirm_first"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "CONFIRM_FIRST",
+    "reason": "outside_population_default_learning",
+    "rule": "HT_SPO2_LT88",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.623713
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.869549
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.92924
+    ]
+   }
+  },
+  "HO2-005": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO2-009": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "hr",
+      "steps",
+      "l1_confirm_first"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "CONFIRM_FIRST",
+    "reason": "fall_on_anticoagulant",
+    "rule": "HT_FALL_ANTICOAG",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO2-010": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "temp"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO3-004": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "glucose"
+     ]
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "glucose"
+     ]
+    },
+    {
+     "day": -1,
+     "latent": true,
+     "repeated": true,
+     "verified": false,
+     "why": [
+      "glucose",
+      "steps"
+     ]
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": true,
+     "verified": false,
+     "why": [
+      "symptom"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "SUPPRESSED",
+    "reason": "unreliable_reading",
+    "rule": "HT_VS_DANGER",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.227033,
+     0.604663,
+     0.734004,
+     0.850187
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.48632,
+     0.809096,
+     0.92376,
+     0.93522
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.606138,
+     0.88381,
+     0.964869,
+     0.943956
+    ]
+   }
+  },
+  "HO3-005": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": true,
+     "why": [
+      "hr",
+      "glucose",
+      "steps",
+      "symptom"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "ABSOLUTE",
+    "reason": "hard_limit_danger_fingerstick_confirmed",
+    "rule": "HT_VS_DANGER",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO3-006": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "hr",
+      "sbp",
+      "steps",
+      "symptom"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO3-007": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO3-008": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO3-009": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO3-010": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "hr",
+      "steps"
+     ]
+    },
+    {
+     "day": -2,
+     "latent": true,
+     "repeated": true,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.623713,
+     0.553708,
+     0.530767
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.869549,
+     0.640741,
+     0.675555
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.92924,
+     0.643857,
+     0.734175
+    ]
+   }
+  },
+  "HO4-001": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "spo2",
+      "steps"
+     ]
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "data_gap"
+     ]
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": true,
+     "verified": false,
+     "why": [
+      "spo2",
+      "steps",
+      "data_gap"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.227033,
+     0.604663,
+     0.734004
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.48632,
+     0.809096,
+     0.92376
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.606138,
+     0.88381,
+     0.964869
+    ]
+   }
+  },
+  "HO4-007": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": true,
+     "verified": false,
+     "why": [
+      "hr",
+      "steps",
+      "l1_confirm_first"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "CONFIRM_FIRST",
+    "reason": "fall_on_anticoagulant",
+    "rule": "HT_FALL_ANTICOAG",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.623713
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.869549
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.92924
+    ]
+   }
+  },
+  "HO4-010": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "hr"
+     ]
+    },
+    {
+     "day": -1,
+     "latent": true,
+     "repeated": true,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": true,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.623713,
+     0.808856
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.869549,
+     0.915328
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.92924,
+     0.937226
+    ]
+   }
+  },
+  "HO5-001": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "hr"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO5-002": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO5-003": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "spo2"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO5-004": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO5-005": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO5-006": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "symptom"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO5-007": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO5-008": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "symptom"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO5-009": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps",
+      "symptom"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO5-010": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO5-011": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "hr",
+      "sbp",
+      "steps",
+      "symptom"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO6-006": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "spo2"
+     ]
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.227033
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.48632
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.606138
+    ]
+   }
+  },
+  "HO6-007": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO6-008": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO8-002": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO8-003": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO8-004": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO8-009": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO8-010": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO8-016": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO9-001": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": true,
+     "why": [
+      "sbp",
+      "symptom"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "ABSOLUTE",
+    "reason": "syncope",
+    "rule": "HT_SYNCOPE",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO9-002": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.227033,
+     0.604663
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.48632,
+     0.809096
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.606138,
+     0.88381
+    ]
+   }
+  },
+  "HO9-003": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO9-004": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO9-005": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO9-007": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "spo2",
+      "steps",
+      "symptom",
+      "l1_confirm_first"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "CONFIRM_FIRST",
+    "reason": "below_88_change_from_own_baseline",
+    "rule": "HT_SPO2_LT88",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO9-009": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783
+    ]
+   }
+  },
+  "HO10-004": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "glucose"
+     ]
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "glucose"
+     ]
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": false,
+     "verified": true,
+     "why": [
+      "glucose",
+      "symptom"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "ABSOLUTE",
+    "reason": "hard_limit_danger_symptomatic",
+    "rule": "HT_VS_DANGER",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.227033,
+     0.604663,
+     0.411449,
+     0.687033
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.48632,
+     0.809096,
+     0.671831,
+     0.853005
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.606138,
+     0.88381,
+     0.786446,
+     0.909882
+    ]
+   }
+  },
+  "HO10-005": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "data_gap"
+     ]
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": true,
+     "verified": false,
+     "why": [
+      "data_gap"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": "SUPPRESSED",
+    "reason": "goals_of_care",
+    "rule": "HT_GAP48_HIGHRISK",
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.623713
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.869549
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.92924
+    ]
+   }
+  },
+  "HO10-006": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO10-007": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO10-009": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO10-010": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": 0,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": false
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "HO10-011": {
+   "days": [
+    {
+     "day": -7,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -6,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -5,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -4,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -3,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    },
+    {
+     "day": -2,
+     "latent": false,
+     "repeated": false,
+     "verified": false,
+     "why": []
+    },
+    {
+     "day": -1,
+     "latent": true,
+     "repeated": false,
+     "verified": false,
+     "why": [
+      "steps"
+     ]
+    },
+    {
+     "day": 0,
+     "latent": true,
+     "repeated": true,
+     "verified": false,
+     "why": [
+      "hr",
+      "spo2",
+      "rr"
+     ]
+    }
+   ],
+   "l1": {
+    "tier": null,
+    "reason": "no_trigger",
+    "rule": null,
+    "acute_presentation": true
+   },
+   "readouts": {
+    "0.5": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.462117,
+     0.227033,
+     0.604663,
+     0.734004
+    ],
+    "0.8": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.664037,
+     0.48632,
+     0.809096,
+     0.92376
+    ],
+    "0.95": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.739783,
+     0.606138,
+     0.88381,
+     0.964869
+    ]
+   }
+  }
+ }
+}

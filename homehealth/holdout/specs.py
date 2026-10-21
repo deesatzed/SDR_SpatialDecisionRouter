@@ -1,0 +1,22 @@
+"""Batch specs for library_v1. Module text comes from VARIANTS.md (volume, N=25, module mixes as written)."""
+V = open("../casegen/prompts_v2/VARIANTS.md").read()
+def mod(tag):
+    i = V.index(f"## {tag}"); j = V.find("\n## ", i + 3)
+    body = V[i:j if j > 0 else len(V)]
+    a = body.index("```") + 3; b = body.index("```", a)
+    return body[a:b].strip()
+NV = [("NV1", "base", None), ("NV2", "M1", mod("M1")), ("NV3", "M4", mod("M4")), ("NV4", "M5", mod("M5")), ("NV5", "M6", mod("M6")),
+      ("NV6", "M7", mod("M7")), ("NV7", "M9", mod("M9")), ("NV8", "M10", mod("M10"))]
+COMMON_HARD = "difficulty: hard+adversarial >= 70%, easy <= 1. At least 30% of cases outside the module focus. Every hard-trigger case has acceptable_alternates []."
+HK = [
+ ("HK1", "M2", 11, "FOCUS=spo2_bias (menu: " + mod("M2").split("\n", 2)[2][:900] + ")\nRoutes exactly: silent_log 2, nurse_task 2, wake_specialist 3, escalate_human 4. >=3 hidden-hypoxemia cases (Fitzpatrick V-VI, wearable 91-94%, NO fingertip_oximeter, corroborating clues, varied mechanisms). >=1 HT_SPO2_LT88 on a reliable repeat reading. >=2 true-noise dips (silent_log). 1 near-miss pair. tally.minimums: hidden_hypoxemia 3, ht_spo2 1, noise_dips 2, pairs 1."),
+ ("HK2", "M2", 11, "FOCUS=spo2_bias, second batch: use DIFFERENT mechanisms and devices from HK1 and DO_NOT_REPEAT (menu: " + mod("M2").split("\n", 2)[2][:900] + ")\nRoutes exactly: silent_log 2, nurse_task 2, wake_specialist 3, escalate_human 4. >=3 hidden-hypoxemia cases, >=1 HT_SPO2_LT88, >=2 true-noise dips, 1 near-miss pair. tally.minimums: hidden_hypoxemia 3, ht_spo2 1, noise_dips 2, pairs 1."),
+ ("HK3", "M3", 11, "FOCUS=subtle_deterioration (menu: " + mod("M3").split("\n", 2)[2][:900] + ")\nRoutes exactly: silent_log 3, nurse_task 2, wake_specialist 3, escalate_human 3. >=7 subtle_deterioration=true, each with >=2 weak corroborating signals; >=2 look-alike noise cases (silent_log). tally.minimums: subtle 7, lookalike_noise 2."),
+ ("HK4", "M3", 11, "FOCUS=subtle_deterioration, second batch: use mechanisms NOT used in HK3 or DO_NOT_REPEAT (menu: " + mod("M3").split("\n", 2)[2][:900] + ")\nRoutes exactly: silent_log 3, nurse_task 2, wake_specialist 3, escalate_human 3. >=7 subtle, >=2 look-alike noise. tally.minimums: subtle 7, lookalike_noise 2."),
+ ("HK5", "M8", 10, "FOCUS=pairs (menu: " + mod("M8").split("\n", 2)[2][:1100] + ")\nExactly 4 near-miss pairs (8 cases, adjacent IDs, exactly ONE decisive fact differs, different routes, both adversarial) + 2 unpaired. Routes exactly: silent_log 3, nurse_task 2, wake_specialist 2, escalate_human 3. tally.minimums: pairs 4."),
+ ("HK6", "M8", 10, "FOCUS=pairs, second batch: use decisive-fact types NOT used in HK5 (menu: " + mod("M8").split("\n", 2)[2][:1100] + ")\nExactly 4 near-miss pairs + 2 unpaired. Routes exactly: silent_log 3, nurse_task 2, wake_specialist 2, escalate_human 3. tally.minimums: pairs 4."),
+ ("HK7", "M1-novel", 11, "FOCUS=novel sensor/artifact behaviour (HRV metric change on device swap, firmware baseline shift, barometric/altitude, on-skin PPG vs off-wrist signature, bed-sensor/pet, CGM warm-up/compression variants NOT in DO_NOT_REPEAT). 7 focus cases, 4 outside.\nRoutes exactly: silent_log 5, nurse_task 2, wake_specialist 2, escalate_human 2. >=3 traps where the artifact story is plausible but a real change sits underneath (wake_specialist or escalate_human). 1 near-miss pair. tally.minimums: traps 3, pairs 1."),
+ ("HK8", "M9-boundary", 10, "FOCUS=missing-data boundaries. Exactly 3 near-miss pairs: (a) 47 h vs 49 h gap in a high-risk patient, (b) gap explained by a timed contact inside the gap vs an unverified excuse, (c) same 50 h gap high-risk vs low-risk patient; plus 4 others (partial one-device gap, late retroactive sync, progressive wear-time decline as illness sign, low-risk long gap). data_quality.longest_gap_h always filled, missing_hours_last_48 <= 48.\nRoutes exactly: silent_log 3, nurse_task 2, wake_specialist 1, escalate_human 4. tally.minimums: pairs 3."),
+ ("HK9", "mixed-hard", 11, "FOCUS=mixed hard slice across M2/M3/M8 with mechanisms not yet in DO_NOT_REPEAT (e.g. PE after missed anticoagulant, AKI, adrenal crisis, hypothermia, GI bleed on DOAC, opioid+OSA, hyponatremia). \nRoutes exactly: silent_log 2, nurse_task 2, wake_specialist 3, escalate_human 4. >=2 hidden-hypoxemia, >=3 subtle, 1 near-miss pair. tally.minimums: hidden_hypoxemia 2, subtle 3, pairs 1."),
+]
+HK_GRADE_GROUPS = [("HK1", "HK2"), ("HK3", "HK4"), ("HK5", "HK6"), ("HK7", "HK8"), ("HK9",)]

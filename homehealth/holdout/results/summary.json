@@ -1,0 +1,491 @@
+{
+ "frozen_commit": "81820c9",
+ "n_cases": 60,
+ "label_pages_per_100": 33.3333,
+ "routes": {
+  "escalate_human": 20,
+  "nurse_task": 15,
+  "silent_log": 16,
+  "wake_specialist": 9
+ },
+ "tiers": {
+  "ABSOLUTE": 9,
+  "CONFIRM_FIRST": 7,
+  "SUPPRESSED": 4,
+  "ARTIFACT": 2
+ },
+ "fly": {
+  "leak": "0.5",
+  "threshold": 0.841072
+ },
+ "systems": {
+  "d1-ultra alone": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.8667,
+   "critical_misses": 0,
+   "critical_miss_ids": [],
+   "critical_miss_weighted": 0,
+   "pages_per_100": 33.3333,
+   "false_pages_per_100": 3.3333,
+   "over_escalation_ids": [
+    "LIB-HO2-001",
+    "LIB-HO10-005"
+   ],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 1.0,
+   "suppressed": "0/4",
+   "hospice": "1/3",
+   "hospice_wrong": [
+    "LIB-HO2-001",
+    "LIB-HO10-005"
+   ],
+   "hitm": 0,
+   "hitm_per_100": 0.0,
+   "errors": 8,
+   "errors_in_hitm": 0,
+   "errors_not_in_hitm": [
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO10-005",
+    "LIB-HO2-001",
+    "LIB-HO3-004",
+    "LIB-HO3-007",
+    "LIB-HO5-007",
+    "LIB-HO8-009"
+   ]
+  },
+  "pplx alone": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.8167,
+   "critical_misses": 3,
+   "critical_miss_ids": [
+    "LIB-HO1-003",
+    "LIB-HO2-004",
+    "LIB-HO5-006"
+   ],
+   "critical_miss_weighted": 9,
+   "pages_per_100": 25.0,
+   "false_pages_per_100": 1.6667,
+   "over_escalation_ids": [
+    "LIB-HO10-005"
+   ],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 0.85,
+   "suppressed": "1/4",
+   "hospice": "2/3",
+   "hospice_wrong": [
+    "LIB-HO10-005"
+   ],
+   "hitm": 0,
+   "hitm_per_100": 0.0,
+   "errors": 11,
+   "errors_in_hitm": 0,
+   "errors_not_in_hitm": [
+    "LIB-HO1-003",
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO10-005",
+    "LIB-HO2-004",
+    "LIB-HO3-004",
+    "LIB-HO5-006",
+    "LIB-HO5-007",
+    "LIB-HO5-008",
+    "LIB-HO6-006",
+    "LIB-HO8-009"
+   ]
+  },
+  "L1 + d1-ultra": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.9,
+   "critical_misses": 0,
+   "critical_miss_ids": [],
+   "critical_miss_weighted": 0,
+   "pages_per_100": 30.0,
+   "false_pages_per_100": 0.0,
+   "over_escalation_ids": [],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 1.0,
+   "suppressed": "2/4",
+   "hospice": "3/3",
+   "hospice_wrong": [],
+   "hitm": 0,
+   "hitm_per_100": 0.0,
+   "errors": 6,
+   "errors_in_hitm": 0,
+   "errors_not_in_hitm": [
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO3-004",
+    "LIB-HO3-007",
+    "LIB-HO5-007",
+    "LIB-HO8-009"
+   ]
+  },
+  "L1 + pplx": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.8667,
+   "critical_misses": 1,
+   "critical_miss_ids": [
+    "LIB-HO5-006"
+   ],
+   "critical_miss_weighted": 3,
+   "pages_per_100": 26.6667,
+   "false_pages_per_100": 0.0,
+   "over_escalation_ids": [],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 0.95,
+   "suppressed": "2/4",
+   "hospice": "3/3",
+   "hospice_wrong": [],
+   "hitm": 0,
+   "hitm_per_100": 0.0,
+   "errors": 8,
+   "errors_in_hitm": 0,
+   "errors_not_in_hitm": [
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO3-004",
+    "LIB-HO5-006",
+    "LIB-HO5-007",
+    "LIB-HO5-008",
+    "LIB-HO6-006",
+    "LIB-HO8-009"
+   ]
+  },
+  "L1 + dual (c) [default]": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.9167,
+   "critical_misses": 0,
+   "critical_miss_ids": [],
+   "critical_miss_weighted": 0,
+   "pages_per_100": 30.0,
+   "false_pages_per_100": 0.0,
+   "over_escalation_ids": [],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 1.0,
+   "suppressed": "2/4",
+   "hospice": "3/3",
+   "hospice_wrong": [],
+   "hitm": 11,
+   "hitm_per_100": 18.3333,
+   "errors": 5,
+   "errors_in_hitm": 1,
+   "errors_not_in_hitm": [
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO5-007",
+    "LIB-HO8-009"
+   ]
+  },
+  "L1 + dual (c) + Fly flag": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.9167,
+   "critical_misses": 0,
+   "critical_miss_ids": [],
+   "critical_miss_weighted": 0,
+   "pages_per_100": 30.0,
+   "false_pages_per_100": 0.0,
+   "over_escalation_ids": [],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 1.0,
+   "suppressed": "2/4",
+   "hospice": "3/3",
+   "hospice_wrong": [],
+   "hitm": 15,
+   "hitm_per_100": 25.0,
+   "errors": 5,
+   "errors_in_hitm": 1,
+   "errors_not_in_hitm": [
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO5-007",
+    "LIB-HO8-009"
+   ]
+  },
+  "no-L1 fallback: dual (c)": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.8833,
+   "critical_misses": 0,
+   "critical_miss_ids": [],
+   "critical_miss_weighted": 0,
+   "pages_per_100": 33.3333,
+   "false_pages_per_100": 3.3333,
+   "over_escalation_ids": [
+    "LIB-HO2-001",
+    "LIB-HO10-005"
+   ],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 1.0,
+   "suppressed": "0/4",
+   "hospice": "1/3",
+   "hospice_wrong": [
+    "LIB-HO2-001",
+    "LIB-HO10-005"
+   ],
+   "hitm": 14,
+   "hitm_per_100": 23.3333,
+   "errors": 7,
+   "errors_in_hitm": 2,
+   "errors_not_in_hitm": [
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO10-005",
+    "LIB-HO5-007",
+    "LIB-HO8-009"
+   ]
+  }
+ },
+ "layer1_agreement": {
+  "hard_trigger_cases": 22,
+  "tier_match": 16,
+  "tier_and_suppression_reason_match": 16,
+  "rule_match": 16,
+  "paging_tier_match": 18,
+  "mismatches": [
+   {
+    "id": "LIB-HO1-007",
+    "label": [
+     "ARTIFACT",
+     null,
+     "HT_VS_IMPLAUSIBLE"
+    ],
+    "layer1": [
+     null,
+     "no_trigger",
+     null
+    ]
+   },
+   {
+    "id": "LIB-HO3-006",
+    "label": [
+     "ABSOLUTE",
+     null,
+     "HT_VS_DANGER"
+    ],
+    "layer1": [
+     null,
+     "no_trigger",
+     null
+    ]
+   },
+   {
+    "id": "LIB-HO5-006",
+    "label": [
+     "CONFIRM_FIRST",
+     null,
+     "HT_SPO2_LT88"
+    ],
+    "layer1": [
+     null,
+     "no_trigger",
+     null
+    ]
+   },
+   {
+    "id": "LIB-HO5-011",
+    "label": [
+     "ABSOLUTE",
+     null,
+     "HT_SYNCOPE"
+    ],
+    "layer1": [
+     null,
+     "no_trigger",
+     null
+    ]
+   },
+   {
+    "id": "LIB-HO10-006",
+    "label": [
+     "ARTIFACT",
+     null,
+     "HT_VS_IMPLAUSIBLE"
+    ],
+    "layer1": [
+     null,
+     "no_trigger",
+     null
+    ]
+   },
+   {
+    "id": "LIB-HO10-011",
+    "label": [
+     "ABSOLUTE",
+     null,
+     "HT_CHEST_PAIN_VITALS"
+    ],
+    "layer1": [
+     null,
+     "no_trigger",
+     null
+    ]
+   }
+  ],
+  "confusion_label_vs_layer1": {
+   "ABSOLUTE->ABSOLUTE": 6,
+   "ABSOLUTE->none": 3,
+   "ARTIFACT->none": 2,
+   "CONFIRM_FIRST->CONFIRM_FIRST": 6,
+   "CONFIRM_FIRST->none": 1,
+   "SUPPRESSED->SUPPRESSED": 4
+  },
+  "by_rule": {
+   "HT_CHEST_PAIN_VITALS ABSOLUTE": {
+    "n": 1,
+    "tier_match": 0,
+    "tier_reason_match": 0
+   },
+   "HT_CHEST_PAIN_VITALS CONFIRM_FIRST": {
+    "n": 1,
+    "tier_match": 1,
+    "tier_reason_match": 1
+   },
+   "HT_FALL_ANTICOAG CONFIRM_FIRST": {
+    "n": 3,
+    "tier_match": 3,
+    "tier_reason_match": 3
+   },
+   "HT_FALL_ANTICOAG SUPPRESSED goals_of_care": {
+    "n": 1,
+    "tier_match": 1,
+    "tier_reason_match": 1
+   },
+   "HT_FOCAL_NEURO ABSOLUTE": {
+    "n": 1,
+    "tier_match": 1,
+    "tier_reason_match": 1
+   },
+   "HT_GAP48_HIGHRISK SUPPRESSED goals_of_care": {
+    "n": 1,
+    "tier_match": 1,
+    "tier_reason_match": 1
+   },
+   "HT_SPO2_LT88 CONFIRM_FIRST": {
+    "n": 3,
+    "tier_match": 2,
+    "tier_reason_match": 2
+   },
+   "HT_SPO2_LT88 SUPPRESSED at_patient_baseline": {
+    "n": 1,
+    "tier_match": 1,
+    "tier_reason_match": 1
+   },
+   "HT_SYNCOPE ABSOLUTE": {
+    "n": 2,
+    "tier_match": 1,
+    "tier_reason_match": 1
+   },
+   "HT_VS_DANGER ABSOLUTE": {
+    "n": 5,
+    "tier_match": 4,
+    "tier_reason_match": 4
+   },
+   "HT_VS_DANGER SUPPRESSED unreliable_reading": {
+    "n": 1,
+    "tier_match": 1,
+    "tier_reason_match": 1
+   },
+   "HT_VS_IMPLAUSIBLE ARTIFACT": {
+    "n": 2,
+    "tier_match": 0,
+    "tier_reason_match": 0
+   }
+  },
+  "non_trigger_cases": 38,
+  "false_triggers": [],
+  "false_paging_triggers": 0
+ },
+ "critical_miss_detail": {
+  "LIB-HO1-003": {
+   "expected": "escalate_human",
+   "label_tier": "CONFIRM_FIRST",
+   "label_rule": "HT_CHEST_PAIN_VITALS",
+   "l1_tier": "CONFIRM_FIRST",
+   "l1_rule": "HT_CHEST_PAIN_VITALS",
+   "l1_reason": null,
+   "d1": "escalate_human",
+   "pplx": "wake_specialist",
+   "decisive_feature": "Chest pressure on waking with cuff SBP 97 mmHg as the only band-B vital."
+  },
+  "LIB-HO2-004": {
+   "expected": "escalate_human",
+   "label_tier": "CONFIRM_FIRST",
+   "label_rule": "HT_SPO2_LT88",
+   "l1_tier": "CONFIRM_FIRST",
+   "l1_rule": "HT_SPO2_LT88",
+   "l1_reason": "outside_population_default_learning",
+   "d1": "escalate_human",
+   "pplx": "wake_specialist",
+   "decisive_feature": "Wrist readings of 86-87% at rest on day 3 of learning in a patient with Fitzpatrick V-VI skin, with no learned own band and no second oximeter, leave only a patient-call confirmation."
+  },
+  "LIB-HO5-006": {
+   "expected": "escalate_human",
+   "label_tier": "CONFIRM_FIRST",
+   "label_rule": "HT_SPO2_LT88",
+   "l1_tier": null,
+   "l1_rule": null,
+   "l1_reason": "no_trigger",
+   "d1": "escalate_human",
+   "pplx": "wake_specialist",
+   "decisive_feature": "The unanswered watch confirmation prompt, not the 87% value itself, turns a pending confirm into an immediate page for a woman living alone."
+  }
+ },
+ "jev_runs": {
+  "liquid/d1-ultra": {
+   "calls": 240,
+   "without_pick": 0,
+   "retried": 0,
+   "errors": {},
+   "cost_usd": 0.007644,
+   "robustness": {
+    "reversed_same_pick": 0.95,
+    "reversed_n": 60,
+    "key_deleted_pick_changed": 0.1833,
+    "key_deleted_escalate_or_veto": 0.4167,
+    "missing_all_escalate": 0.7,
+    "missing_all_escalate_or_veto": 0.7833,
+    "missing_all_n": 60
+   },
+   "calibration": {
+    "brier_escalate": 0.0381,
+    "brier_multiclass": 0.3331,
+    "n": 60
+   }
+  },
+  "perplexity/pplx-decider-v1.2": {
+   "calls": 240,
+   "without_pick": 0,
+   "retried": 0,
+   "errors": {},
+   "cost_usd": 0.004051,
+   "robustness": {
+    "reversed_same_pick": 0.9667,
+    "reversed_n": 60,
+    "key_deleted_pick_changed": 0.2,
+    "key_deleted_escalate_or_veto": 0.2833,
+    "missing_all_escalate": 0.4167,
+    "missing_all_escalate_or_veto": 0.5,
+    "missing_all_n": 60
+   },
+   "calibration": {
+    "brier_escalate": 0.0708,
+    "brier_multiclass": 0.3628,
+    "n": 60
+   }
+  }
+ }
+}

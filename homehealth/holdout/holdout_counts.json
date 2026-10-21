@@ -1,0 +1,83 @@
+{
+ "generated": 135,
+ "graded": 135,
+ "accepted_by_merge": 60,
+ "dedupe_removed": 0,
+ "accepted_final": 60,
+ "review_queue_disputed": 34,
+ "fix_list_excluded": 41,
+ "queue_reasons": {
+  "ROUTE_DISAGREE": 8,
+  "REJECT": 22,
+  "TIER_DISPUTE": 4,
+  "NOVELTY_REVIEW": 5,
+  "HARD_TRIGGER_DISPUTE": 1
+ },
+ "routes": {
+  "escalate_human": 20,
+  "nurse_task": 15,
+  "silent_log": 16,
+  "wake_specialist": 9
+ },
+ "tiers": {
+  "ABSOLUTE": 9,
+  "CONFIRM_FIRST": 7,
+  "SUPPRESSED": 4,
+  "ARTIFACT": 2
+ },
+ "by_batch_accepted": {
+  "HO1": 10,
+  "HO2": 6,
+  "HO3": 7,
+  "HO4": 3,
+  "HO5": 11,
+  "HO6": 3,
+  "HO8": 6,
+  "HO9": 7,
+  "HO10": 7
+ },
+ "by_batch_generated": {
+  "HO1": 11,
+  "HO10": 11,
+  "HO2": 11,
+  "HO3": 10,
+  "HO4": 10,
+  "HO5": 11,
+  "HO6": 10,
+  "HO7": 25,
+  "HO8": 25,
+  "HO9": 11
+ },
+ "complete_pairs": 2,
+ "hospice_goals": 3,
+ "learning_period": 1,
+ "categories": {
+  "noise": 17,
+  "med_change": 17,
+  "respiratory": 9,
+  "recovery": 7,
+  "fall": 5,
+  "spo2_bias": 5,
+  "hypoglycemia": 4,
+  "missing_data": 3,
+  "goals_of_care": 3,
+  "electrolyte": 3,
+  "sepsis": 2,
+  "infection": 2,
+  "arrhythmia": 2,
+  "caregiver": 2,
+  "syncope": 2,
+  "renal": 2,
+  "stroke": 1,
+  "acs": 1,
+  "hyperglycemia": 1,
+  "hf": 1,
+  "dementia": 1
+ },
+ "difficulty": {
+  "hard": 30,
+  "adversarial": 15,
+  "medium": 12,
+  "easy": 3
+ }
+}
