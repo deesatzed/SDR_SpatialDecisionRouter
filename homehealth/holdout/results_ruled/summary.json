@@ -1,0 +1,946 @@
+{
+ "n_key": 91,
+ "n_accepted_60": 60,
+ "n_ruled_queue": 31,
+ "paid_calls": 0,
+ "systems_accepted60": {
+  "L1 + dual (c) [default]": {
+   "n": 60,
+   "decided": 60,
+   "accuracy": 0.9167,
+   "accuracy_over_all": 0.9167,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 0.0,
+   "hitm_per_100": 18.3333,
+   "errors": [
+    {
+     "case": "HO1-006",
+     "picked": "silent_log",
+     "ruling": "nurse_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev_capped",
+     "l1_tier": "SUPPRESSED",
+     "label_tier": "SUPPRESSED",
+     "d1": "silent_log",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO1-011",
+     "picked": "silent_log",
+     "ruling": "nurse_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": null,
+     "d1": "silent_log",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO3-004",
+     "picked": "nurse_task",
+     "ruling": "provider_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev_capped",
+     "l1_tier": "SUPPRESSED",
+     "label_tier": "SUPPRESSED",
+     "d1": "nurse_task",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": true
+    },
+    {
+     "case": "HO5-007",
+     "picked": "nurse_task",
+     "ruling": "provider_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": null,
+     "d1": "nurse_task",
+     "pplx": "nurse_task",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO8-009",
+     "picked": "silent_log",
+     "ruling": "nurse_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": null,
+     "d1": "silent_log",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    }
+   ]
+  },
+  "L1 + d1-ultra": {
+   "n": 60,
+   "decided": 60,
+   "accuracy": 0.9,
+   "accuracy_over_all": 0.9,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 0.0,
+   "hitm_per_100": 0.0,
+   "errors": [
+    {
+     "case": "HO1-006",
+     "picked": "silent_log",
+     "ruling": "nurse_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev_capped",
+     "l1_tier": "SUPPRESSED",
+     "label_tier": "SUPPRESSED",
+     "d1": "silent_log",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO1-011",
+     "picked": "silent_log",
+     "ruling": "nurse_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": null,
+     "d1": "silent_log",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO3-004",
+     "picked": "nurse_task",
+     "ruling": "provider_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev_capped",
+     "l1_tier": "SUPPRESSED",
+     "label_tier": "SUPPRESSED",
+     "d1": "nurse_task",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO3-007",
+     "picked": "silent_log",
+     "ruling": "nurse_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": null,
+     "d1": "silent_log",
+     "pplx": "nurse_task",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO5-007",
+     "picked": "nurse_task",
+     "ruling": "provider_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": null,
+     "d1": "nurse_task",
+     "pplx": "nurse_task",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO8-009",
+     "picked": "silent_log",
+     "ruling": "nurse_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": null,
+     "d1": "silent_log",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    }
+   ]
+  },
+  "L1 + pplx": {
+   "n": 60,
+   "decided": 60,
+   "accuracy": 0.8667,
+   "accuracy_over_all": 0.8667,
+   "critical_misses": 1,
+   "critical_ids": [
+    "HO5-006"
+   ],
+   "false_pages_per_100": 0.0,
+   "hitm_per_100": 0.0,
+   "errors": [
+    {
+     "case": "HO1-006",
+     "picked": "silent_log",
+     "ruling": "nurse_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev_capped",
+     "l1_tier": "SUPPRESSED",
+     "label_tier": "SUPPRESSED",
+     "d1": "silent_log",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO1-011",
+     "picked": "silent_log",
+     "ruling": "nurse_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": null,
+     "d1": "silent_log",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO3-004",
+     "picked": "silent_log",
+     "ruling": "provider_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev_capped",
+     "l1_tier": "SUPPRESSED",
+     "label_tier": "SUPPRESSED",
+     "d1": "nurse_task",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO5-006",
+     "picked": "provider_task",
+     "ruling": "urgent_page",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": "CONFIRM_FIRST",
+     "d1": "urgent_page",
+     "pplx": "provider_task",
+     "critical": true,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO5-007",
+     "picked": "nurse_task",
+     "ruling": "provider_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": null,
+     "d1": "nurse_task",
+     "pplx": "nurse_task",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO5-008",
+     "picked": "nurse_task",
+     "ruling": "provider_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": null,
+     "d1": "provider_task",
+     "pplx": "nurse_task",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO6-006",
+     "picked": "silent_log",
+     "ruling": "nurse_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": null,
+     "d1": "nurse_task",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    },
+    {
+     "case": "HO8-009",
+     "picked": "silent_log",
+     "ruling": "nurse_task",
+     "key_source": "author_label_accepted",
+     "owner": "jev",
+     "l1_tier": null,
+     "label_tier": null,
+     "d1": "silent_log",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    }
+   ]
+  },
+  "Layer 1 alone": {
+   "n": 60,
+   "decided": 16,
+   "accuracy": 0.9375,
+   "accuracy_over_all": 0.25,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 0.0,
+   "hitm_per_100": 73.3333,
+   "errors": [
+    {
+     "case": "HO1-006",
+     "picked": "provider_task",
+     "ruling": "nurse_task",
+     "key_source": "author_label_accepted",
+     "owner": "layer1_default",
+     "l1_tier": "SUPPRESSED",
+     "label_tier": "SUPPRESSED",
+     "d1": "silent_log",
+     "pplx": "silent_log",
+     "critical": false,
+     "false_page": false,
+     "caught_by_hitm": false
+    }
+   ]
+  }
+ },
+ "layer1_alone_ruled31": {
+  "n": 31,
+  "decided": 16,
+  "accuracy": 0.5625,
+  "accuracy_over_all": 0.2903,
+  "critical_misses": 0,
+  "critical_ids": [],
+  "false_pages_per_100": 9.6774,
+  "hitm_per_100": 48.3871,
+  "errors": [
+   {
+    "case": "HO1-005",
+    "picked": "urgent_page",
+    "ruling": "silent_log",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_confirm",
+    "l1_tier": "CONFIRM_FIRST",
+    "label_tier": "SUPPRESSED",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": true,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO2-007",
+    "picked": "provider_task",
+    "ruling": "nurse_task",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_default",
+    "l1_tier": "SUPPRESSED",
+    "label_tier": "SUPPRESSED",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": false,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO3-001",
+    "picked": "provider_task",
+    "ruling": "silent_log",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_default",
+    "l1_tier": "ARTIFACT",
+    "label_tier": "ARTIFACT",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": false,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO4-003",
+    "picked": "provider_task",
+    "ruling": "silent_log",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_default",
+    "l1_tier": "SUPPRESSED",
+    "label_tier": "SUPPRESSED",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": false,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO4-008",
+    "picked": "urgent_page",
+    "ruling": "nurse_task",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_confirm",
+    "l1_tier": "CONFIRM_FIRST",
+    "label_tier": "SUPPRESSED",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": true,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO8-019",
+    "picked": "provider_task",
+    "ruling": "nurse_task",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_default",
+    "l1_tier": "SUPPRESSED",
+    "label_tier": "SUPPRESSED",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": false,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO10-002",
+    "picked": "urgent_page",
+    "ruling": "nurse_task",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_confirm",
+    "l1_tier": "CONFIRM_FIRST",
+    "label_tier": "SUPPRESSED",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": true,
+    "caught_by_hitm": false
+   }
+  ]
+ },
+ "layer1_alone_all91": {
+  "n": 91,
+  "decided": 32,
+  "accuracy": 0.75,
+  "accuracy_over_all": 0.2637,
+  "critical_misses": 0,
+  "critical_ids": [],
+  "false_pages_per_100": 3.2967,
+  "hitm_per_100": 64.8352,
+  "errors": [
+   {
+    "case": "HO1-006",
+    "picked": "provider_task",
+    "ruling": "nurse_task",
+    "key_source": "author_label_accepted",
+    "owner": "layer1_default",
+    "l1_tier": "SUPPRESSED",
+    "label_tier": "SUPPRESSED",
+    "d1": "silent_log",
+    "pplx": "silent_log",
+    "critical": false,
+    "false_page": false,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO1-005",
+    "picked": "urgent_page",
+    "ruling": "silent_log",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_confirm",
+    "l1_tier": "CONFIRM_FIRST",
+    "label_tier": "SUPPRESSED",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": true,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO2-007",
+    "picked": "provider_task",
+    "ruling": "nurse_task",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_default",
+    "l1_tier": "SUPPRESSED",
+    "label_tier": "SUPPRESSED",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": false,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO3-001",
+    "picked": "provider_task",
+    "ruling": "silent_log",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_default",
+    "l1_tier": "ARTIFACT",
+    "label_tier": "ARTIFACT",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": false,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO4-003",
+    "picked": "provider_task",
+    "ruling": "silent_log",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_default",
+    "l1_tier": "SUPPRESSED",
+    "label_tier": "SUPPRESSED",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": false,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO4-008",
+    "picked": "urgent_page",
+    "ruling": "nurse_task",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_confirm",
+    "l1_tier": "CONFIRM_FIRST",
+    "label_tier": "SUPPRESSED",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": true,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO8-019",
+    "picked": "provider_task",
+    "ruling": "nurse_task",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_default",
+    "l1_tier": "SUPPRESSED",
+    "label_tier": "SUPPRESSED",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": false,
+    "caught_by_hitm": false
+   },
+   {
+    "case": "HO10-002",
+    "picked": "urgent_page",
+    "ruling": "nurse_task",
+    "key_source": "clinician_ruling_2026-10-21",
+    "owner": "layer1_confirm",
+    "l1_tier": "CONFIRM_FIRST",
+    "label_tier": "SUPPRESSED",
+    "d1": null,
+    "pplx": null,
+    "critical": false,
+    "false_page": true,
+    "caught_by_hitm": false
+   }
+  ]
+ },
+ "tier_agreement": {
+  "accepted60": {
+   "trigger_cases": 22,
+   "tier_match": 16,
+   "rate": 0.7273,
+   "mismatch": [
+    [
+     "HO1-007",
+     "ARTIFACT",
+     null
+    ],
+    [
+     "HO3-006",
+     "ABSOLUTE",
+     null
+    ],
+    [
+     "HO5-006",
+     "CONFIRM_FIRST",
+     null
+    ],
+    [
+     "HO5-011",
+     "ABSOLUTE",
+     null
+    ],
+    [
+     "HO10-006",
+     "ARTIFACT",
+     null
+    ],
+    [
+     "HO10-011",
+     "ABSOLUTE",
+     null
+    ]
+   ]
+  },
+  "ruled31": {
+   "trigger_cases": 17,
+   "tier_match": 11,
+   "rate": 0.6471,
+   "mismatch": [
+    [
+     "HO1-005",
+     "SUPPRESSED",
+     "CONFIRM_FIRST"
+    ],
+    [
+     "HO4-008",
+     "SUPPRESSED",
+     "CONFIRM_FIRST"
+    ],
+    [
+     "HO7-017",
+     "ABSOLUTE",
+     null
+    ],
+    [
+     "HO7-021",
+     "ABSOLUTE",
+     "CONFIRM_FIRST"
+    ],
+    [
+     "HO8-015",
+     "ABSOLUTE",
+     "CONFIRM_FIRST"
+    ],
+    [
+     "HO10-002",
+     "SUPPRESSED",
+     "CONFIRM_FIRST"
+    ]
+   ]
+  },
+  "all91": {
+   "trigger_cases": 39,
+   "tier_match": 27,
+   "rate": 0.6923,
+   "mismatch": [
+    [
+     "HO1-007",
+     "ARTIFACT",
+     null
+    ],
+    [
+     "HO3-006",
+     "ABSOLUTE",
+     null
+    ],
+    [
+     "HO5-006",
+     "CONFIRM_FIRST",
+     null
+    ],
+    [
+     "HO5-011",
+     "ABSOLUTE",
+     null
+    ],
+    [
+     "HO10-006",
+     "ARTIFACT",
+     null
+    ],
+    [
+     "HO10-011",
+     "ABSOLUTE",
+     null
+    ],
+    [
+     "HO1-005",
+     "SUPPRESSED",
+     "CONFIRM_FIRST"
+    ],
+    [
+     "HO4-008",
+     "SUPPRESSED",
+     "CONFIRM_FIRST"
+    ],
+    [
+     "HO7-017",
+     "ABSOLUTE",
+     null
+    ],
+    [
+     "HO7-021",
+     "ABSOLUTE",
+     "CONFIRM_FIRST"
+    ],
+    [
+     "HO8-015",
+     "ABSOLUTE",
+     "CONFIRM_FIRST"
+    ],
+    [
+     "HO10-002",
+     "SUPPRESSED",
+     "CONFIRM_FIRST"
+    ]
+   ]
+  }
+ },
+ "old_scores_9f5ca71": {
+  "d1-ultra alone": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.8667,
+   "critical_misses": 0,
+   "critical_miss_ids": [],
+   "critical_miss_weighted": 0,
+   "pages_per_100": 33.3333,
+   "false_pages_per_100": 3.3333,
+   "over_escalation_ids": [
+    "LIB-HO2-001",
+    "LIB-HO10-005"
+   ],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 1.0,
+   "suppressed": "0/4",
+   "hospice": "1/3",
+   "hospice_wrong": [
+    "LIB-HO2-001",
+    "LIB-HO10-005"
+   ],
+   "hitm": 0,
+   "hitm_per_100": 0.0,
+   "errors": 8,
+   "errors_in_hitm": 0,
+   "errors_not_in_hitm": [
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO10-005",
+    "LIB-HO2-001",
+    "LIB-HO3-004",
+    "LIB-HO3-007",
+    "LIB-HO5-007",
+    "LIB-HO8-009"
+   ]
+  },
+  "pplx alone": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.8167,
+   "critical_misses": 3,
+   "critical_miss_ids": [
+    "LIB-HO1-003",
+    "LIB-HO2-004",
+    "LIB-HO5-006"
+   ],
+   "critical_miss_weighted": 9,
+   "pages_per_100": 25.0,
+   "false_pages_per_100": 1.6667,
+   "over_escalation_ids": [
+    "LIB-HO10-005"
+   ],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 0.85,
+   "suppressed": "1/4",
+   "hospice": "2/3",
+   "hospice_wrong": [
+    "LIB-HO10-005"
+   ],
+   "hitm": 0,
+   "hitm_per_100": 0.0,
+   "errors": 11,
+   "errors_in_hitm": 0,
+   "errors_not_in_hitm": [
+    "LIB-HO1-003",
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO10-005",
+    "LIB-HO2-004",
+    "LIB-HO3-004",
+    "LIB-HO5-006",
+    "LIB-HO5-007",
+    "LIB-HO5-008",
+    "LIB-HO6-006",
+    "LIB-HO8-009"
+   ]
+  },
+  "L1 + d1-ultra": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.9,
+   "critical_misses": 0,
+   "critical_miss_ids": [],
+   "critical_miss_weighted": 0,
+   "pages_per_100": 30.0,
+   "false_pages_per_100": 0.0,
+   "over_escalation_ids": [],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 1.0,
+   "suppressed": "2/4",
+   "hospice": "3/3",
+   "hospice_wrong": [],
+   "hitm": 0,
+   "hitm_per_100": 0.0,
+   "errors": 6,
+   "errors_in_hitm": 0,
+   "errors_not_in_hitm": [
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO3-004",
+    "LIB-HO3-007",
+    "LIB-HO5-007",
+    "LIB-HO8-009"
+   ]
+  },
+  "L1 + pplx": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.8667,
+   "critical_misses": 1,
+   "critical_miss_ids": [
+    "LIB-HO5-006"
+   ],
+   "critical_miss_weighted": 3,
+   "pages_per_100": 26.6667,
+   "false_pages_per_100": 0.0,
+   "over_escalation_ids": [],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 0.95,
+   "suppressed": "2/4",
+   "hospice": "3/3",
+   "hospice_wrong": [],
+   "hitm": 0,
+   "hitm_per_100": 0.0,
+   "errors": 8,
+   "errors_in_hitm": 0,
+   "errors_not_in_hitm": [
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO3-004",
+    "LIB-HO5-006",
+    "LIB-HO5-007",
+    "LIB-HO5-008",
+    "LIB-HO6-006",
+    "LIB-HO8-009"
+   ]
+  },
+  "L1 + dual (c) [default]": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.9167,
+   "critical_misses": 0,
+   "critical_miss_ids": [],
+   "critical_miss_weighted": 0,
+   "pages_per_100": 30.0,
+   "false_pages_per_100": 0.0,
+   "over_escalation_ids": [],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 1.0,
+   "suppressed": "2/4",
+   "hospice": "3/3",
+   "hospice_wrong": [],
+   "hitm": 11,
+   "hitm_per_100": 18.3333,
+   "errors": 5,
+   "errors_in_hitm": 1,
+   "errors_not_in_hitm": [
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO5-007",
+    "LIB-HO8-009"
+   ]
+  },
+  "L1 + dual (c) + Fly flag": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.9167,
+   "critical_misses": 0,
+   "critical_miss_ids": [],
+   "critical_miss_weighted": 0,
+   "pages_per_100": 30.0,
+   "false_pages_per_100": 0.0,
+   "over_escalation_ids": [],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 1.0,
+   "suppressed": "2/4",
+   "hospice": "3/3",
+   "hospice_wrong": [],
+   "hitm": 15,
+   "hitm_per_100": 25.0,
+   "errors": 5,
+   "errors_in_hitm": 1,
+   "errors_not_in_hitm": [
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO5-007",
+    "LIB-HO8-009"
+   ]
+  },
+  "no-L1 fallback: dual (c)": {
+   "n_cases": 60,
+   "n_with_pick": 60,
+   "accuracy": 0.8833,
+   "critical_misses": 0,
+   "critical_miss_ids": [],
+   "critical_miss_weighted": 0,
+   "pages_per_100": 33.3333,
+   "false_pages_per_100": 3.3333,
+   "over_escalation_ids": [
+    "LIB-HO2-001",
+    "LIB-HO10-005"
+   ],
+   "pairs_both_correct": 2,
+   "pairs_complete": 2,
+   "escalation_sensitivity": 1.0,
+   "suppressed": "0/4",
+   "hospice": "1/3",
+   "hospice_wrong": [
+    "LIB-HO2-001",
+    "LIB-HO10-005"
+   ],
+   "hitm": 14,
+   "hitm_per_100": 23.3333,
+   "errors": 7,
+   "errors_in_hitm": 2,
+   "errors_not_in_hitm": [
+    "LIB-HO1-006",
+    "LIB-HO1-011",
+    "LIB-HO10-005",
+    "LIB-HO5-007",
+    "LIB-HO8-009"
+   ]
+  }
+ }
+}
