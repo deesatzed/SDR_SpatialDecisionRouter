@@ -49,7 +49,7 @@ POLICY_V18_ADD = (" Recurrent chest discomfort that is coming more often (a cres
  "cannot be called the person's baseline: it needs confirmation and a clinician, never silence.")
 POLICY_V19_ADD = (" Routes: silent = log only, no human action; nurse task = nurse contact within about 24 h (same-shift hospice nurse under hospice goals); "
  "provider task = review by the clinician responsible for that condition or medication on the same business day, not a page; "
- "urgent page = page someone now (ABSOLUTE triggers, failed confirm checks, acute decompensation; for an urgent comfort problem under hospice goals, the hospice nurse).")
+ "urgent page = page someone now (danger-level hard triggers, a failed or timed-out confirmation check, acute decompensation; for an urgent comfort problem under hospice goals, the hospice nurse).")
 def policy():
     if PROMPT_VERSION == "v1.9": return POLICY + POLICY_V18_ADD + POLICY_V19_ADD
     return POLICY + (POLICY_V18_ADD if PROMPT_VERSION == "v1.8" else "")

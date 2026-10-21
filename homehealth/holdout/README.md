@@ -21,4 +21,8 @@ Raw model responses and Jev checkpoints are not committed.
 
 - Labels use the v1.9 ids (`provider_task`, `urgent_page`); stored Jev picks in `jev/parsed/` keep the v1.8 ids and are mapped on read. Scores unchanged.
 - `review_queue.csv` carries Wayne's CLINICIAN_RULING / CLINICIAN_NOTE for all 34 queued cases (mapped to v1.9 ids; DROP: HO8-006, HO7-013, HO8-001). Case fixes applied in the queue: HO7-021 living -> with spouse; HO8-015 note pronoun she -> he. Rulings are recorded only; the accepted set and scores are not yet changed.
-- HO8-025 is on the Layer 1 hardening list (hospice suppression applied to a symptomatic danger-level low; should be ABSOLUTE, urgent hospice-nurse page).
+
+## 2026-10-21: ruled answer key and re-score
+
+- `build_ruled_key.py` -> `holdout_v1_ruled_key.json`: 60 accepted (author labels) + 31 kept review-queue cases (Wayne's CLINICIAN_RULING as expected_route, his tier rulings, case fixes) = 91; dropped HO8-006, HO7-013, HO8-001.
+- Picks for the 31: `jev_ruled/` (d1-ultra + pplx-decider-v1.2, v1.9 prompt, 4 variants, 248 calls, $0.0067, Wayne approved). `score_ruled.py` -> `results_ruled/summary.json` (all 91 + both subsets, old 9f5ca71 scores alongside).

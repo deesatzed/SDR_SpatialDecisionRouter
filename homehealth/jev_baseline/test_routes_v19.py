@@ -45,6 +45,7 @@ def test_jev_prompt_v19_uses_new_ids_and_definitions(monkeypatch):
     import importlib
     monkeypatch.setenv("JEV_PROMPT", "v1.9"); import jev_run as J; J = importlib.reload(J)
     assert list(J.ROUTES) == RT.ROUTES and "same business day" in J.ROUTES["provider_task"] and "provider task" in J.policy()
+    assert not J.LEAK.search(J.policy())   # the v1.9 policy text itself must pass the label-leak check
     assert J.LEAK.search("urgent_page") and J.LEAK.search("provider_task") and J.LEAK.search("escalate_human")
     monkeypatch.setenv("JEV_PROMPT", "v1.8"); J = importlib.reload(J)
     assert list(J.ROUTES) == ["silent_log", "nurse_task", "wake_specialist", "escalate_human"]   # v1.8 kept for reproducibility
