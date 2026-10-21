@@ -1,5 +1,5 @@
 {
- "version": "0.10-placeholder",
+ "version": "0.10.1-placeholder",
  "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
  "change_log": [
   {
@@ -379,6 +379,40 @@
    "new": 70,
    "approved_by": "Wayne",
    "reason": "within Wayne's v1.10 approval; library dev case: a confirming low fingerstick is not a clean repeat"
+  },
+  {
+   "ts": "2026-10-21T18:24:14-04:00",
+   "keys": [
+    "layer1_v110",
+    "insulin_ckd_low",
+    "sulfonylurea_rx"
+   ],
+   "old": null,
+   "new": "glimepiride|glipizide|glyburide|glibenclamide|gliclazide",
+   "approved_by": "Wayne",
+   "reason": "v1.10.1: extend the insulin+CKD danger-low exception to sulfonylurea users with CKD (approved by Wayne 2026-10-21)"
+  },
+  {
+   "ts": "2026-10-21T18:24:14-04:00",
+   "keys": [
+    "layer1_v110",
+    "insulin_ckd_low",
+    "_note"
+   ],
+   "old": "Insulin user with CKD and a danger-level CGM/glucose low: always HITM review (hard flag regardless of models); route floor nurse_task (overrides cleared_by_repeat).",
+   "new": "Insulin OR sulfonylurea user (v1.10.1) with CKD and a danger-level low (CGM or meter <= danger limit): always HITM review (hard flag regardless of models); route floor nurse_task, never silent (overrides cleared_by_repeat).",
+   "approved_by": "Wayne",
+   "reason": "v1.10.1 note"
+  },
+  {
+   "ts": "2026-10-21T18:24:14-04:00",
+   "keys": [
+    "version"
+   ],
+   "old": "0.10-placeholder",
+   "new": "0.10.1-placeholder",
+   "approved_by": "Wayne",
+   "reason": "v1.10.1 sulfonylurea+CKD low exception (approved by Wayne 2026-10-21)"
   }
  ],
  "hard_limits": {
@@ -905,10 +939,11 @@
    "glucose_clean_min": 70
   },
   "insulin_ckd_low": {
-   "_note": "Insulin user with CKD and a danger-level CGM/glucose low: always HITM review (hard flag regardless of models); route floor nurse_task (overrides cleared_by_repeat).",
+   "_note": "Insulin OR sulfonylurea user (v1.10.1) with CKD and a danger-level low (CGM or meter <= danger limit): always HITM review (hard flag regardless of models); route floor nurse_task, never silent (overrides cleared_by_repeat).",
    "insulin_rx": "insulin|glargine|detemir|degludec|lispro|aspart|glulisine|NPH",
    "ckd_rx": "\\bCKD\\b|chronic kidney|renal (?:failure|impairment|insufficiency)|eGFR\\s*\\d",
-   "route": "nurse_task"
+   "route": "nurse_task",
+   "sulfonylurea_rx": "glimepiride|glipizide|glyburide|glibenclamide|gliclazide"
   },
   "suppressed_default_route": {
    "_note": "Layer 1 route on a SUPPRESSED/ARTIFACT trigger when no model pick is available (replaces the v1.9 provider_task fallback).",

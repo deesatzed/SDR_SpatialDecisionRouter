@@ -9,12 +9,12 @@
    "L1 + dual (c) [default]": {
     "n": 91,
     "decided": 91,
-    "accuracy": 0.8901,
-    "accuracy_over_all": 0.8901,
+    "accuracy": 0.9011,
+    "accuracy_over_all": 0.9011,
     "critical_misses": 0,
     "critical_ids": [],
     "false_pages_per_100": 2.1978,
-    "hitm_per_100": 17.5824,
+    "hitm_per_100": 19.7802,
     "errors": [
      {
       "case": "HO1-011",
@@ -25,20 +25,6 @@
       "l1_tier": null,
       "label_tier": null,
       "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO3-004",
-      "picked": "silent_log",
-      "ruling": "provider_task",
-      "key_source": "author_label_accepted",
-      "owner": "layer1_cleared",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "nurse_task",
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
@@ -161,8 +147,8 @@
    "L1 + d1-ultra": {
     "n": 91,
     "decided": 91,
-    "accuracy": 0.8571,
-    "accuracy_over_all": 0.8571,
+    "accuracy": 0.8681,
+    "accuracy_over_all": 0.8681,
     "critical_misses": 0,
     "critical_ids": [],
     "false_pages_per_100": 2.1978,
@@ -177,20 +163,6 @@
       "l1_tier": null,
       "label_tier": null,
       "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO3-004",
-      "picked": "silent_log",
-      "ruling": "provider_task",
-      "key_source": "author_label_accepted",
-      "owner": "layer1_cleared",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "nurse_task",
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
@@ -355,8 +327,8 @@
    "L1 + pplx": {
     "n": 91,
     "decided": 91,
-    "accuracy": 0.8462,
-    "accuracy_over_all": 0.8462,
+    "accuracy": 0.8571,
+    "accuracy_over_all": 0.8571,
     "critical_misses": 2,
     "critical_ids": [
      "HO5-006",
@@ -374,20 +346,6 @@
       "l1_tier": null,
       "label_tier": null,
       "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO3-004",
-      "picked": "silent_log",
-      "ruling": "provider_task",
-      "key_source": "author_label_accepted",
-      "owner": "layer1_cleared",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "nurse_task",
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
@@ -566,27 +524,13 @@
    "Layer 1 alone": {
     "n": 91,
     "decided": 33,
-    "accuracy": 0.8788,
-    "accuracy_over_all": 0.3187,
+    "accuracy": 0.9091,
+    "accuracy_over_all": 0.3297,
     "critical_misses": 0,
     "critical_ids": [],
     "false_pages_per_100": 2.1978,
     "hitm_per_100": 63.7363,
     "errors": [
-     {
-      "case": "HO3-004",
-      "picked": "silent_log",
-      "ruling": "provider_task",
-      "key_source": "author_label_accepted",
-      "owner": "layer1_cleared",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "nurse_task",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
      {
       "case": "HO1-005",
       "picked": "urgent_page",
@@ -636,12 +580,12 @@
    "L1 + dual (c) [default]": {
     "n": 60,
     "decided": 60,
-    "accuracy": 0.9333,
-    "accuracy_over_all": 0.9333,
+    "accuracy": 0.95,
+    "accuracy_over_all": 0.95,
     "critical_misses": 0,
     "critical_ids": [],
     "false_pages_per_100": 0.0,
-    "hitm_per_100": 18.3333,
+    "hitm_per_100": 21.6667,
     "errors": [
      {
       "case": "HO1-011",
@@ -652,20 +596,6 @@
       "l1_tier": null,
       "label_tier": null,
       "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO3-004",
-      "picked": "silent_log",
-      "ruling": "provider_task",
-      "key_source": "author_label_accepted",
-      "owner": "layer1_cleared",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "nurse_task",
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
@@ -704,8 +634,8 @@
    "L1 + d1-ultra": {
     "n": 60,
     "decided": 60,
-    "accuracy": 0.9167,
-    "accuracy_over_all": 0.9167,
+    "accuracy": 0.9333,
+    "accuracy_over_all": 0.9333,
     "critical_misses": 0,
     "critical_ids": [],
     "false_pages_per_100": 0.0,
@@ -720,20 +650,6 @@
       "l1_tier": null,
       "label_tier": null,
       "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO3-004",
-      "picked": "silent_log",
-      "ruling": "provider_task",
-      "key_source": "author_label_accepted",
-      "owner": "layer1_cleared",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "nurse_task",
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
@@ -786,8 +702,8 @@
    "L1 + pplx": {
     "n": 60,
     "decided": 60,
-    "accuracy": 0.8833,
-    "accuracy_over_all": 0.8833,
+    "accuracy": 0.9,
+    "accuracy_over_all": 0.9,
     "critical_misses": 1,
     "critical_ids": [
      "HO5-006"
@@ -804,20 +720,6 @@
       "l1_tier": null,
       "label_tier": null,
       "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO3-004",
-      "picked": "silent_log",
-      "ruling": "provider_task",
-      "key_source": "author_label_accepted",
-      "owner": "layer1_cleared",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "nurse_task",
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
@@ -898,28 +800,13 @@
    "Layer 1 alone": {
     "n": 60,
     "decided": 16,
-    "accuracy": 0.9375,
-    "accuracy_over_all": 0.25,
+    "accuracy": 1.0,
+    "accuracy_over_all": 0.2667,
     "critical_misses": 0,
     "critical_ids": [],
     "false_pages_per_100": 0.0,
     "hitm_per_100": 73.3333,
-    "errors": [
-     {
-      "case": "HO3-004",
-      "picked": "silent_log",
-      "ruling": "provider_task",
-      "key_source": "author_label_accepted",
-      "owner": "layer1_cleared",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "nurse_task",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     }
-    ]
+    "errors": []
    }
   },
   "ruled31": {

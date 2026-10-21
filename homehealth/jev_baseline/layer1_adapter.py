@@ -315,7 +315,8 @@ def evaluate_case(case):
                 d.update(reason="cleared_by_repeat", default_route="silent_log")
     # ---- v1.10 insulin user with CKD and a danger-level low: always HITM, floor nurse_task
     ik = T.v110(P).get("insulin_ckd_low"); hitm_required = False
-    if ik and sens and re.search(ik["insulin_rx"], ctx["meds"], re.I) and re.search(ik["ckd_rx"], ctx["pmh"], re.I):
+    danger_low = sens or [r for r in gl if r[0] <= gmin]   # CGM or meter at/below the danger limit
+    if ik and danger_low and (re.search(ik["insulin_rx"], ctx["meds"], re.I) or (ik.get("sulfonylurea_rx") and re.search(ik["sulfonylurea_rx"], ctx["meds"], re.I))) and re.search(ik["ckd_rx"], ctx["pmh"], re.I):   # v1.10.1: + sulfonylureas
         hitm_required = True
     # ---- acute presentation flag (the router lets Jev's clinical read stand on a suppressed trigger when this is set)
     rr0 = [r[0] for r in recs(c, "rr") if not r[2] and not r[8]]; hr0 = [r[0] for r in recs(c, "hr") if not r[2] and r[3] != "active" and not r[8]]
@@ -324,7 +325,7 @@ def evaluate_case(case):
     best = max(cands, key=_rank)
     keep = ("rule", "tier", "reason", "route", "confirm_step", "page", "escalation_target", "notify", "band", "raw_band", "modifiers", "inputs", "source", "goals_basis", "original_tier", "own_low", "explained_by", "confirm_result", "default_route")
     out = {k: v for k, v in best.items() if k in keep}
-    if hitm_required and out.get("tier") not in ("ABSOLUTE", "CONFIRM_FIRST"): out.update(default_route=ik["route"], hitm_reason="insulin_ckd_danger_low")
+    if hitm_required and out.get("tier") not in ("ABSOLUTE", "CONFIRM_FIRST"): out.update(default_route=ik["route"], hitm_reason="insulin_or_sulfonylurea_ckd_danger_low")
     return {**out, "acute_presentation": acute, "hitm_required": hitm_required, "context": {k: ctx[k] for k in ("goals", "lives_alone", "high_risk")},
             "candidates": [{"rule": d.get("rule"), "tier": d["tier"], "reason": d.get("reason")} for d in cands]}
 

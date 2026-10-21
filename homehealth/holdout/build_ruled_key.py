@@ -7,6 +7,7 @@ sys.path.insert(0, os.path.join(HO, "..", "casegen")); from grade_merge import c
 TIER_RULINGS = {"HO7-021": ("ABSOLUTE", None), "HO8-015": ("ABSOLUTE", None), "HO8-025": ("ABSOLUTE", None),
                 "HO8-020": ("CONFIRM_FIRST", None), "HO8-019": ("SUPPRESSED", "explained")}   # Wayne 2026-10-21 tier rulings
 FIX = {"HO7-021": {"living": "with spouse"}}
+ACCEPTED_RULINGS = {"HO3-004": ("nurse_task", "Wayne 2026-10-21 re-ruling: nurse_task (was author provider_task)")}   # rulings on accepted cases
 def main():
     acc = json.load(open(os.path.join(HO, "holdout_v1_accepted.json")))["cases"]
     q = {r["case_id"]: r for r in csv.DictReader(open(os.path.join(HO, "review_queue.csv")))}
@@ -14,7 +15,12 @@ def main():
     for f in sorted(glob.glob(os.path.join(GEN, "*.batch.json"))):
         for c in json.load(open(f))["cases"]:
             if c.get("case_id") in q: full.setdefault(c["case_id"], canon_case_routes(c))
-    out = [dict(c, key_source="author_label_accepted") for c in acc]; dropped = []
+    out = []; dropped = []
+    for c in acc:
+        if c["case_id"] in ACCEPTED_RULINGS:
+            ru, nt = ACCEPTED_RULINGS[c["case_id"]]
+            out.append(dict(c, author_route=c.get("expected_route"), expected_route=ru, acceptable_alternates=[], key_source="clinician_ruling_accepted_2026-10-21", clinician_note=nt))
+        else: out.append(dict(c, key_source="author_label_accepted"))
     for cid, r in q.items():
         ru = r["CLINICIAN_RULING (route)"]
         if ru == "DROP": dropped.append(cid); continue

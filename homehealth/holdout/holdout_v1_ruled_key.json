@@ -1706,7 +1706,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Age 80-84, male, Fitzpatrick I-IV, lives with spouse. PMH: type 2 diabetes on sulfonylurea, lymphoedema of left arm after lymph node clearance, CKD 3b. Meds: glimepiride 2 mg daily (since Day -6), amlodipine 5 mg daily (since Day -500). Recent change: glimepiride increased from 1 mg daily to 2 mg daily on Day -6. Devices: CGM, glucometer, watch, scale. Baseline 30 d: rest HR 68, HRV 33 ms, sleep 6.6 h, steps 2900, night SpO2 min 93%, skin-temp dev 0.0 C, weight 82.4 kg, glucose mean 139 mg/dL. Baseline status: relearning after glucose medication change on Day -6, monitoring day 52, 4 shortened learning days. Trend 7 d: nightly CGM minimum 78-86 mg/dL Days -7 to -5. Day -4 CGM 51 mg/dL at 01:50 with glucometer 98 mg/dL at 02:30. Day -2 CGM 53 mg/dL at 02:05 with glucometer 101 mg/dL at 02:40. Day -1 CGM 52 mg/dL at 01:30 with glucometer 96 mg/dL at 02:20. Watch HR 66-70 bpm during each dip, steps 0. Day 0 CGM minimum 80 mg/dL overnight, daytime 110-164 mg/dL. Weight 82.1-82.6 kg. Spouse: a compression sleeve goes on over the upper-arm sensor every night since Day -4 for the swelling, and he sleeps on that side. Data: CGM wear 97% over 7 d, longest gap 1 h. Device flags: compression sleeve over upper-arm CGM sensor nightly since Day -4.",
-   "expected_route": "provider_task",
+   "expected_route": "nurse_task",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_VS_DANGER",
@@ -1739,7 +1739,9 @@
     "jaccard_decisive": 0.29,
     "jaccard_text": 0.26
    },
-   "key_source": "author_label_accepted"
+   "author_route": "provider_task",
+   "key_source": "clinician_ruling_accepted_2026-10-21",
+   "clinician_note": "Wayne 2026-10-21 re-ruling: nurse_task (was author provider_task)"
   },
   {
    "case_id": "HO3-005",

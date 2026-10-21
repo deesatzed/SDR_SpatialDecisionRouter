@@ -28898,10 +28898,8 @@
     "longest_gap_h": 1
    },
    "router_input": "Age band 75-79, male, Fitzpatrick V-VI, lives with spouse. HFrEF EF 35%, CKD 3a, hypertension. Walks indoors with rollator, independent with bathing supervision. Goals: wants hospital care if needed, prefers to stay at home. Meds: sacubitril-valsartan 97/103 mg BID, metoprolol succinate 50 mg daily, furosemide 40 mg daily, spironolactone 25 mg daily. No recent med changes. Devices: watch, fingertip oximeter, scale, BP cuff. 30-day baseline: resting HR 66 bpm, HRV 34 ms, sleep 6.5 h, steps 3100, night SpO2 min 93%, skin-temp deviation 0.0 C, weight 84.0 kg, SBP 118 mmHg, DBP 72 mmHg. Last 7 days: wrist resting SpO2 93-95%, resting HR 64-68 bpm, steps 2800-3300 per day, sleep 6.2-6.8 h, watch worn 95-97%. Day -1 scale weight 84.3 kg. Day 0 10:20 watch wrist SpO2 86% at rest with motion-during-sample flag, watch HR 82 bpm. Day 0 10:24 fingertip oximeter SpO2 95%, good waveform; 10:26 repeat 95%, good waveform. Day 0 10:30 cuff 124/76 mmHg. Spouse: sitting in kitchen, breathing normally, no cough, no chest tightness. Data: wear 96% over 7 days; flag motion during SpO2 sample Day 0 10:20; longest gap 1 h; 0 h missing in last 48 h.",
-   "expected_route": "nurse_task",
-   "acceptable_alternates": [
-    "provider_task"
-   ],
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_SPO2_LT88",
    "trigger_tier": "SUPPRESSED",
@@ -28914,7 +28912,7 @@
     "respiratory",
     "spo2_bias"
    ],
-   "rationale": "Check 1 (reliable reading) fails: the wrist value carries a motion flag and both fingertip repeats read 95% with a good waveform, so the 86% wrist dip is unreliable and the tier is SUPPRESSED with unreliable_reading. Check 2 would be a change from his own 93-95% baseline, but it cannot carry the trigger without a reliable reading. Check 3 (no explanation) and check 4 (goals of care) pass, since he wants hospital care if needed. Routing to nurse_task means a call within 24 h to check watch fit and repeat the wrist reading, with provider_task as the alternate. Naive-model trap: a shallow model sees 86% under 88% and escalates to a human now, which the normal fingertip repeats do not support.",
+   "rationale": "Re-ruled by Wayne 2026-10-21 (SMART_TRIGGERS v1.10 section 11.1): the 86% wrist SpO2 carries a motion flag and two fingertip repeats within minutes read 95% with a good waveform, no symptoms. An artifact cleared by a clean repeat is SUPPRESSED unreliable_reading and routes silent_log. Earlier rationale: Check 1 (reliable reading) fails: the wrist value carries a motion flag and both fingertip repeats read 95% with a good waveform, so the 86% wrist dip is unreliable and the tier is SUPPRESSED with unreliable_reading. Check 2 would be a change from his own 93-95% baseline, but it cannot carry the trigger without a reliable reading. Check 3 (no explanation) and check 4 (goals of care) pass, since he wants hospital care if needed. Routing to nurse_task means a call within 24 h to check watch fit and repeat the wrist reading, with provider_task as the alternate. Naive-model trap: a shallow model sees 86% under 88% and escalates to a human now, which the normal fingertip repeats do not support.",
    "decisive_feature": "Fingertip repeat at 10:26 reads 95%, so the flagged wrist dip to 86% is not confirmed against a 93-95% own baseline.",
    "src": "library_v2_smart_pairs",
    "grade": {

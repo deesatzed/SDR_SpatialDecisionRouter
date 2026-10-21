@@ -34,7 +34,7 @@ def tier_agree(ids):
     match = [i for i in t if l1[i].get("tier") == cases[i]["trigger_tier"]]
     return {"trigger_cases": len(t), "tier_match": len(match), "rate": S.rate(len(match), len(t)),
             "mismatch": [(i, cases[i]["trigger_tier"], l1[i].get("tier")) for i in t if i not in match]}
-acc60 = [c["case_id"] for c in K if c["key_source"] == "author_label_accepted"]; ruled = [i for i in cases if i not in acc60]
+acc60 = [c["case_id"] for c in K if c["key_source"] in ("author_label_accepted", "clinician_ruling_accepted_2026-10-21")]; ruled = [i for i in cases if i not in acc60]
 SYS = ["L1 + dual (c) [default]", "L1 + d1-ultra", "L1 + pplx", "Layer 1 alone"]
 out = {"n_key": len(K), "n_accepted_60": len(acc60), "n_ruled_queue": len(ruled), "paid_calls_this_run": 248, "spend_usd": 0.0067,
        "systems": {part: {s: m(ids, s) for s in SYS} for part, ids in (("all91", list(cases)), ("accepted60", acc60), ("ruled31", ruled))},

@@ -260,7 +260,7 @@ O-LIB-ST4-004,synthetic,LIB-ST4-004,urgent_page,author_label,0,critical
 O-LIB-ST4-005,synthetic,LIB-ST4-005,urgent_page,author_label,0,critical
 O-LIB-ST4-006,synthetic,LIB-ST4-006,nurse_task,author_label,0,minor
 O-LIB-ST4-008,synthetic,LIB-ST4-008,nurse_task,author_label,0,minor
-O-LIB-ST1-002,synthetic,LIB-ST1-002,nurse_task,author_label,0,minor
+O-LIB-ST1-002,synthetic,LIB-ST1-002,silent_log,author_label,0,minor
 O-LIB-ST1-004,synthetic,LIB-ST1-004,urgent_page,author_label,0,major
 O-LIB-ST1-008,synthetic,LIB-ST1-008,silent_log,author_label,0,minor
 O-LIB-ST1-010,synthetic,LIB-ST1-010,urgent_page,author_label,0,critical

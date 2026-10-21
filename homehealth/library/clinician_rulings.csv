@@ -1,5 +1,5 @@
 case_id,ruling,note,followup_2026_10_18
-ST1-002,nurse_task,keep label (Wayne 2026-10-17),
+ST1-002,silent_log,keep label (Wayne 2026-10-17); Wayne 2026-10-21 re-ruling (v1.10): artifact cleared by clean repeat -> silent_log; provider_task alternate dropped,
 ST1-004,urgent_page,grader right; suppressed SpO2 trigger but acute decompensation (Wayne 2026-10-17),"check 1 (Wayne 2026-10-18): alternates [] confirmed, no change; pair ST1-P02 re-formed with new benign partner ST1-011; 'artifact' banned word removed from router_input"
 ST1-008,silent_log,grader right; dropped watch confirmed fine (Wayne 2026-10-17),"check 1 (Wayne 2026-10-18): alternates [nurse_task] confirmed, no change"
 ST1-010,urgent_page,keep as standalone trap case (unpaired); single-lead ECG cannot rule out ACS (Wayne 2026-10-17),"check 2 (Wayne 2026-10-18): label tier CONFIRM_FIRST by clinician override of the engine's band-A ABSOLUTE (engine unchanged); confirm_step patient_call (chest_pain.default_confirm_step), timeout 5 min (band B timeout); route urgent_page"

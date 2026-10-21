@@ -94,3 +94,25 @@ def test_scale_weighins_do_not_explain_a_gap():
 def test_timed_video_call_explains_a_gap():
     d = ev(**HF, trend_last_7d="Day -6 to -3: resting HR 70-74 bpm.", caregiver_or_nurse_note="Son: video call on Day -1 at 15:00, he was eating and talking normally.")
     assert d["rule"] == "HT_GAP48_HIGHRISK" and d["tier"] == "SUPPRESSED"
+
+# v1.10.1: sulfonylurea + CKD danger-level low -> hard HITM, at least nurse_task, never silent (practice cases)
+def test_sulfonylurea_ckd_low_is_hard_hitm_nurse_task():
+    for drug in ("glimepiride", "glipizide", "glyburide", "gliclazide"):
+        d = ev(pmh=["type 2 diabetes", "CKD G3a"], meds=[{"name": drug, "dose": "standard dose"}], devices=["cgm"],
+               trend_last_7d="Day -6 to -1: CGM overnight minimum 80-96 mg/dL. Day 0: CGM 50 mg/dL at 03:00 while lying on the sensor arm; fingerstick glucometer 95 mg/dL at 03:15.",
+               caregiver_or_nurse_note="Spouse: slept through, normal breakfast.")
+        assert d["hitm_required"], drug
+        assert L.route(d, None)[0] == "nurse_task" and L.route(d, "silent_log")[0] == "nurse_task", drug
+        r, _, flag = D.dual_route(d, "silent_log", "silent_log"); assert r == "nurse_task" and flag, drug
+def test_sulfonylurea_without_ckd_cleared_low_stays_silent():
+    d = ev(pmh=["type 2 diabetes"], meds=[{"name": "gliclazide", "dose": "80 mg daily"}], devices=["cgm"],
+           trend_last_7d="Day 0: CGM 51 mg/dL at 02:40 while lying on the sensor arm; fingerstick glucometer 97 mg/dL at 02:55.")
+    assert not d["hitm_required"] and L.route(d, None)[0] == "silent_log"
+def test_meter_danger_low_on_sulfonylurea_ckd_flags():
+    d = ev(pmh=["CKD stage 4"], meds=[{"name": "glipizide", "dose": "5 mg daily"}], devices=["glucometer"],
+           trend_last_7d="Day 0 07:10 fingerstick glucometer 49 mg/dL before breakfast.", caregiver_or_nurse_note="Spouse: a little shaky, ate toast.")
+    assert d["hitm_required"]
+def test_metformin_ckd_low_not_flagged():
+    d = ev(pmh=["CKD 3a"], meds=[{"name": "metformin", "dose": "500 mg BID"}], devices=["cgm"],
+           trend_last_7d="Day 0: CGM 52 mg/dL at 02:40 while lying on the sensor arm; fingerstick glucometer 96 mg/dL at 02:55.")
+    assert not d["hitm_required"]
