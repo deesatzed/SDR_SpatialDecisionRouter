@@ -9,7 +9,7 @@ def ev(vital, x, day, act="rest", p=P, base=None):
     return T.evaluate({"vital": vital, "value": x, "ts": day * DAY + 9 * 3600, "activity_state": act}, b, p, {})
 def test_param_present_and_versioned():
     assert P["learning"]["outside_population_default_tier"] == "CONFIRM_FIRST"
-    assert P["version"] == "0.8-placeholder"
+    assert tuple(int(x) for x in P["version"].split("-")[0].split(".")) >= (0, 8)   # v1.10 bumped to 0.10
     assert any(e.get("keys") == ["learning", "outside_population_default_tier"] and e["approved_by"] == "Wayne" for e in P["change_log"])
 def test_spo2_87_on_learning_day4_confirms_not_silent():   # the ST3-001 pattern
     d = ev("spo2", 87, 4)

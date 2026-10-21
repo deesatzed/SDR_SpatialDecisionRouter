@@ -1,5 +1,5 @@
 {
- "version": "0.8-placeholder",
+ "version": "0.10-placeholder",
  "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
  "change_log": [
   {
@@ -251,6 +251,134 @@
    "new": "0.8-placeholder",
    "approved_by": "Wayne",
    "reason": "v1.8: learning-period rule formalised (approved by Wayne)"
+  },
+  {
+   "ts": "2026-10-21T17:41:51-04:00",
+   "keys": [
+    "layer1_v110"
+   ],
+   "old": null,
+   "new": {
+    "_note": "SMART_TRIGGERS v1.10 (Wayne 2026-10-21). Layer 1 fixes from Wayne's review-queue rulings. Placeholders; developed on hand-written practice cases (test_layer1_v110.py), not on holdout text.",
+    "clean_repeat": {
+     "_note": "An abnormal reading cleared by a clean repeat (other finger/hand, second device, or fingerstick) within the window, with no symptoms -> SUPPRESSED cleared_by_repeat, route silent_log.",
+     "window_min": 15,
+     "spo2_clean_min": 92,
+     "glucose_window_min": 60
+    },
+    "insulin_ckd_low": {
+     "_note": "Insulin user with CKD and a danger-level CGM/glucose low: always HITM review (hard flag regardless of models); route floor nurse_task (overrides cleared_by_repeat).",
+     "insulin_rx": "insulin|glargine|detemir|degludec|lispro|aspart|glulisine|NPH",
+     "ckd_rx": "\\bCKD\\b|chronic kidney|renal (?:failure|impairment|insufficiency)|eGFR\\s*\\d",
+     "route": "nurse_task"
+    },
+    "suppressed_default_route": {
+     "_note": "Layer 1 route on a SUPPRESSED/ARTIFACT trigger when no model pick is available (replaces the v1.9 provider_task fallback).",
+     "cleared_by_repeat": "silent_log",
+     "unreliable_reading": "nurse_task",
+     "explained": "nurse_task",
+     "explained_caregiver_check": "nurse_task",
+     "at_patient_baseline": "nurse_task",
+     "below_band_threshold": "nurse_task",
+     "ARTIFACT": "silent_log",
+     "_other": "nurse_task"
+    },
+    "route_floor": {
+     "_note": "Minimum route for these suppressed reasons even when a model picks lower (models still capped at provider_task unless acute).",
+     "explained_caregiver_check": "nurse_task",
+     "HT_SPO2_LT88:at_patient_baseline": "nurse_task",
+     "HT_BRADY_RATE_DRUG:below_band_threshold": "nurse_task"
+    },
+    "fall_anticoag": {
+     "_note": "Confirmed (witnessed / patient or caregiver reports a fall) fall on an anticoagulant -> ABSOLUTE. Unwitnessed possible fall (impact or device signal) cleared by a caregiver check -> SUPPRESSED explained_caregiver_check, nurse_task (confirm with the patient there was no fall).",
+     "confirmed_tier": "ABSOLUTE"
+    },
+    "bradycardia_rate_drug": {
+     "_note": "Resting HR below threshold on a rate-slowing drug: symptomatic -> CONFIRM_FIRST patient_call; asymptomatic -> SUPPRESSED below_band_threshold (nurse_task).",
+     "hr_below": 45,
+     "drugs_rx": "amiodarone|dronedarone|digoxin|sotalol|bisoprolol|metoprolol|atenolol|carvedilol|nebivolol|propranolol|diltiazem|verapamil|ivabradine|donepezil",
+     "symptoms_rx": "dizz\\w*|light-?headed|near[- ]?faint|faint\\w*|presyncop\\w*|confus\\w*|unusually tired|exhausted|breathless\\w*|short of breath|chest (?:pain|pressure)|fell|collapsed"
+    },
+    "gap_contact_exclude": {
+     "_note": "Device transmissions are not contact for the 48 h gap trigger: a sentence about scale weigh-ins, syncs or uploads with no person-to-person contact word does not explain a gap.",
+     "device_rx": "scale|weigh-?in|weighed|weight (?:reading|transmi\\w*)|sync\\w*|upload\\w*|transmi\\w*|bed sensor|pillbox|dispenser",
+     "human_rx": "video call|phoned|phone call|visited|saw (?:him|her)|spoke|talked|checked on (?:him|her)|answered the (?:phone|door)"
+    },
+    "wording": {
+     "_note": "Synonym lists (generic clinical phrasing, no case IDs). Added to the v1.9 patterns.",
+     "syncope": [
+      "loss of tone",
+      "lost tone",
+      "collapsed",
+      "collapse\\b",
+      "passed out",
+      "slumped",
+      "unresponsive (?:briefly|for)",
+      "briefly unresponsive",
+      "keeled over",
+      "dropped to the floor",
+      "went down and did not respond",
+      "out cold"
+     ],
+     "focal_neuro": [
+      "one-sided weakness",
+      "weak(?:ness)? on one side",
+      "face (?:is )?drooping",
+      "drooping (?:mouth|face|eyelid)",
+      "arm drift",
+      "trouble (?:speaking|finding words)",
+      "speech (?:is |was |became )?(?:slurred|garbled|jumbled)",
+      "words (?:came out )?(?:jumbled|wrong)",
+      "(?:sudden )?loss of vision in one eye",
+      "can(?:no|')t (?:raise|lift) (?:the |his |her )?(?:left|right) arm",
+      "dragging (?:the |his |her )?(?:left|right) (?:leg|foot)",
+      "numb(?:ness)? (?:on|down) (?:the |his |her )?(?:left|right) side"
+     ],
+     "chest_pain": [
+      "crushing (?:pain|feeling)",
+      "pressure (?:on|in) (?:his|her|the) chest",
+      "band (?:around|across) (?:his|her|the) chest",
+      "elephant on (?:his|her|my) chest",
+      "chest (?:felt|feels) (?:heavy|tight)",
+      "heaviness (?:behind|under) (?:the|his|her) (?:breastbone|sternum)",
+      "retrosternal (?:pain|pressure|discomfort)"
+     ]
+    }
+   },
+   "approved_by": "Wayne",
+   "reason": "SMART_TRIGGERS v1.10 Layer 1 fixes from review-queue rulings (approved by Wayne 2026-10-21)"
+  },
+  {
+   "ts": "2026-10-21T17:41:51-04:00",
+   "keys": [
+    "version"
+   ],
+   "old": "0.8-placeholder",
+   "new": "0.10-placeholder",
+   "approved_by": "Wayne",
+   "reason": "v1.10 Layer 1 fixes (approved by Wayne 2026-10-21)"
+  },
+  {
+   "ts": "2026-10-21T17:55:00-04:00",
+   "keys": [
+    "layer1_v110"
+   ],
+   "old": "v1.10 draft",
+   "new": "dev fixes on library practice data: two over-broad chest-pain synonyms removed (cough 'chest feels tight', reflux 'retrosternal'); asymptomatic bradycardia makes no decision",
+   "approved_by": "Wayne",
+   "reason": "within Wayne's 2026-10-21 v1.10 approval; tuned on library (dev) cases only"
+  },
+  {
+   "ts": "2026-10-21T17:58:00-04:00",
+   "keys": [
+    "layer1_v110",
+    "clean_repeat",
+    "glucose_clean_min"
+   ],
+   "old": null,
+   "new": 70,
+   "approved_by": "Wayne",
+   "reason": "within Wayne's v1.10 approval; library dev case: a confirming low fingerstick is not a clean repeat"
   }
  ],
  "hard_limits": {
@@ -766,5 +894,91 @@
    ]
   },
   "_note": "DECIDED RULE (Wayne 2026-10-18, GC2-003): hospice/comfort-only goals suppress hospital-directed escalation only."
+ },
+ "layer1_v110": {
+  "_note": "SMART_TRIGGERS v1.10 (Wayne 2026-10-21). Layer 1 fixes from Wayne's review-queue rulings. Placeholders; developed on hand-written practice cases (test_layer1_v110.py), not on holdout text.",
+  "clean_repeat": {
+   "_note": "An abnormal reading cleared by a clean repeat (other finger/hand, second device, or fingerstick) within the window, with no symptoms -> SUPPRESSED cleared_by_repeat, route silent_log. A CGM low counts as cleared only if the fingerstick reads in the normal range (>= glucose_clean_min); a fingerstick that confirms a low (e.g. 57) is not a clean repeat.",
+   "window_min": 15,
+   "spo2_clean_min": 92,
+   "glucose_window_min": 60,
+   "glucose_clean_min": 70
+  },
+  "insulin_ckd_low": {
+   "_note": "Insulin user with CKD and a danger-level CGM/glucose low: always HITM review (hard flag regardless of models); route floor nurse_task (overrides cleared_by_repeat).",
+   "insulin_rx": "insulin|glargine|detemir|degludec|lispro|aspart|glulisine|NPH",
+   "ckd_rx": "\\bCKD\\b|chronic kidney|renal (?:failure|impairment|insufficiency)|eGFR\\s*\\d",
+   "route": "nurse_task"
+  },
+  "suppressed_default_route": {
+   "_note": "Layer 1 route on a SUPPRESSED/ARTIFACT trigger when no model pick is available (replaces the v1.9 provider_task fallback).",
+   "cleared_by_repeat": "silent_log",
+   "unreliable_reading": "nurse_task",
+   "explained": "nurse_task",
+   "explained_caregiver_check": "nurse_task",
+   "at_patient_baseline": "nurse_task",
+   "below_band_threshold": "nurse_task",
+   "ARTIFACT": "silent_log",
+   "_other": "nurse_task"
+  },
+  "route_floor": {
+   "_note": "Minimum route for these suppressed reasons even when a model picks lower (models still capped at provider_task unless acute).",
+   "explained_caregiver_check": "nurse_task",
+   "HT_SPO2_LT88:at_patient_baseline": "nurse_task",
+   "HT_BRADY_RATE_DRUG:below_band_threshold": "nurse_task"
+  },
+  "fall_anticoag": {
+   "_note": "Confirmed (witnessed / patient or caregiver reports a fall) fall on an anticoagulant -> ABSOLUTE. Unwitnessed possible fall (impact or device signal) cleared by a caregiver check -> SUPPRESSED explained_caregiver_check, nurse_task (confirm with the patient there was no fall).",
+   "confirmed_tier": "ABSOLUTE"
+  },
+  "bradycardia_rate_drug": {
+   "_note": "Resting HR below threshold on a rate-slowing drug with symptoms -> CONFIRM_FIRST patient_call. Asymptomatic: no Layer 1 decision (a new rule never lowers or caps the route).",
+   "hr_below": 45,
+   "drugs_rx": "amiodarone|dronedarone|digoxin|sotalol|bisoprolol|metoprolol|atenolol|carvedilol|nebivolol|propranolol|diltiazem|verapamil|ivabradine|donepezil",
+   "symptoms_rx": "dizz\\w*|light-?headed|near[- ]?faint|faint\\w*|presyncop\\w*|confus\\w*|unusually tired|exhausted|breathless\\w*|short of breath|chest (?:pain|pressure)|fell|collapsed"
+  },
+  "gap_contact_exclude": {
+   "_note": "Device transmissions are not contact for the 48 h gap trigger: a sentence about scale weigh-ins, syncs or uploads with no person-to-person contact word does not explain a gap.",
+   "device_rx": "scale|weigh-?in|weighed|weight (?:reading|transmi\\w*)|sync\\w*|upload\\w*|transmi\\w*|bed sensor|pillbox|dispenser",
+   "human_rx": "video call|phoned|phone call|visited|saw (?:him|her)|spoke|talked|checked on (?:him|her)|answered the (?:phone|door)"
+  },
+  "wording": {
+   "_note": "Synonym lists (generic clinical phrasing, no case IDs). Added to the v1.9 patterns.",
+   "syncope": [
+    "loss of tone",
+    "lost tone",
+    "collapsed",
+    "collapse\\b",
+    "passed out",
+    "slumped",
+    "unresponsive (?:briefly|for)",
+    "briefly unresponsive",
+    "keeled over",
+    "dropped to the floor",
+    "went down and did not respond",
+    "out cold"
+   ],
+   "focal_neuro": [
+    "one-sided weakness",
+    "weak(?:ness)? on one side",
+    "face (?:is )?drooping",
+    "drooping (?:mouth|face|eyelid)",
+    "arm drift",
+    "trouble (?:speaking|finding words)",
+    "speech (?:is |was |became )?(?:slurred|garbled|jumbled)",
+    "words (?:came out )?(?:jumbled|wrong)",
+    "(?:sudden )?loss of vision in one eye",
+    "can(?:no|')t (?:raise|lift) (?:the |his |her )?(?:left|right) arm",
+    "dragging (?:the |his |her )?(?:left|right) (?:leg|foot)",
+    "numb(?:ness)? (?:on|down) (?:the |his |her )?(?:left|right) side"
+   ],
+   "chest_pain": [
+    "crushing (?:pain|feeling)",
+    "pressure (?:on|in) (?:his|her|the) chest",
+    "band (?:around|across) (?:his|her|the) chest",
+    "elephant on (?:his|her|my) chest",
+    "heaviness (?:behind|under) (?:the|his|her) (?:breastbone|sternum)"
+   ]
+  }
  }
 }

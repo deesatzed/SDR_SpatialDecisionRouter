@@ -1,0 +1,3682 @@
+{
+ "library270": {
+  "L1 + dual (c) [default]": {
+   "n": 270,
+   "decided": 270,
+   "accuracy": 0.9333,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 2.963,
+   "false_page_ids": [
+    "HK8-006",
+    "AC1-009",
+    "GC1-008",
+    "GC2-004",
+    "GC2-007",
+    "GC2-008",
+    "RN1-002",
+    "RN1-005"
+   ],
+   "hitm_per_100": 18.8889,
+   "errors": [
+    {
+     "case": "HK1-009",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HK6-004",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HK7-004",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HK8-006",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": true
+    },
+    {
+     "case": "NV3-012",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": true
+    },
+    {
+     "case": "NV8-002",
+     "picked": "nurse_task",
+     "label": "silent_log",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": true
+    },
+    {
+     "case": "AC1-009",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": true
+    },
+    {
+     "case": "AC2-008",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": true
+    },
+    {
+     "case": "GC1-008",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "GC2-004",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": true
+    },
+    {
+     "case": "GC2-007",
+     "picked": "urgent_page",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": true
+    },
+    {
+     "case": "GC2-008",
+     "picked": "urgent_page",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "RN1-002",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": true
+    },
+    {
+     "case": "RN1-005",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "RN1-010",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": true
+    },
+    {
+     "case": "ST2-004",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "ST1-002",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": false
+    },
+    {
+     "case": "ST1-008",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": "SUPPRESSED",
+     "l1_reason": "explained",
+     "hitm": false
+    }
+   ]
+  },
+  "L1 + d1-ultra": {
+   "n": 270,
+   "decided": 270,
+   "accuracy": 0.9259,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 2.5926,
+   "false_page_ids": [
+    "AC1-009",
+    "GC1-008",
+    "GC2-004",
+    "GC2-007",
+    "GC2-008",
+    "RN1-002",
+    "RN1-005"
+   ],
+   "hitm_per_100": 0.0,
+   "errors": [
+    {
+     "case": "HK1-009",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HK6-004",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HK7-004",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "NV3-012",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "NV5-022",
+     "picked": "silent_log",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "AC1-009",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "AC1-010",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "AC2-008",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "DM2-006",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "GC1-008",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "GC2-004",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "GC2-007",
+     "picked": "urgent_page",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "GC2-008",
+     "picked": "urgent_page",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "RN1-002",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "RN1-005",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "RN1-010",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "ST2-004",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "ST1-002",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": false
+    },
+    {
+     "case": "ST1-008",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": "SUPPRESSED",
+     "l1_reason": "explained",
+     "hitm": false
+    },
+    {
+     "case": "ST1-006",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "explained",
+     "hitm": false
+    }
+   ]
+  },
+  "L1 + pplx": {
+   "n": 270,
+   "decided": 270,
+   "accuracy": 0.937,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 1.4815,
+   "false_page_ids": [
+    "HK8-006",
+    "GC1-008",
+    "GC2-008",
+    "RN1-005"
+   ],
+   "hitm_per_100": 0.0,
+   "errors": [
+    {
+     "case": "HK1-009",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HK2-002",
+     "picked": "nurse_task",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HK6-004",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HK6-008",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HK7-004",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HK8-006",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "NV3-006",
+     "picked": "nurse_task",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "NV7-009",
+     "picked": "nurse_task",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "NV8-002",
+     "picked": "nurse_task",
+     "label": "silent_log",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "NV8-012",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "GC1-008",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "GC2-008",
+     "picked": "urgent_page",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "RN1-005",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "ST2-004",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "ST3-006",
+     "picked": "silent_log",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "ST1-002",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": false
+    },
+    {
+     "case": "ST1-008",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": "SUPPRESSED",
+     "l1_reason": "explained",
+     "hitm": false
+    }
+   ]
+  },
+  "Layer 1 alone": {
+   "n": 270,
+   "decided": 82,
+   "accuracy": 0.9268,
+   "critical_misses": 1,
+   "critical_ids": [
+    "ST1-004"
+   ],
+   "false_pages_per_100": 0.0,
+   "false_page_ids": [],
+   "hitm_per_100": 69.6296,
+   "errors": [
+    {
+     "case": "GC1-010",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": false
+    },
+    {
+     "case": "GL1-001",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": false
+    },
+    {
+     "case": "ST3-002",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "ST1-004",
+     "picked": "provider_task",
+     "label": "urgent_page",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "ST1-008",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": "SUPPRESSED",
+     "l1_reason": "explained",
+     "hitm": false
+    },
+    {
+     "case": "ST1-011",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    }
+   ]
+  },
+  "tier_agreement": {
+   "trigger_cases": 81,
+   "match": 80,
+   "rate": 0.9877,
+   "false_paging_triggers_on_no_trigger_cases": [],
+   "mismatch": [
+    [
+     "ST1-010",
+     "CONFIRM_FIRST",
+     "ABSOLUTE",
+     null
+    ]
+   ]
+  },
+  "l1": {
+   "HK1-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK1-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK1-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK1-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK1-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK1-007": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK1-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK1-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK1-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK1-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK2-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK2-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK2-003": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK2-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK2-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK2-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK2-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK2-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK2-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK2-010": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK2-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK3-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK3-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK3-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK3-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK3-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK3-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK3-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK3-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK3-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK4-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK4-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK4-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK4-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK4-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK4-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK4-010": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "unexplained_gap_high_risk",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK4-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK5-001": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": "below_band_threshold",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK5-002": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK5-003": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK5-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK5-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK5-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK5-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK6-001": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK6-002": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "unreliable_reading",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK6-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK6-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK6-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK6-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK6-007": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_FOCAL_NEURO",
+    "reason": "new_focal_deficit",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK6-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK7-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK7-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK7-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK7-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK7-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK7-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK7-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK7-008": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK7-009": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "explained",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK7-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK7-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK8-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK8-002": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "unexplained_gap_high_risk",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK8-003": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "explained",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK8-004": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "unexplained_gap_high_risk",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK8-005": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "unexplained_gap_high_risk",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK8-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK8-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK8-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK8-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK8-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK9-001": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK9-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK9-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK9-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HK9-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV1-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV1-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV1-009": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_FOCAL_NEURO",
+    "reason": "new_focal_deficit",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV2-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV2-015": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_VS_DANGER",
+    "reason": "hard_limit_danger_symptomatic",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV2-020": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV3-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV3-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV3-005": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV3-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV3-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV3-012": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV3-024": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "explained",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV3-025": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "unexplained_gap_high_risk",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV4-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV4-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV4-014": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV4-015": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-002": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "unexplained_gap_high_risk",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-012": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-015": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-016": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-017": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_FOCAL_NEURO",
+    "reason": "new_focal_deficit",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-021": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-022": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-023": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-024": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV5-025": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV6-001": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "goals_of_care",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV6-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV6-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV6-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV6-010": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV6-025": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV7-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV7-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV7-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV7-021": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV8-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV8-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV8-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV8-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV8-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV8-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV8-012": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "NV8-013": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC1-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC1-002": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC1-012": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": "below_band_threshold",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC1-003": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC1-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC1-005": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC1-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC1-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC1-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC1-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC1-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC1-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC2-001": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC2-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC2-003": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_CHEST_PAIN_ECG",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC2-005": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC2-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC2-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC2-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC2-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "AC2-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "CG1-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "CG1-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "CG1-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "CG1-004": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "CG1-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "CG1-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "CG1-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "CG1-009": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "CG1-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM1-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM1-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM1-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM1-004": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM1-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM1-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM1-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM1-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM1-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM1-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM1-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM2-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM2-002": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "unexplained_gap_high_risk",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM2-003": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM2-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM2-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM2-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM2-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM2-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM2-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "DM2-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "EL1-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "EL1-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "EL1-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "EL1-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "EL1-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "EL1-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "EL1-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "EL1-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "EL1-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "EL1-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "EL1-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC1-002": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC1-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC1-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC1-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC1-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC1-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC1-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC1-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC1-010": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_VS_DANGER",
+    "reason": "unreliable_reading",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC1-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC1-012": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC2-001": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_FOCAL_NEURO",
+    "reason": "goals_of_care",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC2-002": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC2-003": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_VS_DANGER",
+    "reason": "hard_limit_danger_symptomatic",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC2-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC2-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC2-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC2-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC2-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GC2-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GL1-001": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_VS_DANGER",
+    "reason": "unreliable_reading",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GL1-002": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_VS_DANGER",
+    "reason": "unreliable_reading",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GL1-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GL1-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GL1-005": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_VS_DANGER",
+    "reason": "hard_limit_danger_fingerstick_confirmed",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GL1-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GL1-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GL1-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GL1-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GL1-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GL1-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "GL1-012": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "RN1-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "RN1-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "RN1-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "RN1-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "RN1-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "RN1-007": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_SYNCOPE",
+    "reason": "syncope",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "RN1-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "RN1-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "RN1-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "RN1-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST1-001": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST1-005": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "unexplained_gap_high_risk",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST1-007": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST1-009": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_CHEST_PAIN_ECG",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST2-001": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_SYNCOPE",
+    "reason": "syncope",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST2-002": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_SYNCOPE",
+    "reason": "goals_of_care",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST2-003": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_FOCAL_NEURO",
+    "reason": "new_focal_deficit",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST2-004": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_FOCAL_NEURO",
+    "reason": "at_patient_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST2-005": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "unexplained_gap_high_risk",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST2-006": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "explained",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST2-007": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST2-008": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_SPO2_LT88",
+    "reason": "unreliable_reading",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST2-010": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "goals_of_care",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST3-001": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "outside_population_default_learning",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST3-002": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_SPO2_LT88",
+    "reason": "at_patient_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST3-003": {
+    "tier": "ARTIFACT",
+    "rule": "HT_VS_IMPLAUSIBLE",
+    "reason": "implausible_value",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST3-004": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_VS_DANGER",
+    "reason": "hard_limit_danger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST3-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST3-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST3-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST3-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST3-009": {
+    "tier": "ARTIFACT",
+    "rule": "HT_VS_IMPLAUSIBLE",
+    "reason": "nonphysiologic_rate",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST3-010": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST4-003": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": "below_band_threshold",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST4-004": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST4-005": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST4-006": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": "below_band_threshold",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST4-008": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": "below_band_threshold",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST1-002": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_SPO2_LT88",
+    "reason": "unreliable_reading",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST1-004": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_SPO2_LT88",
+    "reason": "at_patient_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST1-008": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "explained",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST1-010": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST2-009": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST4-002": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST1-003": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST1-006": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "explained",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "ST1-011": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_SPO2_LT88",
+    "reason": "at_patient_baseline",
+    "hitm_required": null,
+    "default_route": null
+   }
+  }
+ },
+ "holdout_ruled91": {
+  "L1 + dual (c) [default]": {
+   "n": 91,
+   "decided": 91,
+   "accuracy": 0.8571,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 3.2967,
+   "false_page_ids": [
+    "HO1-005",
+    "HO4-008",
+    "HO10-002"
+   ],
+   "hitm_per_100": 16.4835,
+   "errors": [
+    {
+     "case": "HO1-006",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HO1-011",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO3-004",
+     "picked": "nurse_task",
+     "label": "provider_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": true
+    },
+    {
+     "case": "HO5-007",
+     "picked": "nurse_task",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO8-009",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO1-005",
+     "picked": "urgent_page",
+     "label": "silent_log",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "below_88_change_from_own_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HO2-007",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": false
+    },
+    {
+     "case": "HO3-001",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": "ARTIFACT",
+     "l1_reason": "cgm_pressure_low_suspected",
+     "hitm": true
+    },
+    {
+     "case": "HO4-008",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "fall_on_anticoagulant",
+     "hitm": false
+    },
+    {
+     "case": "HO7-005",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO7-010",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO8-011",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO10-002",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "below_88_change_from_own_baseline",
+     "hitm": false
+    }
+   ]
+  },
+  "L1 + d1-ultra": {
+   "n": 91,
+   "decided": 91,
+   "accuracy": 0.8242,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 3.2967,
+   "false_page_ids": [
+    "HO1-005",
+    "HO4-008",
+    "HO10-002"
+   ],
+   "hitm_per_100": 0.0,
+   "errors": [
+    {
+     "case": "HO1-006",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HO1-011",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO3-004",
+     "picked": "nurse_task",
+     "label": "provider_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": false
+    },
+    {
+     "case": "HO3-007",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO5-007",
+     "picked": "nurse_task",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO8-009",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO1-005",
+     "picked": "urgent_page",
+     "label": "silent_log",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "below_88_change_from_own_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HO2-007",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": false
+    },
+    {
+     "case": "HO3-001",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": "ARTIFACT",
+     "l1_reason": "cgm_pressure_low_suspected",
+     "hitm": false
+    },
+    {
+     "case": "HO4-008",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "fall_on_anticoagulant",
+     "hitm": false
+    },
+    {
+     "case": "HO7-003",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO7-005",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO7-010",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO8-011",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO8-019",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "explained",
+     "hitm": false
+    },
+    {
+     "case": "HO10-002",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "below_88_change_from_own_baseline",
+     "hitm": false
+    }
+   ]
+  },
+  "L1 + pplx": {
+   "n": 91,
+   "decided": 91,
+   "accuracy": 0.8242,
+   "critical_misses": 2,
+   "critical_ids": [
+    "HO5-006",
+    "HO8-024"
+   ],
+   "false_pages_per_100": 3.2967,
+   "false_page_ids": [
+    "HO1-005",
+    "HO4-008",
+    "HO10-002"
+   ],
+   "hitm_per_100": 0.0,
+   "errors": [
+    {
+     "case": "HO1-006",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HO1-011",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO3-004",
+     "picked": "silent_log",
+     "label": "provider_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": false
+    },
+    {
+     "case": "HO5-006",
+     "picked": "provider_task",
+     "label": "urgent_page",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO5-007",
+     "picked": "nurse_task",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO5-008",
+     "picked": "nurse_task",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO6-006",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO8-009",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO1-005",
+     "picked": "urgent_page",
+     "label": "silent_log",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "below_88_change_from_own_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HO2-007",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": false
+    },
+    {
+     "case": "HO4-008",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "fall_on_anticoagulant",
+     "hitm": false
+    },
+    {
+     "case": "HO7-005",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO7-010",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO8-011",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO8-024",
+     "picked": "nurse_task",
+     "label": "urgent_page",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HO10-002",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "below_88_change_from_own_baseline",
+     "hitm": false
+    }
+   ]
+  },
+  "Layer 1 alone": {
+   "n": 91,
+   "decided": 32,
+   "accuracy": 0.75,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 3.2967,
+   "false_page_ids": [
+    "HO1-005",
+    "HO4-008",
+    "HO10-002"
+   ],
+   "hitm_per_100": 64.8352,
+   "errors": [
+    {
+     "case": "HO1-006",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HO1-005",
+     "picked": "urgent_page",
+     "label": "silent_log",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "below_88_change_from_own_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HO2-007",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": false
+    },
+    {
+     "case": "HO3-001",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": "ARTIFACT",
+     "l1_reason": "cgm_pressure_low_suspected",
+     "hitm": false
+    },
+    {
+     "case": "HO4-003",
+     "picked": "provider_task",
+     "label": "silent_log",
+     "l1": "SUPPRESSED",
+     "l1_reason": "unreliable_reading",
+     "hitm": false
+    },
+    {
+     "case": "HO4-008",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "fall_on_anticoagulant",
+     "hitm": false
+    },
+    {
+     "case": "HO8-019",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "explained",
+     "hitm": false
+    },
+    {
+     "case": "HO10-002",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "below_88_change_from_own_baseline",
+     "hitm": false
+    }
+   ]
+  },
+  "tier_agreement": {
+   "trigger_cases": 39,
+   "match": 27,
+   "rate": 0.6923,
+   "false_paging_triggers_on_no_trigger_cases": [],
+   "mismatch": [
+    [
+     "HO1-007",
+     "ARTIFACT",
+     null,
+     "no_trigger"
+    ],
+    [
+     "HO3-006",
+     "ABSOLUTE",
+     null,
+     "no_trigger"
+    ],
+    [
+     "HO5-006",
+     "CONFIRM_FIRST",
+     null,
+     "no_trigger"
+    ],
+    [
+     "HO5-011",
+     "ABSOLUTE",
+     null,
+     "no_trigger"
+    ],
+    [
+     "HO10-006",
+     "ARTIFACT",
+     null,
+     "no_trigger"
+    ],
+    [
+     "HO10-011",
+     "ABSOLUTE",
+     null,
+     "no_trigger"
+    ],
+    [
+     "HO1-005",
+     "SUPPRESSED",
+     "CONFIRM_FIRST",
+     "below_88_change_from_own_baseline"
+    ],
+    [
+     "HO4-008",
+     "SUPPRESSED",
+     "CONFIRM_FIRST",
+     "fall_on_anticoagulant"
+    ],
+    [
+     "HO7-017",
+     "ABSOLUTE",
+     null,
+     "no_trigger"
+    ],
+    [
+     "HO7-021",
+     "ABSOLUTE",
+     "CONFIRM_FIRST",
+     "fall_on_anticoagulant"
+    ],
+    [
+     "HO8-015",
+     "ABSOLUTE",
+     "CONFIRM_FIRST",
+     "below_88_change_from_own_baseline"
+    ],
+    [
+     "HO10-002",
+     "SUPPRESSED",
+     "CONFIRM_FIRST",
+     "below_88_change_from_own_baseline"
+    ]
+   ]
+  },
+  "l1": {
+   "HO1-001": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_FOCAL_NEURO",
+    "reason": "new_focal_deficit",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO1-002": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_VS_DANGER",
+    "reason": "hard_limit_danger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO1-003": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO1-004": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO1-006": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_SPO2_LT88",
+    "reason": "at_patient_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO1-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO1-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO1-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO1-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO1-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO2-001": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "goals_of_care",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO2-002": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_VS_DANGER",
+    "reason": "hard_limit_danger_fingerstick_confirmed",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO2-004": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "outside_population_default_learning",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO2-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO2-009": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO2-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO3-004": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_VS_DANGER",
+    "reason": "unreliable_reading",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO3-005": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_VS_DANGER",
+    "reason": "hard_limit_danger_fingerstick_confirmed",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO3-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO3-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO3-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO3-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO3-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO4-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO4-007": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO4-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO5-001": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO5-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO5-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO5-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO5-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO5-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO5-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO5-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO5-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO5-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO5-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO6-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO6-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO6-008": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-016": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO9-001": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_SYNCOPE",
+    "reason": "syncope",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO9-002": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO9-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO9-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO9-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO9-007": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO9-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO10-004": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_VS_DANGER",
+    "reason": "hard_limit_danger_symptomatic",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO10-005": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "goals_of_care",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO10-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO10-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO10-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO10-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO10-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO1-005": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO2-007": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_VS_DANGER",
+    "reason": "unreliable_reading",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO3-001": {
+    "tier": "ARTIFACT",
+    "rule": "HT_VS_IMPLAUSIBLE",
+    "reason": "cgm_pressure_low_suspected",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO4-003": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_SPO2_LT88",
+    "reason": "unreliable_reading",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO4-008": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-003": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-004": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-006": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-007": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-009": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-010": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-012": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-017": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-018": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_FOCAL_NEURO",
+    "reason": "new_focal_deficit",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-021": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "fall_on_anticoagulant",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-022": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO7-023": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-005": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-011": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-015": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-017": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-019": {
+    "tier": "SUPPRESSED",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "explained",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-020": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_GAP48_HIGHRISK",
+    "reason": "unexplained_gap_high_risk",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-021": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_CHEST_PAIN_ECG",
+    "reason": null,
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-022": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_SYNCOPE",
+    "reason": "syncope",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-023": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_FOCAL_NEURO",
+    "reason": "new_focal_deficit",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-024": {
+    "tier": null,
+    "rule": null,
+    "reason": "no_trigger",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO8-025": {
+    "tier": "ABSOLUTE",
+    "rule": "HT_VS_DANGER",
+    "reason": "hard_limit_danger_fingerstick_confirmed",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO10-001": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "outside_population_default_learning",
+    "hitm_required": null,
+    "default_route": null
+   },
+   "HO10-002": {
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "hitm_required": null,
+    "default_route": null
+   }
+  }
+ }
+}

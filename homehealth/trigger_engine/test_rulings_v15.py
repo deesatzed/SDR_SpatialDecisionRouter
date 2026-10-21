@@ -17,7 +17,7 @@ E = lambda inp, **ctx: T.evaluate_chest_pain(inp, P, context=ctx)
 
 # ---- a. band math
 def test_params_record_net_then_clamp():
-    assert P["chest_pain"]["band_math"]["method"] == "net_then_clamp" and P["version"] >= "0.5-placeholder"
+    assert P["chest_pain"]["band_math"]["method"] == "net_then_clamp" and tuple(int(x) for x in P["version"].split("-")[0].split(".")) >= (0, 5)
 def test_st4_002_net_modifiers_first_gives_band_c_15_min():
     # HR 50 asleep on bisoprolol: raw C, sleep -1, rate control -1; diaphoresis + dyspnoea +2 -> net 0 -> C (sequential clamping gave B, 5 min)
     d = E(cp({"hr": 50, "sbp": 118}, act="sleep", red=["diaphoresis", "dyspnea"]), rate_control_med=True)

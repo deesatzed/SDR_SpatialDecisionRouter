@@ -33,9 +33,10 @@ def combine(rule, lead, other):
 def dual_route(l1, pick_lead, pick_other, rule=DEFAULT_RULE):
     """Layer 1 first; on Jev-owned cases combine both models. Returns (route, owner, hitm_flag)."""
     r1, owner = L.route(l1, pick_lead); r2, _ = L.route(l1, pick_other)
-    if owner not in ("jev", "jev_capped"): return r1, owner, False
+    hard = bool(l1.get("hitm_required"))   # v1.10: insulin+CKD danger low -> HITM regardless of the models
+    if owner not in ("jev", "jev_capped", "jev_hitm_floor"): return r1, owner, hard
     r, f = combine(rule, r1, r2)
-    return r, owner, f
+    return r, owner, f or hard
 
 def load_picks(path):
     last = {}

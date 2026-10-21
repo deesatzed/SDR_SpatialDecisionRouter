@@ -441,3 +441,20 @@ def evaluate_chest_pain(inp, p, base=None, context=None):
         f *= M["post_exertion"]["timeout_factor"]; mods.append(f"post-exertion timeout x{M['post_exertion']['timeout_factor']}")
     t = int(round(min(max(t * f, lo), hi)))
     return out("CONFIRM_FIRST", band, raw_worst, "HT_CHEST_PAIN_VITALS", route="urgent_page", page="if_confirmed_or_timeout", confirm_step=cp["default_confirm_step"], timeout_min=t)
+
+# ---- SMART_TRIGGERS v1.10 (Wayne 2026-10-21): Layer 1 fixes from the review-queue rulings. Params: layer1_v110.
+def v110(p): return p.get("layer1_v110") or {}
+def wording_rx(p, key, base):
+    """base regex extended with the v1.10 synonym list for key (syncope, focal_neuro, chest_pain)."""
+    extra = (v110(p).get("wording") or {}).get(key) or []
+    return base + ("|" + "|".join(extra) if extra else "")
+def suppressed_default_route(d, p):
+    """Layer 1 route for a SUPPRESSED/ARTIFACT decision with no model pick (v1.10 replaces the provider_task fallback)."""
+    t = v110(p).get("suppressed_default_route") or {}
+    if d.get("default_route"): return d["default_route"]
+    if d.get("tier") == "ARTIFACT" and d.get("reason") != "cleared_by_repeat": return t.get("ARTIFACT", "silent_log")
+    return t.get(d.get("reason") or "", t.get("_other", "nurse_task"))
+def route_floor(d, p):
+    """minimum route for a suppressed decision (None = no floor)."""
+    f = v110(p).get("route_floor") or {}
+    return f.get(f'{d.get("rule")}:{d.get("reason")}') or f.get(d.get("reason") or "")

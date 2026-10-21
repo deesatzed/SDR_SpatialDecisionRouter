@@ -9,27 +9,13 @@
    "L1 + dual (c) [default]": {
     "n": 91,
     "decided": 91,
-    "accuracy": 0.8571,
-    "accuracy_over_all": 0.8571,
+    "accuracy": 0.8901,
+    "accuracy_over_all": 0.8901,
     "critical_misses": 0,
     "critical_ids": [],
-    "false_pages_per_100": 3.2967,
-    "hitm_per_100": 16.4835,
+    "false_pages_per_100": 2.1978,
+    "hitm_per_100": 17.5824,
     "errors": [
-     {
-      "case": "HO1-006",
-      "picked": "silent_log",
-      "ruling": "nurse_task",
-      "key_source": "author_label_accepted",
-      "owner": "jev_capped",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
      {
       "case": "HO1-011",
       "picked": "silent_log",
@@ -46,17 +32,17 @@
      },
      {
       "case": "HO3-004",
-      "picked": "nurse_task",
+      "picked": "silent_log",
       "ruling": "provider_task",
       "key_source": "author_label_accepted",
-      "owner": "jev_capped",
+      "owner": "layer1_cleared",
       "l1_tier": "SUPPRESSED",
       "label_tier": "SUPPRESSED",
       "d1": "nurse_task",
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
-      "caught_by_hitm": true
+      "caught_by_hitm": false
      },
      {
       "case": "HO5-007",
@@ -101,20 +87,6 @@
       "caught_by_hitm": false
      },
      {
-      "case": "HO2-007",
-      "picked": "silent_log",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "jev_capped",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
       "case": "HO3-001",
       "picked": "provider_task",
       "ruling": "silent_log",
@@ -127,20 +99,6 @@
       "critical": false,
       "false_page": false,
       "caught_by_hitm": true
-     },
-     {
-      "case": "HO4-008",
-      "picked": "urgent_page",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_confirm",
-      "l1_tier": "CONFIRM_FIRST",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": true,
-      "caught_by_hitm": false
      },
      {
       "case": "HO7-005",
@@ -203,27 +161,13 @@
    "L1 + d1-ultra": {
     "n": 91,
     "decided": 91,
-    "accuracy": 0.8242,
-    "accuracy_over_all": 0.8242,
+    "accuracy": 0.8571,
+    "accuracy_over_all": 0.8571,
     "critical_misses": 0,
     "critical_ids": [],
-    "false_pages_per_100": 3.2967,
+    "false_pages_per_100": 2.1978,
     "hitm_per_100": 0.0,
     "errors": [
-     {
-      "case": "HO1-006",
-      "picked": "silent_log",
-      "ruling": "nurse_task",
-      "key_source": "author_label_accepted",
-      "owner": "jev_capped",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
      {
       "case": "HO1-011",
       "picked": "silent_log",
@@ -240,10 +184,10 @@
      },
      {
       "case": "HO3-004",
-      "picked": "nurse_task",
+      "picked": "silent_log",
       "ruling": "provider_task",
       "key_source": "author_label_accepted",
-      "owner": "jev_capped",
+      "owner": "layer1_cleared",
       "l1_tier": "SUPPRESSED",
       "label_tier": "SUPPRESSED",
       "d1": "nurse_task",
@@ -309,20 +253,6 @@
       "caught_by_hitm": false
      },
      {
-      "case": "HO2-007",
-      "picked": "silent_log",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "jev_capped",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
       "case": "HO3-001",
       "picked": "provider_task",
       "ruling": "silent_log",
@@ -334,20 +264,6 @@
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO4-008",
-      "picked": "urgent_page",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_confirm",
-      "l1_tier": "CONFIRM_FIRST",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": true,
       "caught_by_hitm": false
      },
      {
@@ -439,30 +355,16 @@
    "L1 + pplx": {
     "n": 91,
     "decided": 91,
-    "accuracy": 0.8242,
-    "accuracy_over_all": 0.8242,
+    "accuracy": 0.8462,
+    "accuracy_over_all": 0.8462,
     "critical_misses": 2,
     "critical_ids": [
      "HO5-006",
      "HO8-024"
     ],
-    "false_pages_per_100": 3.2967,
+    "false_pages_per_100": 2.1978,
     "hitm_per_100": 0.0,
     "errors": [
-     {
-      "case": "HO1-006",
-      "picked": "silent_log",
-      "ruling": "nurse_task",
-      "key_source": "author_label_accepted",
-      "owner": "jev_capped",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
      {
       "case": "HO1-011",
       "picked": "silent_log",
@@ -482,7 +384,7 @@
       "picked": "silent_log",
       "ruling": "provider_task",
       "key_source": "author_label_accepted",
-      "owner": "jev_capped",
+      "owner": "layer1_cleared",
       "l1_tier": "SUPPRESSED",
       "label_tier": "SUPPRESSED",
       "d1": "nurse_task",
@@ -576,31 +478,17 @@
       "caught_by_hitm": false
      },
      {
-      "case": "HO2-007",
-      "picked": "silent_log",
-      "ruling": "nurse_task",
+      "case": "HO3-001",
+      "picked": "nurse_task",
+      "ruling": "silent_log",
       "key_source": "clinician_ruling_2026-10-21",
       "owner": "jev_capped",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
+      "l1_tier": "ARTIFACT",
+      "label_tier": "ARTIFACT",
+      "d1": "provider_task",
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO4-008",
-      "picked": "urgent_page",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_confirm",
-      "l1_tier": "CONFIRM_FIRST",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": true,
       "caught_by_hitm": false
      },
      {
@@ -677,23 +565,23 @@
    },
    "Layer 1 alone": {
     "n": 91,
-    "decided": 32,
-    "accuracy": 0.75,
-    "accuracy_over_all": 0.2637,
+    "decided": 33,
+    "accuracy": 0.8788,
+    "accuracy_over_all": 0.3187,
     "critical_misses": 0,
     "critical_ids": [],
-    "false_pages_per_100": 3.2967,
-    "hitm_per_100": 64.8352,
+    "false_pages_per_100": 2.1978,
+    "hitm_per_100": 63.7363,
     "errors": [
      {
-      "case": "HO1-006",
-      "picked": "provider_task",
-      "ruling": "nurse_task",
+      "case": "HO3-004",
+      "picked": "silent_log",
+      "ruling": "provider_task",
       "key_source": "author_label_accepted",
-      "owner": "layer1_default",
+      "owner": "layer1_cleared",
       "l1_tier": "SUPPRESSED",
       "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
+      "d1": "nurse_task",
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
@@ -714,22 +602,8 @@
       "caught_by_hitm": false
      },
      {
-      "case": "HO2-007",
-      "picked": "provider_task",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_default",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
       "case": "HO3-001",
-      "picked": "provider_task",
+      "picked": "nurse_task",
       "ruling": "silent_log",
       "key_source": "clinician_ruling_2026-10-21",
       "owner": "layer1_default",
@@ -737,48 +611,6 @@
       "label_tier": "ARTIFACT",
       "d1": "provider_task",
       "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO4-003",
-      "picked": "provider_task",
-      "ruling": "silent_log",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_default",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO4-008",
-      "picked": "urgent_page",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_confirm",
-      "l1_tier": "CONFIRM_FIRST",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": true,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO8-019",
-      "picked": "provider_task",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_default",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "nurse_task",
       "critical": false,
       "false_page": false,
       "caught_by_hitm": false
@@ -804,27 +636,13 @@
    "L1 + dual (c) [default]": {
     "n": 60,
     "decided": 60,
-    "accuracy": 0.9167,
-    "accuracy_over_all": 0.9167,
+    "accuracy": 0.9333,
+    "accuracy_over_all": 0.9333,
     "critical_misses": 0,
     "critical_ids": [],
     "false_pages_per_100": 0.0,
     "hitm_per_100": 18.3333,
     "errors": [
-     {
-      "case": "HO1-006",
-      "picked": "silent_log",
-      "ruling": "nurse_task",
-      "key_source": "author_label_accepted",
-      "owner": "jev_capped",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
      {
       "case": "HO1-011",
       "picked": "silent_log",
@@ -841,17 +659,17 @@
      },
      {
       "case": "HO3-004",
-      "picked": "nurse_task",
+      "picked": "silent_log",
       "ruling": "provider_task",
       "key_source": "author_label_accepted",
-      "owner": "jev_capped",
+      "owner": "layer1_cleared",
       "l1_tier": "SUPPRESSED",
       "label_tier": "SUPPRESSED",
       "d1": "nurse_task",
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
-      "caught_by_hitm": true
+      "caught_by_hitm": false
      },
      {
       "case": "HO5-007",
@@ -886,27 +704,13 @@
    "L1 + d1-ultra": {
     "n": 60,
     "decided": 60,
-    "accuracy": 0.9,
-    "accuracy_over_all": 0.9,
+    "accuracy": 0.9167,
+    "accuracy_over_all": 0.9167,
     "critical_misses": 0,
     "critical_ids": [],
     "false_pages_per_100": 0.0,
     "hitm_per_100": 0.0,
     "errors": [
-     {
-      "case": "HO1-006",
-      "picked": "silent_log",
-      "ruling": "nurse_task",
-      "key_source": "author_label_accepted",
-      "owner": "jev_capped",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
      {
       "case": "HO1-011",
       "picked": "silent_log",
@@ -923,10 +727,10 @@
      },
      {
       "case": "HO3-004",
-      "picked": "nurse_task",
+      "picked": "silent_log",
       "ruling": "provider_task",
       "key_source": "author_label_accepted",
-      "owner": "jev_capped",
+      "owner": "layer1_cleared",
       "l1_tier": "SUPPRESSED",
       "label_tier": "SUPPRESSED",
       "d1": "nurse_task",
@@ -982,8 +786,8 @@
    "L1 + pplx": {
     "n": 60,
     "decided": 60,
-    "accuracy": 0.8667,
-    "accuracy_over_all": 0.8667,
+    "accuracy": 0.8833,
+    "accuracy_over_all": 0.8833,
     "critical_misses": 1,
     "critical_ids": [
      "HO5-006"
@@ -991,20 +795,6 @@
     "false_pages_per_100": 0.0,
     "hitm_per_100": 0.0,
     "errors": [
-     {
-      "case": "HO1-006",
-      "picked": "silent_log",
-      "ruling": "nurse_task",
-      "key_source": "author_label_accepted",
-      "owner": "jev_capped",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
      {
       "case": "HO1-011",
       "picked": "silent_log",
@@ -1024,7 +814,7 @@
       "picked": "silent_log",
       "ruling": "provider_task",
       "key_source": "author_label_accepted",
-      "owner": "jev_capped",
+      "owner": "layer1_cleared",
       "l1_tier": "SUPPRESSED",
       "label_tier": "SUPPRESSED",
       "d1": "nurse_task",
@@ -1116,14 +906,14 @@
     "hitm_per_100": 73.3333,
     "errors": [
      {
-      "case": "HO1-006",
-      "picked": "provider_task",
-      "ruling": "nurse_task",
+      "case": "HO3-004",
+      "picked": "silent_log",
+      "ruling": "provider_task",
       "key_source": "author_label_accepted",
-      "owner": "layer1_default",
+      "owner": "layer1_cleared",
       "l1_tier": "SUPPRESSED",
       "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
+      "d1": "nurse_task",
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
@@ -1136,12 +926,12 @@
    "L1 + dual (c) [default]": {
     "n": 31,
     "decided": 31,
-    "accuracy": 0.7419,
-    "accuracy_over_all": 0.7419,
+    "accuracy": 0.8065,
+    "accuracy_over_all": 0.8065,
     "critical_misses": 0,
     "critical_ids": [],
-    "false_pages_per_100": 9.6774,
-    "hitm_per_100": 12.9032,
+    "false_pages_per_100": 6.4516,
+    "hitm_per_100": 16.129,
     "errors": [
      {
       "case": "HO1-005",
@@ -1158,20 +948,6 @@
       "caught_by_hitm": false
      },
      {
-      "case": "HO2-007",
-      "picked": "silent_log",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "jev_capped",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
       "case": "HO3-001",
       "picked": "provider_task",
       "ruling": "silent_log",
@@ -1184,20 +960,6 @@
       "critical": false,
       "false_page": false,
       "caught_by_hitm": true
-     },
-     {
-      "case": "HO4-008",
-      "picked": "urgent_page",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_confirm",
-      "l1_tier": "CONFIRM_FIRST",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": true,
-      "caught_by_hitm": false
      },
      {
       "case": "HO7-005",
@@ -1260,11 +1022,11 @@
    "L1 + d1-ultra": {
     "n": 31,
     "decided": 31,
-    "accuracy": 0.6774,
-    "accuracy_over_all": 0.6774,
+    "accuracy": 0.7419,
+    "accuracy_over_all": 0.7419,
     "critical_misses": 0,
     "critical_ids": [],
-    "false_pages_per_100": 9.6774,
+    "false_pages_per_100": 6.4516,
     "hitm_per_100": 0.0,
     "errors": [
      {
@@ -1282,20 +1044,6 @@
       "caught_by_hitm": false
      },
      {
-      "case": "HO2-007",
-      "picked": "silent_log",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "jev_capped",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
       "case": "HO3-001",
       "picked": "provider_task",
       "ruling": "silent_log",
@@ -1307,20 +1055,6 @@
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO4-008",
-      "picked": "urgent_page",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_confirm",
-      "l1_tier": "CONFIRM_FIRST",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": true,
       "caught_by_hitm": false
      },
      {
@@ -1412,13 +1146,13 @@
    "L1 + pplx": {
     "n": 31,
     "decided": 31,
-    "accuracy": 0.7419,
-    "accuracy_over_all": 0.7419,
+    "accuracy": 0.7742,
+    "accuracy_over_all": 0.7742,
     "critical_misses": 1,
     "critical_ids": [
      "HO8-024"
     ],
-    "false_pages_per_100": 9.6774,
+    "false_pages_per_100": 6.4516,
     "hitm_per_100": 0.0,
     "errors": [
      {
@@ -1436,31 +1170,17 @@
       "caught_by_hitm": false
      },
      {
-      "case": "HO2-007",
-      "picked": "silent_log",
-      "ruling": "nurse_task",
+      "case": "HO3-001",
+      "picked": "nurse_task",
+      "ruling": "silent_log",
       "key_source": "clinician_ruling_2026-10-21",
       "owner": "jev_capped",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
+      "l1_tier": "ARTIFACT",
+      "label_tier": "ARTIFACT",
+      "d1": "provider_task",
       "pplx": "silent_log",
       "critical": false,
       "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO4-008",
-      "picked": "urgent_page",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_confirm",
-      "l1_tier": "CONFIRM_FIRST",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": true,
       "caught_by_hitm": false
      },
      {
@@ -1537,13 +1257,13 @@
    },
    "Layer 1 alone": {
     "n": 31,
-    "decided": 16,
-    "accuracy": 0.5625,
-    "accuracy_over_all": 0.2903,
+    "decided": 17,
+    "accuracy": 0.8235,
+    "accuracy_over_all": 0.4516,
     "critical_misses": 0,
     "critical_ids": [],
-    "false_pages_per_100": 9.6774,
-    "hitm_per_100": 48.3871,
+    "false_pages_per_100": 6.4516,
+    "hitm_per_100": 45.1613,
     "errors": [
      {
       "case": "HO1-005",
@@ -1560,22 +1280,8 @@
       "caught_by_hitm": false
      },
      {
-      "case": "HO2-007",
-      "picked": "provider_task",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_default",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
       "case": "HO3-001",
-      "picked": "provider_task",
+      "picked": "nurse_task",
       "ruling": "silent_log",
       "key_source": "clinician_ruling_2026-10-21",
       "owner": "layer1_default",
@@ -1583,48 +1289,6 @@
       "label_tier": "ARTIFACT",
       "d1": "provider_task",
       "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO4-003",
-      "picked": "provider_task",
-      "ruling": "silent_log",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_default",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": false,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO4-008",
-      "picked": "urgent_page",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_confirm",
-      "l1_tier": "CONFIRM_FIRST",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "silent_log",
-      "critical": false,
-      "false_page": true,
-      "caught_by_hitm": false
-     },
-     {
-      "case": "HO8-019",
-      "picked": "provider_task",
-      "ruling": "nurse_task",
-      "key_source": "clinician_ruling_2026-10-21",
-      "owner": "layer1_default",
-      "l1_tier": "SUPPRESSED",
-      "label_tier": "SUPPRESSED",
-      "d1": "silent_log",
-      "pplx": "nurse_task",
       "critical": false,
       "false_page": false,
       "caught_by_hitm": false
@@ -1650,9 +1314,14 @@
  "tier_agreement": {
   "accepted60": {
    "trigger_cases": 22,
-   "tier_match": 16,
-   "rate": 0.7273,
+   "tier_match": 15,
+   "rate": 0.6818,
    "mismatch": [
+    [
+     "HO1-004",
+     "CONFIRM_FIRST",
+     "ABSOLUTE"
+    ],
     [
      "HO1-007",
      "ARTIFACT",
@@ -1687,27 +1356,12 @@
   },
   "ruled31": {
    "trigger_cases": 17,
-   "tier_match": 11,
-   "rate": 0.6471,
+   "tier_match": 14,
+   "rate": 0.8235,
    "mismatch": [
     [
      "HO1-005",
      "SUPPRESSED",
-     "CONFIRM_FIRST"
-    ],
-    [
-     "HO4-008",
-     "SUPPRESSED",
-     "CONFIRM_FIRST"
-    ],
-    [
-     "HO7-017",
-     "ABSOLUTE",
-     null
-    ],
-    [
-     "HO7-021",
-     "ABSOLUTE",
      "CONFIRM_FIRST"
     ],
     [
@@ -1724,9 +1378,14 @@
   },
   "all91": {
    "trigger_cases": 39,
-   "tier_match": 27,
-   "rate": 0.6923,
+   "tier_match": 29,
+   "rate": 0.7436,
    "mismatch": [
+    [
+     "HO1-004",
+     "CONFIRM_FIRST",
+     "ABSOLUTE"
+    ],
     [
      "HO1-007",
      "ARTIFACT",
@@ -1763,21 +1422,6 @@
      "CONFIRM_FIRST"
     ],
     [
-     "HO4-008",
-     "SUPPRESSED",
-     "CONFIRM_FIRST"
-    ],
-    [
-     "HO7-017",
-     "ABSOLUTE",
-     null
-    ],
-    [
-     "HO7-021",
-     "ABSOLUTE",
-     "CONFIRM_FIRST"
-    ],
-    [
      "HO8-015",
      "ABSOLUTE",
      "CONFIRM_FIRST"
@@ -1793,10 +1437,10 @@
  "HO7-017": {
   "d1": "urgent_page",
   "pplx": "urgent_page",
-  "l1_tier": null,
+  "l1_tier": "ABSOLUTE",
   "default": [
    "urgent_page",
-   "jev",
+   "layer1",
    false
   ]
  },
