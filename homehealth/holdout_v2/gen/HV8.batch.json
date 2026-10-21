@@ -1,0 +1,1002 @@
+{
+ "cases": [
+  {
+   "case_id": "HV8-001",
+   "pair_id": "HV8-P01",
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "type 2 diabetes",
+    "hypertension"
+   ],
+   "function_baseline": "independent, walks without aid",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "insulin glargine",
+     "dose": "15 units at bedtime",
+     "started_day": -200
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 28,
+    "sleep_h": 7.1,
+    "steps": 3200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 68.5,
+    "glucose_mean": 140,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1 glucose 130-150 mg/dL, no lows. CGM wear 95%. Rest HR 70-74, steps 3000-3400. Day 0 03:00 CGM 52 mg/dL during sensor-side sleep. Fingerstick at 03:15 98 mg/dL. HR 68, asymptomatic.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "CGM sensor compressed during sleep Day 0 02:30-03:10"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "75-79 F, Fitzpatrick V-VI, lives alone. PMH type 2 diabetes, hypertension. Meds: insulin glargine 15 units at bedtime. Devices: cgm, glucometer, watch. Baseline rest HR 72, glucose mean 140. Trend last 7d: glucose 130-150, no lows. Day 0 03:00 CGM 52 mg/dL while sleeping on sensor; fingerstick 98 mg/dL at 03:15. Asymptomatic, HR 68. Artifact: CGM compressed during sleep.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "unreliable_reading",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "hypoglycemia",
+    "noise"
+   ],
+   "rationale": "The CGM low of 52 mg/dL fires the danger-level glucose trigger, but the sensor was compressed during sleep, a known artifact source. A fingerstick 45 minutes later reads 98 mg/dL, well above the danger limit, and the patient has no symptoms. The cleared artifact rule suppresses the trigger as unreliable. Naive-model trap: A shallow model would page for the low glucose reading without checking the fingerstick or artifact context.",
+   "decisive_feature": "Fingerstick 98 mg/dL clears the CGM low of 52 mg/dL, with no symptoms."
+  },
+  {
+   "case_id": "HV8-002",
+   "pair_id": "HV8-P01",
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "type 2 diabetes",
+    "hypertension"
+   ],
+   "function_baseline": "independent, walks without aid",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "insulin glargine",
+     "dose": "15 units at bedtime",
+     "started_day": -200
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 28,
+    "sleep_h": 7.1,
+    "steps": 3200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 68.5,
+    "glucose_mean": 140,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1 glucose 130-150 mg/dL, no lows. CGM wear 95%. Rest HR 70-74, steps 3000-3400. Day 0 03:00 CGM 52 mg/dL during sensor-side sleep. Fingerstick at 03:15 48 mg/dL. Patient confused, sweaty, HR 102.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "CGM sensor compressed during sleep Day 0 02:30-03:10"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "75-79 F, Fitzpatrick V-VI, lives alone. PMH type 2 diabetes, hypertension. Meds: insulin glargine 15 units at bedtime. Devices: cgm, glucometer, watch. Baseline rest HR 72, glucose mean 140. Trend last 7d: glucose 130-150, no lows. Day 0 03:00 CGM 52 mg/dL while sleeping on sensor; fingerstick 48 mg/dL at 03:15. Patient confused, sweaty, HR 102. Artifact: CGM compressed during sleep.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "hypoglycemia"
+   ],
+   "rationale": "The CGM low is confirmed by a fingerstick of 48 mg/dL, and the patient is symptomatic with confusion and sweating. This meets the danger-level glucose threshold with symptoms, so the trigger is ABSOLUTE and requires an immediate page. Naive-model trap: A shallow model might dismiss the low as pressure artifact, but the confirmatory fingerstick and symptoms make it a true emergency.",
+   "decisive_feature": "Fingerstick 48 mg/dL confirms the CGM low, with confusion and sweating."
+  },
+  {
+   "case_id": "HV8-003",
+   "pair_id": "HV8-P02",
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "AFib",
+    "hypertension"
+   ],
+   "function_baseline": "walks with cane indoors",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "metoprolol",
+     "dose": "50 mg BID",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 35,
+    "sleep_h": 7.5,
+    "steps": 2100,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 78.2,
+    "glucose_mean": null,
+    "sbp": 132,
+    "dbp": 78
+   },
+   "trend_last_7d": "Stable vitals. Day 0 05:30 watch impact logged, HR 108. Spouse text at 05:45: 'He dropped his watch on the tile floor, he's fine, walking around, no fall.' No injury.",
+   "caregiver_or_nurse_note": "Spouse texted at 05:45 Day 0: 'He dropped his watch on the tile floor, he's fine, walking around, no fall.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 90,
+    "artifact_flags": [
+     "impact detected Day 0 05:30"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "80-84 M, Fitzpatrick I-IV, lives with spouse. PMH AFib, hypertension. Meds: apixaban 5 mg BID, metoprolol 50 mg BID. Devices: watch, bp_cuff, scale. Baseline rest HR 62, SBP 132. Day 0 05:30 watch impact, HR 108. Spouse text: 'He dropped his watch on the tile floor, he's fine, walking around, no fall.' No injury.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "explained",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "fall",
+    "noise"
+   ],
+   "rationale": "The watch impact triggers the fall-on-anticoagulant rule, but the spouse immediately checked and confirmed the patient did not fall\u2014only the watch dropped. The event is explained, so the trigger is suppressed and a nurse task is appropriate to document and close the loop. Naive-model trap: A model might escalate for a possible fall, ignoring the caregiver's real-time clarification.",
+   "decisive_feature": "Spouse checked and confirmed no fall, only a dropped watch."
+  },
+  {
+   "case_id": "HV8-004",
+   "pair_id": "HV8-P02",
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "AFib",
+    "hypertension"
+   ],
+   "function_baseline": "walks with cane indoors",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "metoprolol",
+     "dose": "50 mg BID",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 35,
+    "sleep_h": 7.5,
+    "steps": 2100,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 78.2,
+    "glucose_mean": null,
+    "sbp": 132,
+    "dbp": 78
+   },
+   "trend_last_7d": "Stable vitals. Day 0 05:30 watch impact logged, HR 108. Spouse text at 05:45: 'He slipped on the bath mat and went down, I saw it. He's on the floor, no head hit, but can't get up.'",
+   "caregiver_or_nurse_note": "Spouse texted at 05:45 Day 0: 'He slipped on the bath mat and went down, I saw it. He's on the floor, no head hit, but can't get up.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 90,
+    "artifact_flags": [
+     "impact detected Day 0 05:30"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "80-84 M, Fitzpatrick I-IV, lives with spouse. PMH AFib, hypertension. Meds: apixaban 5 mg BID, metoprolol 50 mg BID. Devices: watch, bp_cuff, scale. Baseline rest HR 62, SBP 132. Day 0 05:30 watch impact, HR 108. Spouse text: 'He slipped on the bath mat and went down, I saw it. He's on the floor, no head hit, but can't get up.'",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "fall"
+   ],
+   "rationale": "The spouse witnessed the fall, confirming a true fall event while on apixaban. The HT_FALL_ANTICOAG rule fires as ABSOLUTE, requiring an immediate page. No suppression applies. Naive-model trap: A model might treat the impact as a possible artifact, but the caregiver's direct observation leaves no doubt.",
+   "decisive_feature": "Spouse witnessed the fall, confirming it."
+  },
+  {
+   "case_id": "HV8-005",
+   "pair_id": "HV8-P03",
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "HFrEF EF 35%",
+    "CKD 3a",
+    "AFib"
+   ],
+   "function_baseline": "walks with walker, independent ADLs",
+   "patient_goals": null,
+   "discharge": {
+    "day": -12,
+    "reason": "HF exacerbation"
+   },
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "40 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "carvedilol",
+     "dose": "12.5 mg BID",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale",
+    "bp_cuff",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 78,
+    "hrv_ms": 22,
+    "sleep_h": 6.5,
+    "steps": 1800,
+    "spo2_night_min": 91,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 72.0,
+    "glucose_mean": null,
+    "sbp": 118,
+    "dbp": 72
+   },
+   "trend_last_7d": "Day -7 to -3: watch data stable, rest HR 76-80, steps 1700-1900, SpO2 night min 90-92. Day -3 10:00 watch battery died, no data since. Scale weigh-ins continue daily: 72.1, 72.2, 72.3 kg. No other data. Day 0: watch still off, gap 50 hours. No contact logged.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 60,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 42,
+    "artifact_flags": [
+     "watch battery depleted Day -3 10:00, not recharged"
+    ],
+    "missing_hours_last_48": 50,
+    "longest_gap_h": 50
+   },
+   "router_input": "70-74 F, Fitzpatrick V-VI, lives alone. PMH HFrEF EF 35%, CKD 3a, AFib. Discharged 12 days ago for HF. Meds: furosemide 40 mg BID, apixaban 5 mg BID, carvedilol 12.5 mg BID. Devices: watch, scale, bp_cuff, fingertip_oximeter. Baseline rest HR 78, weight 72.0 kg. Day -3 10:00 watch battery died; scale weights 72.1-72.3 kg daily but no person contact. Gap now 50 hours. No caregiver note.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_GAP48_HIGHRISK",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "missing_data",
+    "hf"
+   ],
+   "rationale": "A high-risk post-discharge HF patient has a 50-hour device gap with no contact. Scale weigh-ins do not count as contact. The HT_GAP48_HIGHRISK trigger fires. Because the patient lives alone and no prompt can be answered, the confirm step fails, escalating to an urgent page. Naive-model trap: A model might see the scale data and assume the patient is okay, missing the absence of any human contact.",
+   "decisive_feature": "50-hour gap with only scale data and no person contact in a high-risk patient living alone."
+  },
+  {
+   "case_id": "HV8-006",
+   "pair_id": "HV8-P03",
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "HFrEF EF 35%",
+    "CKD 3a",
+    "AFib"
+   ],
+   "function_baseline": "walks with walker, independent ADLs",
+   "patient_goals": null,
+   "discharge": {
+    "day": -12,
+    "reason": "HF exacerbation"
+   },
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "40 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "carvedilol",
+     "dose": "12.5 mg BID",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale",
+    "bp_cuff",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 78,
+    "hrv_ms": 22,
+    "sleep_h": 6.5,
+    "steps": 1800,
+    "spo2_night_min": 91,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 72.0,
+    "glucose_mean": null,
+    "sbp": 118,
+    "dbp": 72
+   },
+   "trend_last_7d": "Day -7 to -3: watch data stable. Day -3 10:00 watch battery died, no data since. Scale weigh-ins daily: 72.1-72.3 kg. Daughter's timed video call at Day -1 14:00 inside the gap, patient appeared well. Day 0: watch still off, gap 50 hours.",
+   "caregiver_or_nurse_note": "Daughter video-called at 14:00 Day -1: 'She looked fine, no shortness of breath, said she forgot to charge the watch.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 60,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 42,
+    "artifact_flags": [
+     "watch battery depleted Day -3 10:00, not recharged"
+    ],
+    "missing_hours_last_48": 50,
+    "longest_gap_h": 50
+   },
+   "router_input": "70-74 F, Fitzpatrick V-VI, lives alone. PMH HFrEF EF 35%, CKD 3a, AFib. Discharged 12 days ago for HF. Meds: furosemide 40 mg BID, apixaban 5 mg BID, carvedilol 12.5 mg BID. Devices: watch, scale, bp_cuff, fingertip_oximeter. Baseline rest HR 78, weight 72.0 kg. Day -3 10:00 watch battery died; scale weights 72.1-72.3 kg daily. Daughter video-called at Day -1 14:00, patient looked well. Gap 50 hours.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_GAP48_HIGHRISK",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "explained",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "missing_data",
+    "hf"
+   ],
+   "rationale": "The same 50-hour gap triggers HT_GAP48_HIGHRISK, but a timed video call inside the gap provides contact and confirms the patient is well. The gap is explained, so the trigger is suppressed. A nurse task is appropriate to ensure the watch is recharged and to close the loop. Naive-model trap: A model might still escalate for the gap, ignoring the daughter's video contact that resolved the concern.",
+   "decisive_feature": "Daughter's video call inside the gap provides contact, explaining the gap."
+  },
+  {
+   "case_id": "HV8-007",
+   "pair_id": null,
+   "age_band": "65-69",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "hypertension"
+   ],
+   "function_baseline": "active, walks 30 min daily",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -300
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 30,
+    "sleep_h": 7.2,
+    "steps": 4500,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 82.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -3: watch steps 4400-4600, ring steps 4300-4500. Day -2: watch firmware 5.0 installed. Day -1 and Day 0: watch steps 8200 and 7900, ring steps 4500 and 4400. Rest HR, sleep, weight unchanged.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 150,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [
+     "watch firmware 5.0 installed Day -2"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "65-69 M, Fitzpatrick I-IV, lives alone. PMH hypertension. Med: amlodipine 5 mg. Devices: watch, ring, scale. Baseline steps 4500. Day -2 watch firmware 5.0 installed. Day -1 and Day 0 watch steps 8200 and 7900, while ring steps 4500 and 4400. All other streams stable.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "noise"
+   ],
+   "rationale": "The watch step count doubled after a firmware update, while the ring steps remained at baseline. This is a known post-update artifact, and no other vital signs changed. No trigger fires, and the correct action is to log the discrepancy silently. Naive-model trap: A model might flag a sudden activity increase as a positive change or a fall risk, but the second device confirms it is sensor noise.",
+   "decisive_feature": "Firmware update caused watch step overcount, ring steps unchanged."
+  },
+  {
+   "case_id": "HV8-008",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with adult child",
+   "pmh": [
+    "recurrent UTIs",
+    "dementia"
+   ],
+   "function_baseline": "walks with supervision",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "nitrofurantoin",
+     "dose": "50 mg daily",
+     "started_day": -10
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "thermometer",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 74,
+    "hrv_ms": 26,
+    "sleep_h": 6.8,
+    "steps": 1200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 55.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -5: oral temp 37.8-38.1\u00b0C, rest HR 88-94, steps 600-800. Day -4 to 0: oral temp 36.5-36.8\u00b0C, rest HR 72-76, steps 1100-1300. Sleep and weight stable.",
+   "caregiver_or_nurse_note": "Daughter: 'She finished the antibiotic three days ago, no fever since, back to her usual self.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 90,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 88,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "80-84 F, Fitzpatrick V-VI, lives with adult child. PMH recurrent UTIs, dementia. Med: nitrofurantoin 50 mg daily started Day -10. Devices: watch, thermometer, scale. Baseline rest HR 74, steps 1200. Trend: Days -7 to -5 fever and tachycardia; Day -4 to 0 afebrile, HR and steps returned to baseline. Daughter reports she is back to normal.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "recovery",
+    "infection"
+   ],
+   "rationale": "The patient completed a UTI course and all vital signs have returned to baseline with no ongoing symptoms. This is a resolved episode that requires no action, so silent logging is appropriate. Naive-model trap: A model might keep the case open for follow-up, but the recovery is complete and no nurse task is needed.",
+   "decisive_feature": "All vital signs returned to baseline after UTI treatment, no ongoing issues."
+  },
+  {
+   "case_id": "HV8-009",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "hypertension"
+   ],
+   "function_baseline": "independent",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "bp_cuff",
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 32,
+    "sleep_h": 7.0,
+    "steps": 3500,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 88.0,
+    "glucose_mean": null,
+    "sbp": 126,
+    "dbp": 74
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 68-72, steps 3400-3600, weight stable. BP readings from cuff show SBP 150-165, but spouse says cuff sometimes gives error messages. Day 0: watch HR 70, no symptoms.",
+   "caregiver_or_nurse_note": "Spouse: 'The blood pressure cuff keeps showing high numbers and error codes. He feels fine, no headache or dizziness.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 300,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [
+     "bp_cuff error codes Day -3 and Day -1"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "70-74 M, Fitzpatrick I-IV, lives with spouse. PMH hypertension. Med: losartan 50 mg. Devices: bp_cuff, watch, scale. Baseline SBP 126. Trend: BP cuff readings 150-165 with error codes; watch HR 70, steps stable. Spouse reports cuff errors and patient feels fine.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "provider_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "noise",
+    "caregiver"
+   ],
+   "rationale": "The BP cuff is giving inconsistent high readings with error codes, while the patient is asymptomatic and other vitals are stable. This is a device issue, not a clinical deterioration. A nurse task to arrange a replacement cuff or troubleshoot is appropriate. Naive-model trap: A model might interpret the high BP readings as uncontrolled hypertension and escalate, ignoring the device error flags.",
+   "decisive_feature": "Caregiver reports inconsistent BP cuff readings, requiring nurse to replace device."
+  },
+  {
+   "case_id": "HV8-010",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "HFpEF",
+    "hypertension",
+    "obesity"
+   ],
+   "function_baseline": "walks indoors with cane",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "20 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "lisinopril",
+     "dose": "10 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 34,
+    "sleep_h": 7.0,
+    "steps": 2000,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 95.0,
+    "glucose_mean": null,
+    "sbp": 138,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -7: rest HR 72, RR 14, SpO2 night min 93. Day -6 to -1: rest HR gradually 74, 76, 78, 80, 82; RR 15, 16, 16, 17, 18; SpO2 night min 92, 91, 91, 90, 90. Weight stable 95.0-95.2. No dyspnea or edema reported.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "75-79 F, Fitzpatrick V-VI, lives alone. PMH HFpEF, hypertension, obesity. Meds: furosemide 20 mg, lisinopril 10 mg. Devices: watch, scale, bp_cuff. Baseline rest HR 72, RR 14, SpO2 night min 93. Over 7 days, rest HR drifted 72\u219282, RR 14\u219218, night SpO2 93\u219290. Weight stable, no symptoms.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "drift_not_absorbed",
+   "chest_pain_eval": null,
+   "subtle_deterioration": true,
+   "difficulty": "hard",
+   "category": [
+    "hf"
+   ],
+   "rationale": "A slow, monotonic drift in rest HR, RR, and night SpO2 over 7 days meets the criteria for subtle deterioration. The drift guard prevents this from being absorbed as a new baseline. No hard trigger fires yet, but a provider should review for early HF decompensation. Naive-model trap: A model might view the gradual changes as within normal variation and log silently, missing the progressive decline.",
+   "decisive_feature": "Gradual HR and RR drift over 10 days without acute symptoms, flagged as subtle deterioration."
+  },
+  {
+   "case_id": "HV8-011",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "CKD 3a",
+    "osteoarthritis"
+   ],
+   "function_baseline": "walks with a stick",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "ibuprofen",
+     "dose": "400 mg TID",
+     "started_day": -4
+    },
+    {
+     "name": "lisinopril",
+     "dose": "20 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "ibuprofen",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "400 mg TID",
+     "day": -4
+    }
+   ],
+   "devices": [
+    "watch",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 29,
+    "sleep_h": 7.3,
+    "steps": 2800,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 76.0,
+    "glucose_mean": null,
+    "sbp": 130,
+    "dbp": 78
+   },
+   "trend_last_7d": "Stable vitals. Day -1 visit labs: creatinine 1.9 mg/dL (baseline 1.4). No symptoms. Day 0: rest HR 70, SBP 132, weight 76.2.",
+   "caregiver_or_nurse_note": "Visit Day -1: labs drawn, creatinine 1.9 mg/dL. Patient reports knee pain better on ibuprofen.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 91,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "70-74 M, Fitzpatrick I-IV, lives with spouse. PMH CKD 3a, osteoarthritis. Meds: lisinopril 20 mg, ibuprofen 400 mg TID started Day -4. Devices: watch, scale, bp_cuff. Baseline creatinine 1.4. Day -1 visit creatinine 1.9 mg/dL. Vitals stable, no symptoms.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "renal",
+    "med_change"
+   ],
+   "rationale": "Ibuprofen was started four days ago, and creatinine rose from 1.4 to 1.9 mg/dL, indicating possible NSAID-induced renal impairment. No acute symptoms, but the medication change and lab trend require provider review to adjust therapy. Naive-model trap: A model might overlook the creatinine rise because vitals are stable, but the renal function decline needs same-day provider attention.",
+   "decisive_feature": "Ibuprofen started four days ago with rising creatinine, needing provider review."
+  }
+ ],
+ "tally": {
+  "n": 11,
+  "id_range": [
+   "HV8-001",
+   "HV8-011"
+  ],
+  "routes": {
+   "silent_log": 3,
+   "nurse_task": 3,
+   "provider_task": 2,
+   "urgent_page": 3
+  },
+  "difficulty": {
+   "easy": 0,
+   "medium": 3,
+   "hard": 2,
+   "adversarial": 6
+  },
+  "hard_plus_adversarial_pct": 72.7,
+  "category_primary": {
+   "noise": 3,
+   "hypoglycemia": 2,
+   "fall": 2,
+   "missing_data": 2,
+   "recovery": 1,
+   "hf": 1,
+   "renal": 1
+  },
+  "category_any": {
+   "noise": 4,
+   "hypoglycemia": 2,
+   "fall": 2,
+   "missing_data": 2,
+   "recovery": 1,
+   "hf": 2,
+   "renal": 1,
+   "med_change": 1,
+   "caregiver": 1,
+   "infection": 1
+  },
+  "hidden_hypoxemia_ids": [],
+  "subtle_deterioration_ids": [
+   "HV8-010"
+  ],
+  "pairs": {
+   "HV8-P01": [
+    "HV8-001",
+    "HV8-002"
+   ],
+   "HV8-P02": [
+    "HV8-003",
+    "HV8-004"
+   ],
+   "HV8-P03": [
+    "HV8-005",
+    "HV8-006"
+   ]
+  },
+  "hard_trigger_ids": {
+   "HT_VS_DANGER": [
+    "HV8-001",
+    "HV8-002"
+   ],
+   "HT_FALL_ANTICOAG": [
+    "HV8-003",
+    "HV8-004"
+   ],
+   "HT_GAP48_HIGHRISK": [
+    "HV8-005",
+    "HV8-006"
+   ]
+  },
+  "trigger_tiers": {
+   "ABSOLUTE": [
+    "HV8-002",
+    "HV8-004"
+   ],
+   "CONFIRM_FIRST": [
+    "HV8-005"
+   ],
+   "SUPPRESSED": [
+    "HV8-001",
+    "HV8-003",
+    "HV8-006"
+   ],
+   "ARTIFACT": []
+  },
+  "baseline_layers": {
+   "learning_period": [],
+   "baseline_reset": [],
+   "drift_not_absorbed": [
+    "HV8-010"
+   ],
+   "hard_limit_artifact": [],
+   "hard_limit_danger": []
+  },
+  "fitzpatrick_v_vi_count": 5,
+  "minimums": {
+   "pairs": {
+    "required": 3,
+    "actual": 3,
+    "met": true
+   }
+  },
+  "all_minimums_met": true,
+  "self_check_failures_fixed": 0
+ },
+ "meta": {
+  "batch": "HV8",
+  "model": "deepseek/deepseek-v4-pro",
+  "module": "deepseek",
+  "n_requested": 11,
+  "n_got": 11,
+  "split": false,
+  "id_fixes": 0
+ }
+}

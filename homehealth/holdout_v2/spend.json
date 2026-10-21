@@ -1,0 +1,133 @@
+{
+ "gen_grade_usd": 1.8846,
+ "jev_usd": 0.0143,
+ "total_usd": 1.8989,
+ "calls": [
+  {
+   "tag": "gen HV1 try1",
+   "model": "anthropic/claude-haiku-5.5",
+   "cost_usd": 0.0305442,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "gen HV5 try1",
+   "model": "anthropic/claude-haiku-5.5",
+   "cost_usd": 0.0338554,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "gen HV3 try1",
+   "model": "anthropic/claude-haiku-5.5",
+   "cost_usd": 0.0373633,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "gen HV7 try1",
+   "model": "anthropic/claude-haiku-5.5",
+   "cost_usd": 0.0377785,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "gen HV6 try1",
+   "model": "deepseek/deepseek-v4-pro",
+   "cost_usd": 0.0447207,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "gen HV4 try1",
+   "model": "deepseek/deepseek-v4-pro",
+   "cost_usd": 0.0398744,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "gen HV2 try1",
+   "model": "deepseek/deepseek-v4-pro",
+   "cost_usd": 0.0194952485,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "gen HV8 try1",
+   "model": "deepseek/deepseek-v4-pro",
+   "cost_usd": 0.0465209,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "gen HV2 part1 try1",
+   "model": "deepseek/deepseek-v4-pro",
+   "cost_usd": 0.0407792,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "grade HV3+HV4 try1",
+   "model": "google/gemini-4-argon",
+   "cost_usd": 0.232766,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "grade HV5+HV6 try1",
+   "model": "google/gemini-4-argon",
+   "cost_usd": 0.289124,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "grade HV7+HV8 try1",
+   "model": "google/gemini-4-argon",
+   "cost_usd": 0.243692,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "gen HV2 part2 try1",
+   "model": "deepseek/deepseek-v4-pro",
+   "cost_usd": 0.013753828376,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "grade HV1+HV2 try1",
+   "model": "google/gemini-4-argon",
+   "cost_usd": 0.236762,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "grade HV1+HV2 try2",
+   "model": "google/gemini-4-argon",
+   "cost_usd": 0.223222,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "gen HV9 try1",
+   "model": "anthropic/claude-haiku-5.5",
+   "cost_usd": 0.0368574,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "gen HV10 try1",
+   "model": "anthropic/claude-haiku-5.5",
+   "cost_usd": 0.0428158,
+   "error": null,
+   "finish": "stop"
+  },
+  {
+   "tag": "grade HV9+HV10 try1",
+   "model": "google/gemini-4-argon",
+   "cost_usd": 0.234636,
+   "error": null,
+   "finish": "stop"
+  }
+ ]
+}

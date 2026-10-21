@@ -1,0 +1,1082 @@
+{
+ "cases": [
+  {
+   "case_id": "HV6-001",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with adult child",
+   "pmh": [
+    "COPD GOLD 3",
+    "hospice enrolled for end-stage lung disease",
+    "comfort measures only"
+   ],
+   "function_baseline": "bed-to-chair with assistance, dependent for most ADLs",
+   "patient_goals": "comfort only, no hospital transfer, signed POLST",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "morphine sulfate",
+     "dose": "5 mg every 4 hours PRN",
+     "started_day": -60
+    },
+    {
+     "name": "ipratropium",
+     "dose": "2 puffs QID",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 88,
+    "hrv_ms": 22,
+    "sleep_h": 7.2,
+    "steps": 180,
+    "spo2_night_min": 89,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 56.2,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 86-90, SpO2 night min 88-90%, steps 150-200. Day 0 10:15: watch SpO2 86% at rest, good signal; 10:17: fingertip 86% on two readings, no motion flag. No increased work of breathing, patient denies discomfort. HR 88, RR 18.",
+   "caregiver_or_nurse_note": "Daughter texted: 'Mom's sats are 86 on her finger thing but she says she feels fine, no different from usual. She's been drowsy but that's the morphine.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.5
+   },
+   "router_input": "80-84F, Fitz V-VI, lives with adult child, COPD GOLD 3 on hospice comfort-only plan. Devices: watch, fingertip oximeter. Baseline SpO2 night min 89%, rest HR 88. Day 0 10:15 watch SpO2 86% at rest, good signal; 10:17 fingertip 86% on two readings, no motion flag. No dyspnea, patient comfortable. HR 88, RR 18. Daughter confirms no distress. Monitoring day 120, established phase.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_SPO2_LT88",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "goals_of_care",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "respiratory",
+    "goals_of_care"
+   ],
+   "rationale": "Resting fingertip SpO2 86% meets HT_SPO2_LT88, but the patient is under a comfort-only hospice plan with no distressing breathlessness. The trigger is suppressed for goals_of_care, routing to a same-shift hospice nurse contact rather than urgent escalation. Vitals are otherwise stable and the patient denies discomfort. Naive-model trap: A shallow model would page urgently for the low SpO2 without considering the goals of care, missing the suppression rule.",
+   "decisive_feature": "Confirmed SpO2 86% without dyspnea under hospice comfort plan triggers HT_SPO2_LT88 but is suppressed goals_of_care to nurse_task."
+  },
+  {
+   "case_id": "HV6-002",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "type 2 diabetes on insulin",
+    "metastatic pancreatic cancer",
+    "hospice comfort care"
+   ],
+   "function_baseline": "ambulates with walker, independent in ADLs with fatigue",
+   "patient_goals": "comfort only, no hospitalisation, POLST in place",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "insulin glargine",
+     "dose": "18 units at bedtime",
+     "started_day": -200
+    },
+    {
+     "name": "morphine SR",
+     "dose": "15 mg BID",
+     "started_day": -90
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer"
+   ],
+   "baseline_30d": {
+    "rest_hr": 78,
+    "hrv_ms": 26,
+    "sleep_h": 6.5,
+    "steps": 1200,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": null,
+    "weight_kg": 68.0,
+    "glucose_mean": 145,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: CGM mean 140-155 mg/dL, no nocturnal lows. Day 0 02:00: CGM 48 mg/dL, flat for 20 min. Spouse found him confused, sweaty, and 'not making sense'. Fingerstick at 02:10: 45 mg/dL. Given juice, glucose rose to 78 by 02:30, mentation cleared.",
+   "caregiver_or_nurse_note": "Spouse called: 'He was out of it, couldn't tell me his name. I checked his sugar and it was 45. I gave him juice and he's better now.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 95,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 98,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "75-79M, Fitz I-IV, lives with spouse, type 2 DM on insulin glargine, hospice comfort care for pancreatic cancer. Devices: CGM, glucometer. Baseline glucose mean 145. Day 0 02:00 CGM 48 mg/dL, flat; spouse found him confused and sweaty. Fingerstick 45 mg/dL at 02:10, treated with juice, recovered. Monitoring day 95, established phase.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "hard_limit_danger",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "hypoglycemia",
+    "goals_of_care"
+   ],
+   "rationale": "A confirmed glucose of 45 mg/dL with confusion meets the HT_VS_DANGER hard limit. Although the patient is on hospice comfort care, this is an urgent treatable comfort problem (symptomatic hypoglycemia), so the trigger is not suppressed; it routes to an urgent page to the hospice nurse. The danger-level value and symptoms override the usual goals-of-care suppression. Naive-model trap: A naive model might suppress this as goals_of_care and send a routine nurse task, missing the need for immediate intervention to relieve suffering.",
+   "decisive_feature": "Symptomatic hypoglycemia confirmed at 45 mg/dL in a hospice patient is an urgent comfort problem, prompting urgent page to hospice nurse rather than suppression.",
+   "escalation_target": "hospice_nurse"
+  },
+  {
+   "case_id": "HV6-003",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "newly diagnosed HFrEF EF 35%",
+    "hypertension"
+   ],
+   "function_baseline": "independent, walks daily",
+   "patient_goals": "full care, wishes hospital transfer if needed",
+   "discharge": {
+    "day": -4,
+    "reason": "HF exacerbation"
+   },
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -4
+    },
+    {
+     "name": "lisinopril",
+     "dose": "5 mg daily",
+     "started_day": -4
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "furosemide",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "40 mg daily",
+     "day": -4
+    },
+    {
+     "name": "lisinopril",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "5 mg daily",
+     "day": -4
+    }
+   ],
+   "devices": [
+    "watch",
+    "fingertip_oximeter",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 30,
+    "sleep_h": 7.0,
+    "steps": 3500,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": null,
+    "weight_kg": 78.5,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -4 to -1: rest HR 74-78, steps 800-1200, weight 79.2 to 78.8 kg. Day 0 09:30: watch SpO2 85% at rest, good signal; 09:32 fingertip 86% on two readings, no motion. Patient reports 'a little winded' but speaking full sentences. HR 96, RR 22, SBP 110.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "learning",
+    "monitoring_day": 4,
+    "learning_days_total": 10,
+    "last_condition_change": {
+     "type": "hospitalization",
+     "day": -4
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.0
+   },
+   "router_input": "70-74F, Fitz V-VI, lives alone, HFrEF EF 35%, discharged Day -4 after HF exacerbation. Devices: watch, fingertip oximeter, scale, BP cuff. Baseline SpO2 not established (learning day 4). Day 0 09:30: watch SpO2 85% at rest, good signal; 09:32 fingertip 86% on two readings, no motion. Patient mildly winded but speaking full sentences. HR 96, RR 22, SBP 110. Weight 78.8 kg. Learning phase.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_SPO2_LT88",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "learning_period",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "respiratory",
+    "hf"
+   ],
+   "rationale": "Resting SpO2 86% confirmed by fingertip during the learning period (day 4) fires HT_SPO2_LT88. Because no own baseline is learned, the reading is CONFIRM_FIRST and the fingertip confirmation makes it already_confirmed, escalating to urgent page. The learning period prevents suppression as at_patient_baseline. Naive-model trap: A shallow model might treat this as a stable COPD baseline or suppress due to recent discharge, missing the learning-period rule that mandates escalation.",
+   "decisive_feature": "Learning period with no own baseline makes an SpO2 86% trigger CONFIRM_FIRST, and fingertip confirmation escalates to urgent page."
+  },
+  {
+   "case_id": "HV6-004",
+   "pair_id": null,
+   "age_band": "65-69",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with adult child",
+   "pmh": [
+    "type 2 diabetes",
+    "CKD stage 3a",
+    "recent pneumonia discharge"
+   ],
+   "function_baseline": "walks independently, manages own medications",
+   "patient_goals": "full treatment",
+   "discharge": {
+    "day": -6,
+    "reason": "pneumonia"
+   },
+   "meds": [
+    {
+     "name": "metformin",
+     "dose": "500 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "amoxicillin",
+     "dose": "500 mg TID",
+     "started_day": -6
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "amoxicillin",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "500 mg TID",
+     "day": -6
+    }
+   ],
+   "devices": [
+    "watch",
+    "scale",
+    "cgm"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 34,
+    "sleep_h": 6.8,
+    "steps": 4200,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": null,
+    "weight_kg": 88.0,
+    "glucose_mean": 130,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -6 to -1: rest HR 68\u219274\u219276\u219278\u219280\u219282\u219284 bpm, RR 16\u219217\u219218\u219218\u219219\u219219\u219220/min, weight 88.0\u219288.2\u219288.4\u219288.5\u219288.7\u219288.8\u219288.9 kg, steps 2500\u21922200\u21921900\u21921700\u21921500\u21921400\u21921200. CGM mean 130-140. No single reading outside normal limits.",
+   "caregiver_or_nurse_note": "Son: 'Dad seems more tired each day, but no fever or cough. He's eating less.'",
+   "baseline_status": {
+    "phase": "learning",
+    "monitoring_day": 6,
+    "learning_days_total": 10,
+    "last_condition_change": {
+     "type": "hospitalization",
+     "day": -6
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 90,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2.0
+   },
+   "router_input": "65-69M, Fitz I-IV, lives with adult child, type 2 DM, CKD 3a, discharged Day -6 after pneumonia. Devices: watch, scale, CGM. Learning day 6. Trend: rest HR drifted 68\u219284, RR 16\u219220, weight +0.9 kg, steps 2500\u21921200 over 6 days. No single vital outside normal. Son notes increasing fatigue, reduced intake. No fever, no cough.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "drift_not_absorbed",
+   "chest_pain_eval": null,
+   "subtle_deterioration": true,
+   "difficulty": "hard",
+   "category": [
+    "subtle_deterioration",
+    "infection"
+   ],
+   "rationale": "A monotonic drift in HR, RR, weight, and steps over six days during the learning period signals possible reaccumulation or unresolved infection, even though no single value exceeds population thresholds. The drift guard flags this as subtle deterioration, routing to provider review. The learning period does not absorb this drift as a new baseline. Naive-model trap: A naive model might see all vitals within normal ranges and log silently, missing the progressive pattern that requires same-day clinician evaluation.",
+   "decisive_feature": "Learning-period drift in HR (+16 bpm), RR (+4), weight (+0.9 kg), and steps (-1300) without a hard trigger prompts provider review for subtle deterioration."
+  },
+  {
+   "case_id": "HV6-005",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "HFpEF",
+    "recurrent UTIs"
+   ],
+   "function_baseline": "independent with cane, manages household",
+   "patient_goals": "full care",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "20 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "nitrofurantoin",
+     "dose": "100 mg BID",
+     "started_day": -10
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "nitrofurantoin",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "100 mg BID",
+     "day": -10
+    }
+   ],
+   "devices": [
+    "watch",
+    "scale",
+    "thermometer"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 28,
+    "sleep_h": 7.5,
+    "steps": 2800,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": null,
+    "weight_kg": 64.5,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 70-74, steps 2600-2900, weight 64.4-64.6 kg, oral temp 36.5-36.8\u00b0C. Day 0: HR 72, steps 2750, afebrile. All streams at baseline.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 85,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.0
+   },
+   "router_input": "80-84F, Fitz V-VI, lives alone, HFpEF, recurrent UTIs. Devices: watch, scale, thermometer. Baseline rest HR 72, steps 2800, weight 64.5 kg. Completed nitrofurantoin course Day -10. All vitals and weight stable at baseline for 7 days; afebrile. Monitoring day 85, established phase.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "easy",
+   "category": [
+    "recovery",
+    "noise"
+   ],
+   "rationale": "The patient has fully recovered from a UTI, with all streams at baseline and no symptoms. No hard triggers fire, and the clinical picture is stable. The appropriate action is silent logging. Naive-model trap: A naive model might flag the recent antibiotic course as a reason for a nurse check, but complete recovery with stable vitals warrants no action.",
+   "decisive_feature": "Full return to baseline after UTI treatment with no new symptoms justifies silent log."
+  },
+  {
+   "case_id": "HV6-006",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "hypertension"
+   ],
+   "function_baseline": "active, walks 5 km daily",
+   "patient_goals": "full care",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 38,
+    "sleep_h": 7.8,
+    "steps": 8500,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": null,
+    "weight_kg": 72.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 60-64, SpO2 night min 94-96%, steps 8000-9000. Day 0 11:15: watch SpO2 85% with low-perfusion flag; 11:17 fingertip 97% on good waveform. No symptoms. HR 64, RR 14.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [
+     "low-perfusion flag during SpO2 sample Day 0 11:15"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "70-74M, Fitz I-IV, lives alone, hypertension. Devices: watch, fingertip oximeter. Baseline SpO2 night min 94%. Day 0 11:15 watch SpO2 85% with low-perfusion flag; 11:17 fingertip 97% on good waveform. No symptoms, HR 64, RR 14. All other streams at baseline.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "noise"
+   ],
+   "rationale": "The watch SpO2 of 85% is accompanied by a low-perfusion flag and immediately contradicted by a fingertip reading of 97%. This is classic artifact, and no hard trigger fires because the reliable reading is normal. Silent log is appropriate. Naive-model trap: A naive model might react to the 85% watch reading without checking the perfusion flag and fingertip confirmation, leading to a false alert.",
+   "decisive_feature": "Low-perfusion flagged watch SpO2 85% contradicted by fingertip 97% is artifact, silent log."
+  },
+  {
+   "case_id": "HV6-007",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with adult child",
+   "pmh": [
+    "HFpEF",
+    "CKD stage 3b",
+    "hypertension"
+   ],
+   "function_baseline": "walks with walker, independent ADLs",
+   "patient_goals": "full care, wishes hospital if needed",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 30,
+    "sleep_h": 7.0,
+    "steps": 2400,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": null,
+    "weight_kg": 82.0,
+    "glucose_mean": null,
+    "sbp": 134,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -7: HR 72, RR 16, weight 82.0, SBP 134, steps 2400. Day -6: HR 73, RR 16, weight 82.1, steps 2300. Day -5: HR 74, RR 17, weight 82.2, steps 2200. Day -4: HR 75, RR 17, weight 82.3, steps 2100. Day -3: HR 76, RR 18, weight 82.4, SBP 138, steps 2000. Day -2: HR 78, RR 18, weight 82.6, steps 1900. Day -1: HR 79, RR 19, weight 82.8, SBP 140, steps 1800. Day 0: HR 80, RR 20, weight 83.0, SBP 142, steps 1700. No single value outside normal limits.",
+   "caregiver_or_nurse_note": "Daughter: 'Mom's ankles are a bit puffier and she's more tired, but no chest pain or trouble breathing.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 80,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 91,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.5
+   },
+   "router_input": "70-74F, Fitz V-VI, lives with adult child, HFpEF, CKD 3b, hypertension. Devices: watch, scale, BP cuff. Established phase day 80. Over 8 days, monotonic drift: rest HR 72\u219280, RR 16\u219220, weight 82.0\u219283.0 kg, SBP 134\u2192142, steps 2400\u21921700. Daughter notes ankle swelling and fatigue. No acute symptoms. No single vital outside normal.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "drift_not_absorbed",
+   "chest_pain_eval": null,
+   "subtle_deterioration": true,
+   "difficulty": "hard",
+   "category": [
+    "hf",
+    "subtle_deterioration"
+   ],
+   "rationale": "A clear monotonic drift in HR, RR, weight, and SBP over 8 days, with corroborating symptoms, indicates subtle decompensation of HFpEF. No hard trigger fires because no single value crosses a danger threshold, but the drift guard flags this as subtle deterioration. Provider review is needed to adjust diuretics and prevent hospitalization. Naive-model trap: A naive model might see all values within normal limits and log silently, missing the progressive pattern that requires same-day clinician intervention.",
+   "decisive_feature": "Monotonic drift in HR (+8), RR (+4), weight (+1.0 kg), and SBP (+8) with symptoms over 8 days signals HF decompensation, prompting provider review."
+  },
+  {
+   "case_id": "HV6-008",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with paid caregiver",
+   "pmh": [
+    "advanced prostate cancer with bone metastases",
+    "hospice comfort care"
+   ],
+   "function_baseline": "bed-bound, dependent for all care",
+   "patient_goals": "comfort only, no hospital transfer",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "morphine sulfate",
+     "dose": "10 mg every 4 hours PRN",
+     "started_day": -120
+    },
+    {
+     "name": "dexamethasone",
+     "dose": "4 mg daily",
+     "started_day": -60
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring"
+   ],
+   "baseline_30d": {
+    "rest_hr": 82,
+    "hrv_ms": 20,
+    "sleep_h": 6.0,
+    "steps": 50,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 60.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 80-84, skin temp dev 0.0 to +0.2\u00b0C, steps 40-60. Day 0: caregiver reports increasing hip pain requiring more morphine, but vitals unchanged. No falls, no acute change in mental status.",
+   "caregiver_or_nurse_note": "Paid caregiver texted: 'He's been hurting more the last two days, needing morphine every 3 hours instead of 4. He's awake more at night from pain. Vitals look the same on the watch.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 150,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 88,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2.0
+   },
+   "router_input": "85-89M, Fitz I-IV, lives with paid caregiver, advanced prostate cancer on hospice comfort care. Devices: watch, ring. Baseline rest HR 82, steps 50. Day 0: caregiver reports escalating bone pain requiring more frequent morphine, but vitals stable. No hard triggers. Monitoring day 150, established phase.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "provider_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "goals_of_care",
+    "caregiver"
+   ],
+   "rationale": "The patient's escalating pain under hospice care requires adjustment of the comfort regimen, but no hard trigger fires. The appropriate action is a same-shift nurse contact to reassess pain management, not an urgent page. The goals-of-care context directs this to the hospice nurse. Naive-model trap: A naive model might ignore the caregiver's report because vitals are stable, missing the need for proactive symptom management in hospice.",
+   "decisive_feature": "Escalating pain in hospice without any hard trigger requires nurse contact for symptom management, not urgent page."
+  },
+  {
+   "case_id": "HV6-009",
+   "pair_id": null,
+   "age_band": "60-64",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "hypertension",
+    "migraine"
+   ],
+   "function_baseline": "full-time worker, active",
+   "patient_goals": "full care",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "lisinopril",
+     "dose": "10 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 35,
+    "sleep_h": 7.2,
+    "steps": 6000,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": null,
+    "weight_kg": 65.0,
+    "glucose_mean": null,
+    "sbp": 122,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 66-70, steps 5500-6500. Day -1 14:30: watch HR 178 bpm for 2 minutes with motion flag; immediately followed by HR 70. No symptoms. Day 0: all streams normal.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 300,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [
+     "motion flag during HR spike Day -1 14:30"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "60-64F, Fitz I-IV, lives alone, hypertension. Devices: watch, BP cuff. Baseline rest HR 68. Day -1 14:30: watch HR 178 bpm for 2 minutes with motion flag, then HR 70. No symptoms. All other data at baseline. Monitoring day 300, established phase.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "noise"
+   ],
+   "rationale": "A brief HR spike with a motion flag and immediate return to baseline without symptoms is artifact. No hard trigger fires because the reading is not sustained and flagged. Silent log is appropriate. Naive-model trap: A naive model might overreact to the 178 bpm value without considering the motion flag and lack of symptoms, generating a false alert.",
+   "decisive_feature": "Motion-flagged HR spike to 178 bpm without symptoms is artifact, silent log."
+  },
+  {
+   "case_id": "HV6-010",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "type 2 diabetes",
+    "hypertension"
+   ],
+   "function_baseline": "walks daily, independent",
+   "patient_goals": "full care",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "metformin",
+     "dose": "1000 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "empagliflozin",
+     "dose": "10 mg daily",
+     "started_day": -5
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "empagliflozin",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "10 mg daily",
+     "day": -5
+    }
+   ],
+   "devices": [
+    "cgm",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": null,
+    "hrv_ms": null,
+    "sleep_h": null,
+    "steps": null,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": null,
+    "weight_kg": 92.0,
+    "glucose_mean": 145,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -5 to -1: CGM mean 145\u2192140\u2192136\u2192132\u2192128 mg/dL, weight 92.0\u219291.7\u219291.5\u219291.3\u219291.1 kg. Day 0: CGM mean 126, weight 91.0. No hypoglycemic episodes. Patient reports no urinary symptoms or dizziness.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.0
+   },
+   "router_input": "75-79M, Fitz V-VI, lives with spouse, type 2 DM, hypertension. Devices: CGM, scale. Empagliflozin 10 mg started Day -5. CGM mean declined from 145 to 126 mg/dL, weight 92.0 to 91.0 kg over 5 days. No hypoglycemia, no adverse symptoms. Monitoring day 120, established phase.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "silent_log"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "med_change",
+    "hyperglycemia"
+   ],
+   "rationale": "Initiation of an SGLT2 inhibitor produces expected mild weight loss and glucose improvement without adverse effects. A routine nurse check within 24-72 hours is appropriate to reinforce education and ensure no genitourinary issues develop, but no urgent action is needed. Naive-model trap: A naive model might either overreact to the rapid glucose decline or ignore the new medication entirely, missing the opportunity for standard follow-up.",
+   "decisive_feature": "New SGLT2 inhibitor with expected mild changes and no adverse effects warrants routine nurse follow-up."
+  },
+  {
+   "case_id": "HV6-011",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "atrial fibrillation",
+    "hypertension"
+   ],
+   "function_baseline": "independent, walks with cane",
+   "patient_goals": "full care",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "metoprolol",
+     "dose": "25 mg BID",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 28,
+    "sleep_h": 7.0,
+    "steps": 2200,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 68.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: watch irregular rhythm notifications 3-4 times daily, ring shows regular rhythm. Rest HR 68-72 on both devices. No symptoms, steps 2000-2400. Day 0: same pattern. Patient feels well.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 90,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.0
+   },
+   "router_input": "80-84F, Fitz V-VI, lives alone, AFib on apixaban and metoprolol. Devices: watch, ring. Baseline rest HR 70. For 7 days, watch shows irregular rhythm notifications while ring shows regular rhythm; HR concordant 68-72. No symptoms, steps stable. Monitoring day 90, established phase.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "arrhythmia",
+    "conflicting"
+   ],
+   "rationale": "Conflicting rhythm signals between two devices\u2014watch indicating AFib, ring showing regular rhythm\u2014without symptoms create ambiguity that requires provider review. The discrepancy could stem from device algorithm differences or a true intermittent arrhythmia, and a clinician must interpret the data. Naive-model trap: A naive model might either ignore the watch alerts as artifact or overreact and page urgently, but the correct approach is same-day provider review to reconcile the conflict.",
+   "decisive_feature": "Conflicting rhythm signals between watch and ring without symptoms require provider review to resolve device discrepancy."
+  }
+ ],
+ "tally": {
+  "n": 11,
+  "id_range": [
+   "HV6-001",
+   "HV6-011"
+  ],
+  "routes": {
+   "silent_log": 3,
+   "nurse_task": 3,
+   "provider_task": 3,
+   "urgent_page": 2
+  },
+  "difficulty": {
+   "easy": 1,
+   "medium": 2,
+   "hard": 8,
+   "adversarial": 0
+  },
+  "hard_plus_adversarial_pct": 72.7,
+  "category_primary": {
+   "respiratory": 1,
+   "hypoglycemia": 1,
+   "subtle_deterioration": 2,
+   "recovery": 1,
+   "noise": 2,
+   "hf": 1,
+   "goals_of_care": 1,
+   "arrhythmia": 1,
+   "med_change": 1,
+   "infection": 0,
+   "acs": 0,
+   "stroke": 0,
+   "syncope": 0,
+   "fall": 0,
+   "delirium": 0,
+   "sepsis": 0,
+   "dehydration": 0,
+   "electrolyte": 0,
+   "renal": 0,
+   "hyperglycemia": 0,
+   "missing_data": 0
+  },
+  "category_any": {
+   "noise": 2,
+   "spo2_bias": 0,
+   "med_change": 1,
+   "dementia": 0,
+   "caregiver": 1,
+   "conflicting": 1,
+   "goals_of_care": 3,
+   "missing_data": 0,
+   "recovery": 1
+  },
+  "hidden_hypoxemia_ids": [],
+  "subtle_deterioration_ids": [
+   "HV6-004",
+   "HV6-007"
+  ],
+  "pairs": {},
+  "hard_trigger_ids": {
+   "HT_SPO2_LT88": [
+    "HV6-001",
+    "HV6-003"
+   ],
+   "HT_VS_DANGER": [
+    "HV6-002"
+   ]
+  },
+  "trigger_tiers": {
+   "ABSOLUTE": [
+    "HV6-002"
+   ],
+   "CONFIRM_FIRST": [
+    "HV6-003"
+   ],
+   "SUPPRESSED": [
+    "HV6-001"
+   ],
+   "ARTIFACT": []
+  },
+  "baseline_layers": {
+   "learning_period": [
+    "HV6-003"
+   ],
+   "baseline_reset": [],
+   "drift_not_absorbed": [
+    "HV6-004",
+    "HV6-007"
+   ],
+   "hard_limit_artifact": [],
+   "hard_limit_danger": [
+    "HV6-002"
+   ]
+  },
+  "fitzpatrick_v_vi_count": 6,
+  "minimums": {
+   "hospice": {
+    "required": 3,
+    "actual": 3,
+    "met": true
+   },
+   "learning": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "subtle": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "noise": {
+    "required": 0,
+    "actual": 2,
+    "met": true
+   },
+   "spo2_bias": {
+    "required": 0,
+    "actual": 0,
+    "met": true
+   },
+   "med_change": {
+    "required": 0,
+    "actual": 1,
+    "met": true
+   },
+   "dementia": {
+    "required": 0,
+    "actual": 0,
+    "met": true
+   },
+   "caregiver": {
+    "required": 0,
+    "actual": 1,
+    "met": true
+   },
+   "conflicting": {
+    "required": 0,
+    "actual": 1,
+    "met": true
+   },
+   "goals_of_care": {
+    "required": 3,
+    "actual": 3,
+    "met": true
+   },
+   "missing_data": {
+    "required": 0,
+    "actual": 0,
+    "met": true
+   },
+   "recovery": {
+    "required": 0,
+    "actual": 1,
+    "met": true
+   }
+  },
+  "all_minimums_met": true,
+  "self_check_failures_fixed": 0
+ },
+ "meta": {
+  "batch": "HV6",
+  "model": "deepseek/deepseek-v4-pro",
+  "module": "deepseek",
+  "n_requested": 11,
+  "n_got": 11,
+  "split": false,
+  "id_fixes": 0
+ }
+}

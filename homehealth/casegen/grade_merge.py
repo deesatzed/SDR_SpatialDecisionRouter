@@ -38,13 +38,15 @@ TIERS = {"ABSOLUTE", "CONFIRM_FIRST", "SUPPRESSED", "ARTIFACT"}
 RULE_TIER = {"HT_SYNCOPE": "ABSOLUTE", "HT_FOCAL_NEURO": "ABSOLUTE", "HT_CHEST_PAIN_ECG": "ABSOLUTE", "HT_CHEST_PAIN_VITALS": "CONFIRM_FIRST",
              "HT_SPO2_LT88": "CONFIRM_FIRST", "HT_GAP48_HIGHRISK": "CONFIRM_FIRST", "HT_FALL_ANTICOAG": "CONFIRM_FIRST",
              "HT_VS_DANGER": "ABSOLUTE", "HT_VS_IMPLAUSIBLE": "ARTIFACT",   # v2.3 VS layers
-             "HT_VS_BASELINE": "CONFIRM_FIRST"}   # v1.5: engine baseline deviation (|z| >= z_confirm); used in secondary_triggers
-CONFIRM_STEPS = {"fingertip_recheck", "patient_call", "caregiver_ping", "already_confirmed", "device_recheck+patient_call"}  # last: chest-pain rule with a quality-flagged vital
+             "HT_VS_BASELINE": "CONFIRM_FIRST",
+             "HT_BRADY_RATE_DRUG": "CONFIRM_FIRST"}   # v1.10: symptomatic bradycardia on a rate-slowing drug   # v1.5: engine baseline deviation (|z| >= z_confirm); used in secondary_triggers
+CONFIRM_STEPS = {"fingertip_recheck", "patient_call", "watch_prompt", "caregiver_ping", "already_confirmed", "device_recheck+patient_call"}  # last: chest-pain rule with a quality-flagged vital
 ARTIFACT_STEPS = {"device_recheck", "fingertip_recheck", "fingerstick_recheck"}  # last: CGM pressure-low rule
 BASELINE_LAYERS = {"hard_limit_artifact", "hard_limit_danger", "learning_period", "baseline_reset", "drift_not_absorbed"}
 PHASES = {"learning", "established", "relearning"}
 SUPP_REASONS = {"unreliable_reading", "at_patient_baseline", "explained", "goals_of_care", "below_band_threshold"}
-BANDED_RULES = {"HT_CHEST_PAIN_VITALS"}   # SMART_TRIGGERS.md section 7: ABSOLUTE / CONFIRM_FIRST / SUPPRESSED below_band_threshold
+BANDED_RULES = {"HT_CHEST_PAIN_VITALS"}
+ABSOLUTE_OK_V110 = {"HT_FALL_ANTICOAG"}   # SMART_TRIGGERS v1.10: a confirmed fall on an anticoagulant is ABSOLUTE   # SMART_TRIGGERS.md section 7: ABSOLUTE / CONFIRM_FIRST / SUPPRESSED below_band_threshold
 CF_ALTS = {"nurse_task_with_recheck", "provider_task"}
 SECONDARY_CONFIRM_STEPS = CONFIRM_STEPS | {"device_recheck"}   # v1.5: e.g. an HR recheck attached to a suppressed primary trigger
 ESCALATION_TARGETS = {"hospice_nurse"}                          # v1.5 hospice narrowing
@@ -97,7 +99,7 @@ def smart_checks(c):
         return iss
     if rule not in RULE_TIER: iss.append(f"unknown hard_trigger_rule {rule!r} (v2.2 ids; HT_CHEST_PAIN_CHANGE is split)")
     if tier not in TIERS: return iss + [f"bad trigger_tier {tier!r}"]
-    if tier != "SUPPRESSED" and rule in RULE_TIER and RULE_TIER[rule] == "CONFIRM_FIRST" and tier == "ABSOLUTE" and rule not in BANDED_RULES:
+    if tier != "SUPPRESSED" and rule in RULE_TIER and RULE_TIER[rule] == "CONFIRM_FIRST" and tier == "ABSOLUTE" and rule not in BANDED_RULES and rule not in ABSOLUTE_OK_V110:
         iss.append(f"{rule} labelled ABSOLUTE (policy tier CONFIRM_FIRST)")
     if tier == "ABSOLUTE":
         if exp != "urgent_page": iss.append("ABSOLUTE but not urgent_page")

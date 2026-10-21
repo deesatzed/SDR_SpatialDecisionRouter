@@ -1,0 +1,81 @@
+{
+ "generated": 110,
+ "graded": 110,
+ "accepted_by_merge": 65,
+ "dedupe_removed": 0,
+ "accepted_final": 65,
+ "review_queue_disputed": 16,
+ "fix_list_excluded": 29,
+ "queue_reasons": {
+  "NOVELTY_REVIEW": 1,
+  "TIER_DISPUTE": 3,
+  "CRITICAL_MISS": 1,
+  "ROUTE_DISAGREE": 1,
+  "HARD_TRIGGER_DISPUTE": 2,
+  "REJECT": 11
+ },
+ "routes": {
+  "urgent_page": 20,
+  "nurse_task": 17,
+  "provider_task": 12,
+  "silent_log": 16
+ },
+ "tiers": {
+  "ABSOLUTE": 10,
+  "CONFIRM_FIRST": 10,
+  "SUPPRESSED": 14,
+  "ARTIFACT": 2
+ },
+ "by_batch_accepted": {
+  "HV1": 9,
+  "HV2": 4,
+  "HV3": 11,
+  "HV5": 9,
+  "HV7": 10,
+  "HV9": 11,
+  "HV10": 11
+ },
+ "by_batch_generated": {
+  "HV1": 11,
+  "HV10": 11,
+  "HV2": 11,
+  "HV3": 11,
+  "HV4": 11,
+  "HV5": 11,
+  "HV6": 11,
+  "HV7": 11,
+  "HV8": 11,
+  "HV9": 11
+ },
+ "complete_pairs": 4,
+ "hospice_goals": 3,
+ "learning_period": 2,
+ "categories": {
+  "noise": 19,
+  "med_change": 15,
+  "arrhythmia": 10,
+  "respiratory": 8,
+  "spo2_bias": 6,
+  "fall": 6,
+  "recovery": 4,
+  "hf": 4,
+  "hypoglycemia": 3,
+  "caregiver": 3,
+  "goals_of_care": 3,
+  "acs": 2,
+  "dementia": 2,
+  "missing_data": 2,
+  "infection": 2,
+  "renal": 2,
+  "stroke": 1,
+  "conflicting": 1,
+  "syncope": 1,
+  "delirium": 1
+ },
+ "difficulty": {
+  "hard": 34,
+  "adversarial": 20,
+  "medium": 8,
+  "easy": 3
+ }
+}

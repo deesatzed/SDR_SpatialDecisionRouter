@@ -1,0 +1,1084 @@
+{
+ "cases": [
+  {
+   "case_id": "HV10-001",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with adult child",
+   "pmh": [
+    "Type 2 diabetes on basal insulin",
+    "Dementia, moderate",
+    "Heart failure, comfort-focused hospice plan"
+   ],
+   "function_baseline": "Bed-bound most days, transfers with help",
+   "patient_goals": "Comfort-only hospice plan; hospital transfer declined by documented choice.",
+   "discharge": {
+    "day": -18,
+    "reason": "Hospice enrollment after heart failure admission"
+   },
+   "meds": [
+    {
+     "name": "insulin glargine",
+     "dose": "10 units at bedtime",
+     "started_day": -4
+    },
+    {
+     "name": "morphine oral solution",
+     "dose": "2.5 mg PRN",
+     "started_day": -18
+    },
+    {
+     "name": "furosemide",
+     "dose": "20 mg daily",
+     "started_day": -60
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "insulin glargine",
+     "change": "dose_increased",
+     "from_dose": "8 units at bedtime",
+     "to_dose": "10 units at bedtime",
+     "day": -4
+    }
+   ],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch"
+   ],
+   "baseline_30d": {
+    "rest_hr": 84,
+    "hrv_ms": 22,
+    "sleep_h": 9.2,
+    "steps": 600,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": 168,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -4 glargine raised from 8 to 10 units at bedtime. CGM nocturnal minima 66-72 mg/dL Day -3 to -1, CGM worn 93% of the week. Day 0 CGM 62 mg/dL at 02:05 falling to 50 mg/dL at 02:40, watch HR 104 bpm at 02:40. Glucometer 49 mg/dL at 02:52 Day 0.",
+   "caregiver_or_nurse_note": "Adult child at bedside overnight: sweaty and answering in mumbled words. 15 g juice by mouth at 02:55 Day 0; at 03:10 answering yes or no only.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 48,
+    "learning_days_total": 10,
+    "last_condition_change": {
+     "type": "hospice_enrollment",
+     "day": -18
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 88,
+    "artifact_flags": [
+     "watch band replaced Day -5",
+     "CGM sensor replaced Day -7"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 85-89, female, Fitzpatrick I-IV, lives with adult child. Hospice comfort-only plan, enrolled Day -18 after heart failure admission; hospital transfer declined. Type 2 diabetes on basal insulin, moderate dementia, heart failure. Meds: insulin glargine 10 units at bedtime (raised from 8 units on Day -4), morphine oral solution 2.5 mg PRN (Day -18), furosemide 20 mg daily. Devices: CGM, glucometer, watch. Baseline: CGM mean 168 mg/dL, resting HR 84, HRV 22 ms, sleep 9.2 h, night SpO2 92%. Trend: CGM nocturnal minima 66-72 mg/dL Day -3 to -1; Day 0 CGM 62 mg/dL at 02:05 and 50 mg/dL at 02:40 with watch HR 104 at 02:40; glucometer 49 mg/dL at 02:52 Day 0. Adult child reports sweating and mumbled answers; juice 15 g at 02:55; at 03:10 only yes or no answers. Wear 88% over 7 days; watch band replaced Day -5, CGM sensor replaced Day -7; longest gap 1 h; no missing hours in last 48.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "hard_limit_danger",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "escalation_target": "hospice_nurse",
+   "difficulty": "hard",
+   "category": [
+    "hypoglycemia",
+    "goals_of_care",
+    "med_change"
+   ],
+   "rationale": "Naive-model trap: a shallow model reads the comfort-only plan and books a routine nurse call, missing that a symptomatic danger-level low is an urgent, treatable comfort problem. Checks: the CGM read 50 mg/dL at 02:40 and a glucometer confirmed 49 mg/dL at 02:52, so the device check passes and the value is fingerstick-confirmed. The own-baseline check does not rescue it, because a danger-level low is ABSOLUTE regardless of baseline, and the sweating and mumbled answers make it symptomatic. The glargine rise from 8 to 10 units on Day -4 explains the low, so the hospice narrowing keeps urgent_page but routes it to the hospice nurse now (escalation_target hospice_nurse), not to hospital transfer.",
+   "decisive_feature": "Glucometer-confirmed 49 mg/dL with sweating and mumbled answers in a hospice patient, after bedtime glargine was raised from 8 to 10 units on Day -4."
+  },
+  {
+   "case_id": "HV10-002",
+   "pair_id": null,
+   "age_band": "90-94",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with paid caregiver",
+   "pmh": [
+    "Atrial fibrillation, rate control with digoxin",
+    "Heart failure, EF 25%",
+    "Hospice enrollment, comfort-focused plan"
+   ],
+   "function_baseline": "Wheelchair for distance, transfers with one helper",
+   "patient_goals": "Comfort-focused hospice plan; no hospital transfer; family wants calls, not transfers.",
+   "discharge": {
+    "day": -21,
+    "reason": "Hospice enrollment after heart failure admission"
+   },
+   "meds": [
+    {
+     "name": "digoxin",
+     "dose": "0.125 mg daily",
+     "started_day": -700
+    },
+    {
+     "name": "furosemide",
+     "dose": "20 mg daily",
+     "started_day": -90
+    },
+    {
+     "name": "morphine oral solution",
+     "dose": "2.5 mg PRN",
+     "started_day": -21
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 66,
+    "hrv_ms": 30,
+    "sleep_h": 8.0,
+    "steps": 350,
+    "spo2_night_min": 91,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 118,
+    "dbp": 70
+   },
+   "trend_last_7d": "Day -3 to -1 watch resting HR 58-62 bpm, cuff SBP 112-120. Day 0 14:10 watch HR 41 bpm seated, ring HR 42 bpm at 14:10. Cuff 96/60 at 14:12 Day 0. Steps 0-40 per day Day -1 to 0. Watch worn 94% of the week.",
+   "caregiver_or_nurse_note": "Paid aide: she went grey and drowsy and said the room was spinning while seated; she answered her name straight away and did not go down. Aide sat her back and checked the cuff at 14:12.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": {
+     "type": "hospice_enrollment",
+     "day": -21
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "watch band replaced Day -6"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 90-94, female, Fitzpatrick V-VI, lives with paid caregiver. Hospice comfort-focused plan, enrolled Day -21 after heart failure admission; no hospital transfer. Atrial fibrillation on digoxin 0.125 mg daily, heart failure EF 25%, furosemide 20 mg daily, morphine oral solution 2.5 mg PRN. Devices: watch, ring, bp_cuff. Baseline: resting HR 66, HRV 30 ms, sleep 8.0 h, night SpO2 91%, cuff SBP 118 and DBP 70. Trend: Day -3 to -1 resting HR 58-62 bpm, cuff SBP 112-120; steps 0-40 per day Day -1 to 0. Day 0 14:10 watch HR 41 seated with ring HR 42; cuff 96/60 at 14:12. Paid aide reports she went grey and drowsy, said the room was spinning, answered her name straight away and did not go down. Watch worn 94% over 7 days; watch band replaced Day -6; longest gap 1 h; no missing hours in last 48.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_BRADY_RATE_DRUG",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "goals_of_care",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "arrhythmia",
+    "goals_of_care"
+   ],
+   "rationale": "Naive-model trap: a shallow model sees HR 41 on digoxin and pages, ignoring the hospice goals that route this trigger to the same-shift nurse. Checks: the watch and ring agree at 41-42 bpm and the cuff reads 96/60, so the reading is reliable, and the seated HR is far below her resting baseline of 66, so the baseline check passes. No timed contact or dock log explains the drop, so the explanation check passes. The goals check fails: a comfort-focused plan with no hospital transfer suppresses the bradycardia trigger as goals_of_care, so nurse_task brings the hospice nurse in on this shift to review digoxin and symptoms.",
+   "decisive_feature": "Concordant watch and ring HR 41-42 bpm, seated and symptomatic, on digoxin in a hospice patient whose comfort plan turns the bradycardia trigger into a same-shift nurse review."
+  },
+  {
+   "case_id": "HV10-003",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "Lung cancer, hospice comfort plan",
+    "COPD",
+    "Malignant pleural effusion, comfort-focused"
+   ],
+   "function_baseline": "Bed-bound; sits up with pillows",
+   "patient_goals": "Hospice comfort plan; no hospital admission; wants breathing eased at home.",
+   "discharge": {
+    "day": -12,
+    "reason": "Hospice enrollment after respiratory admission"
+   },
+   "meds": [
+    {
+     "name": "morphine oral solution",
+     "dose": "5 mg PRN",
+     "started_day": -1
+    },
+    {
+     "name": "oxygen",
+     "dose": "2 L/min nasal cannula continuous",
+     "started_day": -12
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "morphine oral solution",
+     "change": "dose_increased",
+     "from_dose": "2.5 mg PRN",
+     "to_dose": "5 mg PRN",
+     "day": -1
+    }
+   ],
+   "devices": [
+    "ring",
+    "watch"
+   ],
+   "baseline_30d": {
+    "rest_hr": 92,
+    "hrv_ms": 18,
+    "sleep_h": 5.8,
+    "steps": 180,
+    "spo2_night_min": 90,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -2 ring respiratory rate 20-22/min at rest. Day -1 opioid raised to 5 mg PRN for orthopnoea over two nights; ring RR 24-26/min Day -1. Day 0 14:20 ring RR 36/min at rest for 3 minutes with ring HR 118 bpm; watch RR 34/min at 14:22. No motion flag on ring. Ring worn 96% of the week.",
+   "caregiver_or_nurse_note": "Spouse: he is gasping, clutching the sheet and cannot get his breath. Upright on pillows with a fan; 5 mg PRN given 14:05 Day 0 per plan; still distressed at 14:25.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 40,
+    "learning_days_total": 10,
+    "last_condition_change": {
+     "type": "hospice_enrollment",
+     "day": -12
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [
+     "ring refitted Day -4"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 80-84, male, Fitzpatrick I-IV, lives with spouse. Hospice comfort plan, enrolled Day -12 after respiratory admission; no hospital admission wanted, breathing to be eased at home. Lung cancer, COPD, malignant pleural effusion. Meds: morphine oral solution raised from 2.5 mg PRN to 5 mg PRN on Day -1; oxygen 2 L/min continuous from Day -12. Devices: ring, watch. Baseline: resting HR 92, HRV 18 ms, sleep 5.8 h, steps 180, night SpO2 90%. Trend: ring RR 20-22/min Day -2 and 24-26/min Day -1; Day 0 14:20 ring RR 36/min at rest for 3 minutes with HR 118; watch RR 34/min at 14:22; no motion flag. Spouse reports gasping and clutching the sheet, upright on pillows with a fan, 5 mg PRN given 14:05 Day 0, still distressed at 14:25. Ring refitted Day -4; wear 96% over 7 days; no gaps.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "hard_limit_danger",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "escalation_target": "hospice_nurse",
+   "difficulty": "hard",
+   "category": [
+    "respiratory",
+    "goals_of_care",
+    "med_change"
+   ],
+   "rationale": "Naive-model trap: a shallow model reads the hospice goals as a reason to log the breathlessness as expected or to suppress it, missing that a comfort plan still allows a symptom that can be eased at home. Checks: the ring respiratory rate of 36/min with watch 34 at 14:22 is reliable with no motion flag and crosses the danger-level line, so it stands regardless of baseline. The goals check does not block this, because the distress is treatable at home with the PRN opioid, oxygen and positioning, which is a goal-consistent comfort problem. The page therefore goes to the hospice nurse now (escalation_target hospice_nurse), not to hospital transfer.",
+   "decisive_feature": "Reliable ring respiratory rate 36/min with air hunger in a hospice patient whose distress can be eased at home with the PRN opioid, oxygen and positioning."
+  },
+  {
+   "case_id": "HV10-004",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "Hypertension, on amlodipine",
+    "Osteoarthritis, knees"
+   ],
+   "function_baseline": "Independent indoors and outdoors",
+   "patient_goals": "Keep walking daily and stay in own flat.",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -600
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": null,
+    "hrv_ms": null,
+    "sleep_h": null,
+    "steps": null,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": null,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Watch and ring worn from Day -2. Resting HR 104-106 bpm on mornings Day -2 to 0, ring HR 103-105 concordant. Watch night SpO2 93-95%, RR 18/min. Steps 2800-3600 per day. Cuff 132/80 at 09:05 Day 0, seated.",
+   "caregiver_or_nurse_note": "Patient text: moved flat Day -3, lots of stairs and boxes, feels fine, no chest symptoms.",
+   "baseline_status": {
+    "phase": "learning",
+    "monitoring_day": 3,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 90,
+    "artifact_flags": [
+     "watch and ring first worn Day -2"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 70-74, male, Fitzpatrick V-VI, lives alone. Hypertension on amlodipine 5 mg daily; osteoarthritis; independent indoors and outdoors. Devices: watch, ring, bp_cuff; watch and ring first worn Day -2. Baseline: not yet established (learning, monitoring day 3 of 10); no 30-day values. Trend: resting HR 104-106 bpm on mornings Day -2 to 0, ring HR 103-105 concordant; watch night SpO2 93-95%, RR 18/min; steps 2800-3600 per day. Cuff 132/80 seated at 09:05 Day 0. Patient text: moved flat Day -3, lots of stairs and boxes, feels fine, no chest symptoms. Wear 90% over 7 days; longest gap 1 h; no missing hours in last 48.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "provider_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "learning_period",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "arrhythmia"
+   ],
+   "rationale": "Naive-model trap: a shallow model pages on resting HR 104-106 as tachycardia, or accepts it silently because the patient is independent and the trend looks steady. Checks: the watch and ring agree, so the readings are reliable, and there is no chest pain, SpO2 or syncope element, so no hard trigger fires. The own-baseline check cannot be applied because learning is on day 3 of 10 with no learned baseline, so this is not suppressed as at_patient_baseline and the population default band is the only reference, which 104-106 sits inside. The explanation (moving house with stairs and boxes) is plausible but unverified, so a same-week nurse call to check activity, caffeine and sleep, and to set a clinician baseline, is the route.",
+   "decisive_feature": "Watch and ring agree on resting HR 104-106 bpm on the third learning day with no own baseline yet, inside the population band, so it needs a same-week nurse call rather than a page."
+  },
+  {
+   "case_id": "HV10-005",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "Dementia, Alzheimer type, moderate",
+    "Hypertension",
+    "Osteoporosis"
+   ],
+   "function_baseline": "Walks short distances with a frame; needs prompts for meals",
+   "patient_goals": "Keep living at home with spouse; no change to routine.",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "donepezil",
+     "dose": "10 mg daily",
+     "started_day": -300
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -500
+    },
+    {
+     "name": "lorazepam",
+     "dose": "0.5 mg at bedtime",
+     "started_day": -9
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "lorazepam",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "0.5 mg at bedtime",
+     "day": -9
+    }
+   ],
+   "devices": [
+    "watch",
+    "bed_sensor",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 35,
+    "sleep_h": 7.2,
+    "steps": 2200,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 58.4,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -9 lorazepam started at bedtime. Sleep 7.0-7.3 h Day -8 to -5; 8.2 h Day -4; 8.4 h Day -3 with daytime sleep 2.5 h. Bed-sensor night exits 0-1 at baseline, then 2 on Day -2, 3 on Day -1, 4 on Day 0. Day 0 daytime sleep 3.1 h, steps 220 (baseline 2200). Watch resting HR 66-70 across the week. Scale 58.0 kg on Day 0.",
+   "caregiver_or_nurse_note": "Spouse: she sleeps most of the day now and is up at night. Bumped her shoulder on the door frame Day -2 without falling. Says she feels cold and wobbly on her feet.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 90,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [
+     "charger contact Day -1 22:00-06:30"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 80-84, female, Fitzpatrick I-IV, lives with spouse. Moderate Alzheimer-type dementia; spouse reports for her. Hypertension on amlodipine 5 mg daily, osteoporosis, donepezil 10 mg daily. Recent change: lorazepam 0.5 mg at bedtime started Day -9. Devices: watch, bed sensor, scale. Baseline: resting HR 70, HRV 35 ms, sleep 7.2 h, steps 2200, night SpO2 92%, weight 58.4 kg. Trend: sleep 7.0-7.3 h Day -8 to -5, 8.2 h Day -4, 8.4 h Day -3 with daytime sleep 2.5 h; bed-sensor night exits 0-1 then 2 on Day -2, 3 on Day -1, 4 on Day 0; Day 0 daytime sleep 3.1 h and steps 220; watch resting HR 66-70 across the week; weight 58.0 kg Day 0. Spouse reports a shoulder bump on the door frame Day -2 without a fall, and that she feels cold and wobbly on her feet. Charger contact Day -1 22:00-06:30; watch wear 93% over 7 days; longest gap 1 h.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "delirium",
+    "med_change",
+    "dementia"
+   ],
+   "rationale": "Naive-model trap: a shallow model reads a dementia patient's daytime sleep and nightly bed exits as routine and logs them silently, or pages for a fall that has not happened. No hard trigger fires: no SpO2, HR, syncope or fall event is recorded, and the shoulder bump on Day -2 is explicitly without a fall. The decisive fact is the bedtime lorazepam started on Day -9, followed by daytime sleep rising to 3.1 h, steps falling to 220 and bed exits climbing to four a night with new unsteadiness, a sedative-related change. Stable weight and vitals argue against acute illness, so same-day pharmacist and prescriber review of the benzodiazepine alongside donepezil is the route, not a page.",
+   "decisive_feature": "New bedtime lorazepam started Day -9, followed by daytime sleep rising to 3.1 h and steps falling to 220 in a proxy-reporting dementia patient."
+  },
+  {
+   "case_id": "HV10-006",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with adult child",
+   "pmh": [
+    "Hypothyroidism on replacement",
+    "Hypertension"
+   ],
+   "function_baseline": "Independent with frame indoors",
+   "patient_goals": "Keep independent; wants to sleep in her own bed.",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "levothyroxine",
+     "dose": "75 mcg daily",
+     "started_day": -800
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "ring",
+    "fingertip_oximeter",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": null,
+    "hrv_ms": null,
+    "sleep_h": null,
+    "steps": null,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": null,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Ring worn from Day -8. Nightly SpO2 nadir 90-91% Day -8 to -1 and 90% Day 0. Ring respiratory rate during sleep 15-17/min. Daytime resting HR 64-68 bpm. Steps 4200-4800 per day. Home fingertip oximeter Day -1 10:10: SpO2 93% at rest, HR 66 bpm.",
+   "caregiver_or_nurse_note": "Adult child: she sleeps on her side, no snoring noted, and no breathlessness reported on the stairs.",
+   "baseline_status": {
+    "phase": "learning",
+    "monitoring_day": 9,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [
+     "ring first worn Day -8"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2
+   },
+   "router_input": "Age band 75-79, female, Fitzpatrick V-VI, lives with adult child. Hypothyroidism on levothyroxine 75 mcg daily; hypertension on ramipril 5 mg daily. Devices: ring, fingertip oximeter, bp_cuff; ring first worn Day -8. No 30-day baseline yet: learning, monitoring day 9 of 10; no 30-day values. Trend: ring nightly SpO2 nadir 90-91% Day -8 to -1 and 90% Day 0; ring respiratory rate during sleep 15-17/min; daytime resting HR 64-68; steps 4200-4800 per day. Home fingertip oximeter Day -1 10:10: SpO2 93% at rest, HR 66. Adult child reports she sleeps on her side, no snoring noted, no breathlessness on the stairs. Ring wear 93% over 7 days; longest gap 2 h; no missing hours in last 48.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "silent_log"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "learning_period",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "noise",
+    "spo2_bias"
+   ],
+   "rationale": "Naive-model trap: a shallow model reads nocturnal SpO2 90-91% in Fitzpatrick V-VI skin as hypoxemia and pages, or treats it as normal and closes the file without a baseline. No hard trigger fires because the ring nadir stays above 88% and the home fingertip reading of 93% at rest agrees, so there is no sign of pulse-oximeter bias. Learning is on day 9 of 10 with no own baseline, so the value is judged against the population default band and cannot be suppressed as at_patient_baseline. A same-week nurse call should confirm sleep position and set a clinician baseline, with silent_log acceptable only if the learned band comes out in the same range.",
+   "decisive_feature": "Ring nocturnal SpO2 nadir 90-91% on the ninth learning day in V-VI skin, matched by a home fingertip 93% at rest, inside the population default band with no own baseline yet."
+  },
+  {
+   "case_id": "HV10-007",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "HFrEF, EF 35%",
+    "CKD stage 3a",
+    "Type 2 diabetes"
+   ],
+   "function_baseline": "Walks indoors with rollator; short outdoor walks",
+   "patient_goals": "Full treatment; wants to keep walking to the shops.",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "sacubitril-valsartan",
+     "dose": "97/103 mg BID",
+     "started_day": -500
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "5 mg daily",
+     "started_day": -500
+    },
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -300
+    },
+    {
+     "name": "empagliflozin",
+     "dose": "10 mg daily",
+     "started_day": -200
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "ring",
+    "watch",
+    "scale",
+    "bp_cuff",
+    "bed_sensor"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 38,
+    "sleep_h": 7.1,
+    "steps": 3400,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 84.6,
+    "glucose_mean": null,
+    "sbp": 124,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -7: weight 84.6 kg, sleep 7.0 h, steps 3300, bed-sensor exits 0. Day -3: weight 85.1 kg, sleep 6.5 h, steps 2600, 1 bed exit per night. Day 0: weight 85.5 kg, sleep 6.0 h, steps 2000, 2 bed exits per night. Resting HR 62-63 bpm across the week. Cuff 124/76 on Day -7 and 126/78 on Day 0. Ring worn 92%.",
+   "caregiver_or_nurse_note": "Spouse: he is slower on the stairs and says his breathing feels heavier when he gets into bed.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 210,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [
+     "watch band replaced Day -12"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2
+   },
+   "router_input": "Age band 75-79, male, Fitzpatrick V-VI, lives with spouse. HFrEF EF 35%, CKD stage 3a, type 2 diabetes. Meds: sacubitril-valsartan 97/103 mg BID, bisoprolol 5 mg daily, furosemide 40 mg daily, empagliflozin 10 mg daily; no recent changes. Devices: ring, watch, scale, bp_cuff, bed sensor. Baseline: resting HR 62, HRV 38 ms, sleep 7.1 h, steps 3400, night SpO2 93%, weight 84.6 kg, cuff 124/76. Trend: Day -7 weight 84.6 kg, sleep 7.0 h, steps 3300, no bed exits; Day -3 weight 85.1 kg, sleep 6.5 h, steps 2600, 1 bed exit per night; Day 0 weight 85.5 kg, sleep 6.0 h, steps 2000, 2 bed exits per night; resting HR 62-63 across the week; cuff 126/78 Day 0. Spouse reports he is slower on the stairs and his breathing feels heavier getting into bed. Ring wear 92% over 7 days; watch band replaced Day -12; longest gap 2 h; no missing hours in last 48.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "drift_not_absorbed",
+   "chest_pain_eval": null,
+   "subtle_deterioration": true,
+   "difficulty": "hard",
+   "category": [
+    "hf"
+   ],
+   "rationale": "Naive-model trap: a shallow model reads each signal as small and inside population limits, then logs it silently or books a routine call, missing that several weak signals move in the same direction. No hard trigger fires: no SpO2, HR, BP or syncope value crosses a danger or band line, and no single breach stands out. The drift guard applies because weight rose from 84.6 to 85.5 kg, sleep fell from 7.0 to 6.0 h, steps fell from 3300 to 2000 and bed exits rose from 0 to 2 a night, all monotonic over a week with no medication change, which is not absorbed as the new normal. Provider_task for same-day review of congestion and diuretic dosing is the route, with subtle_deterioration set and nurse_task as the acceptable alternate.",
+   "decisive_feature": "Weight up 0.9 kg, sleep down about 1 h, steps down about 40% and two new nightly bed exits, all moving one way over a week with no medication change, in HFrEF."
+  },
+  {
+   "case_id": "HV10-008",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "CKD stage 4",
+    "Hypertension",
+    "Anaemia of CKD, on iron"
+   ],
+   "function_baseline": "Independent indoors; shops with a trolley",
+   "patient_goals": "Stay at home; wants to keep doing her own shopping.",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "sodium bicarbonate",
+     "dose": "500 mg BID",
+     "started_day": -200
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 36,
+    "sleep_h": 7.4,
+    "steps": 3200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Walking HR on the usual route at the same pace, watch: 104-106 bpm Day -6 to -4, 107-109 bpm Day -2, 110 bpm Day 0. Resting HR (ring) 70-72 bpm Day -6 to 0, flat. Steps 3100 on Day -6 falling to 2100 on Day 0. Sleep 7.2 h on Day -6 falling to 6.0 h on Day 0. Watch worn 91% of the week.",
+   "caregiver_or_nurse_note": "visit: Day -9 clinic hemoglobin 10.2 g/dL (11.4 at previous check). Patient text: stairs are harder, tired after shopping, no chest symptoms.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 150,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 91,
+    "artifact_flags": [
+     "watch band replaced Day -14"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 70-74, female, Fitzpatrick I-IV, lives alone. CKD stage 4, hypertension on ramipril 5 mg and amlodipine 5 mg daily, anaemia of CKD on iron, sodium bicarbonate 500 mg BID. Independent indoors; shops with a trolley. Devices: watch, ring. Baseline: resting HR 70, HRV 36 ms, sleep 7.4 h, steps 3200, night SpO2 93%. Trend: walking HR on the usual route at the same pace 104-106 bpm Day -6 to -4, 107-109 bpm Day -2, 110 bpm Day 0 (watch); resting HR 70-72 bpm Day -6 to 0 (ring), flat; steps 3100 Day -6 falling to 2100 Day 0; sleep 7.2 h Day -6 falling to 6.0 h Day 0. Visit: Day -9 clinic hemoglobin 10.2 g/dL, 11.4 at previous check. Patient text: stairs are harder, tired after shopping, no chest symptoms. Watch worn 91% over 7 days; watch band replaced Day -14; longest gap 1 h; no missing hours in last 48.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "drift_not_absorbed",
+   "chest_pain_eval": null,
+   "subtle_deterioration": true,
+   "difficulty": "hard",
+   "category": [
+    "renal"
+   ],
+   "rationale": "Naive-model trap: a shallow model sees resting HR flat at 70-72 and steps and sleep that look like ordinary tiredness, then logs it silently or books a routine call. No hard trigger fires: walking-pace HR 110 is not a danger-level value and nothing crosses a band line. The drift guard applies because walking HR rose from 104-106 to 110 over about ten days while steps fell from 3100 to 2100 and sleep shortened by 1.2 h with no medication change, a monotonic pattern that is not absorbed into the baseline and that the visit hemoglobin of 10.2 g/dL may partly explain. Living alone with CKD stage 4 makes provider_task the route for same-day review of anaemia and volume status, with nurse_task as the acceptable alternate.",
+   "decisive_feature": "Walking-pace HR climbing 104 to 110 bpm over ten days with steps and sleep falling in a CKD stage 4 patient living alone, while resting HR stays flat."
+  },
+  {
+   "case_id": "HV10-009",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "Recurrent kidney stones",
+    "Hypertension"
+   ],
+   "function_baseline": "Independent",
+   "patient_goals": "Stay active; play golf weekly.",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -300
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "naproxen",
+     "change": "stopped",
+     "from_dose": "500 mg BID",
+     "to_dose": null,
+     "day": -2
+    }
+   ],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 66,
+    "hrv_ms": 42,
+    "sleep_h": 7.4,
+    "steps": 4200,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -6 flank pain: watch resting HR 92 bpm, cuff 146/88 on Day -6, steps 900. Day -4 HR 80 bpm, steps 1800. Day -2 HR 70 bpm, pain settled, naproxen stopped, steps 2600. Day -1 HR 68 bpm, steps 3800. Day 0 HR 66 bpm, sleep 7.1 h, steps 4100, cuff 130/80 at 08:05. Watch worn 96% of the week.",
+   "caregiver_or_nurse_note": "Patient text: passed the stone Day -3, pain-free since Day -2, drinking well. Hopes to golf next week.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 300,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [
+     "watch replaced Day -12"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 70-74, male, Fitzpatrick I-IV, lives with spouse. Recurrent kidney stones, hypertension on amlodipine 5 mg daily; naproxen 500 mg BID stopped Day -2. Devices: watch, bp_cuff. Baseline: resting HR 66, HRV 42 ms, sleep 7.4 h, steps 4200, night SpO2 94%, cuff 128/78. Trend: Day -6 flank pain with watch HR 92 and cuff 146/88, steps 900; Day -4 HR 80, steps 1800; Day -2 HR 70, steps 2600; Day -1 HR 68, steps 3800; Day 0 HR 66, sleep 7.1 h, steps 4100, cuff 130/80 at 08:05. Patient text: passed the stone Day -3, pain-free since Day -2, drinking well. Watch worn 96% over 7 days; watch replaced Day -12; longest gap 1 h; no missing hours in last 48.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "easy",
+   "category": [
+    "recovery"
+   ],
+   "rationale": "Naive-model trap: a shallow model keeps the Day -6 painful episode open and books a nurse call or provider review, though every stream has returned to the 30-day baseline. No hard trigger fires: the Day -6 watch HR of 92 and cuff 146/88 were not danger-level values, and the readings have since normalised. By Day 0 resting HR is 66 against a baseline of 66, the cuff reads 130/80 against 128/78, steps are 4100 against 4200 and sleep is 7.1 h, with the stone passed and pain-free since Day -2. Silent log with no human action is correct, closing the loop in the record.",
+   "decisive_feature": "Resting HR back to 66 bpm and steps near baseline by Day 0, with the stone passed and pain-free since Day -2 and naproxen already stopped."
+  },
+  {
+   "case_id": "HV10-010",
+   "pair_id": null,
+   "age_band": "65-69",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "Hypertension on lisinopril"
+   ],
+   "function_baseline": "Independent; shops and gardens",
+   "patient_goals": "Keep shopping and gardening.",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "lisinopril",
+     "dose": "10 mg daily",
+     "started_day": -500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 48,
+    "sleep_h": 7.5,
+    "steps": 6200,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 66.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Watch steps Day -3 6100, Day -2 8200, Day -1 6000, Day 0 6300. Ring steps Day -3 6000, Day -2 6100, Day -1 6100, Day 0 6400. Watch and ring resting HR 61-63 bpm throughout; night SpO2 94%. Scale 66.1 kg Day -2 and 66.0 kg Day 0. Watch carried in shopping trolley Day -2 10:00-13:00 and recorded steps in that window.",
+   "caregiver_or_nurse_note": "Spouse: she shopped with the watch in the trolley basket on Day -2; otherwise a normal week.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 180,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [
+     "watch carried in shopping trolley Day -2 10:00-13:00"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 65-69, female, Fitzpatrick V-VI, lives with spouse. Hypertension on lisinopril 10 mg daily; independent, shops and gardens. Devices: watch, ring, scale. Baseline: resting HR 62, HRV 48 ms, sleep 7.5 h, steps 6200, night SpO2 94%, weight 66.0 kg. Trend: watch steps Day -3 6100, Day -2 8200, Day -1 6000, Day 0 6300; ring steps Day -3 6000, Day -2 6100, Day -1 6100, Day 0 6400; watch and ring resting HR 61-63 bpm throughout; scale 66.1 kg Day -2 and 66.0 kg Day 0. Spouse reports she shopped with the watch in the trolley basket on Day -2, otherwise a normal week. Watch carried in shopping trolley Day -2 10:00-13:00; watch worn 92% over 7 days; longest gap 1 h; no missing hours in last 48.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "provider_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "noise"
+   ],
+   "rationale": "Naive-model trap: a shallow model sees a watch step spike to 8200 on Day -2 and books a provider device check, or flags the day as abnormal activity. No hard trigger fires: heart rate, SpO2 and weight are flat, and ring steps stayed near 6100 that day, so the spike is confined to one device in one window. The timed explanation is physical: the watch rode in a shopping trolley from 10:00 to 13:00 on Day -2, so the excess steps are not real walking. Silent log with no human action is correct, and a provider device review is an acceptable alternate only if the spike repeats.",
+   "decisive_feature": "Watch-only step spike to 8200 on Day -2 while the watch rode in a shopping trolley, with ring steps 6100, heart rate, SpO2 and weight flat."
+  },
+  {
+   "case_id": "HV10-011",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "Mild COPD, no home oxygen",
+    "Hypertension"
+   ],
+   "function_baseline": "Independent; walks to the shops",
+   "patient_goals": "Stay independent at home.",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -300
+    },
+    {
+     "name": "salbutamol inhaler",
+     "dose": "100 mcg PRN",
+     "started_day": -700
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 34,
+    "sleep_h": 7.0,
+    "steps": 3300,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -3 to -1 watch resting SpO2 94-96%, resting HR 68-72 bpm. Day 0 15:02 watch SpO2 84% on a 3-second sample flagged for motion, HR 72 bpm. Watch 95% at 15:03 and 96% at 15:06. Home fingertip oximeter 96% at 15:09 on a good waveform. Watch worn 94% of the week.",
+   "caregiver_or_nurse_note": "Patient text: fine, was just moving about getting the kettle down. No breathlessness reported.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "motion during SpO2 sample Day 0 15:02"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 75-79, female, Fitzpatrick V-VI, lives alone. Mild COPD without home oxygen, hypertension on amlodipine 5 mg daily; salbutamol PRN. Devices: watch, fingertip oximeter. Baseline: night SpO2 92%, resting HR 70, HRV 34 ms, sleep 7.0 h, steps 3300. Trend: Day -3 to -1 resting watch SpO2 94-96%, HR 68-72. Day 0 15:02 watch SpO2 84% on a 3-second sample flagged for motion, HR 72; watch 95% at 15:03 and 96% at 15:06; fingertip 96% at 15:09 on a good waveform. Patient text: fine, was just moving about getting the kettle down; no breathlessness reported. Watch worn 94% over 7 days; motion during SpO2 sample Day 0 15:02; no missing hours in last 48; longest gap 0 h.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_SPO2_LT88",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "unreliable_reading",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "noise",
+    "spo2_bias"
+   ],
+   "rationale": "Naive-model trap: a shallow model pages on the single watch SpO2 of 84%, because any value below 88% looks like hypoxemia. The reliability check fails: the sample was motion-flagged, and within about a minute the watch read 95% and then 96%, with a clean fingertip reading of 96% on a good waveform, so the reading is cleared by a clean repeat. No own-baseline or symptom signal supports a real drop, since daytime watch SpO2 runs 94-96% and she reports no breathlessness. Silent log with no human action is correct, and a provider device review is not needed for one cleared sample.",
+   "decisive_feature": "Single motion-flagged watch SpO2 of 84% cleared within a minute by watch 95-96% and a clean fingertip 96% in a patient whose daytime watch readings run 94-96%."
+  }
+ ],
+ "tally": {
+  "n": 11,
+  "id_range": [
+   "HV10-001",
+   "HV10-011"
+  ],
+  "routes": {
+   "silent_log": 3,
+   "nurse_task": 3,
+   "provider_task": 3,
+   "urgent_page": 2
+  },
+  "difficulty": {
+   "easy": 1,
+   "medium": 1,
+   "hard": 6,
+   "adversarial": 3
+  },
+  "hard_plus_adversarial_pct": 82,
+  "category_primary": {
+   "noise": 3,
+   "hypoglycemia": 1,
+   "arrhythmia": 2,
+   "respiratory": 1,
+   "delirium": 1,
+   "hf": 1,
+   "renal": 1,
+   "recovery": 1
+  },
+  "category_any": {
+   "hypoglycemia": 1,
+   "goals_of_care": 3,
+   "med_change": 3,
+   "arrhythmia": 2,
+   "respiratory": 1,
+   "delirium": 1,
+   "dementia": 1,
+   "noise": 3,
+   "spo2_bias": 2,
+   "hf": 1,
+   "renal": 1,
+   "recovery": 1
+  },
+  "hidden_hypoxemia_ids": [],
+  "subtle_deterioration_ids": [
+   "HV10-007",
+   "HV10-008"
+  ],
+  "pairs": {},
+  "hard_trigger_ids": {
+   "HT_VS_DANGER": [
+    "HV10-001",
+    "HV10-003"
+   ],
+   "HT_BRADY_RATE_DRUG": [
+    "HV10-002"
+   ],
+   "HT_SPO2_LT88": [
+    "HV10-011"
+   ]
+  },
+  "trigger_tiers": {
+   "ABSOLUTE": [
+    "HV10-001",
+    "HV10-003"
+   ],
+   "CONFIRM_FIRST": [],
+   "SUPPRESSED": [
+    "HV10-002",
+    "HV10-011"
+   ],
+   "ARTIFACT": []
+  },
+  "baseline_layers": {
+   "learning_period": [
+    "HV10-004",
+    "HV10-006"
+   ],
+   "baseline_reset": [],
+   "drift_not_absorbed": [
+    "HV10-007",
+    "HV10-008"
+   ],
+   "hard_limit_artifact": [],
+   "hard_limit_danger": [
+    "HV10-001",
+    "HV10-003"
+   ]
+  },
+  "fitzpatrick_v_vi_count": 6,
+  "minimums": {
+   "hospice": {
+    "required": 3,
+    "actual": 3,
+    "met": true
+   },
+   "learning": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "subtle": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   }
+  },
+  "all_minimums_met": true,
+  "self_check_failures_fixed": 0
+ },
+ "meta": {
+  "batch": "HV10",
+  "model": "anthropic/claude-haiku-5.5",
+  "module": "haiku",
+  "n_requested": 11,
+  "n_got": 11,
+  "split": false,
+  "id_fixes": 0
+ }
+}

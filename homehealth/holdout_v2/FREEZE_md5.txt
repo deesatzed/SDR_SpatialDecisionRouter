@@ -1,0 +1,14 @@
+frozen at origin/main e8c7aa0 (2026-10-21), before any holdout_v2 scoring; scoring runs from the e8c7aa0 tree
+596398d5c9c3bbb30875720c83ceafeb  jev_baseline/layer1_adapter.py
+3bd75b26b117d768286bf9dfa80b8a56  trigger_engine/trigger_eval.py
+9ce7ad7a6ed1a657e26ca3f3ff6d1f43  trigger_engine/trigger_params.json
+32136933b353bc9ef971b96fd2b94bb1  casegen/prompts/SMART_TRIGGERS.md
+c838c670bf834544fbef958b8936ffd9  jev_baseline/jev_run.py
+8faa16e39299439311922a3b940879dd  jev_baseline/dual_jev.py
+1fe7697f6a74542623d1d102a96a455d  jev_baseline/routes.py
+31038ad6668f29aa4567ff2d3b97ec50  casegen/prompts/GEN_LLM2_v2.3.md
+5bab9c8f7e74cce8d76cffcf0949ae95  casegen/prompts/GRADER_LLM3_v1.3.md
+b049e503d396dac3cf9bc0c71f49a0bd  ADDENDUM_v1101.md
+6a8fb652acbbaf003bc4e2b2a2e668be  ../casegen/prompts_v2/GEN_LLM3_hardslice.md
+ homehealth/casegen/grade_merge.py | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
