@@ -45,7 +45,7 @@ def why(i):
 out["critical_miss_detail"] = {i: why(i) for s in out["systems"].values() for i in s["critical_miss_ids"]}
 # Jev robustness / calibration / cost
 for m in D.DUAL_MODELS:
-    rows = [json.loads(l) for l in open(f"{HO}/jev/parsed/{SL.S_slug(m)}.jsonl") if l.strip()]
+    rows = [S.RT.canon_row(json.loads(l)) for l in open(f"{HO}/jev/parsed/{SL.S_slug(m)}.jsonl") if l.strip()]
     last = {}; [last.__setitem__((r["case"], r["variant"]), r) for r in rows]; rows = list(last.values())
     out.setdefault("jev_runs", {})[m] = {"calls": len(rows), "without_pick": sum(1 for r in rows if not r.get("pick")), "retried": sum(1 for r in rows if (r.get("attempts") or 1) > 1),
         "errors": dict(collections.Counter(r.get("error") for r in rows if not r.get("pick"))), "cost_usd": round(sum(r.get("cost") or 0 for r in rows), 6),

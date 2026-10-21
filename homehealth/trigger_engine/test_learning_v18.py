@@ -13,7 +13,7 @@ def test_param_present_and_versioned():
     assert any(e.get("keys") == ["learning", "outside_population_default_tier"] and e["approved_by"] == "Wayne" for e in P["change_log"])
 def test_spo2_87_on_learning_day4_confirms_not_silent():   # the ST3-001 pattern
     d = ev("spo2", 87, 4)
-    assert d["tier"] == "CONFIRM_FIRST" and d["route"] == "escalate_human" and d["reason"] == "outside_population_default_learning"
+    assert d["tier"] == "CONFIRM_FIRST" and d["route"] == "urgent_page" and d["reason"] == "outside_population_default_learning"
 @pytest.mark.parametrize("vital,x", [("hr", 112), ("hr", 44), ("rr", 26), ("spo2", 90)])
 def test_beyond_population_default_during_learning_confirms(vital, x):
     lo, hi = P["population_defaults"][vital]["rest"]

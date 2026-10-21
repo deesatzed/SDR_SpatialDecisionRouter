@@ -6,7 +6,7 @@
 - 600 s per-call timeout; backoff on 429/5xx; per-model checkpoint (results/parsed/<model>.jsonl, resume skips done keys).
 - Spend = sum of usage.cost in the checkpoints; hard cap SPEND_CAP (default $0.50) checked before every call -> stop.
 - Stored per call: parsed pick/probabilities/confidence/veto, token counts, cost, latency, error code. No raw responses.
-Default models liquid/d1-ultra + perplexity/pplx-decider-v1.2 (dual-model Jev behind Layer 1, rule cautious_max_hitm; Wayne 2026-10-20; see dual_jev.py). JEV_OUT=<dir> keeps runs apart; JEV_PROMPT=v1.7|v1.8.
+Default models liquid/d1-ultra + perplexity/pplx-decider-v1.2 (dual-model Jev behind Layer 1, rule cautious_max_hitm; Wayne 2026-10-20; see dual_jev.py). JEV_OUT=<dir> keeps runs apart; JEV_PROMPT=v1.7|v1.8|v1.9 (default v1.9: v1.8 + route definitions, ids provider_task/urgent_page).
 Never prints the key. Usage: python3 jev_run.py [model ...] [--check-only]"""
 import json, os, re, sys, time, threading, urllib.request, urllib.error
 from concurrent.futures import ThreadPoolExecutor
@@ -22,13 +22,18 @@ def find_input(env, name):
 OUT = os.path.join(HERE, os.environ.get("JEV_OUT", "results")); PARSED = os.path.join(OUT, "parsed")
 # Default Jev model (Wayne 2026-10-18): liquid/d1-ultra. The 4-model baseline (results/) remains reproducible by naming the models.
 DEFAULT_MODELS = ["liquid/d1-ultra", "perplexity/pplx-decider-v1.2"]   # 2026-10-20: dual-model Jev (dual_jev.DUAL_MODELS; lead first)
-PROMPT_VERSION = os.environ.get("JEV_PROMPT", "v1.8")   # v1.7 = the 4-model baseline prompt (no monitoring-status line, no v1.8 sentences)
+PROMPT_VERSION = os.environ.get("JEV_PROMPT", "v1.9")   # v1.9 (2026-10-21) = v1.8 + route definitions and renamed ids; v1.8 = prior default; v1.7 = the 4-model baseline prompt (no monitoring-status line, no v1.8 sentences)
 SPEND_CAP = float(os.environ.get("SPEND_CAP", "0.50")); PRIOR_SPEND = float(os.environ.get("PRIOR_SPEND", "0"))
 TIMEOUT = 600; WORKERS_PER_MODEL = int(os.environ.get("WORKERS", "4"))
-ROUTES = {"silent_log": "Log only; no human action needed",
+import routes as RT  # noqa: E402
+# v1.9 (Wayne 2026-10-21): routes renamed and defined (SMART_TRIGGERS v1.9 section 0). The model sees the v1.9 ids + definitions.
+ROUTES_V19 = {r: RT.DEFINITIONS[r] for r in RT.ROUTES}
+# v1.7/v1.8 prompts are kept byte-identical for reproducibility (legacy ids); their stored picks are mapped on read (routes.canon).
+ROUTES_V18 = {"silent_log": "Log only; no human action needed",
           "nurse_task": "Nurse contact within about 24 h (or a same-shift hospice nurse contact under hospice/comfort goals)",
           "wake_specialist": "Same-day clinician review",
           "escalate_human": "A clinician (or, for an urgent comfort problem under hospice goals, the hospice nurse) must act now"}
+ROUTES = ROUTES_V19 if PROMPT_VERSION == "v1.9" else ROUTES_V18
 POLICY = ("Elder-care home wearable triage (synthetic case). Judge every reading against the person's own baseline, not population cutoffs. "
  "Hard triggers (syncope; new focal neurological deficit; chest pain with ECG change or abnormal vitals; resting SpO2 below 88%; "
  "a fall on an anticoagulant; a 48 h data gap in a high-risk patient) go to a human now only if they pass four checks: "
@@ -42,7 +47,12 @@ POLICY = ("Elder-care home wearable triage (synthetic case). Judge every reading
 POLICY_V18_ADD = (" Recurrent chest discomfort that is coming more often (a crescendo pattern) needs a clinician now even when vitals are normal. "
  "During the learning period of monitoring (no personal baseline learned yet) a reading beyond population defaults, such as a resting SpO2 below 88%, "
  "cannot be called the person's baseline: it needs confirmation and a clinician, never silence.")
-def policy(): return POLICY + (POLICY_V18_ADD if PROMPT_VERSION == "v1.8" else "")
+POLICY_V19_ADD = (" Routes: silent = log only, no human action; nurse task = nurse contact within about 24 h (same-shift hospice nurse under hospice goals); "
+ "provider task = review by the clinician responsible for that condition or medication on the same business day, not a page; "
+ "urgent page = page someone now (ABSOLUTE triggers, failed confirm checks, acute decompensation; for an urgent comfort problem under hospice goals, the hospice nurse).")
+def policy():
+    if PROMPT_VERSION == "v1.9": return POLICY + POLICY_V18_ADD + POLICY_V19_ADD
+    return POLICY + (POLICY_V18_ADD if PROMPT_VERSION == "v1.8" else "")
 def monitoring_status(bs):
     """one fact sentence from the case's baseline_status (a FACT field that may appear in router input); None when not documented"""
     if not bs or not bs.get("phase"): return None
@@ -57,7 +67,7 @@ def facts():
         try: _FACTS = {"LIB-" + c["case_id"]: c for c in json.load(open(find_input("CASES_JSON", "library_v2_smart_accepted.json")))["cases"]}
         except SystemExit: _FACTS = {}
     return _FACTS
-LEAK = re.compile(r"escalate_human|wake_specialist|nurse_task|silent_log|\bHT_[A-Z]|CONFIRM_FIRST|ABSOLUTE|SUPPRESSED|LOG_ONLY|goals_of_care|at_patient_baseline|unreliable_reading|below_band|already_confirmed|expected_route|acceptable_alternates")
+LEAK = re.compile(r"urgent_page|provider_task|escalate_human|wake_specialist|nurse_task|silent_log|\bHT_[A-Z]|CONFIRM_FIRST|ABSOLUTE|SUPPRESSED|LOG_ONLY|goals_of_care|at_patient_baseline|unreliable_reading|below_band|already_confirmed|expected_route|acceptable_alternates")
 LOCK = threading.Lock(); STOP = threading.Event()
 def slug(m): return re.sub(r"[^A-Za-z0-9._-]+", "_", m)
 def log(msg):
@@ -79,7 +89,7 @@ def spend():
     return s + PRIOR_SPEND
 def variants(c):
     L = list(c["lines"]); fwd = list(ROUTES); rev = fwd[::-1]
-    if PROMPT_VERSION == "v1.8":
+    if PROMPT_VERSION in ("v1.8", "v1.9"):
         ms = monitoring_status((facts().get(c["id"]) or {}).get("baseline_status"))
         if ms: L[0] = L[0].rstrip() + " " + ms   # appended to the header line so key_line indices are unchanged
     v = {"base": ("\n".join(L), fwd), "reversed": ("\n".join(L), rev),

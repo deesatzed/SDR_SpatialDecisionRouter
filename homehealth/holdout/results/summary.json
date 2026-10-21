@@ -3,10 +3,10 @@
  "n_cases": 60,
  "label_pages_per_100": 33.3333,
  "routes": {
-  "escalate_human": 20,
+  "urgent_page": 20,
   "nurse_task": 15,
   "silent_log": 16,
-  "wake_specialist": 9
+  "provider_task": 9
  },
  "tiers": {
   "ABSOLUTE": 9,
@@ -411,36 +411,36 @@
  },
  "critical_miss_detail": {
   "LIB-HO1-003": {
-   "expected": "escalate_human",
+   "expected": "urgent_page",
    "label_tier": "CONFIRM_FIRST",
    "label_rule": "HT_CHEST_PAIN_VITALS",
    "l1_tier": "CONFIRM_FIRST",
    "l1_rule": "HT_CHEST_PAIN_VITALS",
    "l1_reason": null,
-   "d1": "escalate_human",
-   "pplx": "wake_specialist",
+   "d1": "urgent_page",
+   "pplx": "provider_task",
    "decisive_feature": "Chest pressure on waking with cuff SBP 97 mmHg as the only band-B vital."
   },
   "LIB-HO2-004": {
-   "expected": "escalate_human",
+   "expected": "urgent_page",
    "label_tier": "CONFIRM_FIRST",
    "label_rule": "HT_SPO2_LT88",
    "l1_tier": "CONFIRM_FIRST",
    "l1_rule": "HT_SPO2_LT88",
    "l1_reason": "outside_population_default_learning",
-   "d1": "escalate_human",
-   "pplx": "wake_specialist",
+   "d1": "urgent_page",
+   "pplx": "provider_task",
    "decisive_feature": "Wrist readings of 86-87% at rest on day 3 of learning in a patient with Fitzpatrick V-VI skin, with no learned own band and no second oximeter, leave only a patient-call confirmation."
   },
   "LIB-HO5-006": {
-   "expected": "escalate_human",
+   "expected": "urgent_page",
    "label_tier": "CONFIRM_FIRST",
    "label_rule": "HT_SPO2_LT88",
    "l1_tier": null,
    "l1_rule": null,
    "l1_reason": "no_trigger",
-   "d1": "escalate_human",
-   "pplx": "wake_specialist",
+   "d1": "urgent_page",
+   "pplx": "provider_task",
    "decisive_feature": "The unanswered watch confirmation prompt, not the 87% value itself, turns a pending confirm into an immediate page for a woman living alone."
   }
  },

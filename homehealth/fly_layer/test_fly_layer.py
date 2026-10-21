@@ -48,8 +48,8 @@ def test_combine_never_lowers(rule):
 
 def test_flag_only_flags_disagreement():
     assert SF.combine("flag_only", "silent_log", "jev", True) == ("silent_log", True)
-    assert SF.combine("flag_only", "escalate_human", "jev", False) == ("escalate_human", True)
-    assert SF.combine("flag_only", "escalate_human", "jev", True) == ("escalate_human", False)
+    assert SF.combine("flag_only", "urgent_page", "jev", False) == ("urgent_page", True)
+    assert SF.combine("flag_only", "urgent_page", "jev", True) == ("urgent_page", False)
 
 def test_fly_band():
     cuts = (0.3, 0.6, 0.9)

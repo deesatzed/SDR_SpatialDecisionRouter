@@ -9,7 +9,7 @@ def load_picks(d, model):
     f = os.path.join(d, "parsed", S_slug(model) + ".jsonl"); last = {}
     if not os.path.exists(f): return None, []
     for l in open(f):
-        if l.strip(): r = json.loads(l); last[(r["case"], r["variant"])] = r
+        if l.strip(): r = S.RT.canon_row(json.loads(l)); last[(r["case"], r["variant"])] = r
     rows = list(last.values())
     return {r["case"]: r.get("pick") for r in rows if r["variant"] == "base"}, rows
 def S_slug(m):

@@ -19,7 +19,7 @@ Rules: HT_SPO2_LT88, HT_GAP48_HIGHRISK, HT_FALL_ANTICOAG, HT_SYNCOPE, HT_FOCAL_N
   - ABSOLUTE, or CONFIRM_FIRST with confirm_step and confirm_timeout_min.
   - SUPPRESSED with suppression_reason: unreliable_reading, at_patient_baseline, explained, goals_of_care or below_band_threshold.
   - ARTIFACT with a recheck step and timeout.
-- policy_route is the route the policy implies for the WHOLE case (silent_log | nurse_task | wake_specialist | escalate_human). A suppressed trigger normally keeps the case's existing clinical route.
+- policy_route is the route the policy implies for the WHOLE case (silent_log | nurse_task | provider_task | urgent_page). A suppressed trigger normally keeps the case's existing clinical route.
 - route_change_needed is true only if policy_route is neither the current expected_route nor in acceptable_alternates.
 - critical_miss_risk is true if a real (unsuppressed) trigger is present and the current label does not escalate.
 Output ONLY {"results":[{"case_id":"...","trigger_present":true|false,"hard_trigger_rule":null,"trigger_tier":null,"suppression_reason":null,"confirm_step":null,"confirm_timeout_min":null,"baseline_layer":null,"chest_pain_band":null,"policy_route":"...","route_change_needed":false,"critical_miss_risk":false,"evidence":"<=25-word quote from the case","older_event":null,"note":"<=20 words"}]} with one entry per input case, in input order."""

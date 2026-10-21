@@ -39,7 +39,7 @@ def test_goals_of_care_still_apply_to_confirmed_low():
     assert d["tier"] == "SUPPRESSED" and d["reason"] == "goals_of_care" and d["route"] == "nurse_task" and d["notify"] == "hospice_nurse_same_shift"
     # ... but a SYMPTOMATIC low is an urgent, treatable, goal-consistent comfort problem: not suppressed, urgent hospice-nurse page now
     s = ev(46, {"symptoms": True}, goals="comfort_only")
-    assert s["tier"] == "ABSOLUTE" and s["route"] == "escalate_human" and s["escalation_target"] == "hospice_nurse" and s["notify"] == "hospice_nurse_urgent_page"
+    assert s["tier"] == "ABSOLUTE" and s["route"] == "urgent_page" and s["escalation_target"] == "hospice_nurse" and s["notify"] == "hospice_nurse_urgent_page"
 def test_rule_only_applies_at_or_below_danger_and_only_for_cgm():
     assert ev(60, {"pressure_documented": True})["tier"] not in ("ARTIFACT", "ABSOLUTE")
     b = T.Baseline("p", 0.0, P)

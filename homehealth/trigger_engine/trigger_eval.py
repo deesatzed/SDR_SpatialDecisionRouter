@@ -202,9 +202,9 @@ def _cgm_pressure_low(r, p):
         disc = fs["value"] - x >= max(cp["discordant_abs_mg_dl"], cp["discordant_pct"] * x)
         if disc: signs.append("discordant_fingerstick")
     if fs_ok and fs["value"] <= h["danger_low"]:
-        return _decision("ABSOLUTE", "hard_limit_danger_fingerstick_confirmed", "escalate_human", True, "HT_VS_DANGER", cgm_signs=signs)
+        return _decision("ABSOLUTE", "hard_limit_danger_fingerstick_confirmed", "urgent_page", True, "HT_VS_DANGER", cgm_signs=signs)
     if g.get("symptoms"):
-        return _decision("ABSOLUTE", "hard_limit_danger_symptomatic", "escalate_human", True, "HT_VS_DANGER", cgm_signs=signs)
+        return _decision("ABSOLUTE", "hard_limit_danger_symptomatic", "urgent_page", True, "HT_VS_DANGER", cgm_signs=signs)
     if fs_ok:
         return _decision("SUPPRESSED", "unreliable_reading", "silent_log", False, "HT_VS_DANGER", None, basis="cgm_low_not_confirmed_by_fingerstick", cgm_signs=signs, hitm_sample=True)
     if signs:
@@ -241,13 +241,13 @@ def urgent_comfort_basis(r, base, p, context=None):
 
 def apply_goals_of_care(d, p, context=None, basis=None):
     """SMART_TRIGGERS check 4 (v1.5). With a comfort-only/hospice plan, goals-of-care suppression applies to HOSPITAL-DIRECTED escalation only.
-    basis (from urgent_comfort_basis) set -> keep the tier, page the hospice nurse NOW (escalate_human, escalation_target hospice_nurse).
+    basis (from urgent_comfort_basis) set -> keep the tier, page the hospice nurse NOW (urgent_page, escalation_target hospice_nurse).
     Otherwise -> SUPPRESSED goals_of_care, nurse_task (same-shift hospice nurse contact), as before."""
     ctx = context or {}
     if ctx.get("goals") != "comfort_only" or d["tier"] not in ("ABSOLUTE", "CONFIRM_FIRST"): return d
     gc = p.get("goals_of_care") or {}; uc = gc.get("urgent_comfort") or {}
     if basis:
-        return {**d, "route": "escalate_human", "page": True, "escalation_target": uc.get("escalation_target", "hospice_nurse"), "notify": uc.get("notify", "hospice_nurse_urgent_page"),
+        return {**d, "route": "urgent_page", "page": True, "escalation_target": uc.get("escalation_target", "hospice_nurse"), "notify": uc.get("notify", "hospice_nurse_urgent_page"),
                 "hospital_directed": False, "goals_basis": basis, "confirm_step": None if d["tier"] == "ABSOLUTE" else d.get("confirm_step")}
     return {**d, "tier": "SUPPRESSED", "reason": "goals_of_care", "route": "nurse_task", "page": False, "notify": gc.get("default_notify", "hospice_nurse_same_shift"),
             "original_tier": d["tier"], "hitm_sample": True, "confirm_step": None, "timeout_min": None, "recheck": None}
@@ -297,7 +297,7 @@ def evaluate(r, base, p, context=None):
             d = _decision("NORMAL", "unreliable_reading_not_learned", "silent_log", False)
     # Layer 1b: danger -> ABSOLUTE regardless of baseline
     elif (h["danger_low"] is not None and x <= h["danger_low"]) or (h["danger_high"] is not None and x >= h["danger_high"]):
-        d = _decision("ABSOLUTE", "hard_limit_danger", "escalate_human", True, "HT_VS_DANGER")
+        d = _decision("ABSOLUTE", "hard_limit_danger", "urgent_page", True, "HT_VS_DANGER")
     else:
         ph = base.phase(v, ts); st = base.stats(v, act, ts) if ph != "learning" else None
         pop = p["population_defaults"][v][act]; cs = (base.clinician_set.get(v) or {}).get(act)
@@ -309,8 +309,8 @@ def evaluate(r, base, p, context=None):
         elif ph == "learning" or st is None:
             if not (pop[0] <= x <= pop[1]) or spo2_low:   # v1.8 learning-period rule (Wayne): beyond population defaults -> CONFIRM_FIRST, not silent
                 lt = p["learning"].get("outside_population_default_tier", "CONFIRM_FIRST")
-                if lt == "ABSOLUTE": d = _decision("ABSOLUTE", "outside_population_default_" + ph, "escalate_human", True, rule, phase=ph)
-                else: d = _decision("CONFIRM_FIRST", "outside_population_default_" + ph, "escalate_human", "if_confirmed_or_timeout", rule, conf, phase=ph, learning_rule="v1.8")
+                if lt == "ABSOLUTE": d = _decision("ABSOLUTE", "outside_population_default_" + ph, "urgent_page", True, rule, phase=ph)
+                else: d = _decision("CONFIRM_FIRST", "outside_population_default_" + ph, "urgent_page", "if_confirmed_or_timeout", rule, conf, phase=ph, learning_rule="v1.8")
             else:
                 d = _decision("NORMAL", "within_population_default_" + ph, "silent_log", False, phase=ph)
         else:
@@ -319,7 +319,7 @@ def evaluate(r, base, p, context=None):
             if ph == "relearning" and pop[0] <= x <= pop[1] and not spo2_low:
                 d = _decision("NORMAL", "relearning_within_population", "silent_log", False, phase=ph, z=round(z, 2))
             elif abs(z) >= zc:
-                d = _decision("CONFIRM_FIRST", "baseline_deviation", "escalate_human", "if_confirmed_or_timeout", rule, conf, phase=ph, z=round(z, 2), baseline=st)
+                d = _decision("CONFIRM_FIRST", "baseline_deviation", "urgent_page", "if_confirmed_or_timeout", rule, conf, phase=ph, z=round(z, 2), baseline=st)
             elif spo2_low:
                 d = _decision("SUPPRESSED", "at_patient_baseline", "silent_log", False, rule, None, phase=ph, z=round(z, 2), baseline=st, hitm_sample=True)
             elif abs(z) >= zw:
@@ -332,7 +332,7 @@ def evaluate(r, base, p, context=None):
     # drift review flag (layer 3)
     if v in base.frozen:
         d["drift_flag"] = base.frozen[v]
-        if d["route"] == "silent_log": d["route"] = "wake_specialist"; d["reason"] += "+SUBTLE_DETERIORATION_TREND"
+        if d["route"] == "silent_log": d["route"] = "provider_task"; d["reason"] += "+SUBTLE_DETERIORATION_TREND"
     if d["tier"] != "NORMAL" or "drift_flag" in d:
         base._log(ts, "DECISION", vital=v, value=x, tier=d["tier"], reason=d["reason"], route=d["route"], rule=d["rule"])
     return d
@@ -364,7 +364,7 @@ def evaluate_chest_pain(inp, p, base=None, context=None):
     ts = inp.get("ts", 0.0); mods = []; unreliable = []
     def out(tier, band, raw, rule, **kw):
         d = {"rule": rule, "tier": tier, "band": band, "raw_band": raw, "modifiers": mods, "unreliable_vitals": unreliable, **kw}
-        if tier == "ABSOLUTE": d.update(route="escalate_human", page=True, confirm_step=None, timeout_min=None)
+        if tier == "ABSOLUTE": d.update(route="urgent_page", page=True, confirm_step=None, timeout_min=None)
         elif tier == "LOG_ONLY": d.update(route=cp["bands"]["D"]["route"], page=False, confirm_step=None, timeout_min=None)
         if ctx.get("goals") == "comfort_only" and tier in ("ABSOLUTE", "CONFIRM_FIRST"):   # v1.5 narrowing; chest pain is urgent-comfort only if declared
             d = apply_goals_of_care(d, p, ctx, urgent_comfort_basis(None, None, p, ctx))
@@ -432,12 +432,12 @@ def evaluate_chest_pain(inp, p, base=None, context=None):
     lo, hi = cp["timeout_bounds_min"]
     if unreliable:
         dr = M["device_reliability"]; mods.append(f"unreliable {unreliable} -> recheck")
-        return out("CONFIRM_FIRST", band, raw_worst, "HT_CHEST_PAIN_VITALS", route="escalate_human", page="if_confirmed_or_timeout", confirm_step=dr["recheck_step"] + "+patient_call", timeout_min=dr["recheck_timeout_min"])
+        return out("CONFIRM_FIRST", band, raw_worst, "HT_CHEST_PAIN_VITALS", route="urgent_page", page="if_confirmed_or_timeout", confirm_step=dr["recheck_step"] + "+patient_call", timeout_min=dr["recheck_timeout_min"])
     if band == "D": return out("LOG_ONLY", "D", raw_worst, "HT_CHEST_PAIN_VITALS", reason="below_band_threshold")
     if inp.get("already_confirmed"):
-        return out("CONFIRM_FIRST", band, raw_worst, "HT_CHEST_PAIN_VITALS", route="escalate_human", page=True, confirm_step="already_confirmed", timeout_min=None)
+        return out("CONFIRM_FIRST", band, raw_worst, "HT_CHEST_PAIN_VITALS", route="urgent_page", page=True, confirm_step="already_confirmed", timeout_min=None)
     t = cp["bands"][band]["timeout_min"]; f = 1.0
     if post_ex and not (pattern_driven and (cp.get("crescendo_rule") or {}).get("no_exertion_timeout_factor_when_vitals_normal")):
         f *= M["post_exertion"]["timeout_factor"]; mods.append(f"post-exertion timeout x{M['post_exertion']['timeout_factor']}")
     t = int(round(min(max(t * f, lo), hi)))
-    return out("CONFIRM_FIRST", band, raw_worst, "HT_CHEST_PAIN_VITALS", route="escalate_human", page="if_confirmed_or_timeout", confirm_step=cp["default_confirm_step"], timeout_min=t)
+    return out("CONFIRM_FIRST", band, raw_worst, "HT_CHEST_PAIN_VITALS", route="urgent_page", page="if_confirmed_or_timeout", confirm_step=cp["default_confirm_step"], timeout_min=t)

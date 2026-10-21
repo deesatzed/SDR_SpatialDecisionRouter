@@ -13,7 +13,7 @@ def test_sleeping_hr50_on_beta_blocker_mild_discomfort_is_not_a_page():
     assert d["tier"] == "LOG_ONLY" and d["route"] == "nurse_task" and any("sleep" in m for m in d["modifiers"]) and any("rate-control" in m for m in d["modifiers"])
 def test_hr150_at_rest_with_chest_pain_is_absolute():
     d = E(cp({"hr": 150, "sbp": 132}))
-    assert d["tier"] == "ABSOLUTE" and d["page"] is True and d["route"] == "escalate_human" and d["rule"] == "HT_CHEST_PAIN_VITALS"
+    assert d["tier"] == "ABSOLUTE" and d["page"] is True and d["route"] == "urgent_page" and d["rule"] == "HT_CHEST_PAIN_VITALS"
 def test_sbp85_with_chest_pain_is_absolute():
     d = E(cp({"hr": 88, "sbp": 85}))
     assert d["tier"] == "ABSOLUTE" and d["band"] == "A"
@@ -74,7 +74,7 @@ def test_no_chest_pain_returns_none_and_decision_logged():
 # Decided rule (Wayne 2026-10-17): crescendo angina pattern with normal vitals -> CONFIRM_FIRST
 def test_crescendo_pattern_with_normal_vitals_is_confirm_first():
     d = E(cp({"hr": 74, "sbp": 134}, act="active", mse=0, red=["crescendo_pattern"]), rate_control_med=True)
-    assert d["raw_band"] == "D" and d["band"] == "C" and d["tier"] == "CONFIRM_FIRST" and d["route"] == "escalate_human"
+    assert d["raw_band"] == "D" and d["band"] == "C" and d["tier"] == "CONFIRM_FIRST" and d["route"] == "urgent_page"
     assert d["confirm_step"] == "patient_call" and d["timeout_min"] == 15          # no post-exertion x2 when vitals are normal
     disc = E(cp({"hr": 70, "sbp": 128}, red=["crescendo_pattern"], concordant=False))   # discordance cannot drop it back to log-only
     assert disc["tier"] == "CONFIRM_FIRST" and disc["band"] == "C"

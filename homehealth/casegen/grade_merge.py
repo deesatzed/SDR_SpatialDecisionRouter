@@ -15,7 +15,7 @@ Previous behaviour is kept in grade_merge_v2.1.py (and is the default here when 
 """
 import argparse, csv, json, os, re, sys, collections
 
-ROUTES = {"silent_log", "nurse_task", "wake_specialist", "escalate_human"}
+ROUTES = {"silent_log", "nurse_task", "provider_task", "urgent_page"}
 MECH = {"noise","recovery","hf","arrhythmia","acs","stroke","syncope","fall","delirium","infection","sepsis",
         "respiratory","hypoglycemia","hyperglycemia","dehydration","electrolyte","renal","missing_data"}
 TAGS = {"med_change","spo2_bias","dementia","caregiver","goals_of_care","conflicting","missing_data"}
@@ -45,7 +45,7 @@ BASELINE_LAYERS = {"hard_limit_artifact", "hard_limit_danger", "learning_period"
 PHASES = {"learning", "established", "relearning"}
 SUPP_REASONS = {"unreliable_reading", "at_patient_baseline", "explained", "goals_of_care", "below_band_threshold"}
 BANDED_RULES = {"HT_CHEST_PAIN_VITALS"}   # SMART_TRIGGERS.md section 7: ABSOLUTE / CONFIRM_FIRST / SUPPRESSED below_band_threshold
-CF_ALTS = {"nurse_task_with_recheck", "wake_specialist"}
+CF_ALTS = {"nurse_task_with_recheck", "provider_task"}
 SECONDARY_CONFIRM_STEPS = CONFIRM_STEPS | {"device_recheck"}   # v1.5: e.g. an HR recheck attached to a suppressed primary trigger
 ESCALATION_TARGETS = {"hospice_nurse"}                          # v1.5 hospice narrowing
 ROUTE_BASES = {"trigger", "clinical_presentation"}              # v1.5: clinical_presentation = clinician-ruled escalation on a SUPPRESSED trigger
@@ -60,9 +60,18 @@ V1_REQ = ["case_id","age_band","sex","meds","devices","baseline_30d","trend_last
 EXACT_AGE = re.compile(r"(?<![-\d])\b\d{2,3}(-year-old| years old|yo|y/o)\b", re.I)
 TITLE_NAME = re.compile(r"\b(Mr|Mrs|Ms|Miss|Dr)\.?\s+[A-Z][a-z]+")
 
+LEGACY_ROUTE_ALIAS = {"wake_specialist": "provider_task", "escalate_human": "urgent_page"}   # SMART_TRIGGERS v1.9: legacy ids mapped on read
+def canon_case_routes(c):
+    """v1.9: map legacy route ids in a case's route fields (expected_route, acceptable_alternates, if_confirmed_route) in place."""
+    a = LEGACY_ROUTE_ALIAS
+    if isinstance(c.get("expected_route"), str): c["expected_route"] = a.get(c["expected_route"], c["expected_route"])
+    if isinstance(c.get("acceptable_alternates"), list): c["acceptable_alternates"] = [a.get(x, x) for x in c["acceptable_alternates"]]
+    for t in c.get("secondary_triggers") or []:
+        if isinstance(t, dict) and isinstance(t.get("if_confirmed_route"), str): t["if_confirmed_route"] = a.get(t["if_confirmed_route"], t["if_confirmed_route"])
+    return c
 def load_cases(path):
     d = json.load(open(path))
-    return d["cases"] if isinstance(d, dict) else d
+    return [canon_case_routes(c) for c in (d["cases"] if isinstance(d, dict) else d)]
 
 def case_text(c):
     out = []
@@ -91,28 +100,28 @@ def smart_checks(c):
     if tier != "SUPPRESSED" and rule in RULE_TIER and RULE_TIER[rule] == "CONFIRM_FIRST" and tier == "ABSOLUTE" and rule not in BANDED_RULES:
         iss.append(f"{rule} labelled ABSOLUTE (policy tier CONFIRM_FIRST)")
     if tier == "ABSOLUTE":
-        if exp != "escalate_human": iss.append("ABSOLUTE but not escalate_human")
+        if exp != "urgent_page": iss.append("ABSOLUTE but not urgent_page")
         if alts: iss.append("ABSOLUTE with non-empty alternates")
         if cs or to is not None or sr: iss.append("ABSOLUTE with confirm/suppression fields set")
     elif tier == "CONFIRM_FIRST":
-        if exp != "escalate_human": iss.append("CONFIRM_FIRST but not escalate_human")
+        if exp != "urgent_page": iss.append("CONFIRM_FIRST but not urgent_page")
         if cs not in CONFIRM_STEPS: iss.append(f"CONFIRM_FIRST bad confirm_step {cs!r}")
         if cs == "already_confirmed":
             if to is not None: iss.append("already_confirmed with a timeout")
             if alts: iss.append("already_confirmed with non-empty alternates")
         elif not (isinstance(to, int) and 5 <= to <= 120): iss.append(f"CONFIRM_FIRST confirm_timeout_min {to!r} not int 5-120")
         bad = [x for x in alts if x not in CF_ALTS]
-        if bad: iss.append("CONFIRM_FIRST alternates outside {nurse_task_with_recheck, wake_specialist}: " + ",".join(bad))
+        if bad: iss.append("CONFIRM_FIRST alternates outside {nurse_task_with_recheck, provider_task}: " + ",".join(bad))
         if sr: iss.append("CONFIRM_FIRST with suppression_reason")
     elif tier == "SUPPRESSED":
-        if exp == "escalate_human" and c.get("route_basis") != "clinical_presentation": iss.append("SUPPRESSED but expected escalate_human")
+        if exp == "urgent_page" and c.get("route_basis") != "clinical_presentation": iss.append("SUPPRESSED but expected urgent_page")
         if sr not in SUPP_REASONS: iss.append(f"SUPPRESSED bad suppression_reason {sr!r}")
         if sr == "goals_of_care" and exp == "silent_log": iss.append("goals_of_care suppression routed silent_log")
         if cs or to is not None: iss.append("SUPPRESSED with confirm fields set")
         if "nurse_task_with_recheck" in alts: iss.append("SUPPRESSED with nurse_task_with_recheck alternate")
     elif tier == "ARTIFACT":
         if rule != "HT_VS_IMPLAUSIBLE": iss.append("ARTIFACT tier only for HT_VS_IMPLAUSIBLE")
-        if exp not in ("silent_log", "wake_specialist"): iss.append("ARTIFACT must route silent_log or wake_specialist (no page)")
+        if exp not in ("silent_log", "provider_task"): iss.append("ARTIFACT must route silent_log or provider_task (no page)")
         if cs not in ARTIFACT_STEPS or not (isinstance(to, int) and 5 <= to <= 120): iss.append("ARTIFACT needs confirm_step device_recheck|fingertip_recheck and a 5-120 min timeout")
         if sr: iss.append("ARTIFACT with suppression_reason")
         if "nurse_task_with_recheck" in alts: iss.append("ARTIFACT with nurse_task_with_recheck alternate")
@@ -157,12 +166,12 @@ def v15_checks(c):
     et = c.get("escalation_target"); rb = c.get("route_basis")
     if et is not None:
         if et not in ESCALATION_TARGETS: iss.append(f"bad escalation_target {et!r}")
-        if exp != "escalate_human": iss.append("escalation_target set but not escalate_human")
+        if exp != "urgent_page": iss.append("escalation_target set but not urgent_page")
         if tier not in ("ABSOLUTE", "CONFIRM_FIRST"): iss.append("escalation_target hospice_nurse needs a non-suppressed tier (urgent comfort issue)")
         if "goals_of_care" not in (c.get("category") or []): iss.append("escalation_target hospice_nurse without goals_of_care category")
     if rb is not None:
         if rb not in ROUTE_BASES: iss.append(f"bad route_basis {rb!r}")
-        if rb == "clinical_presentation" and not (tier == "SUPPRESSED" and exp == "escalate_human"): iss.append("route_basis clinical_presentation only for SUPPRESSED + escalate_human")
+        if rb == "clinical_presentation" and not (tier == "SUPPRESSED" and exp == "urgent_page"): iss.append("route_basis clinical_presentation only for SUPPRESSED + urgent_page")
     st = c.get("secondary_triggers")
     if st is not None:
         if not isinstance(st, list): return iss + ["secondary_triggers must be a list"]
@@ -175,11 +184,11 @@ def v15_checks(c):
                 cs, to = t.get("confirm_step"), t.get("confirm_timeout_min")
                 if cs not in SECONDARY_CONFIRM_STEPS: iss.append(f"secondary_triggers[{i}] bad confirm_step {cs!r}")
                 if cs != "already_confirmed" and not (isinstance(to, int) and 5 <= to <= 120): iss.append(f"secondary_triggers[{i}] timeout {to!r} not int 5-120")
-                if t.get("if_confirmed_route") != "escalate_human": iss.append(f"secondary_triggers[{i}] CONFIRM_FIRST needs if_confirmed_route escalate_human")
-                if cs == "already_confirmed" and exp != "escalate_human": iss.append(f"secondary_triggers[{i}] already confirmed but expected not escalate_human")
+                if t.get("if_confirmed_route") != "urgent_page": iss.append(f"secondary_triggers[{i}] CONFIRM_FIRST needs if_confirmed_route urgent_page")
+                if cs == "already_confirmed" and exp != "urgent_page": iss.append(f"secondary_triggers[{i}] already confirmed but expected not urgent_page")
                 if exp == "silent_log": iss.append(f"secondary_triggers[{i}] pending CONFIRM_FIRST routed silent_log")
             elif tt == "SUPPRESSED" and t.get("suppression_reason") not in SUPP_REASONS: iss.append(f"secondary_triggers[{i}] bad suppression_reason")
-            elif tt == "ABSOLUTE" and exp != "escalate_human": iss.append(f"secondary_triggers[{i}] ABSOLUTE but expected not escalate_human")
+            elif tt == "ABSOLUTE" and exp != "urgent_page": iss.append(f"secondary_triggers[{i}] ABSOLUTE but expected not urgent_page")
     return iss
 
 def layer_checks(c):
@@ -222,7 +231,7 @@ def script_checks(c, legacy, smart=False):
         issues += smart_checks(c)
         if "baseline_layer" in c: issues += layer_checks(c)
     else:
-        if c.get("hard_trigger") and c.get("expected_route") != "escalate_human": issues.append("hard_trigger but not escalate_human")
+        if c.get("hard_trigger") and c.get("expected_route") != "urgent_page": issues.append("hard_trigger but not urgent_page")
         if c.get("hard_trigger") and (c.get("acceptable_alternates") or []) and not legacy: issues.append("hard_trigger with non-empty acceptable_alternates (v2.1)")
     g = (c.get("baseline_30d") or {}).get("glucose_mean")
     if isinstance(g, (int, float)) and g < 30: issues.append("glucose looks like mmol/L")
@@ -339,7 +348,7 @@ def main():
             if smart:
                 g_tier = b.get("grader_trigger_tier"); g_supp = b.get("grader_suppression_reason")
                 tt = v.get("trigger_tier_correct") or {}
-                crit = c.get("trigger_tier") == "SUPPRESSED" and (g_tier in ("ABSOLUTE", "CONFIRM_FIRST") or g_route == "escalate_human" or tt.get("critical_miss") is True)
+                crit = c.get("trigger_tier") == "SUPPRESSED" and (g_tier in ("ABSOLUTE", "CONFIRM_FIRST") or g_route == "urgent_page" or tt.get("critical_miss") is True)
                 if crit: reasons.insert(0, "CRITICAL_MISS"); cnt["critical_miss"] += 1
                 elif c.get("hard_trigger") and (tt.get("ok") is False or (g_tier and g_tier != c.get("trigger_tier"))):
                     reasons.append("TIER_DISPUTE")

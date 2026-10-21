@@ -27,10 +27,10 @@ for cid, p in PROP.items():
     if disagree: reasons.append("EVAL_MODEL_DISAGREE")
     cur_routes = [c["expected_route"]] + list(c.get("acceptable_alternates") or [])
     route_change = bool(p.get("route_change_needed")) or (p.get("trigger_present") and p.get("policy_route") not in cur_routes)
-    if p.get("trigger_present") and mtier in ("ABSOLUTE", "CONFIRM_FIRST") and c["expected_route"] != "escalate_human": route_change = True
+    if p.get("trigger_present") and mtier in ("ABSOLUTE", "CONFIRM_FIRST") and c["expected_route"] != "urgent_page": route_change = True
     if route_change: reasons.append("ROUTE_CHANGE")
     if p.get("critical_miss_risk"): reasons.append("CRITICAL_MISS")
-    if any(f["tier"] == "ABSOLUTE" for f in firm) and c["expected_route"] != "escalate_human": reasons.append("CRITICAL_MISS_EVALUATOR")   # evaluator says ABSOLUTE, label does not escalate
+    if any(f["tier"] == "ABSOLUTE" for f in firm) and c["expected_route"] != "urgent_page": reasons.append("CRITICAL_MISS_EVALUATOR")   # evaluator says ABSOLUTE, label does not escalate
     labelled = None
     if p.get("trigger_present"):
         labelled = {**c, "hard_trigger": True, **{f: p.get(f) for f in FIELDS}}

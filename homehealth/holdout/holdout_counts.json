@@ -14,10 +14,10 @@
   "HARD_TRIGGER_DISPUTE": 1
  },
  "routes": {
-  "escalate_human": 20,
+  "urgent_page": 20,
   "nurse_task": 15,
   "silent_log": 16,
-  "wake_specialist": 9
+  "provider_task": 9
  },
  "tiers": {
   "ABSOLUTE": 9,

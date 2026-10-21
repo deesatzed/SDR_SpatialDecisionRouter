@@ -104,7 +104,7 @@ def test_slow_monotonic_drift_is_flagged_not_absorbed():
     t = b.enrolled_ts + 35 * DAY + 10 * 3600
     assert b.stats("hr", "rest", t)["median"] < 71.5                  # the drift was not learned as the new normal
     d = T.evaluate(rd(b, "hr", 82, 35), b, P)
-    assert d["route"] == "wake_specialist" and d["drift_flag"]["reason"] == "SUBTLE_DETERIORATION_TREND"
+    assert d["route"] == "provider_task" and d["drift_flag"]["reason"] == "SUBTLE_DETERIORATION_TREND"
     b.clear_drift("hr", t, approved_by="reviewing clinician", note="reviewed")
     assert "hr" not in b.frozen and b.log[-1]["type"] == "DRIFT_CLEARED"
     with pytest.raises(PermissionError): b.clear_drift("hr", t, approved_by="")

@@ -76,7 +76,7 @@
     "longest_gap_h": 2
    },
    "router_input": "Age band 70-74, female, Fitzpatrick I-IV, lives alone. COPD GOLD 3, pulmonary hypertension, hypertension. Walks to kitchen with stick, independent ADLs with some help for socks. Goals: prefers to stay at home, no comfort-only plan. Meds: tiotropium 18 mcg inhaled daily, budesonide-formoterol 200/6 mcg 2 puffs BID, amlodipine 5 mg daily. No recent med changes. Devices: watch, fingertip oximeter, scale, BP cuff. 30-day baseline: resting HR 78 bpm, HRV 24 ms, sleep 6.9 h, steps 2100, night SpO2 min 87%, skin-temp deviation 0.0 C, weight 61.0 kg, SBP 128 mmHg, DBP 76 mmHg. Fingertip oximeter resting readings on most mornings Day -30 to -1: 89-90%. Last 7 days: watch wrist resting SpO2 88-90%, resting HR 76-80 bpm, steps 1900-2300 per day, watch worn 94%. Day -1 scale weight 61.2 kg. Day 0 09:40 fingertip oximeter SpO2 87% at rest, good waveform; 09:43 repeat 87%, good waveform. Day 0 09:40 watch wrist SpO2 88%, resting HR 96 bpm, RR 26/min. Daughter: breathless walking to kitchen and speaking in short sentences since this morning; no fever reported. Data: wear 94% over 7 days; no device quality flags; 0 h missing in last 48 h; longest gap 2 h.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_SPO2_LT88",
@@ -89,7 +89,7 @@
    "category": [
     "respiratory"
    ],
-   "rationale": "Check 1 (reliable reading) passes: two fingertip readings at 09:40 and 09:43 both show 87% with good waveforms, so the value is confirmed. Check 2 (change from own baseline) passes: her usual fingertip rest readings on most mornings were 89-90%, so 87% is below her own range. Check 3 (no explanation) and check 4 (goals of care) pass: no timed contact or charger log covers the window, and she prefers to stay home with no comfort-only plan. A fingertip value at or below 87% is already confirmed, so the tier is CONFIRM_FIRST already_confirmed and the route is escalate_human with no alternates. Naive-model trap: a shallow model reads the 88% wrist value as noise and picks nurse_task, missing a confirmed COPD drop with new breathlessness.",
+   "rationale": "Check 1 (reliable reading) passes: two fingertip readings at 09:40 and 09:43 both show 87% with good waveforms, so the value is confirmed. Check 2 (change from own baseline) passes: her usual fingertip rest readings on most mornings were 89-90%, so 87% is below her own range. Check 3 (no explanation) and check 4 (goals of care) pass: no timed contact or charger log covers the window, and she prefers to stay home with no comfort-only plan. A fingertip value at or below 87% is already confirmed, so the tier is CONFIRM_FIRST already_confirmed and the route is urgent_page with no alternates. Naive-model trap: a shallow model reads the 88% wrist value as noise and picks nurse_task, missing a confirmed COPD drop with new breathlessness.",
    "decisive_feature": "Usual daytime fingertip pattern of 89-90% at rest makes today's 87% a real drop below her own COPD range."
   },
   {
@@ -171,7 +171,7 @@
    "router_input": "Age band 80-84, male, Fitzpatrick V-VI, lives with spouse. HFrEF EF 30%, AFib, CKD 3b. Discharged Day -12 after HF exacerbation. Walks indoors with walker, needs help with bathing. Goals: wants full treatment, hospital care acceptable. Meds: sacubitril-valsartan 49/51 mg BID, metoprolol succinate 50 mg daily, furosemide 60 mg daily, spironolactone 25 mg daily. Recent med change: furosemide increased from 40 mg daily to 60 mg daily Day -12. Devices: watch, scale, BP cuff. 30-day baseline: resting HR 70 bpm, HRV 28 ms, sleep 6.2 h, steps 2400, night SpO2 min 92%, skin-temp deviation 0.0 C, weight 92.0 kg, SBP 122 mmHg, DBP 74 mmHg. Day -12 to -3: scale weight 93.1 kg Day -12, 92.6 kg Day -8, 92.4 kg Day -5, 93.6 kg Day -3; watch resting HR 68-72 bpm, steps 1900-2300 per day. Day -2 07:30 scale weight 94.3 kg. Last watch sync Day -2 14:00: resting HR 74 bpm, steps 2100. No watch, scale or cuff data from Day -2 14:00 to Day 0 16:00. Day 0 16:00 watch resumes: resting HR 84 bpm, wrist SpO2 92%. Spouse: patient was visiting family out of town; watch and scale were left at home. Timed video call Day -1 19:40 inside the gap: patient answered from his sister's sofa, said he had eaten supper and taken his evening tablets. Data: wear 70% over 7 days; flag no device data Day -2 14:00 to Day 0 16:00; 48 h missing in last 48 h; longest gap 50 h.",
    "expected_route": "nurse_task",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_GAP48_HIGHRISK",
@@ -185,7 +185,7 @@
     "hf",
     "missing_data"
    ],
-   "rationale": "Check 1 (reliable reading) passes: the resumed watch readings carry no flags. Check 2 (change from own baseline) passes: the 2.3 kg weight rise and resting HR of 84 bpm differ from his own pattern. Check 3 (no explanation) fails: a spouse video call at Day -1 19:40 inside the 50 h gap is a timed contact, so the gap is explained and the tier is SUPPRESSED with explained. Check 4 (goals of care) passes, so the route is nurse_task, with wake_specialist as alternate, meaning a nurse call within 24 h about weight and heart rate. Naive-model trap: a shallow model sees a 50 h gap in a post-discharge HF patient and escalates to a human, when the timed contact explains the gap and the nurse call covers the weight rise.",
+   "rationale": "Check 1 (reliable reading) passes: the resumed watch readings carry no flags. Check 2 (change from own baseline) passes: the 2.3 kg weight rise and resting HR of 84 bpm differ from his own pattern. Check 3 (no explanation) fails: a spouse video call at Day -1 19:40 inside the 50 h gap is a timed contact, so the gap is explained and the tier is SUPPRESSED with explained. Check 4 (goals of care) passes, so the route is nurse_task, with provider_task as alternate, meaning a nurse call within 24 h about weight and heart rate. Naive-model trap: a shallow model sees a 50 h gap in a post-discharge HF patient and escalates to a human, when the timed contact explains the gap and the nurse call covers the weight rise.",
    "decisive_feature": "A spouse's video call at Day -1 19:40, placed inside the gap, explains the blackout while the weight rise still needs same-day nursing."
   },
   {
@@ -328,7 +328,7 @@
     "longest_gap_h": 2
    },
    "router_input": "Age band 70-74, female, Fitzpatrick I-IV, lives alone. COPD GOLD 3, pulmonary hypertension, hypertension. Walks to kitchen with stick, independent ADLs with some help for socks. Goals: prefers to stay at home, no comfort-only plan. Meds: tiotropium 18 mcg inhaled daily, budesonide-formoterol 200/6 mcg 2 puffs BID, amlodipine 5 mg daily. No recent med changes. Devices: watch, fingertip oximeter, scale, BP cuff. 30-day baseline: resting HR 78 bpm, HRV 24 ms, sleep 6.9 h, steps 2100, night SpO2 min 87%, skin-temp deviation 0.0 C, weight 61.0 kg, SBP 128 mmHg, DBP 76 mmHg. Fingertip oximeter resting readings on most mornings Day -30 to -1: 86-88%. Last 7 days: watch wrist resting SpO2 88-90%, resting HR 76-80 bpm, steps 1900-2300 per day, watch worn 94%. Day -1 scale weight 61.2 kg. Day 0 09:40 fingertip oximeter SpO2 87% at rest, good waveform; 09:43 repeat 87%, good waveform. Day 0 09:40 watch wrist SpO2 88%, resting HR 96 bpm, RR 26/min. Daughter: breathless walking to kitchen and speaking in short sentences since this morning; no fever reported. Data: wear 94% over 7 days; no device quality flags; 0 h missing in last 48 h; longest gap 2 h.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_SPO2_LT88",
@@ -341,7 +341,7 @@
    "category": [
     "respiratory"
    ],
-   "rationale": "Check 1 (reliable reading) passes: fingertip repeats at 09:40 and 09:43 both read 87% with good waveforms. Check 2 (change from own baseline) fails: her own fingertip rest readings over 30 days sit at 86-88%, so the saturation rule is SUPPRESSED with at_patient_baseline. The route does not come from the saturation rule: since this morning she is breathless walking to the kitchen and speaking in short sentences, with resting HR 96 bpm (from 76-80) and RR 26/min, which is an acute decompensation in its own right, so a clinician needs to see her now and the route is escalate_human with no alternate (route_basis clinical_presentation). Naive-model trap: a shallow model correctly suppresses the 87% reading as her usual range and stops there with a same-day review, missing that her breathing effort, heart rate and respiratory rate have changed acutely.",
+   "rationale": "Check 1 (reliable reading) passes: fingertip repeats at 09:40 and 09:43 both read 87% with good waveforms. Check 2 (change from own baseline) fails: her own fingertip rest readings over 30 days sit at 86-88%, so the saturation rule is SUPPRESSED with at_patient_baseline. The route does not come from the saturation rule: since this morning she is breathless walking to the kitchen and speaking in short sentences, with resting HR 96 bpm (from 76-80) and RR 26/min, which is an acute decompensation in its own right, so a clinician needs to see her now and the route is urgent_page with no alternate (route_basis clinical_presentation). Naive-model trap: a shallow model correctly suppresses the 87% reading as her usual range and stops there with a same-day review, missing that her breathing effort, heart rate and respiratory rate have changed acutely.",
    "decisive_feature": "Same 87% fingertip reading inside her own 86-88% range, but since this morning she is breathless walking to the kitchen and speaking in short sentences, with resting HR 96 bpm and RR 26/min.",
    "route_basis": "clinical_presentation"
   },
@@ -422,7 +422,7 @@
     "longest_gap_h": 50
    },
    "router_input": "Age band 80-84, male, Fitzpatrick V-VI, lives with spouse. HFrEF EF 30%, AFib, CKD 3b. Discharged Day -12 after HF exacerbation. Walks indoors with walker, needs help with bathing. Goals: wants full treatment, hospital care acceptable. Meds: sacubitril-valsartan 49/51 mg BID, metoprolol succinate 50 mg daily, furosemide 60 mg daily, spironolactone 25 mg daily. Recent med change: furosemide increased from 40 mg daily to 60 mg daily Day -12. Devices: watch, scale, BP cuff. 30-day baseline: resting HR 70 bpm, HRV 28 ms, sleep 6.2 h, steps 2400, night SpO2 min 92%, skin-temp deviation 0.0 C, weight 92.0 kg, SBP 122 mmHg, DBP 74 mmHg. Day -12 to -3: scale weight 93.1 kg Day -12, 92.6 kg Day -8, 92.4 kg Day -5, 93.6 kg Day -3; watch resting HR 68-72 bpm, steps 1900-2300 per day. Day -2 07:30 scale weight 94.3 kg. Last watch sync Day -2 14:00: resting HR 74 bpm, steps 2100. No watch, scale or cuff data from Day -2 14:00 to Day 0 16:00. Day 0 16:00 watch resumes: resting HR 84 bpm, wrist SpO2 92%. Spouse: patient was visiting family out of town; watch and scale were left at home; no call or check-in logged during the gap. Data: wear 70% over 7 days; flag no device data Day -2 14:00 to Day 0 16:00; 48 h missing in last 48 h; longest gap 50 h.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [
     "nurse_task_with_recheck"
    ],
@@ -438,7 +438,7 @@
     "hf",
     "missing_data"
    ],
-   "rationale": "Check 1 (reliable reading) passes: the resumed watch readings at Day 0 16:00 carry no flags. Check 2 (change from own baseline) passes: scale weight is 94.3 kg against a 92.0 kg baseline and resting HR is 84 bpm against 70. Check 3 (no explanation) passes because the out-of-town trip is a plausible excuse with no timed contact or charger log inside the 50 h gap. Check 4 (goals of care) passes, since he wants full treatment and hospital care is acceptable. The high-risk gap therefore keeps its tier as CONFIRM_FIRST with a caregiver_ping at 60 min, and the route is escalate_human pending confirmation. Naive-model trap: a shallow model accepts the travel story and the resumed normal readings and picks silent_log, missing a 2.3 kg rise after a recent discharge.",
+   "rationale": "Check 1 (reliable reading) passes: the resumed watch readings at Day 0 16:00 carry no flags. Check 2 (change from own baseline) passes: scale weight is 94.3 kg against a 92.0 kg baseline and resting HR is 84 bpm against 70. Check 3 (no explanation) passes because the out-of-town trip is a plausible excuse with no timed contact or charger log inside the 50 h gap. Check 4 (goals of care) passes, since he wants full treatment and hospital care is acceptable. The high-risk gap therefore keeps its tier as CONFIRM_FIRST with a caregiver_ping at 60 min, and the route is urgent_page pending confirmation. Naive-model trap: a shallow model accepts the travel story and the resumed normal readings and picks silent_log, missing a 2.3 kg rise after a recent discharge.",
    "decisive_feature": "Travel excuse with no timed contact fails to explain the device gap in a recently discharged HF man with a 2.3 kg weight rise."
   }
  ]

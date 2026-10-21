@@ -33,11 +33,21 @@ _src=[a.split("=",1)[1] for a in sys.argv if a.startswith("--source=")]
 SOURCES=[(x.split("=",1)[0],)+tuple(x.split("=",1)[1].split(":")) for x in _src] or SOURCES_DEFAULT
 OUTP=next((a.split("=",1)[1] for a in sys.argv if a.startswith("--out-prefix=")), "casegen_")
 REQ=["case_id","age_band","sex","living","pmh","meds","recent_med_changes","devices","baseline_30d","trend_last_7d","caregiver_or_nurse_note","data_quality","expected_route","acceptable_alternates","hard_trigger","difficulty","category","rationale","decisive_feature"]
-ROUTES={"silent_log","nurse_task","wake_specialist","escalate_human"}
+ROUTES={"silent_log","nurse_task","provider_task","urgent_page"}
+LEGACY_ROUTE_ALIAS = {"wake_specialist": "provider_task", "escalate_human": "urgent_page"}   # SMART_TRIGGERS v1.9: legacy ids mapped on read
+def canon_case_routes(c):
+    """v1.9: map legacy route ids in a case's route fields (expected_route, acceptable_alternates, if_confirmed_route) in place."""
+    a = LEGACY_ROUTE_ALIAS
+    if isinstance(c.get("expected_route"), str): c["expected_route"] = a.get(c["expected_route"], c["expected_route"])
+    if isinstance(c.get("acceptable_alternates"), list): c["acceptable_alternates"] = [a.get(x, x) for x in c["acceptable_alternates"]]
+    for t in c.get("secondary_triggers") or []:
+        if isinstance(t, dict) and isinstance(t.get("if_confirmed_route"), str): t["if_confirmed_route"] = a.get(t["if_confirmed_route"], t["if_confirmed_route"])
+    return c
 rejected=[]
 for tag,fn,llm,prompt in SOURCES:
     _d = json.load(open(fn))
     for c in (_d["cases"] if isinstance(_d, dict) else _d):
+        canon_case_routes(c)
         bad=[k for k in REQ if k not in c] + ([] if c.get("expected_route") in ROUTES else ["expected_route"])
         if bad: rejected.append((tag,c.get("case_id"),bad)); continue
         cid=f'{tag}-{c["case_id"]}'; L=lines(c)
@@ -48,10 +58,10 @@ for tag,fn,llm,prompt in SOURCES:
         cm.append(dict(case_id=cid, source="synthetic", domain="home_wearable", context_id="eldercare_home", subject_key=cid, day_offset=0,
             age_band=c["age_band"], sex=c["sex"], chief_complaint=c["category"][0], channel="remote_monitoring", hr=b.get("rest_hr"), sbp=b.get("sbp",""),
             spo2=b.get("spo2_night_min"), temp_c="", pmh=";".join(c["pmh"]), presentation=" ".join(L[2:]), question="Route?",
-            options="silent_log;nurse_task;wake_specialist;escalate_human", agent_proposal="", agent_confidence="",
+            options="silent_log;nurse_task;provider_task;urgent_page", agent_proposal="", agent_confidence="",
             hard_trigger=c["decisive_feature"] if c["hard_trigger"] else "", ambiguity=c["difficulty"], notes=f'casegen {tag} {llm} {prompt}-prompt' + (f' | trigger {c.get("hard_trigger_rule")} {c["trigger_tier"]}' + (f' confirm={c.get("confirm_step")}/{c.get("confirm_timeout_min")}min' if c["trigger_tier"]=="CONFIRM_FIRST" else '') + (f' suppressed={c.get("suppression_reason")}' if c["trigger_tier"]=="SUPPRESSED" else '') if c.get("trigger_tier") else '') + (f' | layer {c["baseline_layer"]}' if c.get("baseline_layer") else '') + (f' | target {c["escalation_target"]}' if c.get("escalation_target") else '') + (f' | basis {c["route_basis"]}' if c.get("route_basis") else '') + (f' | CLINICIAN_OVERRIDE engine {c["clinician_override"].get("engine_tier")} -> label {c["clinician_override"].get("label_tier")}' if c.get("clinician_override") else '') + ''.join(f' | secondary {t.get("hard_trigger_rule")} {t.get("trigger_tier")}' + (f' confirm={t.get("confirm_step")}/{t.get("confirm_timeout_min")}min' if t.get("trigger_tier")=="CONFIRM_FIRST" else '') + (f' suppressed={t.get("suppression_reason")}' if t.get("trigger_tier")=="SUPPRESSED" else '') for t in (c.get("secondary_triggers") or []))))
         oc.append(dict(outcome_id=f"O-{cid}", source="synthetic", case_id=cid, outcome_value=c["expected_route"], outcome_source="author_label",
-            observed_offset_days=0, severity_if_wrong="critical" if c.get("trigger_tier") in ("ABSOLUTE","CONFIRM_FIRST") else ("major" if c["expected_route"]=="escalate_human" or c.get("baseline_layer")=="drift_not_absorbed" or any(t.get("trigger_tier") in ("ABSOLUTE","CONFIRM_FIRST") for t in (c.get("secondary_triggers") or [])) else "minor")))
+            observed_offset_days=0, severity_if_wrong="critical" if c.get("trigger_tier") in ("ABSOLUTE","CONFIRM_FIRST") else ("major" if c["expected_route"]=="urgent_page" or c.get("baseline_layer")=="drift_not_absorbed" or any(t.get("trigger_tier") in ("ABSOLUTE","CONFIRM_FIRST") for t in (c.get("secondary_triggers") or [])) else "minor")))
 json.dump(runner, open(OUTP+"runner.json","w"), indent=1)
 for name,hdr,rows in ((OUTP+"Cases_Medical.csv",CM,cm),(OUTP+"Outcomes.csv",OC,oc)):
     with open(name,"w",newline="") as f: w=csv.DictWriter(f,hdr); w.writeheader(); w.writerows(rows)

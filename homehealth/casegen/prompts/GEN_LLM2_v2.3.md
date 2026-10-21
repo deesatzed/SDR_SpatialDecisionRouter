@@ -76,8 +76,8 @@ A CGM "urgent low" alert must be written as "low-glucose alert". A lay minimizin
 ## Routes (exactly one)
 - **silent_log** — artifact, explained noise, stable trend or completed recovery. No human action.
 - **nurse_task** — routine non-urgent follow-up (call, med review, education, supply, scheduling) within 24-72 h.
-- **wake_specialist** — ambiguous or conflicting signals, or a medication or device-trust question, needing same-day deeper review (pharmacist, MD specialist agent, device check).
-- **escalate_human** — possible acute deterioration, or an ABSOLUTE / CONFIRM_FIRST trigger. A clinician looks now (for CONFIRM_FIRST, after the automatic confirm step or its timeout).
+- **provider_task** — ambiguous or conflicting signals, or a medication or device-trust question, needing same-day deeper review (pharmacist, MD specialist agent, device check).
+- **urgent_page** — possible acute deterioration, or an ABSOLUTE / CONFIRM_FIRST trigger. A clinician looks now (for CONFIRM_FIRST, after the automatic confirm step or its timeout).
 
 ### Hard triggers (smart policy)
 Never mention triggers, tiers or checks in the case text or router_input. `hard_trigger: true` means a rule FIRED on the surface facts. `trigger_tier` then says what happens.
@@ -124,10 +124,10 @@ Never mention triggers, tiers or checks in the case text or router_input. `hard_
 - **Order of operations (v1.5, DECIDED RULE, Wayne): net all modifiers first, then clamp.** Band each vital and add its context shifts (sleep, exertion, rate-control, pacemaker, known range) without clamping; take the worst net of the banded vitals (none banded → D); add multi-vital, red flags and concordance; only then clamp once to D..A and apply the safety and crescendo floors. Example: HR 50 asleep on a beta-blocker is raw C; −1 −1 +2 (two red flags) → net 0 → **band C, 15 min** (not B). A quality-flagged vital is unbanded (record band null/D) and gives `device_recheck+patient_call`, 5 min.
 - **v1.5 rulings (Wayne, 2026-10-17/18; SMART_TRIGGERS section 9):**
   - **Unanswered prompt + lives alone = failed confirm.** A CONFIRM_FIRST patient call or watch tap-to-confirm prompt that is not answered, in a patient who lives alone → escalate now: `confirm_step: "already_confirmed"`, `confirm_timeout_min: null`, `acceptable_alternates: []`. (A caregiver ping is not a patient prompt; not living alone → wait for the timeout.)
-  - **Hospice narrowing.** Hospice/comfort-only goals suppress HOSPITAL-DIRECTED escalation only. An urgent, treatable, goal-consistent comfort problem is NOT suppressed (the list is (1) a danger-level low glucose that is symptomatic (v1.7: recurrence alone does not qualify) and (2) v1.6: distressing breathlessness that can be treated at home (e.g. opioid, oxygen, positioning) on an SpO2/RR trigger): keep the tier, route `escalate_human` with `escalation_target: "hospice_nurse"` (urgent hospice-nurse page now, not same-shift), category includes `goals_of_care`. Other triggers in hospice (a fall, a focal deficit, syncope; low SpO2 without distressing home-treatable breathlessness; anything needing hospital treatment) stay SUPPRESSED `goals_of_care` → same-shift hospice nurse.
+  - **Hospice narrowing.** Hospice/comfort-only goals suppress HOSPITAL-DIRECTED escalation only. An urgent, treatable, goal-consistent comfort problem is NOT suppressed (the list is (1) a danger-level low glucose that is symptomatic (v1.7: recurrence alone does not qualify) and (2) v1.6: distressing breathlessness that can be treated at home (e.g. opioid, oxygen, positioning) on an SpO2/RR trigger): keep the tier, route `urgent_page` with `escalation_target: "hospice_nurse"` (urgent hospice-nurse page now, not same-shift), category includes `goals_of_care`. Other triggers in hospice (a fall, a focal deficit, syncope; low SpO2 without distressing home-treatable breathlessness; anything needing hospital treatment) stay SUPPRESSED `goals_of_care` → same-shift hospice nurse.
   - **CGM ordering:** symptoms are checked before a fingerstick above the limit: CGM ≤ 54 + fingerstick 58 + confusion → ABSOLUTE.
-  - **New answer fields** (never in case text): `escalation_target` (`hospice_nurse`), `route_basis` (`clinical_presentation`: a SUPPRESSED trigger routed `escalate_human` because the clinical picture itself needs a human now), `secondary_triggers` (a list of further rules that fired, each `{hard_trigger_rule, trigger_tier, confirm_step, confirm_timeout_min, suppression_reason, if_confirmed_route, evidence}`; e.g. a near-fall SUPPRESSED `explained` plus an HR `device_recheck` CONFIRM_FIRST for possible AF with a rapid rate, escalating if the rate stays high).
-- **DECIDED RULE (Wayne, 2026-10-17): crescendo angina with normal vitals → CONFIRM_FIRST.** This is not an open question. A crescendo pattern (chest-pain episodes becoming more frequent, or new-onset exertional episodes over recent days) is `HT_CHEST_PAIN_VITALS` → `trigger_tier: CONFIRM_FIRST`, route escalate_human, even when every vital is in band D. The band is at least C (a crescendo floor that discordance or context cannot lower).
+  - **New answer fields** (never in case text): `escalation_target` (`hospice_nurse`), `route_basis` (`clinical_presentation`: a SUPPRESSED trigger routed `urgent_page` because the clinical picture itself needs a human now), `secondary_triggers` (a list of further rules that fired, each `{hard_trigger_rule, trigger_tier, confirm_step, confirm_timeout_min, suppression_reason, if_confirmed_route, evidence}`; e.g. a near-fall SUPPRESSED `explained` plus an HR `device_recheck` CONFIRM_FIRST for possible AF with a rapid rate, escalating if the rate stays high).
+- **DECIDED RULE (Wayne, 2026-10-17): crescendo angina with normal vitals → CONFIRM_FIRST.** This is not an open question. A crescendo pattern (chest-pain episodes becoming more frequent, or new-onset exertional episodes over recent days) is `HT_CHEST_PAIN_VITALS` → `trigger_tier: CONFIRM_FIRST`, route urgent_page, even when every vital is in band D. The band is at least C (a crescendo floor that discordance or context cannot lower).
   - Confirm step: `already_confirmed` if the worsening is already confirmed in the case (patient or caregiver report, phone check). Otherwise `patient_call`, 15 min. The post-exertion ×2 does not apply when the vitals are normal.
   - A **stable** pattern (usual frequency, unchanged) with normal vitals stays band D: SUPPRESSED `below_band_threshold`, nurse_task. **No trigger escalation.**
   - Red flags and abnormal vitals still raise the band above C as usual.
@@ -141,24 +141,24 @@ Never mention triggers, tiers or checks in the case text or router_input. `hard_
 | `HT_VS_DANGER` | a clearly dangerous value on a reliable reading (HR ≤ 35 or ≥ 180, SpO2 ≤ 80, RR ≤ 6 or ≥ 35, SBP ≤ 80 or ≥ 200, glucose ≤ 54 or ≥ 400, temperature ≤ 35.0 or ≥ 40.0 °C) | ABSOLUTE regardless of baseline (goals of care still apply) |
 - **Learning period** (`baseline_status.phase: "learning"`, monitoring days 1-10): the patient's baselines are not learned yet. Use population defaults; a reading outside them → CONFIRM_FIRST. Never SUPPRESSED `at_patient_baseline` unless a clinician-set baseline is written in the note.
 - **Relearning** after a condition change (a new diagnosis, a rate-control med started or stopped, a hospitalization, hospice enrollment, a diuretic, glucose or oxygen change): a partial reset and 4 shortened learning days. A value consistent with the change (e.g. rest HR 58-62 after a beta-blocker start) is expected, not a deviation.
-- **Drift guard:** a slow, monotonic drift toward abnormal over 1-3 weeks (e.g. rest HR +8 or more, RR +3 or more, SpO2 −3 or more, nightly values creeping) is NOT the new normal. Label it `subtle_deterioration: true`, `baseline_layer: "drift_not_absorbed"`, route wake_specialist (or higher if a trigger fires); never silent_log. A drift fully explained by a matching condition change within 14 days is not flagged.
+- **Drift guard:** a slow, monotonic drift toward abnormal over 1-3 weeks (e.g. rest HR +8 or more, RR +3 or more, SpO2 −3 or more, nightly values creeping) is NOT the new normal. Label it `subtle_deterioration: true`, `baseline_layer: "drift_not_absorbed"`, route provider_task (or higher if a trigger fires); never silent_log. A drift fully explained by a matching condition change within 14 days is not flagged.
 
 **Tier → labels**
 | tier | expected_route | acceptable_alternates | confirm_step / confirm_timeout_min | suppression_reason |
 |---|---|---|---|---|
-| ABSOLUTE | `escalate_human` | `[]` | null / null | null |
-| CONFIRM_FIRST, confirmation pending | `escalate_human` | ⊆ [`nurse_task_with_recheck`, `wake_specialist`] (usually `["nurse_task_with_recheck"]`) | `fingertip_recheck` 15, `patient_call` 10, `caregiver_ping` 30 (60 for a gap); integer 5-120 | null |
-| CONFIRM_FIRST, already confirmed in the case (fingertip ≤ 87%, a caregiver saw the fall, a visit) | `escalate_human` | `[]` | `already_confirmed` / null | null |
-| SUPPRESSED | `silent_log`, `nurse_task` or `wake_specialist` (NEVER escalate_human, except v1.5 `route_basis: clinical_presentation`) | normal rules | null / null | one of the four reasons (or `below_band_threshold` for a band-D chest-pain case) |
-| ARTIFACT (`HT_VS_IMPLAUSIBLE` only) | `silent_log` (or `wake_specialist` if repeated artifacts need a device check) | normal rules, never `nurse_task_with_recheck` | `device_recheck` 10 or `fingertip_recheck` 15 | null |
+| ABSOLUTE | `urgent_page` | `[]` | null / null | null |
+| CONFIRM_FIRST, confirmation pending | `urgent_page` | ⊆ [`nurse_task_with_recheck`, `provider_task`] (usually `["nurse_task_with_recheck"]`) | `fingertip_recheck` 15, `patient_call` 10, `caregiver_ping` 30 (60 for a gap); integer 5-120 | null |
+| CONFIRM_FIRST, already confirmed in the case (fingertip ≤ 87%, a caregiver saw the fall, a visit) | `urgent_page` | `[]` | `already_confirmed` / null | null |
+| SUPPRESSED | `silent_log`, `nurse_task` or `provider_task` (NEVER urgent_page, except v1.5 `route_basis: clinical_presentation`) | normal rules | null / null | one of the four reasons (or `below_band_threshold` for a band-D chest-pain case) |
+| ARTIFACT (`HT_VS_IMPLAUSIBLE` only) | `silent_log` (or `provider_task` if repeated artifacts need a device check) | normal rules, never `nurse_task_with_recheck` | `device_recheck` 10 or `fingertip_recheck` 15 | null |
 
-- `goals_of_care` suppression → `nurse_task` (a same-shift hospice nurse contact) or `wake_specialist`, never `silent_log`.
+- `goals_of_care` suppression → `nurse_task` (a same-shift hospice nurse contact) or `provider_task`, never `silent_log`.
 - An ABSOLUTE sign seen only on a flagged device with no symptoms (e.g. a poor-contact watch ECG) → CONFIRM_FIRST `patient_call`, or SUPPRESSED if the case already refutes it.
 - Non-trigger cases: `hard_trigger: false` and all four trigger fields null.
 - A suppressed trigger that is actually real is a critical miss, so suppress only when the case data clearly shows the failed check.
 
 ### Goals of care
-Documented goals (`patient_goals`, hospice, POLST, comfort focus) can change the action among nurse_task, wake_specialist and escalate_human. They can NEVER turn a case into silent_log when a human conversation or symptom management is needed. With a hospice or comfort-only plan, a fired trigger is SUPPRESSED (`goals_of_care`) and goes to the hospice nurse (same shift) — v1.5: this covers hospital-directed escalation only; an urgent, treatable, goal-consistent comfort problem (symptomatic danger-level hypoglycaemia (v1.7), or distressing breathlessness treatable at home) keeps its tier and goes `escalate_human` with `escalation_target: "hospice_nurse"` (page the hospice nurse now). With limited goals that still accept assessment (e.g. a POLST limiting intubation only), the trigger keeps its tier and the human honours the goals.
+Documented goals (`patient_goals`, hospice, POLST, comfort focus) can change the action among nurse_task, provider_task and urgent_page. They can NEVER turn a case into silent_log when a human conversation or symptom management is needed. With a hospice or comfort-only plan, a fired trigger is SUPPRESSED (`goals_of_care`) and goes to the hospice nurse (same shift) — v1.5: this covers hospital-directed escalation only; an urgent, treatable, goal-consistent comfort problem (symptomatic danger-level hypoglycaemia (v1.7), or distressing breathlessness treatable at home) keeps its tier and goes `urgent_page` with `escalation_target: "hospice_nurse"` (page the hospice nurse now). With limited goals that still accept assessment (e.g. a POLST limiting intubation only), the trigger keeps its tier and the human honours the goals.
 
 ## Category = clinical mechanism
 `category` is an array from this fixed vocabulary. Nothing else is allowed.
@@ -177,7 +177,7 @@ Applies unless overridden.
 
 | | N=25 | N=50 |
 |---|---|---|
-| silent_log / nurse_task / wake_specialist / escalate_human | 8 / 6 / 5 / 6 | 15 / 12 / 10 / 13 |
+| silent_log / nurse_task / provider_task / urgent_page | 8 / 6 / 5 / 6 | 15 / 12 / 10 / 13 |
 | hard + adversarial (≥40%) | ≥10 | ≥20 |
 | easy (max) | 4 | 8 |
 
@@ -188,7 +188,7 @@ A case may count toward several of these.
 |---|---|---|
 | `noise` (artifact tempting to over-alert) | 6 | 12 |
 | `spo2_bias` | 3 | 6 |
-| ↳ hidden hypoxemia: Fitzpatrick V-VI, wearable reads 91-94%, NO fingertip check (no fingertip_oximeter in devices, or not used), other clues (RR, HR, steps, dyspnoea note), route wake_specialist or escalate_human | 2 | 3 |
+| ↳ hidden hypoxemia: Fitzpatrick V-VI, wearable reads 91-94%, NO fingertip check (no fingertip_oximeter in devices, or not used), other clues (RR, HR, steps, dyspnoea note), route provider_task or urgent_page | 2 | 3 |
 | subtle true deterioration (`subtle_deterioration: true`) | 4 | 8 |
 | `med_change` | 3 | 6 |
 | `dementia` (proxy report, cannot self-report) | 3 | 5 |
@@ -220,7 +220,7 @@ At least 30% of cases are Fitzpatrick V-VI, and not only in the spo2_bias cases.
 - 3-5 sentence rationales of about 350-600 characters, tied to the data.
 - **Every rationale must contain one sentence that begins exactly `Naive-model trap:`.** It names the specific wrong route a shallow model would pick and why.
 - `acceptable_alternates` is REQUIRED (non-empty) for every hard, adversarial or borderline case WITHOUT a hard trigger. Use `[]` only when the route is unambiguous. It never contains `expected_route`.
-- **Trigger cases follow the tier table:** ABSOLUTE and already-confirmed cases have `[]`. CONFIRM_FIRST alternates come only from `nurse_task_with_recheck` and `wake_specialist`. `nurse_task_with_recheck` is an alternate token only, never an expected_route.
+- **Trigger cases follow the tier table:** ABSOLUTE and already-confirmed cases have `[]`. CONFIRM_FIRST alternates come only from `nurse_task_with_recheck` and `provider_task`. `nurse_task_with_recheck` is an alternate token only, never an expected_route.
 - Every rationale of a trigger case states which of the four checks passed or failed.
 
 ## Case schema (every field required; use null where allowed)
@@ -245,7 +245,7 @@ At least 30% of cases are Fitzpatrick V-VI, and not only in the spo2_bias cases.
   "baseline_status": {"phase": "established", "monitoring_day": 64, "learning_days_total": 10, "last_condition_change": null},
   "data_quality": {"wear_time_pct_7d": 91, "artifact_flags": ["off-wrist 02:10-03:40 Day -2"], "missing_hours_last_48": 0, "longest_gap_h": 2},
   "router_input": "Compact paragraph built only from the fields above.",
-  "expected_route": "silent_log | nurse_task | wake_specialist | escalate_human",
+  "expected_route": "silent_log | nurse_task | provider_task | urgent_page",
   "acceptable_alternates": [],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -275,7 +275,7 @@ Return ONE JSON object and nothing else: no prose, no markdown fences.
  "tally": {
    "n": 25,
    "id_range": ["G-101", "G-125"],
-   "routes": {"silent_log": 8, "nurse_task": 6, "wake_specialist": 5, "escalate_human": 6},
+   "routes": {"silent_log": 8, "nurse_task": 6, "provider_task": 5, "urgent_page": 6},
    "difficulty": {"easy": 3, "medium": 9, "hard": 9, "adversarial": 4},
    "hard_plus_adversarial_pct": 52,
    "category_primary": {"noise": 6, "...": 0},
@@ -300,7 +300,7 @@ Fix anything that fails, then build the tally from the final cases (do not estim
 3. The meds and recent_med_changes timeline agree; units are mg/dL.
 4. There are no names, no exact ages and no banned words in case text (check inside quotes too).
 5. `router_input` adds and drops nothing.
-6. Every case where a rule fired has `hard_trigger: true`, a rule ID and a `trigger_tier`. The labels match the tier table: ABSOLUTE/CONFIRM_FIRST → escalate_human; SUPPRESSED → never escalate_human and has a suppression_reason; CONFIRM_FIRST has a confirm_step (and a timeout unless already_confirmed). Non-trigger cases have all four fields null.
+6. Every case where a rule fired has `hard_trigger: true`, a rule ID and a `trigger_tier`. The labels match the tier table: ABSOLUTE/CONFIRM_FIRST → urgent_page; SUPPRESSED → never urgent_page and has a suppression_reason; CONFIRM_FIRST has a confirm_step (and a timeout unless already_confirmed). Non-trigger cases have all four fields null.
 7. category[0] is a mechanism. baseline_status is filled; baseline_layer matches the tier rules (ARTIFACT ↔ hard_limit_artifact; learning_period never at_patient_baseline; drift_not_absorbed → subtle_deterioration true and not silent_log).
 8. Pairs differ in exactly one fact.
 9. Every rationale has "Naive-model trap:".

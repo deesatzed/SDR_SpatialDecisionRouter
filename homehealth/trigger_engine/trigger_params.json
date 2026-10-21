@@ -123,7 +123,7 @@
      "enabled": true,
      "escalation_target": "hospice_nurse",
      "notify": "hospice_nurse_urgent_page",
-     "route": "escalate_human",
+     "route": "urgent_page",
      "conditions": {
       "hypoglycemia_symptomatic": true,
       "hypoglycemia_recurrent": true
@@ -752,7 +752,7 @@
    "enabled": true,
    "escalation_target": "hospice_nurse",
    "notify": "hospice_nurse_urgent_page",
-   "route": "escalate_human",
+   "route": "urgent_page",
    "conditions": {
     "hypoglycemia_symptomatic": true,
     "hypoglycemia_recurrent": false,

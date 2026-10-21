@@ -18,9 +18,9 @@ def apply(c, d):
     t = TIER_LABEL[d["tier"]]
     c["hard_trigger_rule"] = d["rule"] if d["rule"] != "HT_VS_DANGER" else c["hard_trigger_rule"]
     c["trigger_tier"] = t
-    if t == "ABSOLUTE": c.update(confirm_step=None, confirm_timeout_min=None, suppression_reason=None, expected_route="escalate_human", acceptable_alternates=[])
+    if t == "ABSOLUTE": c.update(confirm_step=None, confirm_timeout_min=None, suppression_reason=None, expected_route="urgent_page", acceptable_alternates=[])
     elif t == "CONFIRM_FIRST":
-        c.update(confirm_step=d["confirm_step"], confirm_timeout_min=d["timeout_min"], suppression_reason=None, expected_route="escalate_human")
+        c.update(confirm_step=d["confirm_step"], confirm_timeout_min=d["timeout_min"], suppression_reason=None, expected_route="urgent_page")
         if d["confirm_step"] == "already_confirmed": c["acceptable_alternates"] = []
     else: c.update(confirm_step=None, confirm_timeout_min=None, suppression_reason="below_band_threshold", expected_route="nurse_task")
     c["chest_pain_eval"] = {"band": d["band"], "raw_band": d["raw_band"], "modifiers": d["modifiers"], "tier": d["tier"], "timeout_min": d.get("timeout_min"), "engine": "trigger_eval.evaluate_chest_pain params " + P["version"]}
@@ -49,7 +49,7 @@ for cid, x in CI.items():
     for a, b in TXT.get(cid, []):
         assert a in c["rationale"], (cid, a); c["rationale"] = c["rationale"].replace(a, b)
     ch = apply(c, changes[cid])
-    if changes[cid]["confirm_step"] == "patient_call": c["acceptable_alternates"] = ["wake_specialist"]
+    if changes[cid]["confirm_step"] == "patient_call": c["acceptable_alternates"] = ["provider_task"]
     c["relabel"] = {"model": "deterministic (trigger_eval.evaluate_chest_pain + decided crescendo rule)", "checks": {"reliable_reading": "pass", "own_baseline_change": "pass (episode frequency rising)", "unexplained": "pass", "within_goals": "pass"},
                     "label_note": f"Was non-trigger {c['prev_labels']['expected_route']}. Now CONFIRM_FIRST under Wayne's decided crescendo rule (2026-10-17).", "policy": "SMART_TRIGGERS v1.3 section 7", "chest_pain_update": ch + ["hard_trigger: False -> True"]}
     rel["cases"].append(c); new_rel.append(cid); log[cid] = c["relabel"]["chest_pain_update"]
@@ -62,7 +62,7 @@ for c in rel["cases"]:
 MANUAL = []
 for c in json.load(open("manual_cases.json"))["cases"]:
     c = copy.deepcopy(c); c["hard_trigger"] = True
-    ch = apply(c, changes[c["case_id"]]); c["acceptable_alternates"] = ["wake_specialist"]
+    ch = apply(c, changes[c["case_id"]]); c["acceptable_alternates"] = ["provider_task"]
     import os
     if os.path.exists("raw/CPRL2.grader.json"):
         v = {x["case_id"]: x for x in json.load(open("raw/CPRL2.grader.json"))["verdicts"]}.get(c["case_id"])
@@ -108,7 +108,7 @@ for coll in (lib["cases"], np_["cases"]):
             log[cid] = apply(c, changes[cid]) or log.get(cid, [])
         elif cid in changes and CI[cid]["kind"] in ("pair_partner", "non_trigger_chest_pain"):
             c["chest_pain_eval"] = {**{k: changes[cid][k] for k in ("band", "raw_band", "modifiers", "tier")}, "timeout_min": changes[cid].get("timeout_min"), "note": "non-trigger case: evaluator output recorded, labels NOT changed"}
-            if changes[cid]["tier"] in ("ABSOLUTE", "CONFIRM_FIRST") and c["expected_route"] != "escalate_human":
+            if changes[cid]["tier"] in ("ABSOLUTE", "CONFIRM_FIRST") and c["expected_route"] != "urgent_page":
                 disputes.append({"case_id": cid, "queue_reasons": "CP_RULE_DISPUTE", "expected_route": c["expected_route"], "grader_route": "", "decisive_feature": c.get("decisive_feature"),
                                  "grader_reasoning": f"evaluator: {changes[cid]['tier']} band {changes[cid]['band']} ({' ; '.join(changes[cid]['modifiers'])}); case is labelled non-trigger {c['expected_route']}", "pass": "chest_pain", "CLINICIAN_RULING (route)": "", "CLINICIAN_NOTE": ""})
 ids = [c["case_id"] for c in lib["cases"]]

@@ -14,7 +14,7 @@ def test_params_list_breathlessness():
     assert any(e["approved_by"] == "Wayne" and "breathlessness" in str(e["keys"]) for e in P["change_log"])
 def test_hk1_007_like_breathlessness_in_hospice_pages_hospice_nurse_now():
     d = spo2(79, {"goals": "comfort_only", "breathlessness": BR})        # danger-level SpO2, few-word speech, comfort plan
-    assert d["tier"] == "ABSOLUTE" and d["route"] == "escalate_human" and d["page"] is True
+    assert d["tier"] == "ABSOLUTE" and d["route"] == "urgent_page" and d["page"] is True
     assert d["escalation_target"] == "hospice_nurse" and d["notify"] == "hospice_nurse_urgent_page" and d["goals_basis"] == "breathlessness_distressing_home_treatable"
 def test_rr_trigger_with_breathlessness_also_counts():
     d = spo2(38, {"goals": "comfort_only", "breathlessness": BR}, vital="rr")

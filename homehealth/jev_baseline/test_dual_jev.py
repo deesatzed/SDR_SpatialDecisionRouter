@@ -9,8 +9,8 @@ def test_defaults():
 
 def test_combine_rules():
     assert D.combine("cautious_max_hitm", "nurse_task", "nurse_task") == ("nurse_task", False)
-    assert D.combine("cautious_max_hitm", "nurse_task", "escalate_human") == ("escalate_human", True)
-    assert D.combine("cautious_max", "wake_specialist", "silent_log") == ("wake_specialist", False)
+    assert D.combine("cautious_max_hitm", "nurse_task", "urgent_page") == ("urgent_page", True)
+    assert D.combine("cautious_max", "provider_task", "silent_log") == ("provider_task", False)
     assert D.combine("agree_else_hitm", "silent_log", "nurse_task") == ("silent_log", True)
     assert D.combine("cautious_max_hitm", None, "nurse_task") == ("nurse_task", True)
     assert D.combine("cautious_max_hitm", None, None) == (None, True)
@@ -23,6 +23,6 @@ def test_never_lowers_either_model():
 
 def test_layer1_first():
     absolute = {"tier": "ABSOLUTE"}; goals = {"tier": "SUPPRESSED", "reason": "goals_of_care"}; none = {"tier": None}
-    assert D.dual_route(absolute, "silent_log", "silent_log") == ("escalate_human", "layer1", False)
-    assert D.dual_route(goals, "escalate_human", "escalate_human") == ("nurse_task", "layer1_goals", False)
-    assert D.dual_route(none, "silent_log", "wake_specialist") == ("wake_specialist", "jev", True)
+    assert D.dual_route(absolute, "silent_log", "silent_log") == ("urgent_page", "layer1", False)
+    assert D.dual_route(goals, "urgent_page", "urgent_page") == ("nurse_task", "layer1_goals", False)
+    assert D.dual_route(none, "silent_log", "provider_task") == ("provider_task", "jev", True)

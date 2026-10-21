@@ -34,8 +34,8 @@ def combine(rule, base_route, owner, fly_high):
     if rule == "confirm_first":   # Fly high on a Jev-owned non-escalate -> confirm-first step (offline: paged, like L1 CONFIRM_FIRST)
         if fly_high and jev_owned and base_route != ESC: return ESC, True
         return base_route, False
-    if rule == "bump_wake":    # Fly high on Jev-owned silent/nurse -> wake_specialist
-        if fly_high and jev_owned and RK[base_route] < RK["wake_specialist"]: return "wake_specialist", True
+    if rule == "bump_wake":    # Fly high on Jev-owned silent/nurse -> provider_task
+        if fly_high and jev_owned and RK[base_route] < RK["provider_task"]: return "provider_task", True
         return base_route, False
     raise ValueError(rule)
 RULES = ("l1_jev", "flag_only", "confirm_first", "bump_wake")
@@ -51,7 +51,7 @@ def load(readouts_path):
 def load_picks(path):
     last = {}
     for l in open(path):
-        if l.strip(): r = json.loads(l); last[(r["case"], r["variant"])] = r
+        if l.strip(): r = S.RT.canon_row(json.loads(l)); last[(r["case"], r["variant"])] = r
     return {k[0]: v.get("pick") for k, v in last.items() if k[1] == "base"}
 
 def metrics(cases, picks, sev, extra, supp, hospice):
@@ -84,7 +84,7 @@ def main(readouts=os.path.join(HERE, "results", "fly_readouts.json"), picks_path
     out = {"label_pages_per_100": S.rate(100 * sum(S.norm(c["expected"]) == ESC for c in cases), len(cases)),
            "split": {"heldout_batches": sorted(held_b), **{k: len(v) for k, v in split.items()}},
            "jev_picks": os.path.basename(picks_path), "new_paid_calls": 0}
-    # --- Fly alone, a priori threshold (frozen smoke threshold 0.2 at leak 0.8): check -> escalate_human, else silent_log
+    # --- Fly alone, a priori threshold (frozen smoke threshold 0.2 at leak 0.8): check -> urgent_page, else silent_log
     fixed = {c["id"]: (ESC if peak["0.8"][c["id"]] > 0.2 else "silent_log") for c in cases}
     out["fly_alone_binary_frozen_t0.2_leak0.8"] = {p: M(p, fixed) for p in split}
     # --- Fly alone, banded router: tune (leak, cuts) on TRAIN

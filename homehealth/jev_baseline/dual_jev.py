@@ -40,7 +40,7 @@ def dual_route(l1, pick_lead, pick_other, rule=DEFAULT_RULE):
 def load_picks(path):
     last = {}
     for l in open(path):
-        if l.strip(): r = json.loads(l); last[(r["case"], r["variant"])] = r
+        if l.strip(): r = S.RT.canon_row(json.loads(l)); last[(r["case"], r["variant"])] = r
     return {k[0]: v.get("pick") for k, v in last.items() if k[1] == "base"}
 
 def _pick_path(env, *cands):

@@ -5,7 +5,7 @@
   ],
   "ST1-004": [
    "added to library (resolved from review queue)",
-   "expected_route: \"wake_specialist\" -> \"escalate_human\"",
+   "expected_route: \"provider_task\" -> \"urgent_page\"",
    "acceptable_alternates: [\"nurse_task\"] -> []",
    "route_basis: null -> \"clinical_presentation\"",
    "router_input: 'no artifact flags' -> 'no device quality flags'",
@@ -15,12 +15,12 @@
   "ST1-008": [
    "added to library (resolved from review queue)",
    "expected_route: \"nurse_task\" -> \"silent_log\"",
-   "acceptable_alternates: [\"wake_specialist\"] -> [\"nurse_task\"]",
+   "acceptable_alternates: [\"provider_task\"] -> [\"nurse_task\"]",
    "rationale rewritten"
   ],
   "ST1-010": [
    "added to library (resolved from review queue)",
-   "expected_route: \"wake_specialist\" -> \"escalate_human\"",
+   "expected_route: \"provider_task\" -> \"urgent_page\"",
    "acceptable_alternates: [\"nurse_task\"] -> []",
    "hard_trigger_rule: \"HT_CHEST_PAIN_ECG\" -> \"HT_CHEST_PAIN_VITALS\"",
    "trigger_tier: \"SUPPRESSED\" -> \"CONFIRM_FIRST\"",
@@ -29,7 +29,7 @@
    "suppression_reason: \"unreliable_reading\" -> null",
    "pair_id: \"ST1-P05\" -> null",
    "secondary_triggers: null -> [{\"hard_trigger_rule\": \"HT_CHEST_PAIN_ECG\", \"trigger_tier\": \"SUPPRESSED\", \"suppression_reason\": \"unreliable_reading\", \"evidence\": \"06:41 strip poor-contact flag; clean repeat strip 06:47 shows no ST change\"}]",
-   "clinician_override: null -> {\"engine_tier\": \"ABSOLUTE\", \"engine_band\": \"A\", \"label_tier\": \"CONFIRM_FIRST\", \"approved_by\": \"Wayne\", \"date\": \"2026-10-18\", \"reason\": \"Clinical owner ruling (pending check 2): label CONFIRM_FIRST although the band math gives A/ABSOLUTE; the engine is unchanged. confirm_step = chest_pain.default_confirm_step (patient_call); confirm_timeout_min = chest_pain.bands.B.timeout_min (5), the shortest CONFIRM_FIRST band timeout; no post-exertion timeout factor because symptoms are ongoing. Route stays escalate_human.\"}",
+   "clinician_override: null -> {\"engine_tier\": \"ABSOLUTE\", \"engine_band\": \"A\", \"label_tier\": \"CONFIRM_FIRST\", \"approved_by\": \"Wayne\", \"date\": \"2026-10-18\", \"reason\": \"Clinical owner ruling (pending check 2): label CONFIRM_FIRST although the band math gives A/ABSOLUTE; the engine is unchanged. confirm_step = chest_pain.default_confirm_step (patient_call); confirm_timeout_min = chest_pain.bands.B.timeout_min (5), the shortest CONFIRM_FIRST band timeout; no post-exertion timeout factor because symptoms are ongoing. Route stays urgent_page.\"}",
    "chest_pain_eval band: None -> A",
    "rationale rewritten",
    "decisive_feature updated"
@@ -50,8 +50,8 @@
    "decisive_feature updated"
   ],
   "HK5-001": [
-   "expected_route: \"wake_specialist\" -> \"nurse_task\"",
-   "acceptable_alternates: [\"escalate_human\"] -> [\"wake_specialist\"]",
+   "expected_route: \"provider_task\" -> \"nurse_task\"",
+   "acceptable_alternates: [\"urgent_page\"] -> [\"provider_task\"]",
    "hard_trigger: false -> true",
    "hard_trigger_rule: null -> \"HT_CHEST_PAIN_VITALS\"",
    "trigger_tier: null -> \"SUPPRESSED\"",
@@ -60,7 +60,7 @@
    "rationale rewritten"
   ],
   "HK6-001": [
-   "acceptable_alternates: [\"wake_specialist\"] -> []",
+   "acceptable_alternates: [\"provider_task\"] -> []",
    "hard_trigger: false -> true",
    "hard_trigger_rule: null -> \"HT_FALL_ANTICOAG\"",
    "trigger_tier: null -> \"CONFIRM_FIRST\"",
@@ -68,7 +68,7 @@
    "rationale rewritten"
   ],
   "HK6-002": [
-   "acceptable_alternates: [\"nurse_task\", \"escalate_human\"] -> [\"nurse_task\"]",
+   "acceptable_alternates: [\"nurse_task\", \"urgent_page\"] -> [\"nurse_task\"]",
    "hard_trigger: false -> true",
    "hard_trigger_rule: null -> \"HT_FALL_ANTICOAG\"",
    "trigger_tier: null -> \"SUPPRESSED\"",
@@ -82,19 +82,19 @@
    "hard_trigger_rule: null -> \"HT_FALL_ANTICOAG\"",
    "trigger_tier: null -> \"SUPPRESSED\"",
    "suppression_reason: null -> \"explained\"",
-   "secondary_triggers: null -> [{\"hard_trigger_rule\": \"HT_VS_BASELINE\", \"trigger_tier\": \"CONFIRM_FIRST\", \"confirm_step\": \"device_recheck\", \"confirm_timeout_min\": 10, \"if_confirmed_route\": \"escalate_human\", \"if_refuted_route\": \"nurse_task\", \"purpose\": \"HR recheck for possible AF with rapid ventricular rate\", \"evidence\": \"HR 124 at 02:40, 118 at 02:44, 112 at 02:55 vs 30-day resting baseline 72 (7-day 70-74); atrial fibrillation, no rate-control drug\"}]",
+   "secondary_triggers: null -> [{\"hard_trigger_rule\": \"HT_VS_BASELINE\", \"trigger_tier\": \"CONFIRM_FIRST\", \"confirm_step\": \"device_recheck\", \"confirm_timeout_min\": 10, \"if_confirmed_route\": \"urgent_page\", \"if_refuted_route\": \"nurse_task\", \"purpose\": \"HR recheck for possible AF with rapid ventricular rate\", \"evidence\": \"HR 124 at 02:40, 118 at 02:44, 112 at 02:55 vs 30-day resting baseline 72 (7-day 70-74); atrial fibrillation, no rate-control drug\"}]",
    "rationale rewritten",
    "decisive_feature updated"
   ],
   "NV2-015": [
-   "acceptable_alternates: [\"wake_specialist\"] -> []",
+   "acceptable_alternates: [\"provider_task\"] -> []",
    "hard_trigger: false -> true",
    "hard_trigger_rule: null -> \"HT_VS_DANGER\"",
    "trigger_tier: null -> \"ABSOLUTE\"",
    "rationale rewritten"
   ],
   "GC2-003": [
-   "acceptable_alternates: [\"wake_specialist\"] -> []",
+   "acceptable_alternates: [\"provider_task\"] -> []",
    "hard_trigger: false -> true",
    "hard_trigger_rule: null -> \"HT_VS_DANGER\"",
    "trigger_tier: null -> \"ABSOLUTE\"",
@@ -103,7 +103,7 @@
    "decisive_feature updated"
   ],
   "GL1-005": [
-   "acceptable_alternates: [\"wake_specialist\"] -> []",
+   "acceptable_alternates: [\"provider_task\"] -> []",
    "hard_trigger: false -> true",
    "hard_trigger_rule: null -> \"HT_VS_DANGER\"",
    "trigger_tier: null -> \"ABSOLUTE\"",
@@ -112,7 +112,7 @@
    "rationale rewritten"
   ],
   "HK1-007": [
-   "expected_route: \"nurse_task\" -> \"escalate_human\"",
+   "expected_route: \"nurse_task\" -> \"urgent_page\"",
    "trigger_tier: \"SUPPRESSED\" -> \"CONFIRM_FIRST\"",
    "confirm_step: null -> \"already_confirmed\"",
    "suppression_reason: \"goals_of_care\" -> null",
@@ -121,7 +121,7 @@
    "decisive_feature updated"
   ],
   "NV6-010": [
-   "expected_route: \"nurse_task\" -> \"escalate_human\"",
+   "expected_route: \"nurse_task\" -> \"urgent_page\"",
    "trigger_tier: \"SUPPRESSED\" -> \"CONFIRM_FIRST\"",
    "confirm_step: null -> \"already_confirmed\"",
    "suppression_reason: \"goals_of_care\" -> null",
@@ -160,7 +160,7 @@
     "rate-control med hr_low -1",
     "red flags ['diaphoresis', 'dyspnea'] +2"
    ],
-   "route": "escalate_human",
+   "route": "urgent_page",
    "page": "if_confirmed_or_timeout",
    "confirm_step": "patient_call",
    "timeout_min": 15
@@ -175,7 +175,7 @@
     "rate-control med hr_high +1",
     "red flags ['diaphoresis', 'persistent_ge_15min'] +2"
    ],
-   "route": "escalate_human",
+   "route": "urgent_page",
    "page": true
   },
   "HK5-001": {
@@ -191,7 +191,7 @@
   "ST2-009": {
    "rule": "HT_FALL_ANTICOAG",
    "tier": "CONFIRM_FIRST",
-   "route": "escalate_human",
+   "route": "urgent_page",
    "page": true,
    "confirm_step": "already_confirmed",
    "confirm_result": "unanswered_prompt_lives_alone"
@@ -200,7 +200,7 @@
    "rule": "HT_VS_BASELINE",
    "tier": "CONFIRM_FIRST",
    "reason": "baseline_deviation",
-   "route": "escalate_human",
+   "route": "urgent_page",
    "page": "if_confirmed_or_timeout",
    "recheck": {
     "step": "patient_call",
@@ -212,14 +212,14 @@
    "rule": "HT_VS_DANGER",
    "tier": "ABSOLUTE",
    "reason": "hard_limit_danger_symptomatic",
-   "route": "escalate_human",
+   "route": "urgent_page",
    "page": true
   },
   "GL1-005": {
    "rule": "HT_VS_DANGER",
    "tier": "ABSOLUTE",
    "reason": "hard_limit_danger_fingerstick_confirmed",
-   "route": "escalate_human",
+   "route": "urgent_page",
    "page": true
   },
   "GC2-003_0210": {
@@ -234,7 +234,7 @@
    "rule": "HT_VS_DANGER",
    "tier": "ABSOLUTE",
    "reason": "hard_limit_danger_symptomatic",
-   "route": "escalate_human",
+   "route": "urgent_page",
    "page": true,
    "escalation_target": "hospice_nurse",
    "notify": "hospice_nurse_urgent_page",
@@ -244,7 +244,7 @@
    "rule": "HT_SPO2_LT88",
    "tier": "CONFIRM_FIRST",
    "reason": "outside_population_default_learning",
-   "route": "escalate_human",
+   "route": "urgent_page",
    "page": true,
    "confirm_step": "already_confirmed",
    "recheck": {
@@ -260,7 +260,7 @@
    "rule": "HT_SPO2_LT88",
    "tier": "CONFIRM_FIRST",
    "reason": "outside_population_default_learning",
-   "route": "escalate_human",
+   "route": "urgent_page",
    "page": true,
    "confirm_step": "already_confirmed",
    "recheck": {

@@ -8,18 +8,18 @@ BASE = {"hard_trigger": True, "hard_trigger_rule": "HT_VS_IMPLAUSIBLE", "trigger
 def chk(**kw):
     c = copy.deepcopy(BASE); c.update(kw); return G.smart_checks(c) + G.layer_checks(c)
 def test_valid_artifact(): assert chk() == []
-def test_artifact_that_pages_is_flagged(): assert any("ARTIFACT must route" in i for i in chk(expected_route="escalate_human"))
-def test_implausible_must_be_artifact(): assert any("HT_VS_IMPLAUSIBLE must be tier ARTIFACT" in i for i in chk(trigger_tier="CONFIRM_FIRST", confirm_step="patient_call", expected_route="escalate_human", baseline_layer=None))
+def test_artifact_that_pages_is_flagged(): assert any("ARTIFACT must route" in i for i in chk(expected_route="urgent_page"))
+def test_implausible_must_be_artifact(): assert any("HT_VS_IMPLAUSIBLE must be tier ARTIFACT" in i for i in chk(trigger_tier="CONFIRM_FIRST", confirm_step="patient_call", expected_route="urgent_page", baseline_layer=None))
 def test_danger_is_absolute():
-    assert chk(hard_trigger_rule="HT_VS_DANGER", trigger_tier="ABSOLUTE", confirm_step=None, confirm_timeout_min=None, expected_route="escalate_human", baseline_layer="hard_limit_danger") == []
-    assert any("labelled ABSOLUTE" in i or "hard_limit_danger" in i for i in chk(hard_trigger_rule="HT_VS_DANGER", trigger_tier="CONFIRM_FIRST", confirm_step="patient_call", expected_route="escalate_human", baseline_layer="hard_limit_danger"))
+    assert chk(hard_trigger_rule="HT_VS_DANGER", trigger_tier="ABSOLUTE", confirm_step=None, confirm_timeout_min=None, expected_route="urgent_page", baseline_layer="hard_limit_danger") == []
+    assert any("labelled ABSOLUTE" in i or "hard_limit_danger" in i for i in chk(hard_trigger_rule="HT_VS_DANGER", trigger_tier="CONFIRM_FIRST", confirm_step="patient_call", expected_route="urgent_page", baseline_layer="hard_limit_danger"))
 def test_learning_period_cannot_suppress_at_baseline():
     kw = dict(hard_trigger_rule="HT_SPO2_LT88", trigger_tier="SUPPRESSED", confirm_step=None, confirm_timeout_min=None, suppression_reason="at_patient_baseline",
               baseline_layer="learning_period", baseline_status={"phase": "learning", "monitoring_day": 4, "learning_days_total": 10, "last_condition_change": None})
     assert any("during learning" in i for i in chk(**kw))
     assert not any("during learning" in i for i in chk(**kw, caregiver_or_nurse_note="visit: clinician-set baseline SpO2 86-90% (pulmonology)"))
 def test_drift_must_not_be_silent():
-    kw = dict(hard_trigger=False, hard_trigger_rule=None, trigger_tier=None, confirm_step=None, confirm_timeout_min=None, baseline_layer="drift_not_absorbed", subtle_deterioration=True, expected_route="wake_specialist")
+    kw = dict(hard_trigger=False, hard_trigger_rule=None, trigger_tier=None, confirm_step=None, confirm_timeout_min=None, baseline_layer="drift_not_absorbed", subtle_deterioration=True, expected_route="provider_task")
     assert chk(**kw) == []
     assert any("learned away" in i for i in chk(**{**kw, "expected_route": "silent_log"}))
     assert any("without subtle_deterioration" in i for i in chk(**{**kw, "subtle_deterioration": False}))

@@ -65,7 +65,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Age band 75-79, male, Fitzpatrick I-IV, lives with spouse. PMH: atrial fibrillation on anticoagulation, hypertension, type 2 diabetes. Walks outdoors with cane, independent ADLs. Meds: apixaban 5 mg BID, lisinopril 10 mg daily, metformin 500 mg BID; no recent med changes. Devices: watch, bp_cuff, scale. Baseline 30 d: rest HR 72 bpm, HRV 38 ms, sleep 6.9 h, steps 3100/day, night SpO2 min 93%, weight 84.1 kg, SBP 132 / DBP 80 mmHg. Trend: Day -6 to -1 steps 2900-3300, rest HR 70-74, morning SBP 128-136, weight 84.0-84.3 kg, wear 94%. Day 0: steps 0 after 09:20; HR 96 at 10:02; cuff 172/94 at 10:06. Spouse text 10:04: cannot see anything on the left side of the room, left leg gave way twice in the hallway, room half gone; last seen normal 09:20. Missing hours last 48: 0. Longest gap 1 h. Device flags: none recorded.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_FOCAL_NEURO",
@@ -80,7 +80,7 @@
    "category": [
     "stroke"
    ],
-   "rationale": "New left-sided visual loss and left-leg buckling after a last-known-well time of 09:20 fire HT_FOCAL_NEURO, an ABSOLUTE tier. All four checks pass: the watch and cuff carry no flags and the spouse reported the deficit in real time; the deficit is new against steps of 2900-3300 usual; no timed contact or device removal explains it; and no goals-of-care plan exists. The cuff at 172/94 mmHg and HR 96 bpm add context but do not decide the route. Naive-model trap: a model that anchors on the non-extreme SBP and the one-hour gap would pick wake_specialist for a blood-pressure review, but a time-critical focal deficit needs a clinician now.",
+   "rationale": "New left-sided visual loss and left-leg buckling after a last-known-well time of 09:20 fire HT_FOCAL_NEURO, an ABSOLUTE tier. All four checks pass: the watch and cuff carry no flags and the spouse reported the deficit in real time; the deficit is new against steps of 2900-3300 usual; no timed contact or device removal explains it; and no goals-of-care plan exists. The cuff at 172/94 mmHg and HR 96 bpm add context but do not decide the route. Naive-model trap: a model that anchors on the non-extreme SBP and the one-hour gap would pick provider_task for a blood-pressure review, but a time-critical focal deficit needs a clinician now.",
    "decisive_feature": "Sudden left-sided visual loss and left-leg buckling within a 09:20 last-known-well window, a new focal deficit.",
    "escalation_target": null,
    "route_basis": null,
@@ -88,7 +88,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.99,
     "batch_id": [
      "HO1+HO2"
@@ -163,7 +163,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Age band 85-89, female, Fitzpatrick I-IV, lives in assisted living. PMH: HFpEF, CKD 3a, recurrent urinary infections. Walks with frame, needs help with bathing. Meds: furosemide 20 mg daily, amlodipine 5 mg daily; no recent med changes. Devices: thermometer, watch, bp_cuff. Baseline 30 d: rest HR 74 bpm, HRV 26 ms, sleep 7.1 h, steps 1500/day, night SpO2 min 93%, SBP 128 / DBP 76 mmHg. Trend: Day -6 to -1 steps 1300-1700, rest HR 72-76, oral temperature 36.6-36.9 C mornings, SBP 124-132. Day 0: steps 0 from 15:30; oral 38.4 C at 15:40, then 40.2 C at 16:05 and 40.1 C at 16:15; watch HR 118 bpm and RR 26/min at 16:20; cuff 96/58 mmHg at 16:25. Aide log 16:12: shaking under two blankets, skin hot, confused about the day, asks for her late husband. Wear 96%. Missing hours last 48: 0. Longest gap 1 h. Device flags: thermometer battery replaced Day -3.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_VS_DANGER",
@@ -178,7 +178,7 @@
    "category": [
     "sepsis"
    ],
-   "rationale": "Two oral readings of 40.2 C and 40.1 C ten minutes apart on a reliable thermometer are a clearly dangerous value (40.0 C or higher), so HT_VS_DANGER fires as ABSOLUTE regardless of her baseline. Checks: the thermometer is reliable (battery replaced Day -3, no flags); a baseline is not needed for a danger-level value; no explanation exists; and no hospice or comfort-only plan is documented, so the tier stands. HR 118 bpm, RR 26/min and cuff 96/58 mmHg form a sepsis-like picture with rigors and new confusion. Naive-model trap: a model that reads her HFpEF and recurrent UTI history as a home-manageable infection would pick nurse_task or wake_specialist, but a 40 C oral temperature with rigors needs a clinician now.",
+   "rationale": "Two oral readings of 40.2 C and 40.1 C ten minutes apart on a reliable thermometer are a clearly dangerous value (40.0 C or higher), so HT_VS_DANGER fires as ABSOLUTE regardless of her baseline. Checks: the thermometer is reliable (battery replaced Day -3, no flags); a baseline is not needed for a danger-level value; no explanation exists; and no hospice or comfort-only plan is documented, so the tier stands. HR 118 bpm, RR 26/min and cuff 96/58 mmHg form a sepsis-like picture with rigors and new confusion. Naive-model trap: a model that reads her HFpEF and recurrent UTI history as a home-manageable infection would pick nurse_task or provider_task, but a 40 C oral temperature with rigors needs a clinician now.",
    "decisive_feature": "Two oral thermometer readings of 40.2 and 40.1 C ten minutes apart, with rigors.",
    "escalation_target": null,
    "route_basis": null,
@@ -186,7 +186,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.99,
     "batch_id": [
      "HO1+HO2"
@@ -268,7 +268,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Age band 70-74, male, Fitzpatrick I-IV, lives with spouse. PMH: ischaemic heart disease with stent 2 years ago, hypertension, hyperlipidaemia. Walks daily 20 min, independent ADLs. Meds: aspirin 81 mg daily, atorvastatin 40 mg nightly, ramipril 5 mg daily, bisoprolol 2.5 mg daily; no recent med changes. Devices: watch, bp_cuff. Baseline 30 d: rest HR 63 bpm, HRV 34 ms, sleep 7.0 h, steps 4200/day, night SpO2 min 94%, SBP 130 / DBP 78 mmHg. Trend: Day -6 to -1 steps 3900-4400, rest HR 60-65, morning SBP 126-134, night SpO2 94-95%. Day 0: chest pressure on sitting up at 06:20, eased within 12 minutes per spouse; watch HR 68 at 06:24; cuff 97/60 mmHg at 06:31; cuff 118/76 mmHg at 06:35; watch SpO2 95% at 06:40; no steps before 07:00. Spouse 06:50: tired now, sitting in the kitchen. Wear 97%. Missing hours last 48: 0. Longest gap 1 h. Device flags: none recorded.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
@@ -297,7 +297,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.96,
     "batch_id": [
      "HO1+HO2"
@@ -372,7 +372,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Age band 80-84, female, Fitzpatrick V-VI, lives alone. PMH: atrial fibrillation on warfarin, osteoporosis, hypothyroidism. Walks indoors with rollator, independent with dressing. Meds: warfarin 3 mg daily, levothyroxine 75 mcg daily; no recent med changes. Devices: watch, scale, bp_cuff. Baseline 30 d: rest HR 70 bpm, HRV 30 ms, sleep 7.2 h, steps 2600/day, night SpO2 min 94%, weight 58.4 kg, SBP 136 / DBP 78 mmHg. Trend: Day -6 to -1 steps 2300-2800, rest HR 68-72, weight 58.2-58.5 kg, SBP 130-140. Day 0: watch impact logged on-wrist at 21:41; HR 112 at 21:42 and 96 at 21:52; steps 0 from 21:41 to 22:05. Adult child on a live video call at 21:38 watched her reach for the lamp, lose footing and go down onto the hallway floor; she got up unaided within about two minutes, reports hip ache, no head strike seen. Wear 95%. Missing hours last 48: 0. Longest gap 1 h. Device flags: watch impact logged 21:41 Day 0 on-wrist.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_FALL_ANTICOAG",
@@ -395,7 +395,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.98,
     "batch_id": [
      "HO1+HO2"
@@ -771,7 +771,7 @@
     "longest_gap_h": 3
    },
    "router_input": "Age band 75-79, female, Fitzpatrick V-VI, lives with paid caregiver. PMH: hyperlipidaemia, CKD 3a, hypertension, chest infection on antibiotic since Day -3. Walks with frame, paid aide for personal care. Meds: simvastatin 40 mg nightly, amlodipine 5 mg daily, clarithromycin 500 mg BID started Day -3. Recent med change: clarithromycin started Day -3 at 500 mg BID. Devices: watch, scale. Baseline 30 d: rest HR 70 bpm, HRV 36 ms, sleep 7.5 h, steps 3800/day, night SpO2 min 95%, weight 63.1 kg. Trend: Day -6 to -4 steps 3700-4100, sleep 7.3-7.6 h, rest HR 68-72, weight 63.0-63.2 kg. Day -3 to -2 steps 3300-3600, sleep 7.0 h, rest HR 70-72. Day -1 to Day 0 steps 2600 and 2400, sleep 6.9 h, rest HR 74-76; weight 63.4 kg at 07:10 Day 0. Aide 11:20 Day 0: calves ache on the stairs; moving more slowly since the antibiotic started. Wear 90%. Missing hours last 48: 0. Longest gap 3 h. Device flags: none recorded.",
-   "expected_route": "wake_specialist",
+   "expected_route": "provider_task",
    "acceptable_alternates": [
     "nurse_task"
    ],
@@ -797,7 +797,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "wake_specialist",
+    "grader_route": "provider_task",
     "grader_confidence": 0.94,
     "batch_id": [
      "HO1+HO2"
@@ -869,7 +869,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Age band 60-64, female, Fitzpatrick I-IV, lives with spouse. PMH: type 2 diabetes, hypertension. Independent, drives locally. Meds: metformin 1000 mg BID, ramipril 5 mg daily; no recent med changes. Devices: thermometer, watch, bp_cuff. Baseline 30 d: rest HR 72 bpm, HRV 40 ms, sleep 7.2 h, steps 6200/day, night SpO2 min 96%, SBP 124 / DBP 76 mmHg. Trend: Day -6 to -1 steps 5900-6500, rest HR 70-74, oral temperature 36.6-36.9 C each morning, sleep 7.0-7.4 h. Day 0: woke at 06:40 with sudden severe headache; oral 38.6 C at 07:05; watch HR 104 at 07:10; cuff 142/84 at 07:12; vomited once at 07:20; steps 0 since 06:40. Spouse 07:25: worst headache she has had, lamp hurts her eyes, neck will not bend forward, threw up once. Wear 94%. Missing hours last 48: 0. Longest gap 1 h. Device flags: none recorded.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -884,7 +884,7 @@
    "category": [
     "infection"
    ],
-   "rationale": "Sudden severe headache with neck stiffness, photophobia, vomiting and oral 38.6 C with HR 104 bpm is an acute deterioration that a clinician must see now, even though no device rule fires. The thermometer, watch and cuff values are not in any trigger band, so the decision rests on the clinical picture rather than a threshold. Her diabetes and hypertension do not explain an abrupt onset with neck stiffness. Naive-model trap: a model that sees the vitals as near baseline and no trigger fired would send a nurse_task or wake_specialist for a routine headache review, but neck stiffness, photophobia and fever together need escalation.",
+   "rationale": "Sudden severe headache with neck stiffness, photophobia, vomiting and oral 38.6 C with HR 104 bpm is an acute deterioration that a clinician must see now, even though no device rule fires. The thermometer, watch and cuff values are not in any trigger band, so the decision rests on the clinical picture rather than a threshold. Her diabetes and hypertension do not explain an abrupt onset with neck stiffness. Naive-model trap: a model that sees the vitals as near baseline and no trigger fired would send a nurse_task or provider_task for a routine headache review, but neck stiffness, photophobia and fever together need escalation.",
    "decisive_feature": "Sudden severe headache with neck stiffness and photophobia, plus oral 38.6 C.",
    "escalation_target": null,
    "route_basis": null,
@@ -892,7 +892,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.98,
     "batch_id": [
      "HO1+HO2"
@@ -982,7 +982,7 @@
     "noise",
     "missing_data"
    ],
-   "rationale": "The probe covers ran out and a wrapped probe was used from Day -1, but the oral readings are 36.6-36.7 C, weight and heart rate are at baseline, and the physiology is normal. This is a supply request with a device-state note, not a clinical problem, so nurse_task is the right route for a resupply. No rule fires, and the data flag concerns the probe rather than the patient. Naive-model trap: a model that sees a wrapped probe might send a wake_specialist device review, which spends a same-day clinician on a probe cover.",
+   "rationale": "The probe covers ran out and a wrapped probe was used from Day -1, but the oral readings are 36.6-36.7 C, weight and heart rate are at baseline, and the physiology is normal. This is a supply request with a device-state note, not a clinical problem, so nurse_task is the right route for a resupply. No rule fires, and the data flag concerns the probe rather than the patient. Naive-model trap: a model that sees a wrapped probe might send a provider_task device review, which spends a same-day clinician on a probe cover.",
    "decisive_feature": "Thermometer probe covers exhausted Day -1 with normal readings and stable weight, a supply request only.",
    "escalation_target": null,
    "route_basis": null,
@@ -1182,7 +1182,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Age band 80-84, male, skin tone unknown, lives with paid caregiver. In bed most of the day, fed with help. Type 2 diabetes on basal insulin, metastatic prostate cancer, CKD 4, hospice enrolled with comfort-only plan; treat symptoms at home, no hospital transfer. Discharge 14 days ago after pneumonia admission. Meds: insulin degludec 12 units once daily since Day -400; morphine oral solution 2.5 mg PRN since Day -20. Devices: CGM, glucometer, watch. Baseline: CGM mean 131 mg/dL, rest HR 84, HRV 22 ms, sleep 6.0 h, steps 310, night SpO2 minimum 92%. Trend: Day -6 to -1 CGM mean 124-138 mg/dL with no overnight value below 70; steps 240-340; rest HR 80-86. Day 0: two degludec doses logged in the morning from duplicate records; CGM 61 mg/dL at 13:20 and falling; CGM 50 mg/dL at 13:45; watch HR 110 at 13:50; steps 0 from 13:00; glucometer 47 mg/dL at 14:05; juice refused. Caregiver: sweaty, confused, mumbling, eaten nothing since breakfast; family asks for the hospice nurse now. Data: wear 90% over 7 days, watch on-wrist 13:00-14:30 Day 0, 0 missing hours in 48 h, longest gap 1 h.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_VS_DANGER",
@@ -1206,7 +1206,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.99,
     "batch_id": [
      "HO1+HO2"
@@ -1274,7 +1274,7 @@
     "longest_gap_h": 0
    },
    "router_input": "Age band 60-64, male, Fitzpatrick V-VI, lives with spouse. Independent ADLs, walks daily. Hypertension, CKD 2. Meds: amlodipine 5 mg daily since Day -700. Devices: watch and bed sensor; no scale, BP cuff or other oximeter. Baseline is still being learned (monitoring day 3 of 10); provisional values: rest HR 63, HRV 46 ms, sleep 6.9 h, steps 5900, night SpO2 minimum 92%. Trend: Day -2 to -1 rest HR 61-66, steps 5200-6100, night SpO2 minimum 91-93%, sleep 6.6-7.1 h. Day 0 09:02: watch resting SpO2 87%, no motion flag, HR 74, RR 16; 09:20: SpO2 86%, HR 76, RR 17. Watch on-wrist continuously since Day -3; no night bed exits Day -1 to 0. Spouse: he says he feels fine, is making tea, no breathlessness on the stairs. Data: wear 96% over 7 days, watch on-wrist continuously since Day -3, 0 missing hours in 48 h, longest gap 0 h.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_SPO2_LT88",
@@ -1297,7 +1297,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.98,
     "batch_id": [
      "HO1+HO2"
@@ -1489,7 +1489,7 @@
     "longest_gap_h": 0
    },
    "router_input": "Age band 80-84, male, Fitzpatrick I-IV, lives alone. Walks indoors with rollator. AFib, prior ischemic stroke, osteoporosis, fall 4 months ago. Meds: rivaroxaban 20 mg daily since Day -400; alendronate 70 mg weekly since Day -200. Devices: watch and bed sensor. Baseline: rest HR 68, HRV 30 ms, sleep 6.9 h, steps 2100, night SpO2 minimum 94%. Trend: Day -6 to -1 steps 1900-2300, rest HR 66-70, bed exits 1-2 nightly, sleep 6.4-7.0 h. Day 0: bed-sensor exit 06:40; watch impact logged 06:45 while on-wrist, HR 96 at 06:46, steps 0 from 06:45 to 07:05, no motion until 07:08. Watch confirmation prompt at 06:50 unanswered; patient call at 06:55 unanswered. Adult child lives two hours away, phones on weekdays only, no contact since Day -1 evening. Data: wear 95% over 7 days, watch on-wrist 06:00-07:30 Day 0, 0 missing hours in 48 h, longest gap 0 h.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_FALL_ANTICOAG",
@@ -1512,7 +1512,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.99,
     "batch_id": [
      "HO1+HO2"
@@ -1690,7 +1690,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Age 80-84, male, Fitzpatrick I-IV, lives with spouse. PMH: type 2 diabetes on sulfonylurea, lymphoedema of left arm after lymph node clearance, CKD 3b. Meds: glimepiride 2 mg daily (since Day -6), amlodipine 5 mg daily (since Day -500). Recent change: glimepiride increased from 1 mg daily to 2 mg daily on Day -6. Devices: CGM, glucometer, watch, scale. Baseline 30 d: rest HR 68, HRV 33 ms, sleep 6.6 h, steps 2900, night SpO2 min 93%, skin-temp dev 0.0 C, weight 82.4 kg, glucose mean 139 mg/dL. Baseline status: relearning after glucose medication change on Day -6, monitoring day 52, 4 shortened learning days. Trend 7 d: nightly CGM minimum 78-86 mg/dL Days -7 to -5. Day -4 CGM 51 mg/dL at 01:50 with glucometer 98 mg/dL at 02:30. Day -2 CGM 53 mg/dL at 02:05 with glucometer 101 mg/dL at 02:40. Day -1 CGM 52 mg/dL at 01:30 with glucometer 96 mg/dL at 02:20. Watch HR 66-70 bpm during each dip, steps 0. Day 0 CGM minimum 80 mg/dL overnight, daytime 110-164 mg/dL. Weight 82.1-82.6 kg. Spouse: a compression sleeve goes on over the upper-arm sensor every night since Day -4 for the swelling, and he sleeps on that side. Data: CGM wear 97% over 7 d, longest gap 1 h. Device flags: compression sleeve over upper-arm CGM sensor nightly since Day -4.",
-   "expected_route": "wake_specialist",
+   "expected_route": "provider_task",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_VS_DANGER",
@@ -1711,7 +1711,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "wake_specialist",
+    "grader_route": "provider_task",
     "grader_confidence": 0.95,
     "batch_id": [
      "HO3+HO4"
@@ -1791,7 +1791,7 @@
     "longest_gap_h": 0
    },
    "router_input": "Age 75-79, male, Fitzpatrick V-VI, lives alone. PMH: type 2 diabetes on basal-bolus insulin, mild cognitive impairment, hypertension. Function: walks indoors, cooks simple meals, uses a written insulin card. Meds: insulin glargine 18 units at bedtime (since Day -800), insulin aspart 4-8 units with meals (since Day -800), lisinopril 10 mg daily (since Day -600); no recent med changes. Devices: CGM, glucometer, watch. Baseline 30 d: rest HR 70, HRV 36 ms, sleep 6.5 h, steps 2100, night SpO2 min 93%, skin-temp dev 0.0 C, glucose mean 138 mg/dL. Baseline status: established, monitoring day 210. Trend 7 d: nightly CGM minimum 72-88 mg/dL Days -7 to -1. Day 0 CGM 79 mg/dL at 02:00, 47 mg/dL at 02:10, 46 mg/dL at 07:00. Low-glucose alerts at 02:10 and 02:25 Day 0 not acknowledged. Watch HR 66-70 bpm 00:00-01:50 Day 0 and 112 bpm at 02:15 Day 0; steps 0 from 00:00 to 06:45 Day 0. Glucometer 44 mg/dL at 07:08 Day 0. Neighbour found him sweating and confused in the kitchen at 07:05 Day 0; he could not say what he had eaten. Data: CGM wear 96% over 7 d, longest gap 0 h. Device flags: watch worn continuously 00:00-07:10 Day 0.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_VS_DANGER",
@@ -1811,7 +1811,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 1.0,
     "batch_id": [
      "HO3+HO4"
@@ -1902,7 +1902,7 @@
     "longest_gap_h": 0
    },
    "router_input": "Age 80-84, male, Fitzpatrick I-IV, lives with spouse. PMH: persistent atrial fibrillation, HFpEF, hypertension. Function: walks short distances with a frame, independent with personal care. Meds: bisoprolol 5 mg daily (since Day -400), amiodarone 200 mg daily (since Day -15), apixaban 5 mg twice daily (since Day -400). Recent change: amiodarone started Day -15 at 200 mg daily. Devices: watch, ring, BP cuff. Baseline 30 d: rest HR 66, HRV 31 ms, sleep 6.2 h, steps 1900, night SpO2 min 92%, skin-temp dev 0.0 C, seated BP 128/76 mmHg. Baseline status: established; last condition change was a rate-control medicine started Day -15. Trend 7 d: resting HR 62-70 bpm on watch and 64-72 bpm on ring Days -7 to -2; nightly resting HR 56-60 bpm Day -1. Day 0 00:40-01:20 watch HR 34-36 bpm and ring HR 36 bpm at 00:50, no motion flag on either device, steps 0. Watch HR 44 bpm at 06:40 Day 0 at rest. BP cuff seated 96/58 mmHg at 06:45 Day 0. Spouse: found him dozing in the chair at 00:45 Day 0, hard to rouse; at 06:40 he was grey and unsteady when he stood. Data: watch and ring worn continuously 00:00-07:00 Day 0; longest gap 0 h.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_VS_DANGER",
@@ -1923,7 +1923,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 1.0,
     "batch_id": [
      "HO3+HO4"
@@ -1995,7 +1995,7 @@
    "router_input": "Age 65-69, female, Fitzpatrick I-IV, lives alone. PMH: type 2 diabetes on metformin, obesity class I. Function: independent in all activities, drives locally. Meds: metformin 500 mg twice daily (since Day -1200); no recent med changes. Devices: CGM, glucometer, watch. Baseline 30 d: rest HR 72, HRV 40 ms, sleep 6.8 h, steps 4600, night SpO2 min 94%, skin-temp dev 0.0 C, glucose mean 146 mg/dL. Baseline status: established, monitoring day 210. Trend 7 d: CGM daily mean 146-158 mg/dL on the previous sensor, Days -7 to -1. New sensor inserted Day 0 06:50 with a 60-minute warm-up. Manual calibration entered Day 0 07:30 as 90 mg/dL when the glucometer read 190 mg/dL at 07:30. CGM 84-104 mg/dL 08:00-11:40 Day 0; glucometer 188 mg/dL at 09:10 and 196 mg/dL at 11:20 Day 0. Watch HR 70-78 bpm Day 0, steps 4100 by 11:40 Day 0. Patient says the new sensor reads low today and she is not sure whether to trust it; no symptoms reported. Data: CGM wear 92% over 7 d, longest gap 1 h. Device flags: new CGM sensor inserted Day 0 06:50; manual calibration entry 90 mg/dL Day 0 07:30.",
    "expected_route": "nurse_task",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -2109,7 +2109,7 @@
    "router_input": "Age 70-74, female, Fitzpatrick I-IV, lives with spouse. PMH: type 2 diabetes on basal insulin, hypertension, osteoarthritis. Function: walks daily, independent with meals; spouse sets up the insulin pen. Meds: insulin glargine 26 units at bedtime (since Day -6), metformin 500 mg twice daily (since Day -700), lisinopril 10 mg daily (since Day -500). Recent change: insulin glargine increased from 16 units at bedtime to 26 units at bedtime on Day -6. Devices: CGM, glucometer, watch, scale. Baseline 30 d: rest HR 70, HRV 35 ms, sleep 7.0 h, steps 3400, night SpO2 min 93%, skin-temp dev 0.0 C, weight 74.2 kg, glucose mean 131 mg/dL. Baseline status: relearning after glucose medication change on Day -6, monitoring day 36, 4 shortened learning days. Trend 7 d: CGM daily mean 148 (Day -6), 162, 179, 196, 214 and 228 mg/dL (Day -1); readings above 250 mg/dL rose from 2% on Day -6 to 24% on Day -1. Day 0 CGM mean 236 mg/dL to 07:00; glucometer 254 mg/dL at 06:55 Day 0. Weight 74.0-74.4 kg Days -7 to 0. Steps 3100-3600 daily. Spouse sets the pen each night from the old label, at 16 units and not the new 26 units, since Day -6; patient has not checked the dial. Data: CGM wear 97% over 7 d, longest gap 1 h.",
    "expected_route": "nurse_task",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -2387,7 +2387,7 @@
    "router_input": "Age band 75-79, male, Fitzpatrick I-IV, lives with adult child. PMH: COPD GOLD 3, home oxygen 2 L/min nightly, HFpEF EF 55%. Function: walks indoors with rollator, bathing with help. Meds: tiotropium 18 mcg inhaled daily (long-standing); furosemide 20 mg daily (long-standing). No recent medication changes. Devices: watch, scale. Baseline 30 d: rest HR 72, HRV 28 ms, sleep 6.6 h, steps 2300, night SpO2 min 89%, weight 84.1 kg. Baseline status: established, monitoring day 58, no condition change. Data quality: wear 81% over 7 d; watch offline Day -2 06:00 to Day 0 05:12, gap 47.2 h, missing 47.2 h in last 48 h, longest gap 47.2 h. Trend: Day -6 to -3 watch rest HR 70-74, steps 2100-2500, night SpO2 min 88-90%, HRV 26-30 ms; scale Day -6 84.0 kg, Day -4 84.3 kg, Day -3 84.1 kg. Day 0 after resume: rest HR 74, night SpO2 min 89%, steps 140 by 08:00; scale Day 0 08:05 84.2 kg. Note: adult child works days and reports Day -2 morning he was 'fine, sitting with the paper'. No timed contact logged during the gap.",
    "expected_route": "nurse_task",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -2485,7 +2485,7 @@
     "longest_gap_h": 0
    },
    "router_input": "Age band 80-84, female, Fitzpatrick I-IV, lives with spouse. PMH: AF, CKD 3b, HTN. Function: walks indoors with a stick, independent ADLs. Meds: apixaban 2.5 mg BID (long-standing); amlodipine 5 mg daily (long-standing). No recent medication changes. Devices: watch, scale. Baseline 30 d: rest HR 71, HRV 31 ms, sleep 7.2 h, steps 2600, night SpO2 min 93%, weight 66.8 kg. Baseline status: established, monitoring day 88, no condition change. Data quality: wear 93% over 7 d; impact event logged Day 0 22:10; missing 0 h in last 48 h; longest gap 0 h. Trend: Day -6 to -1 watch rest HR 68-74, steps 2400-2800, sleep 6.8-7.4 h, night SpO2 min 92-94%; scale 66.6-67.0 kg. Day 0 22:10 watch impact event on wrist; watch HR 118 bpm at 22:12; steps 0 from 22:10 to 22:40. Watch on wrist continuously Day 0 21:00 to 22:40. Note: spouse was asleep in the next room from 21:30. No contact is logged after 22:10.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_FALL_ANTICOAG",
@@ -2503,12 +2503,12 @@
    "category": [
     "fall"
    ],
-   "rationale": "A watch-logged impact at 22:10 on the wrist, followed by HR 118 bpm and no steps, is a fall event in a patient on apixaban, so HT_FALL_ANTICOAG fires. The reliability check passes because the watch was on the wrist continuously, the rise from her 71 bpm baseline and the zero steps are a change, no explanation exists (no dropped or removed watch and no timed contact), and no goals of care apply, so all four checks pass. The tier is CONFIRM_FIRST with a 10-minute patient call, so the route is escalate_human after that step. Naive-model trap: a shallow model sees a sleeping spouse and an on-wrist impact that may be a bump, and writes wake_specialist, but an unexplained impact on an anticoagulant is the trigger.",
+   "rationale": "A watch-logged impact at 22:10 on the wrist, followed by HR 118 bpm and no steps, is a fall event in a patient on apixaban, so HT_FALL_ANTICOAG fires. The reliability check passes because the watch was on the wrist continuously, the rise from her 71 bpm baseline and the zero steps are a change, no explanation exists (no dropped or removed watch and no timed contact), and no goals of care apply, so all four checks pass. The tier is CONFIRM_FIRST with a 10-minute patient call, so the route is urgent_page after that step. Naive-model trap: a shallow model sees a sleeping spouse and an on-wrist impact that may be a bump, and writes provider_task, but an unexplained impact on an anticoagulant is the trigger.",
    "decisive_feature": "On-wrist watch impact at 22:10 with HR 118 bpm and no steps on apixaban, with no dropped watch or timed contact.",
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.98,
     "batch_id": [
      "HO3+HO4"
@@ -2593,7 +2593,7 @@
    "category": [
     "recovery"
    ],
-   "rationale": "A single-day activity spike to 14,200 steps and a dancing peak of 138 bpm on Day -2 is explained by a wedding, and rest HR, steps and sleep are back to his 62-66 bpm and 5900-6100 step pattern by Day -1 and Day 0. No stream shows a sustained change, and scale weight is flat at 82.5-82.6 kg. This is a closed recovery with no trigger, so silent_log is correct. Naive-model trap: a shallow model sees a peak heart rate of 138 bpm and a sudden step spike and writes wake_specialist, but the spike is a bounded, explained event that has already resolved.",
+   "rationale": "A single-day activity spike to 14,200 steps and a dancing peak of 138 bpm on Day -2 is explained by a wedding, and rest HR, steps and sleep are back to his 62-66 bpm and 5900-6100 step pattern by Day -1 and Day 0. No stream shows a sustained change, and scale weight is flat at 82.5-82.6 kg. This is a closed recovery with no trigger, so silent_log is correct. Naive-model trap: a shallow model sees a peak heart rate of 138 bpm and a sudden step spike and writes provider_task, but the spike is a bounded, explained event that has already resolved.",
    "decisive_feature": "Peak HR 138 bpm and 14,200 steps on the Day -2 wedding, with rest HR back to 64-66 bpm by Day -1.",
    "src": "holdout_v1",
    "grade": {
@@ -2672,9 +2672,9 @@
     "longest_gap_h": 1.5
    },
    "router_input": "Woman 75-79, Fitzpatrick V-VI, lives with spouse. PMH: interstitial lung disease stable on antifibrotic; hypertension. Meds: nintedanib 150 mg BID (started Day -300), amlodipine 5 mg daily (started Day -500); no recent medication changes. Devices: watch, ring. Baseline 30 d: resting HR 72, HRV 38 ms, sleep 7.1 h, steps 4100, night SpO2 minimum 92%, skin deviation 0.0 C. Baseline status: established, monitoring day 180, no condition change. Trend last 7 days: watch resting wrist SpO2 94-96% Day -6 to -4, 93-94% Day -3 to -2, 92-94% Day -1 to 0. Watch exertional SpO2 on bedroom stairs peaks 91-92% Day -6 to -4; sustained 88-89% for about 3 min at peak climb Day -2 (HR 124-128) and 88% for 3 min Day 0 (HR 126). Watch resting HR 72, 76, 78 bpm (Day -6, Day -3, Day -1 to 0). Ring overnight RR 15 Day -6, 17 Day -3, 18 Day -1 to 0. Watch steps 4100 Day -6 falling to 2600 Day 0. Caregiver: spouse says she stops twice on the landing and sits before the last steps; patient attributes it to cold weather; daughter reports she has slept propped on two pillows since Day -3. Data quality: wear 95%, longest gap 1.5 h, 0 missing hours in last 48 h, watch worn on left wrist Day -6 to Day 0, ring charged nightly 22:00-22:40.",
-   "expected_route": "wake_specialist",
+   "expected_route": "provider_task",
    "acceptable_alternates": [
-    "escalate_human"
+    "urgent_page"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -2699,7 +2699,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "wake_specialist",
+    "grader_route": "provider_task",
     "grader_confidence": 0.85,
     "batch_id": [
      "HO5+HO6"
@@ -2781,9 +2781,9 @@
     "longest_gap_h": 1
    },
    "router_input": "Man 80-84, Fitzpatrick I-IV, lives with spouse. PMH: recurrent urinary tract infection; hypertension; type 2 diabetes. Meds: metformin 500 mg BID (started Day -700), ramipril 5 mg daily (started Day -500), tamsulosin 0.4 mg nightly (started Day -300); no recent medication changes. Devices: watch, ring, thermometer, scale. Baseline 30 d: resting HR 70, HRV 30 ms, sleep 6.9 h, steps 3300, night SpO2 93%, skin deviation 0.0 C, weight 68.4 kg. Baseline status: established, monitoring day 150, no condition change. Trend last 7 days: oral temperature 36.6-36.8 C Day -6 to -4, 36.1 C Day -2 evening, 35.8 C Day -1 06:30, 35.9 C Day 0 07:00, 36.0 C Day 0 19:00. Ring skin deviation -0.1 C Day -6 to -4, -0.6 C night of Day -2 to -1, -0.9 C night of Day -1 to 0. Watch resting HR 70 Day -6 to -4, 78 Day -2, 84 Day -1, 88 Day 0. Watch RR 15 Day -6, 17 Day -2, 19 Day -1, 22 Day 0. Sleep 6.9 h Day -6 to -4 falling to 5.1 h Day -1 with night wakings. Steps 3300 falling to 2100 Day -1 and 900 Day 0. Weight 68.4 kg Day -6, 68.2 kg Day 0. Night SpO2 93% Day -6 to -2, 92% Day -1 to 0. Caregiver: spouse says he answers slowly, asked the same question twice this morning, has eaten little since Day -2 and his urine is darker; patient says he feels run down. Data quality: wear 94%, longest gap 1 h, 0 missing hours in last 48 h; oral readings taken by spouse Day -2 to Day 0.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -2807,7 +2807,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.9,
     "batch_id": [
      "HO5+HO6"
@@ -2894,7 +2894,7 @@
     "noise",
     "spo2_bias"
    ],
-   "rationale": "A fingertip SpO2 of 90% on cold, stiff fingers carries a low-perfusion flag, and the repeat after a warm-water soak reads 96% while the wrist stays at 95-96% and RR and HR are unchanged. The 90% value sits above the 88% line, so no hard trigger fires even before the repeat, and the warm-soak repeat is the decisive check. The most plausible explanation is a poorly perfused probe site in a woman whose wrist and fingertip baselines are normal, not hypoxemia. The device record is explained and returned to baseline, so nothing needs a human action. Naive-model trap: a shallow model sees a fingertip reading in the 90s with a flag and routes wake_specialist or escalate_human for hypoxemia, although the device data already show recovery to baseline.",
+   "rationale": "A fingertip SpO2 of 90% on cold, stiff fingers carries a low-perfusion flag, and the repeat after a warm-water soak reads 96% while the wrist stays at 95-96% and RR and HR are unchanged. The 90% value sits above the 88% line, so no hard trigger fires even before the repeat, and the warm-soak repeat is the decisive check. The most plausible explanation is a poorly perfused probe site in a woman whose wrist and fingertip baselines are normal, not hypoxemia. The device record is explained and returned to baseline, so nothing needs a human action. Naive-model trap: a shallow model sees a fingertip reading in the 90s with a flag and routes provider_task or urgent_page for hypoxemia, although the device data already show recovery to baseline.",
    "decisive_feature": "Fingertip 90% with a low-perfusion flag on cold fingers, repeated at 96% after a warm-water soak while the wrist stays at 95-96%.",
    "escalation_target": null,
    "route_basis": null,
@@ -2995,7 +2995,7 @@
    "category": [
     "noise"
    ],
-   "rationale": "Brief night watch HR spikes of 120-132 bpm occur on four nights, each under 90 seconds and each within a minute of a bed-sensor left-side pressure shift, while the ring records a flat 56-62 bpm across the same windows. Resting HR, HRV, sleep and steps all stay at the 30-day baseline, and the sleeping position on the watch arm with a motion flag fits a wrist-sensor artifact rather than a rhythm change. No hard trigger fires because there is no chest pain, no ECG change and no sustained rate, so the only action is a routine note. Naive-model trap: a shallow model reads a watch HR of 132 and routes wake_specialist for an arrhythmia workup, when the ring rhythm and the bed-sensor timing explain the spikes.",
+   "rationale": "Brief night watch HR spikes of 120-132 bpm occur on four nights, each under 90 seconds and each within a minute of a bed-sensor left-side pressure shift, while the ring records a flat 56-62 bpm across the same windows. Resting HR, HRV, sleep and steps all stay at the 30-day baseline, and the sleeping position on the watch arm with a motion flag fits a wrist-sensor artifact rather than a rhythm change. No hard trigger fires because there is no chest pain, no ECG change and no sustained rate, so the only action is a routine note. Naive-model trap: a shallow model reads a watch HR of 132 and routes provider_task for an arrhythmia workup, when the ring rhythm and the bed-sensor timing explain the spikes.",
    "decisive_feature": "Watch night HR spikes of 120-132 bpm lasting under 90 s, each tied to a bed-sensor left-side pressure shift, with ring HR flat at 56-62 in the same windows.",
    "escalation_target": null,
    "route_basis": null,
@@ -3092,7 +3092,7 @@
    "router_input": "Woman 70-74, Fitzpatrick I-IV, lives with spouse. PMH: COPD GOLD 2; osteoarthritis. Meds: tiotropium 18 mcg inhaled daily (started Day -800), salbutamol 100 mcg as needed (started Day -800), atorvastatin 20 mg nightly (started Day -600). Recent medication change: tiotropium missed Day -3 to Day -1. Devices: watch, ring. Baseline 30 d: resting HR 74, HRV 30 ms, sleep 7.0 h, steps 2900, night SpO2 92%. Baseline status: established, monitoring day 210, no condition change. Trend last 7 days: watch resting wrist SpO2 92-93% Day -6 to Day 0; watch RR 16-17; resting HR 74-76; steps 2700-3100; sleep 6.9-7.2 h; ring overnight SpO2 minimum 91-92%, steady. Caregiver: spouse says the tiotropium refill was not collected and the capsules ran out after the Day -4 morning dose; no doses Day -3 to Day -1; refill collected Day 0 morning. Patient reports rescue salbutamol twice on Day -2 and says breathing is no worse than usual. Data quality: wear 96%, longest gap 1.2 h, 0 missing hours in last 48 h; watch worn on right wrist Day -6 to Day 0.",
    "expected_route": "nurse_task",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -3108,7 +3108,7 @@
     "respiratory",
     "med_change"
    ],
-   "rationale": "Three consecutive days of missed long-acting tiotropium (Day -3 to Day -1) are a real medication gap in COPD, but wrist SpO2 stays at 92-93% against her own 92% baseline, RR is 16-17, and resting HR and steps are unchanged. The refill was collected on Day 0, so the fix is a supply and inhaler-technique conversation rather than treatment for a deterioration. A clinician call is not needed unless symptoms change, so nurse_task with a follow-up call within 24-72 hours fits. Naive-model trap: a shallow model reads a missed maintenance inhaler plus rescue use and routes escalate_human for an exacerbation, although every vital sign is at her own baseline.",
+   "rationale": "Three consecutive days of missed long-acting tiotropium (Day -3 to Day -1) are a real medication gap in COPD, but wrist SpO2 stays at 92-93% against her own 92% baseline, RR is 16-17, and resting HR and steps are unchanged. The refill was collected on Day 0, so the fix is a supply and inhaler-technique conversation rather than treatment for a deterioration. A clinician call is not needed unless symptoms change, so nurse_task with a follow-up call within 24-72 hours fits. Naive-model trap: a shallow model reads a missed maintenance inhaler plus rescue use and routes urgent_page for an exacerbation, although every vital sign is at her own baseline.",
    "decisive_feature": "Three missed days of long-acting tiotropium (Day -3 to -1) with wrist SpO2 92-93% and RR 16-17 holding at her own baseline.",
    "escalation_target": null,
    "route_basis": null,
@@ -3191,7 +3191,7 @@
     "longest_gap_h": 0.6
    },
    "router_input": "Woman 85-89, Fitzpatrick V-VI, lives alone. PMH: COPD GOLD 2; hypertension. Meds: tiotropium 18 mcg inhaled daily (started Day -900), amlodipine 5 mg daily (started Day -700); no recent medication changes. Devices: ring, watch. Baseline 30 d: resting HR 78, HRV 24 ms, sleep 7.3 h, steps 1500, night SpO2 91%. Baseline status: established, monitoring day 88, no condition change. Patient goals: full active treatment. Trend last 7 days: ring resting SpO2 93-94% Day -6 to Day -1; ring resting SpO2 87% Day 0 at 10:04 and 87% Day 0 at 10:16 (two rest samples 12 min apart, no motion flag on either). Ring RR 16 Day -6 to -2, 17 Day 0 morning. Watch resting HR 78 Day -6 to -2, 80 Day 0 morning. Steps 1400 Day -6 to -2, 320 by Day 0 10:00. Watch tap-to-confirm prompt issued Day 0 10:16 remains unanswered at 12 min. Caregiver: neighbour checks in around 17:00 most days; patient reports breathlessness walking to the kitchen this morning. Data quality: ring wear 97%, longest gap 0.6 h, 0 missing hours in last 48 h.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_SPO2_LT88",
@@ -3215,7 +3215,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.98,
     "batch_id": [
      "HO5+HO6"
@@ -3291,9 +3291,9 @@
     "longest_gap_h": 1.1
    },
    "router_input": "Man 75-79, Fitzpatrick V-VI, lives with spouse. PMH: heart failure with preserved EF (EF 55%); hypertension; CKD 3a. Meds: ramipril 5 mg daily (started Day -600), atorvastatin 20 mg nightly (started Day -500); no recent medication changes. Devices: watch, ring, bp cuff, scale. Baseline 30 d: resting HR 63, HRV 41 ms, sleep 7.1 h, steps 3600, night SpO2 94%, skin deviation 0.0 C, weight 72.2 kg, cuff SBP 129, DBP 78. Baseline status: established, monitoring day 140, no condition change. Trend last 7 days: cuff seated SBP 136-138 Day -6 to -4, 140-142 Day -3 to 0. Ring nightly HRV 36-38 ms Day -6 to -4, 31-33 ms Day -3 to 0. Watch resting HR 65 Day -6 to -4, 67 Day -3 to 0. Sleep 6.4 h Day -6 to -4, 6.1 h Day -3 to 0. Steps 3100 Day -6 to -4, 2600 Day -3 to 0. Scale weight 72.3 kg Day -6 to 0. Watch night SpO2 93% Day -6 to 0. Caregiver: patient says he feels no different; spouse says he has been dozing in the afternoon for two weeks and has cut back on walks; on Day -14 the cuff read SBP 128-130 and ring nightly HRV was 41-43 ms. Data quality: wear 96%, longest gap 1.1 h, 0 missing hours in last 48 h; cuff readings taken seated after 5 minutes rest, Day -6 to Day 0.",
-   "expected_route": "wake_specialist",
+   "expected_route": "provider_task",
    "acceptable_alternates": [
-    "escalate_human"
+    "urgent_page"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -3308,7 +3308,7 @@
    "category": [
     "hf"
    ],
-   "rationale": "Over two weeks cuff SBP has climbed from 128-130 to 140-142, nightly HRV has slid from 41-43 to 31-33 ms, and afternoon dozing has appeared, while weight stays flat at 72.2-72.3 kg and no medication has changed. Each single value looks borderline, so the pattern shows only as a monotonic drift across the two weeks. Under the drift guard this is not a new normal, it is labelled subtle, and it needs a same-day clinician review of HF status rather than a log entry. No hard trigger fires, so this is a wake_specialist route. Naive-model trap: a shallow model checks each reading against a population band, sees 142 mmHg as mild and HRV of 31 ms as normal, and routes silent_log.",
+   "rationale": "Over two weeks cuff SBP has climbed from 128-130 to 140-142, nightly HRV has slid from 41-43 to 31-33 ms, and afternoon dozing has appeared, while weight stays flat at 72.2-72.3 kg and no medication has changed. Each single value looks borderline, so the pattern shows only as a monotonic drift across the two weeks. Under the drift guard this is not a new normal, it is labelled subtle, and it needs a same-day clinician review of HF status rather than a log entry. No hard trigger fires, so this is a provider_task route. Naive-model trap: a shallow model checks each reading against a population band, sees 142 mmHg as mild and HRV of 31 ms as normal, and routes silent_log.",
    "decisive_feature": "Cuff SBP drifting from 128-130 to 140-142 and nightly HRV from 41-43 to 31-33 ms across two weeks, with weight flat and no medication change.",
    "escalation_target": null,
    "route_basis": null,
@@ -3317,7 +3317,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "wake_specialist",
+    "grader_route": "provider_task",
     "grader_confidence": 0.88,
     "batch_id": [
      "HO5+HO6"
@@ -3391,9 +3391,9 @@
     "longest_gap_h": 1
    },
    "router_input": "Man 65-69, Fitzpatrick V-VI, lives with spouse. PMH: non-small-cell lung cancer on immunotherapy; hypertension. Meds: pembrolizumab 200 mg IV every 3 weeks (started Day -95), amlodipine 5 mg daily (started Day -400); no recent medication changes. Devices: watch, ring, scale. Baseline 30 d: resting HR 68, HRV 36 ms, sleep 7.0 h, steps 3900, night SpO2 93%, skin deviation 0.0 C, weight 79.6 kg. Baseline status: established, monitoring day 240, no condition change. Patient goals: active treatment, wants to continue immunotherapy. Trend last 7 days: watch resting wrist SpO2 94-95% Day -6 to -4, 93-94% Day -3 to -2, 92-94% Day -1 to 0; watch RR 16 Day -6, 18 Day -3, 19-20 Day -1 to 0; watch resting HR 67 Day -6 to -4, 70 Day -2, 72 Day 0; watch night SpO2 93% Day -6 to -4, 92% Day -1 to 0; steps 3900 Day -6, 2100 Day -2, 1400 Day 0; scale 79.6 kg Day -6 to -3, 79.1 kg Day -1, 78.9 kg Day 0; ring skin deviation 0.0 to +0.2 C. Caregiver: spouse reports a dry night cough since Day -2 that wakes him; patient says he is tired from the infusion schedule. Data quality: watch worn on right wrist Day -6 to Day 0, wear 95%, longest gap 1 h, 0 missing hours in last 48 h.",
-   "expected_route": "wake_specialist",
+   "expected_route": "provider_task",
    "acceptable_alternates": [
-    "escalate_human"
+    "urgent_page"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -3418,7 +3418,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "wake_specialist",
+    "grader_route": "provider_task",
     "grader_confidence": 0.9,
     "batch_id": [
      "HO5+HO6"
@@ -3512,7 +3512,7 @@
    "category": [
     "recovery"
    ],
-   "rationale": "Sleep, resting HR and steps are all moving back toward the 30-day baseline after a completed zoster course, with fewer night wakings from pain and the rash crusting per the patient. There is no physiologic signal of a new problem, and the antiviral was stopped as planned on Day -2. A nurse call is still useful to close the loop on pain control, skin healing and sleep recovery. Naive-model trap: a shallow model sees a recent antiviral stop plus a painful infection history and routes escalate_human or wake_specialist for a complication, when the trend is a clean recovery.",
+   "rationale": "Sleep, resting HR and steps are all moving back toward the 30-day baseline after a completed zoster course, with fewer night wakings from pain and the rash crusting per the patient. There is no physiologic signal of a new problem, and the antiviral was stopped as planned on Day -2. A nurse call is still useful to close the loop on pain control, skin healing and sleep recovery. Naive-model trap: a shallow model sees a recent antiviral stop plus a painful infection history and routes urgent_page or provider_task for a complication, when the trend is a clean recovery.",
    "decisive_feature": "Sleep, resting HR and steps all recovering toward baseline after the zoster antiviral course ended Day -2, with pain now mild per the patient.",
    "escalation_target": null,
    "route_basis": null,
@@ -3595,7 +3595,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Woman 90-94, Fitzpatrick I-IV, lives with adult child. PMH: complete heart block with dual-chamber pacemaker (lower rate 60 bpm); hypertension; osteoporosis. Meds: amlodipine 2.5 mg daily (started Day -600), alendronate 70 mg weekly (started Day -900); no recent medication changes. Devices: watch, ring. Baseline 30 d: resting HR 66, HRV 36 ms, sleep 7.2 h, steps 3100, night SpO2 94%, skin deviation 0.0 C. Baseline status: established, monitoring day 300, no condition change. Patient goals: remain independent at home. Trend last 7 days: watch resting HR 64-68 Day -6 to -4, 60-61 Day -3 to 0. Watch HR during walks peaks 92-98 Day -6 to -4 and 61-63 Day -2 to 0. Steps 3100 Day -6 to -4, 2400 Day -2, 1800 Day -1 to 0. Ring overnight HRV 36 ms Day -6, 32 ms Day -3, 28 ms Day -2 to 0. Sleep 7.2 h Day -6, 8.1 h Day -1 to 0, with afternoon naps logged by patient. Watch night SpO2 94-95% Day -6 to 0. Caregiver: daughter says her mother has napped every afternoon for three days and feels heavy climbing the hallway; patient says her heart feels steady and reports her last pacemaker check at clinic was about 120 days ago. Data quality: watch worn on left wrist Day -6 to Day 0, wear 96%, longest gap 1 h, 0 missing hours in last 48 h.",
-   "expected_route": "wake_specialist",
+   "expected_route": "provider_task",
    "acceptable_alternates": [
     "nurse_task"
    ],
@@ -3621,7 +3621,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "wake_specialist",
+    "grader_route": "provider_task",
     "grader_confidence": 0.9,
     "batch_id": [
      "HO5+HO6"
@@ -3695,7 +3695,7 @@
     "longest_gap_h": 0.5
    },
    "router_input": "Man 85-89, Fitzpatrick I-IV, lives with spouse. PMH: moderate aortic stenosis; hypertension; prostate enlargement. Meds: amlodipine 5 mg daily (started Day -500), tamsulosin 0.4 mg nightly (started Day -400); no recent medication changes. Devices: watch, bp_cuff. Baseline 30 d: resting HR 60, HRV 26 ms, sleep 7.2 h, steps 2200, night SpO2 93%, skin deviation 0.0 C, cuff SBP 131, DBP 76. Baseline status: established, monitoring day 200, no condition change. Patient goals: full active treatment. Trend last 7 days: watch resting HR 60-62 Day -6 to Day -1; seated cuff SBP 128-134 on mornings Day -6 to Day -1. Day 0 06:40 witnessed event: watch HR 44 at 06:40, 52 at 06:46, 58 at 06:55 (on-wrist). Cuff SBP 84 at 06:58 seated after help onto the bed; repeat 88 at 07:10. Watch steps 0 from 06:40 to 07:10. Caregiver: spouse heard him slump on the bathroom floor after straining on the toilet at about 06:40, saw him unresponsive and limp for about 30 seconds; he came round and says he felt faint before straining; spouse did not see a head strike. Data quality: watch on-wrist throughout Day 0 06:30-07:15, wear 92%, longest gap 0.5 h, 0 missing hours in last 48 h.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_SYNCOPE",
@@ -3719,7 +3719,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.99,
     "batch_id": [
      "HO5+HO6"
@@ -3793,7 +3793,7 @@
    "router_input": "Age band 85-89, female, Fitzpatrick V-VI, lives with paid caregiver. PMH: COPD GOLD 2, hypertension. Walks to the kitchen with frame; needs help with bathing. Meds: tiotropium 2.5 mcg two puffs daily (started Day -600), amlodipine 5 mg daily (started Day -700). No recent medication changes. Devices: watch, scale, bp_cuff. 30-day baseline: rest HR 76 bpm, HRV 26 ms, sleep 6.4 h, steps 1500, night SpO2 90%, skin-temp deviation 0.0 C, weight 58.4 kg, seated SBP 134, DBP 80. Baseline status: established, monitoring day 240. Last 7 days: watch rest HR 74-78 bpm, steps 1400-1700, night SpO2 89-91%, sleep 6.0-6.6 h; morning scale 58.2-58.6 kg; cuff seated SBP 130-134, DBP 78-82. Day 0 to 12:00: rest HR 76 bpm, steps 1200, sleep 6.3 h, scale 58.4 kg. Caregiver note: agency reduced visits from 14 to 6 hours per week from Day -8 after a funding review; adult child covers two evenings and says lifting her alone is no longer safe; no clinical change reported. Wear time 90% over 7 days; longest gap 0 h; 0 h missing in the last 48 h.",
    "expected_route": "nurse_task",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -3809,7 +3809,7 @@
     "noise",
     "caregiver"
    ],
-   "rationale": "No physiological stream has changed: rest HR 74-78 bpm, night SpO2 89-91% (her own baseline about 90%), weight 58.2-58.6 kg and seated SBP 130-134 all match the 30-day baseline. The only change is social, a funding-driven cut in agency hours from 14 to 6 a week from Day -8, leaving an adult child covering two evenings and reporting that lifting her alone is no longer safe. Naive-model trap: a shallow model reads a stable chart as silent_log and ignores the caregiver note, but an unsafe lifting arrangement needs a human conversation within days. A nurse task covering care-plan review, funding and transfer support, and a falls-risk check is the right route, with wake_specialist as the alternate only if the team judges the transfer plan needs same-day review.",
+   "rationale": "No physiological stream has changed: rest HR 74-78 bpm, night SpO2 89-91% (her own baseline about 90%), weight 58.2-58.6 kg and seated SBP 130-134 all match the 30-day baseline. The only change is social, a funding-driven cut in agency hours from 14 to 6 a week from Day -8, leaving an adult child covering two evenings and reporting that lifting her alone is no longer safe. Naive-model trap: a shallow model reads a stable chart as silent_log and ignores the caregiver note, but an unsafe lifting arrangement needs a human conversation within days. A nurse task covering care-plan review, funding and transfer support, and a falls-risk check is the right route, with provider_task as the alternate only if the team judges the transfer plan needs same-day review.",
    "decisive_feature": "Paid visit hours cut from 14 to 6 a week on Day -8 while every device stream stays flat, so the risk is the care gap, not physiology.",
    "escalation_target": null,
    "route_basis": null,
@@ -3908,9 +3908,9 @@
     "longest_gap_h": 0
    },
    "router_input": "Age band 75-79, male, Fitzpatrick I-IV, lives with spouse. PMH: CKD stage 4 (eGFR 22), HFrEF EF 35%, hypertension. Walks indoors with stick; independent ADLs. Meds: losartan 50 mg daily (started Day -350), metoprolol succinate 47.5 mg daily (started Day -400), furosemide 40 mg daily (started Day -350), potassium chloride salt substitute used in cooking daily (started Day -3). Recent medication change: potassium chloride salt substitute started Day -3. Devices: watch, scale, bp_cuff. 30-day baseline: rest HR 68 bpm, HRV 30 ms, sleep 6.8 h, steps 2900, night SpO2 93%, skin-temp deviation 0.0 C, weight 76.1 kg, seated SBP 124, DBP 74. Baseline status: established, monitoring day 300. Last 7 days (Day -3 to 0): watch rest HR 70-72 bpm, steps 2300-2700, sleep 6.5-7.0 h, night SpO2 92-93%; morning scale 76.5-76.8 kg; cuff seated SBP 126-128, DBP 74-76. No ECG strip recorded this week. Visit note: visit: Day -1 clinic potassium 5.9 mmol/L; repeat ordered. Wear time 92% over 7 days; longest gap 0 h; 0 h missing in the last 48 h.",
-   "expected_route": "wake_specialist",
+   "expected_route": "provider_task",
    "acceptable_alternates": [
-    "escalate_human"
+    "urgent_page"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -3934,7 +3934,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "wake_specialist",
+    "grader_route": "provider_task",
     "grader_confidence": 0.9,
     "batch_id": [
      "HO5+HO6"
@@ -4025,9 +4025,9 @@
     "longest_gap_h": 0
    },
    "router_input": "Age band 75-79, male, Fitzpatrick I-IV, lives with spouse. PMH: CKD stage 4 (eGFR 22), HFrEF EF 35%, hypertension. Walks indoors with stick; independent ADLs. Meds: losartan 50 mg daily (started Day -350), metoprolol succinate 47.5 mg daily (started Day -400), furosemide 40 mg daily (started Day -350), potassium chloride salt substitute used in cooking daily (started Day -3). Recent medication change: potassium chloride salt substitute started Day -3. Devices: watch, scale, bp_cuff. 30-day baseline: rest HR 68 bpm, HRV 30 ms, sleep 6.8 h, steps 2900, night SpO2 93%, skin-temp deviation 0.0 C, weight 76.1 kg, seated SBP 124, DBP 74. Baseline status: established, monitoring day 300. Last 7 days (Day -3 to 0): watch rest HR 70-72 bpm, steps 2300-2700, sleep 6.5-7.0 h, night SpO2 92-93%; morning scale 76.5-76.8 kg; cuff seated SBP 126-128, DBP 74-76. No ECG strip recorded this week. Visit note: visit: Day -1 clinic potassium 6.4 mmol/L; repeat ordered. Wear time 92% over 7 days; longest gap 0 h; 0 h missing in the last 48 h.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -4043,7 +4043,7 @@
     "electrolyte",
     "med_change"
    ],
-   "rationale": "Everything is identical to the pair member except the Day -1 potassium of 6.4 mmol/L, which is above the 6.0 line on losartan with eGFR 22 after a two-day potassium salt-substitute start. Vitals are steady and no ECG strip was recorded, so no arrhythmia is monitored, but a potassium this high at this kidney function can produce a dangerous rhythm with little warning. A clinician needs to act now rather than after a routine medication review. Naive-model trap: a shallow model copies the stable vitals from its pair and routes wake_specialist, but the single higher potassium moves the case from same-day review to escalate_human. The alternate of wake_specialist covers the medication plan, but the clinician contact should happen now.",
+   "rationale": "Everything is identical to the pair member except the Day -1 potassium of 6.4 mmol/L, which is above the 6.0 line on losartan with eGFR 22 after a two-day potassium salt-substitute start. Vitals are steady and no ECG strip was recorded, so no arrhythmia is monitored, but a potassium this high at this kidney function can produce a dangerous rhythm with little warning. A clinician needs to act now rather than after a routine medication review. Naive-model trap: a shallow model copies the stable vitals from its pair and routes provider_task, but the single higher potassium moves the case from same-day review to urgent_page. The alternate of provider_task covers the medication plan, but the clinician contact should happen now.",
    "decisive_feature": "Visit potassium 6.4 mmol/L, above the 6.0 line, on the same losartan and salt-substitute setup; the only difference from the pair member is the potassium value (6.4 vs 5.9).",
    "escalation_target": null,
    "route_basis": null,
@@ -4051,7 +4051,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.94,
     "batch_id": [
      "HO5+HO6"
@@ -4440,7 +4440,7 @@
    "router_input": "70-74 M Fitzpatrick V-VI with spouse. PMH: Type 2 diabetes. Meds: gliclazide 30 mg daily started Day -7, metformin 500 mg BID started Day -400. Recent change: gliclazide started Day -7. Devices: cgm, glucometer, watch. Baseline 30d: glucose mean 140 mg/dL, rest HR 72 bpm, steps 3000, SpO2 night min 92%. Trend: glucose mean 140 to 132 mg/dL over seven days, rest HR 70-74 bpm, steps 2800-3200, no nocturnal CGM lows, fingersticks 90-140 mg/dL. Note: spouse says he eats regular meals, no symptoms, no sweating or shaking. Wear time 92%, no flags, longest gap 2 h. Baseline status established.",
    "expected_route": "nurse_task",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -4537,7 +4537,7 @@
    "router_input": "75-79 F Fitzpatrick I-IV living alone. PMH: AFib, Prior stroke. Meds: apixaban 5 mg BID started Day -400. Recent change: apixaban missed Day -4 to -2. Devices: watch, bed sensor. Baseline 30d: rest HR 70 bpm, steps 2000, SpO2 night min 92%. Trend: rest HR 68-72 bpm, steps 1800-2200, no fall events, apixaban missed Day -4 to -2 then resumed, no symptoms. Note: patient says she forgot doses but has resumed, no fall, no dizziness. Wear time 90%, no flags, longest gap 4 h. Baseline status established.",
    "expected_route": "nurse_task",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -4639,9 +4639,9 @@
     "longest_gap_h": 4
    },
    "router_input": "85+ F Fitzpatrick I-IV with paid caregiver. PMH: Depression, Hypertension, Falls. Meds: sertraline 100 mg daily started Day -7, amlodipine 5 mg daily started Day -400. Recent change: sertraline dose increased from 50 to 100 mg daily on Day -7. Devices: watch, bp cuff, thermometer. Baseline 30d: rest HR 72 bpm, steps 2000, SpO2 night min 94%, SBP 130 mmHg. Trend: rest HR 70-74 bpm, SBP 122-130 mmHg, steps down to 1000, two falls Day -2 and -1. Note: paid caregiver reports new unsteadiness, visit sodium 131 mmol/L on Day -1. Wear time 86%, no flags, longest gap 4 h. Baseline status established.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -4663,7 +4663,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "wake_specialist",
+    "grader_route": "provider_task",
     "grader_confidence": 0.85,
     "batch_id": [
      "HO8"
@@ -4735,7 +4735,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Woman, age band 80-84, Fitzpatrick I-IV, lives with spouse. PMH: atrial fibrillation with rate control, hypertension, osteoarthritis. Function: walks indoors with a stick, independent ADLs with some help dressing. Meds: bisoprolol 2.5 mg daily (since Day -500), amlodipine 5 mg daily (since Day -700); no recent medication changes. Devices: watch, bp cuff. Baseline 30 days: resting HR 70, HRV 30 ms, sleep 7.0 h, steps 2100/day, night SpO2 minimum 93%, skin temp deviation 0.0 C, SBP 128, DBP 76. Baseline status: established, monitoring day 210, no condition change. Trend: Day -6 to -1 resting HR 66-72, steps 1900-2300/day, night SpO2 minimum 92-93%, watch worn 22-23 h/day. Day 0 18:10 witnessed loss of tone for about 40 s after a coughing spell at the dinner table; watch HR 58 at 18:12 (on-wrist, no motion flag); cuff 84/52 at 18:20; HR 66 at 18:35; cuff 112/68 seated at 18:50. Spouse: slumped forward and went limp for about 40 s, eyes open, not answering, slow and confused for a few minutes after; no injury seen. Wear 94% over 7 days, longest gap 1 h, no device-state flags.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_SYNCOPE",
@@ -4758,7 +4758,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.98,
     "batch_id": [
      "HO9+HO10"
@@ -4852,7 +4852,7 @@
    "category": [
     "recovery"
    ],
-   "rationale": "Resting HR has fallen from 94-98 bpm on Day -14 to 70-72 bpm on Day 0, and visit haemoglobin has risen from 9.1 to 11.8 g/dL after two IV iron doses, so the anaemia-driven tachycardia that prompted the work-up has resolved. Night SpO2 is 94-95%, sleep is 7.0-7.3 hours and the watch has been worn 23 hours a day with no gap over an hour. Steps are still 2400-2700 against a 3800 baseline, but they are climbing day by day and the patient reports easier stair climbing, which is the expected shape of recovery. Naive-model trap: a shallow model sees steps still well below baseline and an old anaemia diagnosis and routes wake_specialist for a same-day review, but the loop is already closed on the record, so silent_log is correct with nurse_task the only acceptable alternate.",
+   "rationale": "Resting HR has fallen from 94-98 bpm on Day -14 to 70-72 bpm on Day 0, and visit haemoglobin has risen from 9.1 to 11.8 g/dL after two IV iron doses, so the anaemia-driven tachycardia that prompted the work-up has resolved. Night SpO2 is 94-95%, sleep is 7.0-7.3 hours and the watch has been worn 23 hours a day with no gap over an hour. Steps are still 2400-2700 against a 3800 baseline, but they are climbing day by day and the patient reports easier stair climbing, which is the expected shape of recovery. Naive-model trap: a shallow model sees steps still well below baseline and an old anaemia diagnosis and routes provider_task for a same-day review, but the loop is already closed on the record, so silent_log is correct with nurse_task the only acceptable alternate.",
    "decisive_feature": "Resting HR back from 94-98 to 70-72 bpm and visit haemoglobin up from 9.1 to 11.8 g/dL after IV iron, with steps still climbing, so the anaemia has resolved.",
    "src": "holdout_v1",
    "grade": {
@@ -4940,7 +4940,7 @@
    "router_input": "Woman, age band 75-79, Fitzpatrick I-IV, lives alone. PMH: hypertension, CKD stage 3a, knee osteoarthritis. Function: walks outdoors with a rollator, independent indoors. Meds: ramipril 5 mg daily (since Day -600); amlodipine 5 mg daily (since Day -9). Recent change: amlodipine started Day -9 at 5 mg daily. Devices: scale, bp cuff, watch. Baseline 30 days: resting HR 68, HRV 36 ms, sleep 7.0 h, steps 3100/day, night SpO2 minimum 94%, skin temp deviation 0.0 C, weight 66.4 kg, SBP 136, DBP 80. Baseline status: established, monitoring day 120, no condition change. Trend: Day -9 weight 66.5 kg before the amlodipine start; Day -8 to -6 66.9-67.3 kg; Day -2 to -1 67.4-67.6 kg; Day 0 morning 67.8 kg (+1.3 kg over nine days). Cuff SBP 138-142 Day -9 to -6, 124-128 Day -1 to 0. Resting HR 66-70 throughout. Night SpO2 minimum 93-94%. Steps 2900-3200/day. Watch worn 21-22 h/day; daily morning scale readings, no gaps. Note: ankles look puffier by evening and shoes feel tight; she sleeps on her usual two pillows and says her breathing is unchanged. Wear 91% over 7 days, longest gap 1 h, no device-state flags.",
    "expected_route": "nurse_task",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -4959,7 +4959,7 @@
     "noise",
     "med_change"
    ],
-   "rationale": "The 1.3 kg rise since the amlodipine start is real fluid accumulation, but the rest of the picture is not congestive: resting HR stays 66-70 bpm, night SpO2 stays 93-94%, sleep and steps are steady, and she sleeps on her usual two pillows. Blood pressure has fallen from 138-142 to 124-128 mmHg, consistent with the new drug working, and the swelling is peripheral. A routine call to review the ankle swelling and discuss options with the prescriber is the right loop-closing action within 24-72 hours. Naive-model trap: a shallow model sees a 1.3 kg weight gain over nine days and routes escalate_human as possible heart failure, when the device data show no congestion pattern and no change in heart rate or oxygen.",
+   "rationale": "The 1.3 kg rise since the amlodipine start is real fluid accumulation, but the rest of the picture is not congestive: resting HR stays 66-70 bpm, night SpO2 stays 93-94%, sleep and steps are steady, and she sleeps on her usual two pillows. Blood pressure has fallen from 138-142 to 124-128 mmHg, consistent with the new drug working, and the swelling is peripheral. A routine call to review the ankle swelling and discuss options with the prescriber is the right loop-closing action within 24-72 hours. Naive-model trap: a shallow model sees a 1.3 kg weight gain over nine days and routes urgent_page as possible heart failure, when the device data show no congestion pattern and no change in heart rate or oxygen.",
    "decisive_feature": "Weight up 1.3 kg over nine days starting with amlodipine, with puffy ankles, while resting HR, night SpO2 and sleep stay flat, so this is drug-related fluid, not congestion.",
    "src": "holdout_v1",
    "grade": {
@@ -5046,7 +5046,7 @@
    "router_input": "Man, age band 70-74, Fitzpatrick V-VI, lives with spouse. PMH: diabetic peripheral neuropathy, type 2 diabetes, hypertension. Function: walks indoors and to the corner shop with a stick. Meds: metformin 500 mg BID (since Day -400); gabapentin 300 mg three times daily (since Day -8). Recent change: gabapentin dose increased Day -8 from 100 mg three times daily to 300 mg three times daily. Devices: watch, scale. Baseline 30 days: resting HR 66, HRV 38 ms, sleep 7.1 h, steps 4200/day, night SpO2 minimum 94%, skin temp deviation 0.0 C, weight 83.0 kg. Baseline status: established, monitoring day 160, no condition change. Trend: Day -8 to -6 nightly sleep 6.8-7.0 h, daytime sleep 0.3-0.5 h/day. Day -5 to -2 daytime sleep 1.2-2.8 h/day, steps 2600-3100. Day -1 to 0 daytime sleep 3.1-3.4 h, night sleep 7.8-8.2 h, steps 2100-2400, night respiratory rate 14-15/min (baseline 16-17), night SpO2 minimum 92-93%. Resting HR 64-68. Weight 83.2-83.4 kg. Watch worn 22-23 h/day, no gaps over 1 h. Visit: Day -2 eGFR 58 mL/min/1.73m2. Wife says he dozes in the chair after lunch and is slower finishing sentences; he says he feels fine. Wear 92% over 7 days, longest gap 1 h, no device-state flags.",
    "expected_route": "nurse_task",
    "acceptable_alternates": [
-    "wake_specialist"
+    "provider_task"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -5065,7 +5065,7 @@
     "renal",
     "med_change"
    ],
-   "rationale": "An eGFR of 58 sits in the range where 900 mg a day of gabapentin is usually acceptable, so the dose itself is not the immediate danger; the rise in daytime sleep to 3.1-3.4 hours and the slower speech are the sedation signal that prompts a dose review. Night respiratory rate of 14-15 per minute and SpO2 minimum of 92-93% are modest and show no hypoventilation pattern, and steps and weight are stable. A routine dose review by nurse call within 72 hours is proportionate. Naive-model trap: a shallow model sees a daytime-sleep rise after a dose increase and routes wake_specialist for a same-day pharmacist review, but the eGFR value is the decisive fact and at 58 this is a planned review.",
+   "rationale": "An eGFR of 58 sits in the range where 900 mg a day of gabapentin is usually acceptable, so the dose itself is not the immediate danger; the rise in daytime sleep to 3.1-3.4 hours and the slower speech are the sedation signal that prompts a dose review. Night respiratory rate of 14-15 per minute and SpO2 minimum of 92-93% are modest and show no hypoventilation pattern, and steps and weight are stable. A routine dose review by nurse call within 72 hours is proportionate. Naive-model trap: a shallow model sees a daytime-sleep rise after a dose increase and routes provider_task for a same-day pharmacist review, but the eGFR value is the decisive fact and at 58 this is a planned review.",
    "decisive_feature": "Visit eGFR 58 with gabapentin raised to 900 mg a day on Day -8 and daytime sleep rising to 3.1-3.4 h: sedation needing a routine dose review, not a same-day safety call (pair member differs only by eGFR 22).",
    "src": "holdout_v1",
    "grade": {
@@ -5150,9 +5150,9 @@
     "longest_gap_h": 1
    },
    "router_input": "Man, age band 70-74, Fitzpatrick V-VI, lives with spouse. PMH: diabetic peripheral neuropathy, type 2 diabetes, hypertension. Function: walks indoors and to the corner shop with a stick. Meds: metformin 500 mg BID (since Day -400); gabapentin 300 mg three times daily (since Day -8). Recent change: gabapentin dose increased Day -8 from 100 mg three times daily to 300 mg three times daily. Devices: watch, scale. Baseline 30 days: resting HR 66, HRV 38 ms, sleep 7.1 h, steps 4200/day, night SpO2 minimum 94%, skin temp deviation 0.0 C, weight 83.0 kg. Baseline status: established, monitoring day 160, no condition change. Trend: Day -8 to -6 nightly sleep 6.8-7.0 h, daytime sleep 0.3-0.5 h/day. Day -5 to -2 daytime sleep 1.2-2.8 h/day, steps 2600-3100. Day -1 to 0 daytime sleep 3.1-3.4 h, night sleep 7.8-8.2 h, steps 2100-2400, night respiratory rate 14-15/min (baseline 16-17), night SpO2 minimum 92-93%. Resting HR 64-68. Weight 83.2-83.4 kg. Watch worn 22-23 h/day, no gaps over 1 h. Visit: Day -2 eGFR 22 mL/min/1.73m2. Wife says he dozes in the chair after lunch and is slower finishing sentences; he says he feels fine. Wear 92% over 7 days, longest gap 1 h, no device-state flags.",
-   "expected_route": "wake_specialist",
+   "expected_route": "provider_task",
    "acceptable_alternates": [
-    "escalate_human"
+    "urgent_page"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -5176,7 +5176,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "wake_specialist",
+    "grader_route": "provider_task",
     "grader_confidence": 0.92,
     "batch_id": [
      "HO9+HO10"
@@ -5261,7 +5261,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Woman, age band 70-74, Fitzpatrick V-VI, lives with adult child. PMH: right hip replacement Day -24; hypertension; type 2 diabetes, diet-controlled. Function: walks indoors with a frame, outdoors with a stick. Discharge: Day -24, elective right hip replacement. Meds: aspirin 75 mg daily (since Day -24); amlodipine 5 mg daily (since Day -500). Recent change: aspirin started Day -24 at 75 mg daily. Devices: watch. Baseline 30 days: resting HR 72, HRV 34 ms, sleep 7.2 h, steps 2400/day, night SpO2 minimum 94%, skin temp deviation 0.0 C. Baseline status: relearning, monitoring day 24, learning days total 10, last condition change hospitalization Day -24. Trend: Day -6 to -1 night SpO2 minimum 93-95%, daytime resting SpO2 94-96%, resting HR 70-74, RR 15-17/min, steps 2100-2600. Day 0 resting HR 108-112 from 13:00; steps 800 by 14:00 (usual 2400). Resting wrist SpO2 87% at 13:40, 87% at 13:55, 86% at 14:10; good waveform, no motion or poor-contact flag; RR 22-24/min. Watch worn 23 h/day, no gaps over 1 h. Visit: Day 0 15:20 nurse home visit, fingertip SpO2 86% at rest after five minutes seated, good waveform; right calf swollen and tender compared with left; oral temperature 37.6 C; patient says she became breathless walking to the bathroom. Wear 93% over 7 days, longest gap 1 h, no device-state flags.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_SPO2_LT88",
@@ -5284,7 +5284,7 @@
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.99,
     "batch_id": [
      "HO9+HO10"
@@ -5371,7 +5371,7 @@
    "category": [
     "recovery"
    ],
-   "rationale": "Heat exposure on Day -3 produced a real physiological response: skin temperature up 1.6 C, resting HR 96-100 and seated SBP falling to 112, and all three have returned to baseline by Day 0 (HR 62-66, deviation 0.0 C, SBP 126/78). The spouse confirms normal fluid intake, no dizziness and a return to work, so the episode is resolved and no action beyond routine logging is needed. Naive-model trap: a shallow model sees a recent skin-temperature spike and a Day -3 heart-rate peak and routes wake_specialist for a same-day heat-illness review, but the trajectory is already closed on the device record and the route should be silent_log.",
+   "rationale": "Heat exposure on Day -3 produced a real physiological response: skin temperature up 1.6 C, resting HR 96-100 and seated SBP falling to 112, and all three have returned to baseline by Day 0 (HR 62-66, deviation 0.0 C, SBP 126/78). The spouse confirms normal fluid intake, no dizziness and a return to work, so the episode is resolved and no action beyond routine logging is needed. Naive-model trap: a shallow model sees a recent skin-temperature spike and a Day -3 heart-rate peak and routes provider_task for a same-day heat-illness review, but the trajectory is already closed on the device record and the route should be silent_log.",
    "decisive_feature": "Resting HR 96-100 and ring +1.6 C on Day -3 after heat exposure are back to 62-66 bpm and 0.0 C by Day 0, with normal intake reported, so the episode has resolved.",
    "src": "holdout_v1",
    "grade": {
@@ -5451,7 +5451,7 @@
     "longest_gap_h": 0.5
    },
    "router_input": "Female, age band 75-79, Fitzpatrick V-VI, lives with spouse. Type 2 diabetes; CKD 3b; hypertension. Walks indoors with walker, independent ADLs. Meds: gliclazide 60 mg daily (started Day -400); metformin 500 mg BID (started Day -900). No recent medication changes. Devices: cgm, glucometer, watch. Baseline 30 days: rest HR 72, HRV 30 ms, sleep 7.0 h, steps 2100, night SpO2 minimum 94%, skin temperature deviation 0.0 C, CGM mean 131 mg/dL. Baseline status: established, monitoring day 118. Trend: CGM daily mean 126-134 mg/dL Day -6 to -1. Overnight rapid drop-and-rebound troughs on Day -4 (53 mg/dL), Day -2 (53 mg/dL) and Day 0 (52 mg/dL at 02:30, rebounding to 73 by 02:55), each near 02:20-03:00 after a phone Bluetooth reconnect; no glucometer check in those windows. Watch resting HR 70-74 Day -6 to 0. Watch worn 93% over 7 days. Data quality: phone Bluetooth reconnect Day -4, Day -2, Day 0 02:20-03:00; longest gap 0.5 h; 0 missing hours in last 48. Spouse woke at 02:40 Day 0 and found her confused and slow to answer, unable to say the day.",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_VS_DANGER",
@@ -5466,12 +5466,12 @@
    "category": [
     "hypoglycemia"
    ],
-   "rationale": "The same overnight CGM trough of 52 mg/dL with the same reconnect rebound is on record, but this time the spouse woke at 02:40 and found her confused and slow to answer. Confusion is a symptom, and symptoms are checked before any fingerstick, so a symptomatic low is ABSOLUTE even though the CGM value is flagged. Check 1 fails for the CGM value on its own, but the symptom overrides it; check 2 gives no own-baseline suppression; check 3 finds no explanation; and check 4 passes because no comfort-only plan is documented. Naive-model trap: a shallow model that copies the flag from its twin would wake_specialist and wait for a recheck, which misses a confused patient on a sulfonylurea.",
+   "rationale": "The same overnight CGM trough of 52 mg/dL with the same reconnect rebound is on record, but this time the spouse woke at 02:40 and found her confused and slow to answer. Confusion is a symptom, and symptoms are checked before any fingerstick, so a symptomatic low is ABSOLUTE even though the CGM value is flagged. Check 1 fails for the CGM value on its own, but the symptom overrides it; check 2 gives no own-baseline suppression; check 3 finds no explanation; and check 4 passes because no comfort-only plan is documented. Naive-model trap: a shallow model that copies the flag from its twin would provider_task and wait for a recheck, which misses a confused patient on a sulfonylurea.",
    "decisive_feature": "Pair HO10-P02 difference: spouse finds her confused at 02:40 on Day 0, which makes the same CGM trough a symptomatic low (ABSOLUTE) and not a device artifact.",
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.98,
     "batch_id": [
      "HO9+HO10"
@@ -5572,7 +5572,7 @@
     "missing_data",
     "goals_of_care"
    ],
-   "rationale": "A 54-hour watch and CGM blackout from Day -2 10:00 to Day 0 16:00 in a patient on basal insulin is a high-risk gap, so HT_GAP48_HIGHRISK fires. Check 1 and check 2 are not applicable to a gap, check 3 passes because no logged contact explains the outage, and check 4 fails because the documented hospice plan is comfort-only, so the tier is SUPPRESSED goals_of_care. The route is a same-shift hospice nurse contact to check on the patient and review insulin, not hospital-directed escalation and not silent_log. Naive-model trap: a shallow model that sees 54 hours without data on insulin would escalate_human toward hospital care, which the documented comfort plan rules out.",
+   "rationale": "A 54-hour watch and CGM blackout from Day -2 10:00 to Day 0 16:00 in a patient on basal insulin is a high-risk gap, so HT_GAP48_HIGHRISK fires. Check 1 and check 2 are not applicable to a gap, check 3 passes because no logged contact explains the outage, and check 4 fails because the documented hospice plan is comfort-only, so the tier is SUPPRESSED goals_of_care. The route is a same-shift hospice nurse contact to check on the patient and review insulin, not hospital-directed escalation and not silent_log. Naive-model trap: a shallow model that sees 54 hours without data on insulin would urgent_page toward hospital care, which the documented comfort plan rules out.",
    "decisive_feature": "Hospice comfort plan (goals_of_care) turns a 54-hour no-contact gap on basal insulin from hospital-directed escalation into a same-shift hospice nurse contact.",
    "src": "holdout_v1",
    "grade": {
@@ -5666,7 +5666,7 @@
    "category": [
     "noise"
    ],
-   "rationale": "The watch heart rate holds at exactly 72 bpm for 96 seconds during a motion-flagged walk while the ring reads 88-91 bpm over the same window, which is a flatline of 60 seconds or more with motion and meets HT_VS_IMPLAUSIBLE. Check 1 fails because the watch sample is motion-flagged, so the value is unreliable and the layer is an automatic recheck, not a page. Steps keep counting, the ring is concordant, and the rest of the 7-day trend is at baseline. A 10-minute device recheck is the correct step and silent_log is the route. Naive-model trap: a shallow model that sees a watch heart-rate reading during exercise would escalate_human, but a motion-flagged flatline is a hard-limit artifact, not a deterioration.",
+   "rationale": "The watch heart rate holds at exactly 72 bpm for 96 seconds during a motion-flagged walk while the ring reads 88-91 bpm over the same window, which is a flatline of 60 seconds or more with motion and meets HT_VS_IMPLAUSIBLE. Check 1 fails because the watch sample is motion-flagged, so the value is unreliable and the layer is an automatic recheck, not a page. Steps keep counting, the ring is concordant, and the rest of the 7-day trend is at baseline. A 10-minute device recheck is the correct step and silent_log is the route. Naive-model trap: a shallow model that sees a watch heart-rate reading during exercise would urgent_page, but a motion-flagged flatline is a hard-limit artifact, not a deterioration.",
    "decisive_feature": "Watch HR exactly flat at 72 bpm for 96 s under a motion flag while the ring shows 88-91 bpm: an implausible flatline with motion, not a deterioration.",
    "src": "holdout_v1",
    "grade": {
@@ -5743,9 +5743,9 @@
     "longest_gap_h": 2
    },
    "router_input": "Female, age band 75-79, Fitzpatrick V-VI, lives with adult child. Fibrotic interstitial lung disease; GERD; hypertension. Walks indoors independently, stairs with handrail. Meds: nintedanib 150 mg BID (started Day -420); lisinopril 10 mg daily (started Day -800). No recent medication changes. Devices: watch, scale. No fingertip device listed. Baseline 30 days: rest HR 68, HRV 42 ms, sleep 6.9 h, steps 2900, night SpO2 minimum 93%, skin temperature deviation 0.0 C, weight 61.0 kg. Baseline status: established, monitoring day 140. Trend: watch resting wrist SpO2 Day -19 95%, Day -12 94%, Day -6 93%, Day -2 92%, Day 0 92% at rest with overnight minimum 91%. Watch resting RR 14/min Day -19 rising to 18/min Day 0. Watch resting HR 68 Day -19 rising to 75 Day 0. Steps 3100 Day -19 falling to 1500 Day 0. Scale weight 61.0 kg Day -19 and 61.1 kg Day 0. Watch worn 93% over 7 days. Data quality: longest gap 2 h; 0 missing hours in last 48. Adult child: 'the stairs now need a rest at the landing; she is quieter about it than before.'",
-   "expected_route": "wake_specialist",
+   "expected_route": "provider_task",
    "acceptable_alternates": [
-    "escalate_human"
+    "urgent_page"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -5761,12 +5761,12 @@
     "respiratory",
     "spo2_bias"
    ],
-   "rationale": "Resting wrist SpO2 has fallen steadily from 95% to 92% over 19 days while resting RR rose from 14 to 18/min, resting HR rose from 68 to 75 and steps fell from 3100 to 1500, a monotonic drift that meets the SpO2 minus-3 drift guard. The patient has Fitzpatrick V-VI skin, no fingertip device is listed, and the wrist reads 91-94%, so the value may underestimate hypoxaemia. The drift is not a new normal, so it is labelled subtle_deterioration and routed to a same-day wake_specialist review with a clinician fingertip check, rather than silent_log. Naive-model trap: a shallow model that reads 92% as a normal number would silent_log, which misses a slow decline in fibrotic lung disease.",
+   "rationale": "Resting wrist SpO2 has fallen steadily from 95% to 92% over 19 days while resting RR rose from 14 to 18/min, resting HR rose from 68 to 75 and steps fell from 3100 to 1500, a monotonic drift that meets the SpO2 minus-3 drift guard. The patient has Fitzpatrick V-VI skin, no fingertip device is listed, and the wrist reads 91-94%, so the value may underestimate hypoxaemia. The drift is not a new normal, so it is labelled subtle_deterioration and routed to a same-day provider_task review with a clinician fingertip check, rather than silent_log. Naive-model trap: a shallow model that reads 92% as a normal number would silent_log, which misses a slow decline in fibrotic lung disease.",
    "decisive_feature": "Nineteen-day slide in resting wrist SpO2 from 95% to 92% in Fitzpatrick V-VI skin, with no fingertip device and rising RR, not yet absorbed into baseline.",
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "wake_specialist",
+    "grader_route": "provider_task",
     "grader_confidence": 0.95,
     "batch_id": [
      "HO9+HO10"
@@ -5851,7 +5851,7 @@
    "category": [
     "noise"
    ],
-   "rationale": "Watch steps fell from about 2700 to 1650-1900 from Day -1, after the companion app update on Day -2, but ring steps stayed at 2700-2900 on the same days, and resting HR and sleep are unchanged. The fall is a counting-threshold change in one device, not a change in walking, so there is no physiological event and no trigger. Nothing requires action beyond the app-side fix. Naive-model trap: a shallow model that sees a one-third step drop in a patient in the 80-84 band who lives alone would nurse_task for decline or wake_specialist for an activity change, when the concordant ring shows the walking is unchanged.",
+   "rationale": "Watch steps fell from about 2700 to 1650-1900 from Day -1, after the companion app update on Day -2, but ring steps stayed at 2700-2900 on the same days, and resting HR and sleep are unchanged. The fall is a counting-threshold change in one device, not a change in walking, so there is no physiological event and no trigger. Nothing requires action beyond the app-side fix. Naive-model trap: a shallow model that sees a one-third step drop in a patient in the 80-84 band who lives alone would nurse_task for decline or provider_task for an activity change, when the concordant ring shows the walking is unchanged.",
    "decisive_feature": "Watch-only step fall after a companion app update on Day -2 while ring steps stay at 2700-2900: a counting change, not less walking.",
    "src": "holdout_v1",
    "grade": {
@@ -5946,7 +5946,7 @@
    "category": [
     "noise"
    ],
-   "rationale": "Watch wear has fallen from 96% to 78% over six days, with 2-4 hour afternoon off-wrist windows and a red, itchy rash under the strap reported by the spouse, while resting HR, sleep, steps and cuff readings all stay at baseline. There is no physiological change and no trigger, so the device gap is a skin and supply problem rather than a deterioration. A nurse should check the skin, change or replace the strap and reinforce wear advice within 24-72 hours. Naive-model trap: a shallow model that sees only a falling wear percentage would wake_specialist for a device fault, when the cause is visible and fixable by a nurse.",
+   "rationale": "Watch wear has fallen from 96% to 78% over six days, with 2-4 hour afternoon off-wrist windows and a red, itchy rash under the strap reported by the spouse, while resting HR, sleep, steps and cuff readings all stay at baseline. There is no physiological change and no trigger, so the device gap is a skin and supply problem rather than a deterioration. A nurse should check the skin, change or replace the strap and reinforce wear advice within 24-72 hours. Naive-model trap: a shallow model that sees only a falling wear percentage would provider_task for a device fault, when the cause is visible and fixable by a nurse.",
    "decisive_feature": "Strap rash causing afternoon off-wrist gaps (wear 96% to 78%) with every vital stream at baseline: a skin and supply fix for a nurse, not a device-fault review.",
    "src": "holdout_v1",
    "grade": {
@@ -6036,7 +6036,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Female, age band 70-74, Fitzpatrick I-IV, lives in assisted living. Hypertension; left knee replacement. Walks with frame, transfers with help. Discharge Day -10: left knee replacement. Meds: amlodipine 5 mg daily (started Day -400); aspirin 81 mg daily (started Day -10). Recent change: aspirin started Day -10 at 81 mg daily. Devices: watch, bp_cuff. Baseline 30 days: rest HR 72, HRV 35 ms, sleep 7.0 h, steps 1800, night SpO2 minimum 95%, skin temperature deviation 0.0 C, SBP 128, DBP 78. Baseline status: relearning, monitoring day 10, 4 learning days, condition change hospitalization Day -10. Trend: Day -9 to -3 steps 900-1400 with frame; resting HR 74-78. Day -2 to -1 steps 600-800. Day 0 09:20, seated after walking to the chair: watch HR 132 bpm, RR 31/min, wrist SpO2 91%; cuff 118/76 at 09:25. Watch worn 92% over 7 days. Data quality: longest gap 1 h; 0 missing hours in last 48. Adult child: 'she says it hurts when she breathes in, her heart was pounding and she went grey.'",
-   "expected_route": "escalate_human",
+   "expected_route": "urgent_page",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
@@ -6060,12 +6060,12 @@
    "category": [
     "respiratory"
    ],
-   "rationale": "Pleuritic chest pain on Day 0 with watch HR 132 bpm and RR 31/min at rest, plus pallor and breathlessness, gives two band-A vitals (HR at or above 130 and RR at or above 30) for HT_CHEST_PAIN_VITALS. Red-flag modifiers can add to the band but cannot lower band A, so the tier is ABSOLUTE with no confirm step. Check 1 passes (watch with no flag), check 2 passes (HR far above the 72 bpm baseline), check 3 gives no explanation, and check 4 finds no comfort-only plan. Naive-model trap: a shallow model that sees a post-operative patient with a pleuritic ache would nurse_task or wake_specialist for musculoskeletal pain, but the vital signs decide the route.",
+   "rationale": "Pleuritic chest pain on Day 0 with watch HR 132 bpm and RR 31/min at rest, plus pallor and breathlessness, gives two band-A vitals (HR at or above 130 and RR at or above 30) for HT_CHEST_PAIN_VITALS. Red-flag modifiers can add to the band but cannot lower band A, so the tier is ABSOLUTE with no confirm step. Check 1 passes (watch with no flag), check 2 passes (HR far above the 72 bpm baseline), check 3 gives no explanation, and check 4 finds no comfort-only plan. Naive-model trap: a shallow model that sees a post-operative patient with a pleuritic ache would nurse_task or provider_task for musculoskeletal pain, but the vital signs decide the route.",
    "decisive_feature": "Pleuritic chest pain with seated watch HR 132 and RR 31/min on Day 0: two band-A vitals that make the chest-pain vitals rule ABSOLUTE despite the recent knee surgery.",
    "src": "holdout_v1",
    "grade": {
     "score": 5,
-    "grader_route": "escalate_human",
+    "grader_route": "urgent_page",
     "grader_confidence": 0.99,
     "batch_id": [
      "HO9+HO10"

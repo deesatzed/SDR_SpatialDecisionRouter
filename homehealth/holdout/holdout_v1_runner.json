@@ -5,7 +5,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "stroke",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_FOCAL_NEURO",
@@ -42,7 +42,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "sepsis",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_VS_DANGER",
@@ -79,7 +79,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "acs",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
@@ -116,7 +116,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "fall",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_FALL_ANTICOAG",
@@ -266,7 +266,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "infection",
-  "expected": "wake_specialist",
+  "expected": "provider_task",
   "acceptable": [
    "nurse_task"
   ],
@@ -305,7 +305,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "infection",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -416,7 +416,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "hypoglycemia",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_VS_DANGER",
@@ -453,7 +453,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "respiratory",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_SPO2_LT88",
@@ -532,7 +532,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "fall",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_FALL_ANTICOAG",
@@ -606,7 +606,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "noise",
-  "expected": "wake_specialist",
+  "expected": "provider_task",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_VS_DANGER",
@@ -646,7 +646,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "hypoglycemia",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_VS_DANGER",
@@ -683,7 +683,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "arrhythmia",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_VS_DANGER",
@@ -725,7 +725,7 @@
   "kind": "noise",
   "expected": "nurse_task",
   "acceptable": [
-   "wake_specialist"
+   "provider_task"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -764,7 +764,7 @@
   "kind": "hyperglycemia",
   "expected": "nurse_task",
   "acceptable": [
-   "wake_specialist"
+   "provider_task"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -882,7 +882,7 @@
   "kind": "missing_data",
   "expected": "nurse_task",
   "acceptable": [
-   "wake_specialist"
+   "provider_task"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -919,7 +919,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "fall",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_FALL_ANTICOAG",
@@ -993,9 +993,9 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "respiratory",
-  "expected": "wake_specialist",
+  "expected": "provider_task",
   "acceptable": [
-   "escalate_human"
+   "urgent_page"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1032,9 +1032,9 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "sepsis",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [
-   "wake_specialist"
+   "provider_task"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1151,7 +1151,7 @@
   "kind": "respiratory",
   "expected": "nurse_task",
   "acceptable": [
-   "wake_specialist"
+   "provider_task"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1188,7 +1188,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "respiratory",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_SPO2_LT88",
@@ -1225,9 +1225,9 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "hf",
-  "expected": "wake_specialist",
+  "expected": "provider_task",
   "acceptable": [
-   "escalate_human"
+   "urgent_page"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1264,9 +1264,9 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "respiratory",
-  "expected": "wake_specialist",
+  "expected": "provider_task",
   "acceptable": [
-   "escalate_human"
+   "urgent_page"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1342,7 +1342,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "arrhythmia",
-  "expected": "wake_specialist",
+  "expected": "provider_task",
   "acceptable": [
    "nurse_task"
   ],
@@ -1381,7 +1381,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "syncope",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_SYNCOPE",
@@ -1420,7 +1420,7 @@
   "kind": "noise",
   "expected": "nurse_task",
   "acceptable": [
-   "wake_specialist"
+   "provider_task"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1457,9 +1457,9 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "electrolyte",
-  "expected": "wake_specialist",
+  "expected": "provider_task",
   "acceptable": [
-   "escalate_human"
+   "urgent_page"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1496,9 +1496,9 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "electrolyte",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [
-   "wake_specialist"
+   "provider_task"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1648,7 +1648,7 @@
   "kind": "hypoglycemia",
   "expected": "nurse_task",
   "acceptable": [
-   "wake_specialist"
+   "provider_task"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1687,7 +1687,7 @@
   "kind": "noise",
   "expected": "nurse_task",
   "acceptable": [
-   "wake_specialist"
+   "provider_task"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1724,9 +1724,9 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "electrolyte",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [
-   "wake_specialist"
+   "provider_task"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1763,7 +1763,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "syncope",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_SYNCOPE",
@@ -1841,7 +1841,7 @@
   "kind": "noise",
   "expected": "nurse_task",
   "acceptable": [
-   "wake_specialist"
+   "provider_task"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1880,7 +1880,7 @@
   "kind": "renal",
   "expected": "nurse_task",
   "acceptable": [
-   "wake_specialist"
+   "provider_task"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1917,9 +1917,9 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "renal",
-  "expected": "wake_specialist",
+  "expected": "provider_task",
   "acceptable": [
-   "escalate_human"
+   "urgent_page"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -1956,7 +1956,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "respiratory",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_SPO2_LT88",
@@ -2035,7 +2035,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "hypoglycemia",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_VS_DANGER",
@@ -2149,9 +2149,9 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "respiratory",
-  "expected": "wake_specialist",
+  "expected": "provider_task",
   "acceptable": [
-   "escalate_human"
+   "urgent_page"
   ],
   "hard_trigger": false,
   "hard_trigger_rule": null,
@@ -2266,7 +2266,7 @@
   "llm": "holdout_v1",
   "prompt": "v2.3",
   "kind": "respiratory",
-  "expected": "escalate_human",
+  "expected": "urgent_page",
   "acceptable": [],
   "hard_trigger": true,
   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",

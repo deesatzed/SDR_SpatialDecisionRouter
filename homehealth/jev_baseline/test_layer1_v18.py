@@ -7,11 +7,11 @@ LABEL_FIELDS = ("expected_route", "acceptable_alternates", "hard_trigger", "hard
                 "suppression_reason", "baseline_layer", "escalation_target", "route_basis", "rationale", "decisive_feature", "category", "difficulty",
                 "subtle_deterioration", "chest_pain_eval", "router_input", "clinician_override", "secondary_triggers")
 def test_router_rules():
-    assert L.route({"tier": "ABSOLUTE"}, "silent_log") == ("escalate_human", "layer1")
-    assert L.route({"tier": "CONFIRM_FIRST"}, "nurse_task") == ("escalate_human", "layer1_confirm")
-    assert L.route({"tier": "SUPPRESSED", "reason": "goals_of_care"}, "escalate_human") == ("nurse_task", "layer1_goals")
-    assert L.route({"tier": "SUPPRESSED", "reason": "explained"}, "escalate_human") == ("wake_specialist", "jev_capped")
-    assert L.route({"tier": "SUPPRESSED", "reason": "explained", "acute_presentation": True}, "escalate_human") == ("escalate_human", "jev_capped")
+    assert L.route({"tier": "ABSOLUTE"}, "silent_log") == ("urgent_page", "layer1")
+    assert L.route({"tier": "CONFIRM_FIRST"}, "nurse_task") == ("urgent_page", "layer1_confirm")
+    assert L.route({"tier": "SUPPRESSED", "reason": "goals_of_care"}, "urgent_page") == ("nurse_task", "layer1_goals")
+    assert L.route({"tier": "SUPPRESSED", "reason": "explained"}, "urgent_page") == ("provider_task", "jev_capped")
+    assert L.route({"tier": "SUPPRESSED", "reason": "explained", "acute_presentation": True}, "urgent_page") == ("urgent_page", "jev_capped")
     assert L.route({"tier": "SUPPRESSED", "reason": "below_band_threshold"}, "silent_log") == ("nurse_task", "jev_capped")
     assert L.route({"tier": None}, "silent_log") == ("silent_log", "jev")
 def _lib():

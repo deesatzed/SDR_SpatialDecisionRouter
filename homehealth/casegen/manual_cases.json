@@ -68,9 +68,9 @@
     "longest_gap_h": 1
    },
    "router_input": "Age 70-74 man, Fitzpatrick V-VI, lives with spouse; ischaemic heart disease with LAD drug-eluting stent 2 years ago, hypertension, hyperlipidaemia. Meds: aspirin 75 mg daily, clopidogrel 75 mg daily, atorvastatin 80 mg nightly, bisoprolol 5 mg daily, ramipril 5 mg daily; no recent med changes. Devices: watch, BP cuff. 30-day baseline: rest HR 62 bpm, HRV 38 ms, sleep 7.1 h, steps 4200, night SpO2 minimum 93%, cuff 128/76. Last 7 days: steps 4000-4300 and rest HR 60-64 on Day -7 to -5; Day -6 chest tightness walking uphill, eased within 5 min of rest; Day -3 one episode walking uphill, eased with rest; Day -1 steps 3400, rest HR 66; Day 0 09:30 chest tightness walking uphill to the shop, watch HR 66 bpm at onset, peak 74 bpm, eased after 8 min rest; cuff 134/80 at 10:05; steps 3100 by 14:00. Day 0 11:00 phone check: tightness unchanged for the past year, two or three episodes a week on hills only, no more often, still doing the hill walk, spouse reports no resting episodes, no ECG strip taken. Wear 96%, 1 h missing in 48 h, longest gap 1 h.",
-   "expected_route": "wake_specialist",
+   "expected_route": "provider_task",
    "acceptable_alternates": [
-    "escalate_human"
+    "urgent_page"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,

@@ -11,6 +11,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 for p in (os.path.join(HERE, "..", "trigger_engine"), "/workspace/jevfly_smoke/casegen/trigger_engine"):
     if os.path.exists(os.path.join(p, "trigger_eval.py")): sys.path.insert(0, p); break
 import trigger_eval as T
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import routes as RT  # noqa: E402  (SMART_TRIGGERS v1.9 route ids; legacy ids accepted on read)
 DAY = T.DAY
 FACT_FIELDS = ("age_band", "sex", "living", "pmh", "meds", "recent_med_changes", "devices", "discharge", "patient_goals", "function_baseline",
                "baseline_30d", "baseline_status", "trend_last_7d", "caregiver_or_nurse_note", "data_quality", "skin_tone_note")
@@ -154,13 +156,13 @@ def evaluate_case(case):
     # ---- 2. syncope
     if find(r"\bfaint(?:ed|ing)?\b|passed out|lost consciousness|loss of consciousness|went limp|\blimp\b|blacked out|unresponsive|\bsyncop\w*", now) and \
        not find(r"near[- ]?faint|nearly faint|presyncop\w*|feel\w* faint|felt faint|faint when (?:she|he) stands", now, neg=False):
-        cands.append(T.apply_goals_of_care(_dec("HT_SYNCOPE", "ABSOLUTE", "syncope", route="escalate_human"), P, ectx, None))
+        cands.append(T.apply_goals_of_care(_dec("HT_SYNCOPE", "ABSOLUTE", "syncope", route="urgent_page"), P, ectx, None))
     # ---- 3. focal neuro
     fn = find(r"slurred|facial droop|face (?:is )?droop\w*|droop\w* (?:on the )?(?:left|right)|(?:arm|leg|hand|side) (?:has )?(?:just )?(?:gone|went|is|became) (?:weak|numb)|weak(?:ness)? (?:in|of) (?:the |his |her )?(?:left|right)|(?:left|right) (?:arm|leg|side|foot) (?:weak\w*|gave way|numb)|cannot find (?:the )?words|can't find words|word[- ]finding|could not lift the (?:left|right)|garbled|aphasi\w*|not following (?:two-step )?instructions|cannot follow", now)
     if fn:
         base_def = find(r"unchanged (?:from|since)|residual|same (?:weakness|deficit) (?:as|since)|long-?standing|documented (?:at|in) (?:a )?(?:prior|earlier|clinic)", note) and re.search(r"stroke|deficit|palsy", ctx["pmh"], re.I)
         if base_def: cands.append(_dec("HT_FOCAL_NEURO", "SUPPRESSED", "at_patient_baseline", route=None))
-        else: cands.append(T.apply_goals_of_care(_dec("HT_FOCAL_NEURO", "ABSOLUTE", "new_focal_deficit", route="escalate_human"), P, ectx, None))
+        else: cands.append(T.apply_goals_of_care(_dec("HT_FOCAL_NEURO", "ABSOLUTE", "new_focal_deficit", route="urgent_page"), P, ectx, None))
     # ---- 4. chest pain (banded, engine evaluate_chest_pain)
     CP = r"chest (?:pain|pressure|tightness|discomfort|heaviness|ache)|(?:pressure|tightness|pain|discomfort|heaviness|squeez\w*) in the (?:centre|center|middle) of (?:the|his|her) chest|middle of (?:his|her) chest|tight\w* (?:was )?across (?:his|her|the) chest|tight(?:ness)? in (?:the|his|her) chest|central chest|\bsqueeze\b|angina\w* (?:episode|attack)"
     prior_ep = {int(m.group(1)) for m in re.finditer(r"Day (-\d+)[^.;]{0,60}?(?:episodes? (?:of )?(?:chest|tight)|chest (?:tight|pain|pressure|discomfort)|\bepisodes?\b)", pre, re.I)} if re.search(CP, pre + " " + now, re.I) else set()
@@ -220,7 +222,7 @@ def evaluate_case(case):
         elif not confirmed and find(r"off[- ]wrist|on (?:the )?(?:bedside )?charger|charging|not on (?:the|her|his) wrist", day0):
             cands.append(_dec("HT_FALL_ANTICOAG", "SUPPRESSED", "unreliable_reading", route=None))
         else:
-            d = _dec("HT_FALL_ANTICOAG", "CONFIRM_FIRST", "fall_on_anticoagulant", route="escalate_human", confirm_step="already_confirmed" if confirmed else "watch_prompt", page=True if confirmed else "if_confirmed_or_timeout")
+            d = _dec("HT_FALL_ANTICOAG", "CONFIRM_FIRST", "fall_on_anticoagulant", route="urgent_page", confirm_step="already_confirmed" if confirmed else "watch_prompt", page=True if confirmed else "if_confirmed_or_timeout")
             if not confirmed and find(r"did not answer|didn't answer|no answer|not answered|unanswered|did not respond|no response", now, neg=False):
                 d = T.resolve_confirm(d, "no_answer", P, ectx)
             cands.append(T.apply_goals_of_care(d, P, ectx, None))
@@ -242,7 +244,7 @@ def evaluate_case(case):
                 cands.append(_dec("HT_SPO2_LT88", "SUPPRESSED", "at_patient_baseline", route=None, own_low=own))
             else:
                 conf = any(t[0] < thr for t in tips) and len(rel) >= 1 and any(r[6] == "fingertip" for r in rel)
-                d = _dec("HT_SPO2_LT88", "CONFIRM_FIRST", "below_88_change_from_own_baseline", route="escalate_human", confirm_step="already_confirmed" if conf else "fingertip_recheck", page=True if conf else "if_confirmed_or_timeout", own_low=own)
+                d = _dec("HT_SPO2_LT88", "CONFIRM_FIRST", "below_88_change_from_own_baseline", route="urgent_page", confirm_step="already_confirmed" if conf else "fingertip_recheck", page=True if conf else "if_confirmed_or_timeout", own_low=own)
                 basis = T.urgent_comfort_basis({"vital": "spo2", "value": min(r[0] for r in rel)}, None, P, {**ectx, "breathlessness": breath, "trigger_family": "respiratory"})
                 cands.append(T.apply_goals_of_care(d, P, ectx, basis))
     # ---- 7. 48 h data gap in a high-risk patient
@@ -260,7 +262,7 @@ def evaluate_case(case):
             contact = x; break
         dock = find(r"charger log|dock(?:ed)? log|on (?:the )?(?:charger|dock)\b[^.;]*(?:log|whole|entire|throughout)", flags + " " + trend + " " + note)
         if contact or dock: cands.append(_dec("HT_GAP48_HIGHRISK", "SUPPRESSED", "explained", route=None, explained_by=(contact or "dock/charger log")[:120]))
-        else: cands.append(T.apply_goals_of_care(_dec("HT_GAP48_HIGHRISK", "CONFIRM_FIRST", "unexplained_gap_high_risk", route="escalate_human", confirm_step="caregiver_ping", page="if_confirmed_or_timeout", high_risk=ctx["high_risk"]), P, ectx, None))
+        else: cands.append(T.apply_goals_of_care(_dec("HT_GAP48_HIGHRISK", "CONFIRM_FIRST", "unexplained_gap_high_risk", route="urgent_page", confirm_step="caregiver_ping", page="if_confirmed_or_timeout", high_risk=ctx["high_risk"]), P, ectx, None))
     # ---- acute presentation flag (the router lets Jev's clinical read stand on a suppressed trigger when this is set)
     rr0 = [r[0] for r in recs(c, "rr") if not r[2] and not r[8]]; hr0 = [r[0] for r in recs(c, "hr") if not r[2] and r[3] != "active" and not r[8]]
     acute = bool((rr0 and max(rr0) >= 24) or distress or (hr0 and base30.get("rest_hr") and max(hr0) >= base30["rest_hr"] + 20 and find(r"(?:breathless|short of breath)(?![^.;]{0,25}(?:after|walking|climbing|on) (?:the )?(?:stairs|walk|exertion|hill))(?<!after the stairs)", now)))
@@ -276,20 +278,21 @@ def _params():
 PARAMS = _params()
 
 # ---- Layer 1 + Jev router (Wayne 2026-10-18): Layer 1 owns triggers; Jev decides non-trigger cases and, within limits, suppressed ones
-CAP = {"silent_log": 0, "nurse_task": 1, "wake_specialist": 2, "escalate_human": 3}
+CAP = dict(RT.RANK)
 def route(l1, jev_pick):
     """Returns (route, owner). ABSOLUTE -> escalate (hospice-aware target in l1['escalation_target']); CONFIRM_FIRST -> confirm step,
-    paged on confirmation or timeout (offline: no confirm result, so escalate_human; a refuting result would hand back to Jev);
+    paged on confirmation or timeout (offline: no confirm result, so urgent_page; a refuting result would hand back to Jev);
     SUPPRESSED goals_of_care -> nurse_task (same-shift hospice nurse); other SUPPRESSED/ARTIFACT/below-band -> Jev, capped at
-    wake_specialist unless Layer 1 flags an acute presentation (below_band floor nurse_task); no trigger -> Jev."""
+    provider_task unless Layer 1 flags an acute presentation (below_band floor nurse_task); no trigger -> Jev."""
+    jev_pick = RT.canon(jev_pick)   # v1.9: a stored v1.8 pick (wake_specialist / escalate_human) is mapped on read
     t = l1.get("tier")
-    if t == "ABSOLUTE": return "escalate_human", "layer1"
-    if t == "CONFIRM_FIRST": return "escalate_human", "layer1_confirm"
+    if t == "ABSOLUTE": return "urgent_page", "layer1"
+    if t == "CONFIRM_FIRST": return "urgent_page", "layer1_confirm"
     if t == "SUPPRESSED" and l1.get("reason") == "goals_of_care": return "nurse_task", "layer1_goals"
     if t in ("SUPPRESSED", "ARTIFACT"):
-        if jev_pick is None: return ("nurse_task" if l1.get("reason") == "below_band_threshold" else "wake_specialist"), "layer1_default"
+        if jev_pick is None: return ("nurse_task" if l1.get("reason") == "below_band_threshold" else "provider_task"), "layer1_default"
         p = jev_pick
-        if p == "escalate_human" and not l1.get("acute_presentation"): p = "wake_specialist"
+        if p == "urgent_page" and not l1.get("acute_presentation"): p = "provider_task"
         if l1.get("reason") == "below_band_threshold" and CAP[p] < 1: p = "nurse_task"
         return p, "jev_capped"
     return jev_pick, "jev"

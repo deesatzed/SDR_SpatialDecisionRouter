@@ -1058,10 +1058,10 @@
  "hitm_queue_default": {
   "n": 51,
   "pairs_of_routes": {
-   "nurse_task vs wake_specialist": 24,
-   "wake_specialist vs escalate_human": 13,
+   "nurse_task vs provider_task": 24,
+   "provider_task vs urgent_page": 13,
    "silent_log vs nurse_task": 10,
-   "nurse_task vs escalate_human": 4
+   "nurse_task vs urgent_page": 4
   },
   "lead_correct": 40,
   "other_correct": 43,

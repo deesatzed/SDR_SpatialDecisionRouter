@@ -1,8 +1,10 @@
 """Score the Jev baseline (SYNTHETIC). Section 5 of PLAN.md. Inputs: runner JSON (labels), accepted library JSON (subtle, categories),
 Outcomes CSV (severity_if_wrong), results/parsed/*.jsonl. Outputs: results/summary.json, results/per_case.csv.
 Scored on the base variant; robustness uses the other three. Two systems: 'jev' (model alone) and 'l1_jev' (Layer 1 label tier
-ABSOLUTE forces escalate_human, else the model's pick)."""
-import csv, json, os, glob, collections
+ABSOLUTE forces urgent_page, else the model's pick)."""
+import csv, json, os, sys, glob, collections
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import routes as RT  # noqa: E402  (v1.9 ids + legacy alias)
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _BOX = "/workspace/jevfly_smoke/library_v2/smart_triggers"
 def find_input(env, name):
@@ -10,15 +12,15 @@ def find_input(env, name):
     for p in (os.environ.get(env), os.path.join(_HERE, "..", "library", name), os.path.join(_BOX, name)):
         if p and os.path.exists(p): return p
     raise SystemExit(f"{name} not found: set {env} (the runner JSON is written by casegen/convert_casegen.py via build_outputs.py)")
-ROUTES = ["silent_log", "nurse_task", "wake_specialist", "escalate_human"]; RANK = {r: i for i, r in enumerate(ROUTES)}
-ALIAS = {"nurse_task_with_recheck": "nurse_task"}
+ROUTES = RT.ROUTES; RANK = RT.RANK
+ALIAS = {"nurse_task_with_recheck": "nurse_task", **RT.LEGACY_ALIAS}   # v1.9: legacy route ids accepted on read
 SEV_W = {"critical": 3, "major": 2, "minor": 1}
-ESC = "escalate_human"
+ESC = "urgent_page"
 def norm(r): return ALIAS.get(r, r)
 def ok_set(case): return {norm(case["expected"])} | {norm(a) for a in case.get("acceptable") or []}
 def correct(pick, case): return pick is not None and norm(pick) in ok_set(case)
 def critical_miss(pick, case):
-    """escalation needed (expected escalate_human) and the pick is lower and not an acceptable alternate"""
+    """escalation needed (expected urgent_page) and the pick is lower and not an acceptable alternate"""
     return pick is not None and norm(case["expected"]) == ESC and not correct(pick, case)
 def under_triage(pick, case): return pick is not None and not correct(pick, case) and RANK[norm(pick)] < RANK[norm(case["expected"])]
 def over_escalation(pick, case): return pick is not None and norm(pick) == ESC and ESC not in ok_set(case)
@@ -26,6 +28,7 @@ def l1_pick(pick, case): return ESC if case.get("trigger_tier") == "ABSOLUTE" el
 def tier_implies_escalate(case): return case.get("trigger_tier") in ("ABSOLUTE", "CONFIRM_FIRST")
 def brier_bin(p, y): return (p - y) ** 2
 def brier_multi(probs, expected):
+    probs = RT.canon_probs(probs)
     return sum((float(probs.get(r, 0) or 0) - (1.0 if r == norm(expected) else 0.0)) ** 2 for r in ROUTES)
 def rate(n, d): return round(n / d, 4) if d else None
 
@@ -95,7 +98,7 @@ def main(results_dir=os.path.join(_HERE, "results"), runner=None, accepted=None,
     overrides = [c["id"] for c in cases if c.get("clinician_override")]
     S = {"models": {}, "hospice_case_ids": hospice, "clinician_override_ids": overrides}; per = []
     for f in sorted(glob.glob(os.path.join(results_dir, "parsed", "*.jsonl"))):
-        rows = [json.loads(l) for l in open(f) if l.strip()]
+        rows = [RT.canon_row(json.loads(l)) for l in open(f) if l.strip()]
         if not rows: continue
         m = rows[0]["model"]; last = {}
         for r in rows: last[(r["case"], r["variant"])] = r   # latest row wins (resume)

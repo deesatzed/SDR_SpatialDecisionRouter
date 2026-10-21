@@ -19,7 +19,7 @@ class TriggerAdapterTests(unittest.TestCase):
         }, PARAMS)
         self.assertEqual(request.engine_tier, "ABSOLUTE")
         self.assertIn("hard_limit_danger", request.engine_reasons)
-        outcome, _ = derive_outcome(request, [ClinicianReference("SYN-END-001", "escalate_human", "supports", "clinician_ruling:SYN-END-001")], {"outcome": "agree_with_engine", "probability": 0.9})
+        outcome, _ = derive_outcome(request, [ClinicianReference("SYN-END-001", "urgent_page", "supports", "clinician_ruling:SYN-END-001")], {"outcome": "agree_with_engine", "probability": 0.9})
         self.assertEqual(outcome, ReviewOutcome.AGREE_WITH_ENGINE)
 
     def test_confirm_first_requires_the_engine_named_recheck(self):

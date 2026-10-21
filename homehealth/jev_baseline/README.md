@@ -18,3 +18,10 @@
 - **Scoring:** `python dual_jev.py` scores every rule from the stored picks and makes no API calls.
   - Set `JEV_PICKS_D1` and `JEV_PICKS_PPLX` to point at the parsed checkpoints.
   - Results are in `results_dual/`.
+
+## v1.9 route rename (Wayne 2026-10-21)
+
+- Routes: `silent_log` (silent), `nurse_task` (nurse task), `provider_task` (provider task: review by the clinician responsible for that condition or medication on the same business day, not a page), `urgent_page` (urgent page: page someone now; urgent hospice-comfort problems page the hospice nurse). Definitions: `routes.py`, SMART_TRIGGERS v1.9 section 0.
+- Backward compatible: `wake_specialist` -> `provider_task` and `escalate_human` -> `urgent_page` are mapped on read (`routes.canon`, `canon_row`), so stored v1.8 picks and old outputs still score. Re-scored from stored picks only (no API calls): accuracy, critical misses, false pages and HITM counts are identical to 9f5ca71.
+- `JEV_PROMPT=v1.9` (default) shows the new ids and the route definitions; `v1.8`/`v1.7` stay byte-identical for reproducibility.
+- Layer 1 hardening (open): HO8-025 shows hospice suppression wrongly applied to a symptomatic danger-level low; per GC2-003 it is ABSOLUTE, urgent hospice-nurse page (SMART_TRIGGERS section 10).
