@@ -17,3 +17,16 @@ Only pipeline change: grade_merge accepts v1.10 labels (HT_FALL_ANTICOAG ABSOLUT
   (weight without a scale device, router_input omissions, missing v2.3 fields, banned words), not clinical. HV9/HV10 = Haiku re-runs of the HV4/HV6 specs.
 - Scripts use box paths (/workspace/jevfly_smoke/..., /workspace/sdr_rename/homehealth); see top of each script.
 - Total spend: gen+grade $1.8846 + Jev $0.0143 = $1.8989 (cap $3).
+
+## Review + re-score (2026-10-22)
+- [x] review_queue.csv: all 25 ruled by Wayne. Key: `python3 build_ruled_key.py` -> holdout_v2_ruled_key.json (65 accepted, 9 re-ruled, + 16 disputes = 81).
+  Data fixes in key: HV9-006 living -> "with spouse and adult child"; HV4-007 last_condition_change -> medication_change.
+- [x] `python3 score_ruled.py` -> results_ruled/summary.json (stored picks, 0 calls). Disputed 16 have no picks: Layer 1 alone only.
+- [x] Design doc: ../docs/PATIENT_OVERRIDES_DESIGN.md (per-patient overrides; not implemented).
+## Pending: Layer 1 v1.10.2 fixes (from holdout_v2 rulings; build with practice cases, NOT holdout text; not implemented)
+- [ ] Witnessed fall ("saw her fall", "watched it happen") cannot be cleared by caregiver/patient reassurance (HV3-010).
+- [ ] Pain after a fall (e.g. holding hip) blocks suppression and escalates, even off anticoagulant (HV3-010, HV5-002).
+- [ ] unreliable_reading suppression does not apply to a possible fall on anticoagulant (HV5-003).
+- [ ] On anticoagulant: on-wrist impact + post-impact inactivity fires the fall trigger even if the patient explains it away (HV7-005).
+- [ ] Candidate: confirmed SpO2 <= 90% + dyspnea at rest (HF) -> escalate (HV1-007). Threshold is Wayne's call.
+- Dropped by Wayne: digoxin/hospice bradycardia page rule (HV10-002); HF weight-gain trigger (HV5-007).
