@@ -1,0 +1,8 @@
+case_id,src,fix_source,expected_route,trigger_tier_case,grader_trigger_tier,grader_route,grader_action,grader_score,issues,fix_instructions
+LX5-002,library_expansion_v1,script,silent_log,SUPPRESSED,SUPPRESSED,silent_log,keep,5,banned words: artifact,
+LX5-003,library_expansion_v1,script,provider_task,SUPPRESSED,SUPPRESSED,provider_task,keep,5,banned words: artifact,
+LX5-007,library_expansion_v1,script,nurse_task,SUPPRESSED,SUPPRESSED,nurse_task,keep,5,banned words: artifact,
+LX5-008,library_expansion_v1,script,provider_task,,,provider_task,keep,5,banned words: artifact,
+LX5-009,library_expansion_v1,script,urgent_page,CONFIRM_FIRST,CONFIRM_FIRST,urgent_page,keep,5,banned words: artifact,
+LX5-010,library_expansion_v1,script,urgent_page,CONFIRM_FIRST,CONFIRM_FIRST,urgent_page,keep,5,banned words: artifact,
+LX5-011,library_expansion_v1,script,urgent_page,CONFIRM_FIRST,CONFIRM_FIRST,urgent_page,keep,5,banned words: artifact,

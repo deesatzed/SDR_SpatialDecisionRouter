@@ -1,0 +1,3 @@
+rule,fired,ABSOLUTE,CONFIRM_FIRST,SUPPRESSED,ARTIFACT,actionable_escalation_rate,critical_miss,flag
+HT_SPO2_LT88,10,0,3,7,0,0.3,0,NOISY
+HT_VS_DANGER,9,3,0,6,0,0.333,0,NOISY

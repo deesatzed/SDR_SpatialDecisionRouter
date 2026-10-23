@@ -1,0 +1,304 @@
+{
+ "cases": [
+  {
+   "case_id": "LX7-001",
+   "pair_id": "LX7-P01",
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "HFpEF EF 55%",
+    "CKD 3a",
+    "hypertension"
+   ],
+   "function_baseline": "walks independently, manages own medications",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "20 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 34,
+    "sleep_h": 7.1,
+    "steps": 3200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 68.5,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 70-74, RR 14-16, night SpO2 min 92-94, steps 2900-3300, weight 68.2-68.8 (scale on bathroom rug, re-zeroed Day -5). Day 0: rest HR 73, RR 15, weight 68.4, steps 3100. No monotonic drift.",
+   "caregiver_or_nurse_note": "Daughter texted Day -1: 'Mum says she feels fine, same as always. The scale keeps jumping around on the rug but she's not worried.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "scale re-zeroed Day -5"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.5
+   },
+   "router_input": "80-84 F, lives alone, HFpEF, CKD 3a, hypertension. Meds: furosemide 40 mg daily, losartan 50 mg, atorvastatin. Devices: watch, ring, scale, bp_cuff. Baseline: rest HR 72, HRV 34 ms, sleep 7.1 h, steps 3200, night SpO2 min 93, weight 68.5 kg. Last 7 days: rest HR 70-74, RR 14-16, night SpO2 min 92-94, steps 2900-3300, weight 68.2-68.8 (scale on rug, re-zeroed Day -5). Day 0: HR 73, RR 15, weight 68.4, steps 3100. No drift. Daughter texted Day -1: feels fine, scale jumps on rug. Wear 94%, no significant gaps.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "noise"
+   ],
+   "rationale": "Weight fluctuates within 0.6 kg on a rug, HR and RR are stable, no multi-stream drift. The daughter's report confirms wellness. Naive-model trap: might interpret the weight variability as early congestion and escalate to nurse_task.",
+   "decisive_feature": "No coherent multi-stream drift; weight fluctuation explained by scale on carpet.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "grade": {
+    "score": 5,
+    "grader_route": "silent_log",
+    "grader_confidence": 0.98,
+    "batch_id": [
+     "LX7"
+    ]
+   }
+  },
+  {
+   "case_id": "LX7-009",
+   "pair_id": "LX7-P05",
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "AFib",
+    "osteoporosis",
+    "previous TIA"
+   ],
+   "function_baseline": "walks with cane, daughter visits daily",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "apixaban",
+     "change": "held",
+     "from_dose": "5 mg BID",
+     "to_dose": null,
+     "day": -10
+    }
+   ],
+   "devices": [
+    "watch",
+    "ring",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 26,
+    "sleep_h": 6.8,
+    "steps": 1800,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 62.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 68-72, steps 1600-2000, weight 61.8-62.2. Day 0: tripped on rug, fell, no head strike, lay on floor 20 min, got up. Watch impact at 10:15, HR 90 after. Ring steps paused. Daughter found bruise on hip.",
+   "caregiver_or_nurse_note": "Daughter: 'Mum fell this morning, she was on the floor a while but got up herself. She's bruised but says her head is fine. The blood thinner was stopped for the colonoscopy and not restarted.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 110,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "85-89 F, lives alone, AFib, osteoporosis, prior TIA. Meds: bisoprolol 2.5 mg, losartan 50 mg; apixaban held Day -10 for colonoscopy. Devices: watch, ring, scale. Baseline: rest HR 70, steps 1800, weight 62 kg. Day 0: tripped on rug, fell, no head strike, lay 20 min, got up. Watch impact, HR 90, steps paused. Daughter found hip bruise. Apixaban not restarted.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "fall"
+   ],
+   "rationale": "Fall with prolonged lie and bruising in an elderly patient, off anticoagulation but with history of TIA. Requires provider review for fall evaluation and decision on restarting anticoagulation. Naive-model trap: might treat as low-acuity because no head strike and no anticoagulant.",
+   "decisive_feature": "Apixaban held, fall with long lie.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "grade": {
+    "score": 5,
+    "grader_route": "provider_task",
+    "grader_confidence": 0.92,
+    "batch_id": [
+     "LX7"
+    ]
+   }
+  },
+  {
+   "case_id": "LX7-010",
+   "pair_id": "LX7-P05",
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "AFib",
+    "osteoporosis",
+    "previous TIA"
+   ],
+   "function_baseline": "walks with cane, daughter visits daily",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 26,
+    "sleep_h": 6.8,
+    "steps": 1800,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 62.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 68-72, steps 1600-2000, weight 61.8-62.2. Day 0: tripped on rug, fell, no head strike, lay on floor 20 min, got up. Watch impact at 10:15, HR 90 after. Ring steps paused. Daughter found bruise on hip.",
+   "caregiver_or_nurse_note": "Daughter: 'Mum fell on the rug, same as before, but she's on her blood thinner. She was on the floor about 20 minutes. She's bruised.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 110,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "85-89 F, lives alone, AFib, osteoporosis, prior TIA. Meds: apixaban 5 mg BID, bisoprolol 2.5 mg, losartan 50 mg. Devices: watch, ring, scale. Baseline: rest HR 70, steps 1800, weight 62 kg. Day 0: tripped on rug, fell, no head strike, lay 20 min, got up. Watch impact, HR 90, steps paused. Daughter found hip bruise. Apixaban current.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "fall"
+   ],
+   "rationale": "Witnessed fall on apixaban triggers HT_FALL_ANTICOAG ABSOLUTE, requiring urgent_page. Naive-model trap: might underestimate because no head strike and patient got up.",
+   "decisive_feature": "Apixaban current at time of fall.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "grade": {
+    "score": 5,
+    "grader_route": "urgent_page",
+    "grader_confidence": 0.99,
+    "batch_id": [
+     "LX7"
+    ]
+   }
+  }
+ ],
+ "provenance": {
+  "batches": [
+   "gen/LX7.batch.json"
+  ],
+  "graders": [
+   "grade/LX7.grader.json"
+  ],
+  "grader_batch_ids": [
+   "LX7"
+  ],
+  "src": "library_expansion_v1",
+  "legacy": false
+ }
+}

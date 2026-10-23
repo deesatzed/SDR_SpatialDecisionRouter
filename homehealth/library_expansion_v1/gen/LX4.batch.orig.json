@@ -1,0 +1,1291 @@
+{
+ "cases": [
+  {
+   "case_id": "LX4-001",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "CAD with stable exertional angina",
+    "prior stent",
+    "hypertension",
+    "type 2 diabetes"
+   ],
+   "function_baseline": "walks short distances with a stick, independent ADLs",
+   "patient_goals": "keep going to the allotment",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "81 mg daily",
+     "started_day": -900
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "40 mg nightly",
+     "started_day": -900
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -900
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -900
+    },
+    {
+     "name": "metformin",
+     "dose": "500 mg BID",
+     "started_day": -900
+    },
+    {
+     "name": "glyceryl trinitrate spray",
+     "dose": "400 mcg as needed",
+     "started_day": -900
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 66,
+    "hrv_ms": 34,
+    "sleep_h": 6.9,
+    "steps": 4200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 84.6,
+    "glucose_mean": null,
+    "sbp": 132,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -6 to -2 watch rest HR 64-68, steps 3800-4400. Day -5: about 4 min tightness behind the breastbone on the allotment hill, sat on the bench, one spray, eased within 5 min, watch HR at onset 92. Day -1: same hill, same pattern, about 4 min, one spray, HR at onset 94; seated BP 132/78. Day 0: steps 4000, rest HR 67, no tightness. Two hill outings this week, his usual count over the past year. Night SpO2 93-94%. Wear time 96%.",
+   "caregiver_or_nurse_note": "Spouse text: he went up the allotment hill again, sat on the bench, used the spray, back to normal in a few minutes. Says it is the same as always and wants to keep going.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 74,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 75-79, male, Fitzpatrick I-IV, lives with spouse. PMH: CAD with stable exertional angina, prior stent, hypertension, type 2 diabetes. Function: walks short distances with a stick, independent ADLs. Goal: keep going to the allotment. Meds: aspirin 81 mg daily, atorvastatin 40 mg nightly, bisoprolol 2.5 mg daily, ramipril 5 mg daily, metformin 500 mg BID, GTN spray 400 mcg as needed; no recent changes. Devices: watch, BP cuff, scale. Baseline 30d: rest HR 66, HRV 34 ms, sleep 6.9 h, steps 4200, night SpO2 min 93%, skin temp dev 0.0 C, weight 84.6 kg, SBP 132, DBP 78. Last 7 days: Day -6 to -2 rest HR 64-68, steps 3800-4400. Day -5 and Day -1: tightness behind the breastbone on the allotment hill, about 4 min, eased by sitting and one spray within 5 min; watch HR at onset 92 and 94. Day -1 seated BP 132/78. Day 0 steps 4000, rest HR 67, no tightness. Two hill outings this week, his usual count over the past year. Night SpO2 93-94%. Spouse text: same as always, sat on the bench, back to normal in a few minutes. Baseline status: established, monitoring day 74. Wear 96%, no device-state flags, no gaps.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "below_band_threshold",
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "D",
+    "raw_band": "D",
+    "modifiers": [
+     "rate-control HR-high +1 gives 95 bpm, still below band C"
+    ],
+    "tier": "SUPPRESSED",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "acs"
+   ],
+   "rationale": "Hill-climb tightness that eases with sitting and one spray, at his usual count for the past year, is a known stable pattern. Both episodes peaked at watch HR 92-94 bpm, which stays below band C even after the bisoprolol rate-control modifier, and seated BP and night SpO2 sit at his own baseline. The rule fires only on a vital change, so the event is suppressed below the band threshold; the checks pass because the watch is reliable with no motion flag, the pattern is unchanged, no gap exists and no hospice limit applies. Naive-model trap: a shallow model sees chest tightness with a raised heart rate and sends an urgent page, when the picture is unchanged stable angina that needs a nurse contact.",
+   "decisive_feature": "Hill-climb tightness at his usual yearly count, eased by one spray, with peak watch HR 94 bpm that stays in band D.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "LX4-002",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "CAD with prior MI",
+    "HFrEF EF 40%",
+    "CKD 3a",
+    "hypertension"
+   ],
+   "function_baseline": "walks indoors with a frame, independent with personal care",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "75 mg daily",
+     "started_day": -1200
+    },
+    {
+     "name": "ticagrelor",
+     "dose": "60 mg BID",
+     "started_day": -700
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "80 mg nightly",
+     "started_day": -1200
+    },
+    {
+     "name": "ramipril",
+     "dose": "2.5 mg daily",
+     "started_day": -1200
+    },
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -1200
+    },
+    {
+     "name": "glyceryl trinitrate spray",
+     "dose": "400 mcg as needed",
+     "started_day": -1200
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 28,
+    "sleep_h": 7.1,
+    "steps": 2600,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 66.9,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 74
+   },
+   "trend_last_7d": "Day -7 to -4: rest HR 70-74, steps 2400-2700; one short stair tightness Day -6 eased by rest. Day -3: two episodes at rest in the chair, about 6 and 9 min, each eased by one spray, watch HR 80 and 84. Day -2: three episodes, one at rest waking her from sleep for 12 min, watch HR 88-90. Day -1: four episodes, one at rest lasting 15 min needing two sprays. Day 0 07:20: rest episode about 10 min, two sprays, watch HR 86, cuff 126/74 at 07:35, watch RR 17, fingertip SpO2 96% at 07:40 with good waveform. Day 0 steps 900. Wear 94%, longest gap 1 h.",
+   "caregiver_or_nurse_note": "Daughter's phone check Day 0 08:00, answered: Mum says the tightness is coming more often, the ones at rest are new, and she needed two sprays last night.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 118,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 80-84, female, Fitzpatrick V-VI, lives alone; daughter phones daily. PMH: CAD with prior MI, HFrEF EF 40%, CKD 3a, hypertension. Function: walks indoors with a frame, independent with personal care. Meds: aspirin 75 mg daily, ticagrelor 60 mg BID, atorvastatin 80 mg nightly, ramipril 2.5 mg daily, furosemide 40 mg daily, GTN spray 400 mcg as needed; no recent changes. Devices: watch, BP cuff, scale, fingertip oximeter. Baseline 30d: rest HR 72, HRV 28 ms, sleep 7.1 h, steps 2600, night SpO2 min 92%, skin temp dev 0.0 C, weight 66.9 kg, SBP 128, DBP 74. Trend: Day -7 to -4 rest HR 70-74, steps 2400-2700, one short stair tightness Day -6 eased by rest. Day -3 two episodes at rest in the chair, about 6 and 9 min, each eased by one spray, watch HR 80 and 84. Day -2 three episodes, one at rest waking her for 12 min, HR 88-90. Day -1 four episodes, one at rest for 15 min needing two sprays. Day 0 07:20 rest episode about 10 min needing two sprays; watch HR 86; cuff 126/74 at 07:35; watch RR 17; fingertip SpO2 96% at 07:40, good waveform. Day 0 steps 900. Caregiver: daughter's phone check Day 0 08:00 answered, reports more frequent tightness, rest episodes new, two sprays last night. Baseline status: established, monitoring day 118. Wear 94%, no device-state flags, longest gap 1 h.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "C",
+    "raw_band": "D",
+    "modifiers": [
+     "crescendo pattern red flag +1 (D to C)",
+     "crescendo floor C holds",
+     "worsening confirmed by daughter's Day 0 phone check, so timeout not applied"
+    ],
+    "tier": "CONFIRM_FIRST",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "acs"
+   ],
+   "rationale": "Four tightness episodes in four days, with the newest at rest and waking her, form a crescendo pattern that the decided rule treats as a chest-pain trigger even though every vital sits in band D. Watch, cuff and fingertip readings are reliable, the change is clearly from her own pattern, and no explanation or hospice limit applies, so the checks pass. Her raw band is D, the crescendo red flag lifts it to C, and the crescendo floor holds it there; the daughter's Day 0 phone check already confirms the worsening, so no timed confirm step remains. Naive-model trap: a shallow model sees normal vitals (HR 86, SBP 126, SpO2 96%) and sends a nurse task or silent log, missing that the episodes are more frequent and now occur at rest.",
+   "decisive_feature": "Four tightness episodes in four days, the newest at rest and waking her, with the daughter's Day 0 check confirming the worsening while vitals stay in band D.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "LX4-003",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with adult child",
+   "pmh": [
+    "CAD with two coronary stents",
+    "hypertension",
+    "osteoarthritis"
+   ],
+   "function_baseline": "walks indoors with a frame, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "81 mg daily",
+     "started_day": -1500
+    },
+    {
+     "name": "clopidogrel",
+     "dose": "75 mg daily",
+     "started_day": -1500
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "40 mg nightly",
+     "started_day": -1500
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -1500
+    },
+    {
+     "name": "glyceryl trinitrate spray",
+     "dose": "400 mcg as needed",
+     "started_day": -1500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 30,
+    "sleep_h": 7.0,
+    "steps": 3100,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 78.0,
+    "glucose_mean": null,
+    "sbp": 138,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -7: one walk to the post box, 3 min tightness, one spray, HR at onset 90. Day -4: two walks to the shops, episodes of 5 and 8 min, each needing a spray, HR at onset 94 and 92. Day -2: porch-step episode 12 min, two sprays, slower to settle, HR at onset 96. Day 0 06:40: walk to the bins, 18 min of tightness, three sprays over 15 min, HR at onset 94; cuff 136/82 at 06:58 with watch HR 88 at rest. Day 0 steps 900. Watch re-strapped Day -4, worn since. Wear 91%.",
+   "caregiver_or_nurse_note": "Adult child's note Day 0 07:05: Dad says it is getting worse every week and the first spray no longer shifts it.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 96,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 91,
+    "artifact_flags": [
+     "watch re-strapped Day -4"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 85-89, male, Fitzpatrick I-IV, lives with adult child. PMH: CAD with two coronary stents, hypertension, osteoarthritis. Function: walks indoors with a frame, independent ADLs. Meds: aspirin 81 mg daily, clopidogrel 75 mg daily, atorvastatin 40 mg nightly, amlodipine 5 mg daily, GTN spray 400 mcg as needed; no recent changes. Devices: watch, BP cuff. Baseline 30d: rest HR 70, HRV 30 ms, sleep 7.0 h, steps 3100, night SpO2 min 93%, skin temp dev 0.0 C, weight 78.0 kg, SBP 138, DBP 80. Trend: Day -7 one walk to the post box, 3 min tightness, one spray, HR at onset 90. Day -4 two walks to the shops, episodes 5 and 8 min, each needing a spray, HR at onset 94 and 92. Day -2 porch-step episode 12 min, two sprays, HR at onset 96. Day 0 06:40 walk to the bins, 18 min tightness, three sprays over 15 min, HR at onset 94; cuff 136/82 at 06:58 with watch HR 88 at rest. Day 0 steps 900. Watch re-strapped Day -4. Adult child's note Day 0 07:05: says it is getting worse every week and the first spray no longer works. Baseline status: established, monitoring day 96. Wear 91%, device flag: watch re-strapped Day -4, no gaps.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "B",
+    "raw_band": "D",
+    "modifiers": [
+     "crescendo red flag +1",
+     "persistent 18 min (15 min or more) red flag +1",
+     "onset HR 94 with post-exertion HR-high -1, no band reached",
+     "worsening confirmed by adult child's Day 0 note, so timeout not applied"
+    ],
+    "tier": "CONFIRM_FIRST",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "acs"
+   ],
+   "rationale": "Walking tightness that went from 3 minutes and one spray a week ago to an 18-minute episode needing three sprays is a crescendo, which the rule treats as a chest-pain trigger even with onset HR in the 90s. The raw band is D; the crescendo red flag and the persistent-15-minute red flag lift it to B, and the adult child's Day 0 note records that the first spray no longer works, so the confirm step is already done. The watch re-strap on Day -4 does not explain episodes on Days -2 and 0, the readings are otherwise reliable, there is no gap, and no hospice limit applies, so the checks pass. Naive-model trap: a shallow model sees onset HR 94 and seated BP 136/82, both outside the banded range, and files a nurse task, missing the lengthening episodes and the failing first spray.",
+   "decisive_feature": "An 18-minute walk-to-bins episode needing three sprays after shorter earlier walking episodes, with the adult child reporting the first spray no longer works.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "LX4-004",
+   "pair_id": "LX4-P02",
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "CAD with prior stent",
+    "hypertension",
+    "hyperlipidaemia"
+   ],
+   "function_baseline": "independent ADLs, walks around the house",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "81 mg daily",
+     "started_day": -1000
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "40 mg nightly",
+     "started_day": -1000
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -1000
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -1000
+    },
+    {
+     "name": "glyceryl trinitrate spray",
+     "dose": "400 mcg as needed",
+     "started_day": -1000
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 74,
+    "hrv_ms": 31,
+    "sleep_h": 7.2,
+    "steps": 3400,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 70.1,
+    "glucose_mean": null,
+    "sbp": 134,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -5 to -1 steps 3100-3600, rest HR 72-76. Day 0 07:50: seated in her armchair, tightness on the left side of the chest for 8 min, eased with one spray; watch HR at onset 102, against her usual 72-76. Day 0 08:05 cuff 136/82 with watch HR 84. Day 0 08:10 fingertip SpO2 97%, good waveform. Wear 95%.",
+   "caregiver_or_nurse_note": "Spouse: she gets this sort of tightness in her chair about once a month. This one went after one spray and she says she is fine now.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 139,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 70-74, female, Fitzpatrick V-VI, lives with spouse. PMH: CAD with prior stent, hypertension, hyperlipidaemia. Function: independent ADLs, walks around the house. Meds: aspirin 81 mg daily, atorvastatin 40 mg nightly, ramipril 5 mg daily, amlodipine 5 mg daily, GTN spray 400 mcg as needed; no recent changes. Devices: watch, BP cuff, fingertip oximeter. Baseline 30d: rest HR 74, HRV 31 ms, sleep 7.2 h, steps 3400, night SpO2 min 94%, skin temp dev 0.0 C, weight 70.1 kg, SBP 134, DBP 80. Trend: Day -5 to -1 steps 3100-3600, rest HR 72-76. Day 0 07:50 seated in her armchair, left-sided chest tightness for 8 min, eased with one spray; watch HR at onset 102, her usual range 72-76. Day 0 08:05 cuff 136/82, watch HR 84. Day 0 08:10 fingertip SpO2 97%, good waveform. Spouse: she has this about once a month; it went after one spray and she says she is fine. Baseline status: established, monitoring day 139. Wear 95%, no device-state flags, no gaps.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "patient_call",
+   "confirm_timeout_min": 15,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "C",
+    "raw_band": "C",
+    "modifiers": [
+     "no sleep, exertion, rate-control or red-flag modifiers; HR 102 meets band C (100 or more)"
+    ],
+    "tier": "CONFIRM_FIRST",
+    "timeout_min": 15
+   },
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "acs"
+   ],
+   "rationale": "This is her familiar rest-onset pattern, but the vital that matters is watch HR 102 at onset against her own 72-76 bpm, which meets band C with no modifiers, so the rule fires even though the episode looks familiar. The reading is reliable (watch with no motion flag, fingertip SpO2 97% with good waveform), the change is from her own baseline, there is no gap and no hospice limit, so all four checks pass and a 15-minute patient call is pending. Naive-model trap: a shallow model reads 'same as before, went after one spray' and files it as stable angina for a nurse task, missing the band C heart rate that makes the confirm step mandatory.",
+   "decisive_feature": "Usual rest-onset episode, but watch HR 102 at onset against her 72-76 bpm baseline reaches band C with no modifiers.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "LX4-005",
+   "pair_id": "LX4-P02",
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "CAD with prior stent",
+    "hypertension",
+    "hyperlipidaemia"
+   ],
+   "function_baseline": "independent ADLs, walks around the house",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "81 mg daily",
+     "started_day": -1000
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "40 mg nightly",
+     "started_day": -1000
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -1000
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -1000
+    },
+    {
+     "name": "glyceryl trinitrate spray",
+     "dose": "400 mcg as needed",
+     "started_day": -1000
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 74,
+    "hrv_ms": 31,
+    "sleep_h": 7.2,
+    "steps": 3400,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 70.1,
+    "glucose_mean": null,
+    "sbp": 134,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -5 to -1 steps 3100-3600, rest HR 72-76. Day 0 07:50: seated in her armchair, tightness on the left side of the chest for 8 min, eased with one spray; watch HR at onset 96, against her usual 72-76. Day 0 08:05 cuff 136/82 with watch HR 84. Day 0 08:10 fingertip SpO2 97%, good waveform. Wear 95%.",
+   "caregiver_or_nurse_note": "Spouse: she gets this sort of tightness in her chair about once a month. This one went after one spray and she says she is fine now.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 139,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 70-74, female, Fitzpatrick V-VI, lives with spouse. PMH: CAD with prior stent, hypertension, hyperlipidaemia. Function: independent ADLs, walks around the house. Meds: aspirin 81 mg daily, atorvastatin 40 mg nightly, ramipril 5 mg daily, amlodipine 5 mg daily, GTN spray 400 mcg as needed; no recent changes. Devices: watch, BP cuff, fingertip oximeter. Baseline 30d: rest HR 74, HRV 31 ms, sleep 7.2 h, steps 3400, night SpO2 min 94%, skin temp dev 0.0 C, weight 70.1 kg, SBP 134, DBP 80. Trend: Day -5 to -1 steps 3100-3600, rest HR 72-76. Day 0 07:50 seated in her armchair, left-sided chest tightness for 8 min, eased with one spray; watch HR at onset 96, her usual range 72-76. Day 0 08:05 cuff 136/82, watch HR 84. Day 0 08:10 fingertip SpO2 97%, good waveform. Spouse: she has this about once a month; it went after one spray and she says she is fine. Baseline status: established, monitoring day 139. Wear 95%, no device-state flags, no gaps.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "below_band_threshold",
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "D",
+    "raw_band": "D",
+    "modifiers": [
+     "none; HR 96 is below the band C line of 100"
+    ],
+    "tier": "SUPPRESSED",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "acs"
+   ],
+   "rationale": "Her usual once-a-month rest-onset tightness is present with watch HR 96 at onset against her 72-76 bpm baseline, but 96 is below the band C line and no modifiers apply, so the vital-sign rule is below its band threshold. The readings are reliable (watch with no motion flag, fingertip SpO2 97% with good waveform, cuff 136/82), the episode matches her own familiar pattern, and no gap or hospice limit applies, so the checks pass. Naive-model trap: a shallow model sees the same chest tightness and sends an urgent page, when the one raised vital is 96 bpm, below every band threshold, so a nurse contact is the correct route.",
+   "decisive_feature": "Rest-onset episode with watch HR 96 at onset, below the 100 bpm band C line; the paired member's 102 bpm is the only difference.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "LX4-006",
+   "pair_id": "LX4-P01",
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "assisted living",
+   "pmh": [
+    "CAD with exertional angina on GTN",
+    "prior MI",
+    "hypertension",
+    "knee osteoarthritis"
+   ],
+   "function_baseline": "walks corridor with a rollator, eats in the dining room",
+   "patient_goals": "keep walking to the dining room",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "75 mg daily",
+     "started_day": -1100
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "40 mg nightly",
+     "started_day": -1100
+    },
+    {
+     "name": "ramipril",
+     "dose": "2.5 mg daily",
+     "started_day": -1100
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -1100
+    },
+    {
+     "name": "glyceryl trinitrate spray",
+     "dose": "400 mcg as needed",
+     "started_day": -1100
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 33,
+    "sleep_h": 7.4,
+    "steps": 3600,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 63.2,
+    "glucose_mean": null,
+    "sbp": 130,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -6 to -1 steps 3300-3800. Day -4 and Day -1: tightness on the corridor walk from the lift to the dining room, each about 3 min, eased by stopping and one GTN spray; watch HR at onset 94 and 96. Day 0 breakfast walk: no tightness. Day 0 08:00 fingertip SpO2 95% at rest, good waveform; rest HR 66-70. Seated BP 130/76 Day -1. Two episodes this week, her usual count over the past year. Wear 94%.",
+   "caregiver_or_nurse_note": "Carer log: resident sat on the hall chair, used one spray, fine after a few minutes, same as before.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 88,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 80-84, female, Fitzpatrick V-VI, lives in assisted living. PMH: CAD with exertional angina on GTN, prior MI, hypertension, knee osteoarthritis. Function: walks corridor with a rollator, eats in the dining room. Goal: keep walking to the dining room. Meds: aspirin 75 mg daily, atorvastatin 40 mg nightly, ramipril 2.5 mg daily, bisoprolol 2.5 mg daily, GTN spray 400 mcg as needed; no recent changes. Devices: watch, BP cuff, fingertip oximeter. Baseline 30d: rest HR 68, HRV 33 ms, sleep 7.4 h, steps 3600, night SpO2 min 93%, skin temp dev 0.0 C, weight 63.2 kg, SBP 130, DBP 76. Trend: Day -6 to -1 steps 3300-3800. Day -4 and Day -1 tightness on the corridor walk from the lift to the dining room, about 3 min each, eased by stopping and one spray; watch HR at onset 94 and 96. Day 0 breakfast walk without tightness. Day 0 08:00 fingertip SpO2 95% at rest, good waveform; rest HR 66-70. Seated BP 130/76 on Day -1. Two episodes this week, her usual count over the past year. Carer log: sat on hall chair, one spray, fine after a few minutes, same as before. Baseline status: established, monitoring day 88. Wear 94%, no device-state flags, no gaps.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "below_band_threshold",
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "D",
+    "raw_band": "D",
+    "modifiers": [
+     "rate-control HR-high +1 gives 97 bpm, still below band C"
+    ],
+    "tier": "SUPPRESSED",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "acs"
+   ],
+   "rationale": "Two short corridor episodes at her usual weekly count, eased by stopping and one spray, with onset watch HR 94 and 96 bpm, stay inside band D even after the bisoprolol rate-control modifier, so the chest-pain rule is below threshold. The readings are reliable (watch with no motion flag, fingertip 95% with good waveform), the pattern matches her own baseline, and no gap or hospice limit applies, so the checks pass. Naive-model trap: a shallow model sees chest tightness with a raised heart rate and sends an urgent page, when stable exertional angina with an unchanged count needs only a nurse contact.",
+   "decisive_feature": "Corridor episodes at her usual two-a-week count, eased by one spray, with onset watch HR 94-96 bpm inside band D.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "LX4-007",
+   "pair_id": "LX4-P01",
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "assisted living",
+   "pmh": [
+    "CAD with exertional angina on GTN",
+    "prior MI",
+    "hypertension",
+    "knee osteoarthritis"
+   ],
+   "function_baseline": "walks corridor with a rollator, eats in the dining room",
+   "patient_goals": "keep walking to the dining room",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "75 mg daily",
+     "started_day": -1100
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "40 mg nightly",
+     "started_day": -1100
+    },
+    {
+     "name": "ramipril",
+     "dose": "2.5 mg daily",
+     "started_day": -1100
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -1100
+    },
+    {
+     "name": "glyceryl trinitrate spray",
+     "dose": "400 mcg as needed",
+     "started_day": -1100
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 33,
+    "sleep_h": 7.4,
+    "steps": 3600,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 63.2,
+    "glucose_mean": null,
+    "sbp": 130,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -6 to -1 steps 3300-3800. Day -5, Day -4, Day -2 and Day -1: tightness on the corridor walk from the lift to the dining room, each about 3 min, eased by stopping and one GTN spray; watch HR at onset 94 and 96. Day 0 breakfast walk: no tightness. Day 0 08:00 fingertip SpO2 95% at rest, good waveform; rest HR 66-70. Seated BP 130/76 Day -1. Four episodes this week, more than her usual two. Wear 94%.",
+   "caregiver_or_nurse_note": "Carer log: resident says the corridor tightness has come on most walks this week, four times, and she is frightened it is getting worse. Sat on the hall chair, one spray, fine after a few minutes.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 88,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 80-84, female, Fitzpatrick V-VI, lives in assisted living. PMH: CAD with exertional angina on GTN, prior MI, hypertension, knee osteoarthritis. Function: walks corridor with a rollator, eats in the dining room. Goal: keep walking to the dining room. Meds: aspirin 75 mg daily, atorvastatin 40 mg nightly, ramipril 2.5 mg daily, bisoprolol 2.5 mg daily, GTN spray 400 mcg as needed; no recent changes. Devices: watch, BP cuff, fingertip oximeter. Baseline 30d: rest HR 68, HRV 33 ms, sleep 7.4 h, steps 3600, night SpO2 min 93%, skin temp dev 0.0 C, weight 63.2 kg, SBP 130, DBP 76. Trend: Day -6 to -1 steps 3300-3800. Day -5, Day -4, Day -2 and Day -1 tightness on the corridor walk from the lift to the dining room, about 3 min each, eased by stopping and one spray; watch HR at onset 94 and 96. Day 0 breakfast walk without tightness. Day 0 08:00 fingertip SpO2 95% at rest, good waveform; rest HR 66-70. Seated BP 130/76 on Day -1. Four episodes this week, more than her usual two. Carer log: resident says the corridor tightness has come on most walks this week, four times, and she is frightened it is getting worse; sat on hall chair, one spray, fine after a few minutes. Baseline status: established, monitoring day 88. Wear 94%, no device-state flags, no gaps.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "C",
+    "raw_band": "D",
+    "modifiers": [
+     "crescendo pattern red flag +1 (D to C)",
+     "crescendo floor C holds",
+     "worsening reported by resident via carer log, so timeout not applied"
+    ],
+    "tier": "CONFIRM_FIRST",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "acs"
+   ],
+   "rationale": "Four corridor episodes in six days against her usual two a week is a crescendo pattern, which the decided rule treats as a chest-pain trigger even though every vital stays under the banding lines. The raw band is D, the crescendo red flag lifts it to C and the floor holds it there, and the carer log already records the resident's report of worsening, so the confirm step is done. The readings are reliable, the change is from her own baseline, there is no explanation and no hospice limit, so all four checks pass and the route is an urgent page. Naive-model trap: a shallow model sees the same 94-96 bpm onsets and the same spray response as the stable pair member and sends a nurse task, missing that frequency alone makes this a crescendo.",
+   "decisive_feature": "Four corridor episodes this week against her usual two, with the resident reporting it is happening more often; otherwise identical to the stable pair member.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "LX4-008",
+   "pair_id": null,
+   "age_band": "65-69",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "musculoskeletal chest wall pain history",
+    "hypertension"
+   ],
+   "function_baseline": "independent ADLs, gardens",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -600
+    },
+    {
+     "name": "paracetamol",
+     "dose": "1 g as needed",
+     "started_day": -600
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 42,
+    "sleep_h": 7.5,
+    "steps": 6200,
+    "spo2_night_min": 95,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 79.8,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -3 after lifting a fridge-freezer: sharp ache on the left ribs, reproduced by pressing along the ribs and by twisting; watch HR 60-64 during the episode; cuff 124/76 Day -3, 126/78 Day -1. Steps 5800-6600 Day -3 to -1. Day -2 and Day -1 ache eased with paracetamol and rest. Day 0: ache only when pressing the ribs, none on walking; watch rest HR 61; steps 6400. Wear 95%.",
+   "caregiver_or_nurse_note": "Spouse: pulled a muscle lifting the freezer. Same ache when pressing his ribs, nothing when he walks.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 52,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 65-69, male, Fitzpatrick V-VI, lives with spouse. PMH: musculoskeletal chest wall pain history, hypertension. Function: independent ADLs, gardens. Meds: amlodipine 5 mg daily, paracetamol 1 g as needed; no recent changes. Devices: watch, BP cuff. Baseline 30d: rest HR 62, HRV 42 ms, sleep 7.5 h, steps 6200, night SpO2 min 95%, skin temp dev 0.0 C, weight 79.8 kg, SBP 128, DBP 78. Trend: Day -3 after lifting a fridge-freezer, sharp ache on the left ribs reproduced by pressing along the ribs and by twisting; watch HR 60-64 during the episode; cuff 124/76 Day -3 and 126/78 Day -1. Steps 5800-6600 Day -3 to -1. Day -2 and Day -1 ache eased with paracetamol and rest. Day 0 ache only when pressing the ribs, none on walking; watch rest HR 61; steps 6400. Spouse: pulled a muscle lifting the freezer; same ache when pressing, nothing when walking. Baseline status: established, monitoring day 52. Wear 95%, no device-state flags, no gaps.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "D",
+    "raw_band": "D",
+    "modifiers": [],
+    "tier": "none",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "noise"
+   ],
+   "rationale": "A sharp rib ache that reproduces with pressing and twisting after a lift, with watch HR 60-64 during the episode and steps back to his usual level by Day 0, shows no physiological change. No vital moves, so the chest-pain trigger does not fire and the event is logged. The picture fits a musculoskeletal strain that is settling, and a short nurse note would be acceptable. Naive-model trap: a shallow model reads 'chest pain' and sends a nurse task or urgent page on the words alone, when every vital stays at baseline and the pain is reproduced by palpation.",
+   "decisive_feature": "Ache reproduced by pressing the ribs and twisting after a lift, with watch HR 60-64 during the episode and steps back to baseline by Day 0.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "LX4-009",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with paid caregiver",
+   "pmh": [
+    "CAD with stent",
+    "stable exertional angina",
+    "type 2 diabetes"
+   ],
+   "function_baseline": "walks with a stick, independent with prompting for medicines",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "75 mg daily",
+     "started_day": -800
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "40 mg nightly",
+     "started_day": -800
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -800
+    },
+    {
+     "name": "metformin",
+     "dose": "500 mg BID",
+     "started_day": -800
+    },
+    {
+     "name": "glyceryl trinitrate spray",
+     "dose": "400 mcg as needed",
+     "started_day": -40
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "glyceryl trinitrate",
+     "change": "switched",
+     "from_dose": "400 mcg sublingual tablets as needed",
+     "to_dose": "400 mcg spray as needed",
+     "day": -40
+    }
+   ],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 29,
+    "sleep_h": 7.0,
+    "steps": 3000,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 72.5,
+    "glucose_mean": null,
+    "sbp": 136,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -7 to -1 steps 2700-3200, rest HR 68-72. Day -5 and Day -2: tightness on the stairs to the bus shelter, about 4 min, eased by resting and one spray; watch HR at onset 72 and 74. Day 0: no tightness. Wear 93%.",
+   "caregiver_or_nurse_note": "Pharmacist note Day 0: spray bottle dispensed 40 days ago is past its labelled date. Patient reports less sting than before, and needs two sprays on some days.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 103,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 75-79, female, Fitzpatrick I-IV, lives with paid caregiver who visits morning and evening. PMH: CAD with stent, stable exertional angina, type 2 diabetes. Function: walks with a stick, independent with prompting for medicines. Meds: aspirin 75 mg daily, atorvastatin 40 mg nightly, ramipril 5 mg daily, metformin 500 mg BID, GTN spray 400 mcg as needed. Recent change: glyceryl trinitrate switched from 400 mcg sublingual tablets to 400 mcg spray as needed, Day -40. Devices: watch, BP cuff. Baseline 30d: rest HR 70, HRV 29 ms, sleep 7.0 h, steps 3000, night SpO2 min 94%, skin temp dev 0.0 C, weight 72.5 kg, SBP 136, DBP 80. Trend: Day -7 to -1 steps 2700-3200, rest HR 68-72. Day -5 and Day -2 tightness on the stairs to the bus shelter, about 4 min, eased by resting and one spray; watch HR at onset 72 and 74. Day 0 no tightness. Pharmacist note Day 0: spray bottle dispensed 40 days ago is past its labelled date; patient reports less sting than before and needs two sprays on some days. Baseline status: established, monitoring day 103. Wear 93%, no device-state flags, no gaps.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "D",
+    "raw_band": "D",
+    "modifiers": [],
+    "tier": "none",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "acs",
+    "med_change"
+   ],
+   "rationale": "Two stair episodes with onset watch HR 72-74, the same as her baseline, carry no vital change, so no hard trigger fires. The open question is whether the GTN spray still works: the bottle is past its labelled date and some episodes now need two sprays, which is a medication-trust question. A pharmacist-level review on the same business day settles supply and potency, which is more than a routine call and far less than a page. Naive-model trap: a shallow model treats the tightness as stable angina and files a nurse task, missing that the spray itself may be failing.",
+   "decisive_feature": "GTN spray past its labelled date, with two sprays now needed on some episodes, while onset heart rate stays flat at 72-74 bpm.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "LX4-010",
+   "pair_id": null,
+   "age_band": "65-69",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "CAD with PCI and stent",
+    "stable exertional angina",
+    "hypertension"
+   ],
+   "function_baseline": "independent ADLs, walks to the shop",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "81 mg daily",
+     "started_day": -120
+    },
+    {
+     "name": "ticagrelor",
+     "dose": "90 mg BID",
+     "started_day": -120
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "80 mg nightly",
+     "started_day": -120
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -700
+    },
+    {
+     "name": "glyceryl trinitrate spray",
+     "dose": "400 mcg as needed",
+     "started_day": -700
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "metoprolol succinate",
+     "change": "stopped",
+     "from_dose": "50 mg daily",
+     "to_dose": null,
+     "day": -4
+    }
+   ],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 36,
+    "sleep_h": 7.0,
+    "steps": 4100,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 77.4,
+    "glucose_mean": null,
+    "sbp": 134,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -7 to -5: rest HR 60-63 on metoprolol, steps 4000-4200. Day -3 to -1: rest HR 72-78 after the stop. Day -2: about 6 min tightness on the hill to the shop, eased by one spray; watch HR at onset 92, his usual one-a-week pattern. Day -1 rest HR 76, steps 3800. Day 0 09:00: rest HR 78, no tightness; seated BP 138/82. Wear 94%.",
+   "caregiver_or_nurse_note": "Daughter's daily call Day 0 08:30: says he is fine, but he has had the hill tightness again and has been light-headed on standing in the mornings since the tablet was stopped.",
+   "baseline_status": {
+    "phase": "relearning",
+    "monitoring_day": 60,
+    "learning_days_total": 10,
+    "last_condition_change": {
+     "type": "rate_control_med",
+     "day": -4
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 65-69, male, Fitzpatrick I-IV, lives alone; daughter phones daily. PMH: CAD with PCI and stent, stable exertional angina, hypertension. Function: independent ADLs, walks to the shop. Meds: aspirin 81 mg daily, ticagrelor 90 mg BID, atorvastatin 80 mg nightly, ramipril 5 mg daily, GTN spray 400 mcg as needed. Recent change: metoprolol succinate 50 mg daily stopped Day -4. Devices: watch, BP cuff, scale. Baseline 30d, on metoprolol: rest HR 62, HRV 36 ms, sleep 7.0 h, steps 4100, night SpO2 min 94%, skin temp dev 0.0 C, weight 77.4 kg, SBP 134, DBP 80. Trend: Day -7 to -5 rest HR 60-63, steps 4000-4200. Day -3 to -1 rest HR 72-78 after the stop. Day -2 about 6 min tightness on the hill to the shop, eased by one spray; watch HR at onset 92; one episode a week is his usual pattern. Day -1 rest HR 76, steps 3800. Day 0 09:00 rest HR 78, no tightness; seated BP 138/82. Daughter's call Day 0 08:30: says he is fine, has had the hill tightness again, and has been light-headed on standing in the mornings since the tablet was stopped. Baseline status: relearning, monitoring day 60, last condition change rate-control medicine stopped Day -4. Wear 94%, no device-state flags, no gaps.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "below_band_threshold",
+   "baseline_layer": "baseline_reset",
+   "chest_pain_eval": {
+    "band": "D",
+    "raw_band": "D",
+    "modifiers": [
+     "rate-control stopped: no modifier applied; onset HR 92 below band C"
+    ],
+    "tier": "SUPPRESSED",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "acs",
+    "med_change"
+   ],
+   "rationale": "The metoprolol stop on Day -4 explains the rise in resting HR from the low 60s to 72-78, so the new rate is an expected relearning value rather than a deviation. The single hill episode reached onset watch HR 92, below band C, and it matches his usual one-a-week pattern, so the chest-pain rule is suppressed below threshold. The checks pass for reliability and pattern, but the drug stop with new light-headedness on standing needs a same-business-day clinician plan, not a routine call. Naive-model trap: a shallow model sees heart rate 92, tightness and a daughter's report and pages urgently, when no band threshold was reached and the rise is the expected effect of stopping the beta-blocker.",
+   "decisive_feature": "Beta-blocker stopped Day -4: resting HR now 72-78, with onset HR 92 on a usual one-a-week hill episode, no band threshold reached.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "LX4-011",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "gastro-oesophageal reflux",
+    "hiatus hernia",
+    "hypertension"
+   ],
+   "function_baseline": "independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "omeprazole",
+     "dose": "20 mg daily",
+     "started_day": -1000
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 32,
+    "sleep_h": 7.2,
+    "steps": 4800,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 88.0,
+    "glucose_mean": null,
+    "sbp": 136,
+    "dbp": 82
+   },
+   "trend_last_7d": "Day -4, Day -2 and Day -1: burning under the breastbone 60-90 min after a large fried evening meal, eased by sitting up and an antacid; watch HR 68-72 during each episode; no symptoms on walks; steps 4600-5000. Day 0: mild burning after lunch that eased by the afternoon; watch RR 14-15; rest HR 70; steps 4700. Wear 93%.",
+   "caregiver_or_nurse_note": "Spouse: says it is the fried supper again, sat up with an antacid, fine by bedtime. Asks for food advice.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 81,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 70-74, male, Fitzpatrick I-IV, lives with spouse. PMH: gastro-oesophageal reflux, hiatus hernia, hypertension. Function: independent ADLs. Meds: omeprazole 20 mg daily, amlodipine 5 mg daily; no recent changes. Devices: watch, BP cuff. Baseline 30d: rest HR 70, HRV 32 ms, sleep 7.2 h, steps 4800, night SpO2 min 94%, skin temp dev 0.0 C, weight 88.0 kg, SBP 136, DBP 82. Trend: Day -4, Day -2 and Day -1 burning under the breastbone 60-90 min after a large fried evening meal, eased by sitting up and an antacid; watch HR 68-72 during each episode; no symptoms on walks; steps 4600-5000. Day 0 mild burning after lunch that eased by the afternoon; watch RR 14-15; rest HR 70; steps 4700. Spouse: says it is the fried supper again, sat up with an antacid, fine by bedtime; asks for food advice. Baseline status: established, monitoring day 81. Wear 93%, no device-state flags, no gaps.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "provider_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "D",
+    "raw_band": "D",
+    "modifiers": [],
+    "tier": "none",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "noise"
+   ],
+   "rationale": "Burning under the breastbone that starts 60-90 minutes after a large fried supper, eases with sitting up and an antacid, and never accompanies walking, is a documented reflux pattern. Watch HR stays flat at 68-72 and RR 14-15, so no vital moves and the chest-pain trigger does not fire. The right response is a nurse call on diet, timing of meals and the omeprazole review. Naive-model trap: a shallow model reads 'chest burning' and pages urgently, when the timing with the meal, the relief with an antacid and the flat heart rate describe reflux rather than cardiac pain.",
+   "decisive_feature": "Burning that starts 60-90 minutes after a fried supper and eases with an antacid, with no walking link and watch HR flat at 68-72 bpm.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": []
+  }
+ ],
+ "tally": {
+  "n": 11,
+  "id_range": [
+   "LX4-001",
+   "LX4-011"
+  ],
+  "routes": {
+   "silent_log": 1,
+   "nurse_task": 4,
+   "provider_task": 2,
+   "urgent_page": 4
+  },
+  "difficulty": {
+   "easy": 0,
+   "medium": 2,
+   "hard": 5,
+   "adversarial": 4
+  },
+  "hard_plus_adversarial_pct": 82,
+  "category_primary": {
+   "acs": 9,
+   "noise": 2,
+   "hf": 0,
+   "arrhythmia": 0,
+   "respiratory": 0,
+   "recovery": 0,
+   "missing_data": 0
+  },
+  "category_any": {
+   "acs": 9,
+   "noise": 2,
+   "med_change": 2
+  },
+  "hidden_hypoxemia_ids": [],
+  "subtle_deterioration_ids": [],
+  "pairs": {
+   "LX4-P01": [
+    "LX4-006",
+    "LX4-007"
+   ],
+   "LX4-P02": [
+    "LX4-004",
+    "LX4-005"
+   ]
+  },
+  "hard_trigger_ids": {
+   "HT_CHEST_PAIN_VITALS": [
+    "LX4-001",
+    "LX4-002",
+    "LX4-003",
+    "LX4-004",
+    "LX4-005",
+    "LX4-006",
+    "LX4-007",
+    "LX4-010"
+   ]
+  },
+  "trigger_tiers": {
+   "ABSOLUTE": [],
+   "CONFIRM_FIRST": [
+    "LX4-002",
+    "LX4-003",
+    "LX4-004",
+    "LX4-007"
+   ],
+   "SUPPRESSED": [
+    "LX4-001",
+    "LX4-005",
+    "LX4-006",
+    "LX4-010"
+   ],
+   "ARTIFACT": []
+  },
+  "baseline_layers": {
+   "learning_period": [],
+   "baseline_reset": [
+    "LX4-010"
+   ],
+   "drift_not_absorbed": [],
+   "hard_limit_artifact": [],
+   "hard_limit_danger": []
+  },
+  "fitzpatrick_v_vi_count": 6,
+  "module_minimums": {
+   "stable": {
+    "required": 3,
+    "actual": 3,
+    "met": true,
+    "ids": [
+     "LX4-001",
+     "LX4-006",
+     "LX4-010"
+    ]
+   },
+   "crescendo": {
+    "required": 3,
+    "actual": 3,
+    "met": true,
+    "ids": [
+     "LX4-002",
+     "LX4-003",
+     "LX4-007"
+    ]
+   },
+   "pairs": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   }
+  },
+  "all_minimums_met": true,
+  "self_check_failures_fixed": 0
+ },
+ "meta": {
+  "batch": "LX4",
+  "model": "anthropic/claude-haiku-5.5",
+  "module": "haiku",
+  "n_requested": 11,
+  "n_got": 11,
+  "split": false,
+  "id_fixes": 0
+ }
+}

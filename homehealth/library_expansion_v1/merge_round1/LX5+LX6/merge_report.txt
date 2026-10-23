@@ -1,0 +1,6 @@
+cases in: 22 | verdicts matched: 22
+accepted: 15 | graded cases where grader chose an acceptable alternate: 0
+fix_list: 7
+review_queue: 0 | reasons: ROUTE_DISAGREE=0, HARD_TRIGGER_DISPUTE=0, REJECT=0, NOVELTY_REVIEW=0, UNGRADED=0, GRADER_ROUTE_INVALID=0, CRITICAL_MISS=0, TIER_DISPUTE=0, DRIFT_MISS=0
+accepted routes: {"silent_log": 3, "provider_task": 5, "nurse_task": 4, "urgent_page": 3}
+smart triggers: {"HT_SPO2_LT88": {"fired": 10, "SUPPRESSED": 7, "CONFIRM_FIRST": 3}, "HT_VS_DANGER": {"fired": 9, "SUPPRESSED": 6, "ABSOLUTE": 3}}

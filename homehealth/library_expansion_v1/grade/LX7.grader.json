@@ -1,0 +1,1008 @@
+{
+ "batch_id": "LX7",
+ "grader": "LLM3",
+ "verdicts": [
+  {
+   "case_id": "LX7-001",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "All vital streams are stable at baseline with no monotonic drift. Minor weight fluctuations of +/- 0.3 kg are explained by the scale sitting on a bathroom rug, and the patient feels well."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Matches expected silent_log for carpet-related scale noise without vital sign drift.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX7-002",
+    "differences": [
+     "LX7-001 has stable vitals and rug-explained weight fluctuation; LX7-002 has a 7-day monotonic multi-stream drift in HR, RR, weight, steps, and SpO2 with fatigue."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[noise] Scale moved to carpeted hallway and re-zeroed Day -5, after which weight stays flat at 81.5-81.8",
+    "overlap_note": "Very close overlap with prior carpet/rug scale noise cases in do_not_repeat (also '[noise] The 2.1 kg rise occurred only while the scale sat on the bedroom rug')."
+   },
+   "score": 4,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX7-002",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "drift_not_absorbed",
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "There is a coherent 7-day monotonic drift across five streams (HR +8 bpm, RR +3/min, weight +0.8 kg, steps -800, night SpO2 -2%) in an HFpEF patient with increasing fatigue. Per policy G, slow multi-stream drift over 7 days routes to provider_task and is flagged as drift_not_absorbed."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Matches expected provider_task for multi-stream HF drift.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX7-001",
+    "differences": [
+     "Presence of coherent 7-day multi-stream drift and fatigue vs stable vitals with rug-related weight noise."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[hf] Coherent 7-day drift across weight , HR , RR , steps , and night SpO2 with",
+    "overlap_note": "Near-duplicate of multiple 7-day multi-stream HF drift cases in do_not_repeat."
+   },
+   "score": 4,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX7-003",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "A 3-minute motion-flagged watch HR spike to 110 bpm is contradicted by concurrent ring HR of 68 bpm and immediately resolves to 70 bpm after tightening the strap. With no symptoms and no medication changes, this is a cleared artifact/device disagreement routing to silent_log."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Matches expected silent_log with device_maintenance ticket.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX7-004",
+    "differences": [
+     "LX7-003 has no recent rate-control medication change (and has a motion flag/strap fix); LX7-004 has a recent beta-blocker change 3 days ago without a motion flag."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[noise] A clean repeat watch HR of 82 with no flag after strap re-seating, which supersedes the",
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX7-004",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "baseline_reset",
+    "grader_chest_pain_band": null,
+    "confidence": 0.9,
+    "reasoning": "Watch and ring HR disagree (110 vs 68 bpm) without a motion flag 3 days after starting carvedilol. Per Addendum C, device disagreement after a rate-drug dose change 'could change care' and routes to nurse_task for a manual pulse check. Note that the medication list dangerously includes both bisoprolol and carvedilol."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": false,
+    "issues": [
+     "Patient is concurrently prescribed two beta-blockers: bisoprolol 2.5 mg daily (started_day -400) AND carvedilol 6.25 mg BID (started_day -3). Dual beta-blocker therapy is a serious pharmacological error; either bisoprolol should be switched to carvedilol, or bisoprolol dose should be adjusted instead of adding carvedilol."
+    ]
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Agrees with nurse_task per Addendum C ('could change care' HR disagreement after rate-drug change).",
+    "confidence": 0.9
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX7-003",
+    "differences": [
+     "Addition/change of rate-control medication on Day -3 and absence of motion flag/strap resolution."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[hf] Watch HR 60-63 bpm against ring HR 72-75 bpm on the same mornings after carvedilol started",
+    "overlap_note": null
+   },
+   "score": 3,
+   "action": "fix",
+   "fix_instructions": [
+    "Remove duplicate beta-blocker therapy: either change the Day -3 med change to a dose increase of bisoprolol (e.g., from 2.5 mg to 5 mg daily) or indicate bisoprolol was stopped/switched to carvedilol on Day -3."
+   ]
+  },
+  {
+   "case_id": "LX7-005",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "unreliable_reading",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "An asymptomatic CGM reading of 52 mg/dL in a patient with CKD 3b on insulin glargine is explained by sensor compression and cleared by a fingerstick of 98 mg/dL within 45 minutes. Per Addendum A and 1, this triggers HT_VS_DANGER, is SUPPRESSED (unreliable_reading), and routes to nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Matches expected nurse_task per Addendum A for compression-explained asymptomatic danger low on insulin + CKD.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX7-006",
+    "differences": [
+     "LX7-005 has a single compression-explained nocturnal CGM low; LX7-006 adds a second danger-level CGM low linked to exertion within 7 days."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[hypoglycemia] A 53 mg/dL overnight CGM low on glipizide in CKD stage 4, cleared by a 97",
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX7-006",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "explained",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.94,
+    "reasoning": "In a patient with CKD 3b on insulin glargine, there are two danger-level CGM lows (<= 54 mg/dL) within 7 days, the second following heavy gardening (exertion) with a normal recheck fingerstick of 95 mg/dL. Per Addendum A, a second danger low (exertion-linked) within 7 days routes to provider_task for dose review."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Matches expected provider_task per Addendum A.",
+    "confidence": 0.94
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX7-005",
+    "differences": [
+     "Addition of a second exertion-related danger CGM low within 7 days."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[hypoglycemia] A second exertion-linked danger-level CGM low within seven days , with the same insulin doses, so",
+    "overlap_note": "Closely mirrors the prior case in do_not_repeat featuring a second exertion-linked danger CGM low within 7 days after heavy digging."
+   },
+   "score": 4,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX7-007",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "below_band_threshold",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "D",
+    "confidence": 0.98,
+    "reasoning": "Patient has stable exertional angina while walking uphill at his usual frequency, promptly relieved by GTN within 2 minutes, with normal vitals (HR 88, BP 132/78). This falls into chest pain Band D, which is SUPPRESSED (below_band_threshold) and routes to nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Matches expected nurse_task for stable exertional angina in Band D.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX7-008",
+    "differences": [
+     "LX7-007 is stable exertional angina; LX7-008 is crescendo angina progressing to rest pain with sweating."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[acs] Hill-climb tightness at his usual yearly count, eased by one spray, with peak watch HR 94",
+    "overlap_note": "Very similar to multiple stable vs crescendo angina pairs in do_not_repeat (e.g., HK5-001/002 and hill-climb tightness)."
+   },
+   "score": 4,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX7-008",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "B",
+    "confidence": 0.98,
+    "reasoning": "Crescendo angina with episodes increasing from 1 to 4 over 7 days and now occurring at rest with diaphoresis (two red flags: crescendo +1, sweating +1 -> raw D + 2 = Band B; at minimum Band C floor). Because the worsening pattern is already confirmed by the daughter's report, confirm_step is already_confirmed and it routes to urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Matches expected urgent_page for confirmed crescendo angina.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX7-007",
+    "differences": [
+     "Crescendo pattern with rest pain and sweating vs stable exertional pattern."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[acs] Crescendo exertional chest tightness progressing to rest, with normal vitals, triggering HT_CHEST_PAIN_VITALS confirmed by patient report,",
+    "overlap_note": "Near-duplicate of prior crescendo angina cases progressing from 1 to 4 episodes in do_not_repeat ('[acs] Exertional chest tightness rising from one episode on Day -6 to a fourth on Day 0')."
+   },
+   "score": 4,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX7-009",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.92,
+    "reasoning": "An 85-89F had a confirmed fall with a 20-minute floor lie and hip bruising, but got up on her own and has no acute pain or head strike. Apixaban was held 10 days ago for a colonoscopy and has not been restarted despite AFib and prior TIA, warranting same-day provider review for the fall and anticoagulation resumption."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Matches expected provider_task.",
+    "confidence": 0.92
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX7-010",
+    "differences": [
+     "LX7-009 has apixaban held since Day -10; LX7-010 has apixaban currently active."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[fall] Pair difference vs HK5-003: apixaban stopped Day -9 so the same no-head-strike floor slip falls outside",
+    "overlap_note": "Very close to HK5-003/004 and other active-vs-stopped apixaban fall pairs in do_not_repeat."
+   },
+   "score": 4,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX7-010",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_FALL_ANTICOAG",
+    "grader_trigger_tier": "ABSOLUTE",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.99,
+    "reasoning": "Confirmed fall with a 20-minute lie and hip bruising in a patient currently taking apixaban 5 mg BID. Per Addendum 2, a confirmed/reported fall on an anticoagulant triggers HT_FALL_ANTICOAG at tier ABSOLUTE and routes to urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Matches expected urgent_page for confirmed fall on apixaban.",
+    "confidence": 0.99
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX7-009",
+    "differences": [
+     "Apixaban is currently active vs held 10 days ago."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[fall] Pair difference vs HK5-004: apixaban is current at the time of the floor-level slip with a",
+    "overlap_note": "Very close to HK5-003/004 in do_not_repeat."
+   },
+   "score": 4,
+   "action": "keep",
+   "fix_instructions": []
+  }
+ ],
+ "batch_summary": {
+  "n_cases": 10,
+  "n_requested": 10,
+  "routes_actual": {
+   "silent_log": 2,
+   "nurse_task": 3,
+   "provider_task": 3,
+   "urgent_page": 2
+  },
+  "routes_requested": {
+   "silent_log": 2,
+   "nurse_task": 3,
+   "provider_task": 3,
+   "urgent_page": 2
+  },
+  "difficulty_actual": {
+   "easy": 0,
+   "medium": 0,
+   "hard": 7,
+   "adversarial": 3
+  },
+  "hard_plus_adversarial_pct": 100,
+  "minimums": {
+   "noise": {
+    "required": 6,
+    "actual": 2,
+    "met": false
+   },
+   "spo2_bias": {
+    "required": 3,
+    "actual": 0,
+    "met": false
+   },
+   "hidden_hypoxemia": {
+    "required": 2,
+    "actual": 0,
+    "met": false
+   },
+   "subtle_deterioration": {
+    "required": 4,
+    "actual": 1,
+    "met": false
+   },
+   "med_change": {
+    "required": 3,
+    "actual": 1,
+    "met": false
+   },
+   "dementia": {
+    "required": 3,
+    "actual": 0,
+    "met": false
+   },
+   "caregiver": {
+    "required": 2,
+    "actual": 0,
+    "met": false
+   },
+   "conflicting": {
+    "required": 2,
+    "actual": 0,
+    "met": false
+   },
+   "goals_of_care": {
+    "required": 2,
+    "actual": 0,
+    "met": false
+   },
+   "missing_data": {
+    "required": 1,
+    "actual": 0,
+    "met": false
+   },
+   "recovery": {
+    "required": 2,
+    "actual": 0,
+    "met": false
+   },
+   "pairs": {
+    "required": 5,
+    "actual": 5,
+    "met": true
+   }
+  },
+  "all_minimums_met": false,
+  "generator_tally_matches": true,
+  "tally_discrepancies": [],
+  "actions": {
+   "keep": 9,
+   "fix": 1,
+   "reject": 0
+  },
+  "route_disagreement_ids": [],
+  "hard_trigger_issue_ids": [],
+  "critical_miss_ids": [],
+  "drift_miss_ids": [],
+  "trigger_tier_issue_ids": [],
+  "duplicate_or_near_duplicate_ids": [
+   "LX7-001",
+   "LX7-002",
+   "LX7-006",
+   "LX7-007",
+   "LX7-008",
+   "LX7-009",
+   "LX7-010"
+  ],
+  "notes": "All 10 cases have clinically sound routing and valid pair construction that align with SMART_TRIGGERS v1.11.2. Case LX7-004 requires a simple fix because carvedilol was added without stopping existing bisoprolol (dual beta-blocker therapy). Several cases closely echo scenarios in the extensive do_not_repeat list."
+ }
+}

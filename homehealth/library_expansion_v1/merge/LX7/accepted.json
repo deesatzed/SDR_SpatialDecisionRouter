@@ -1,0 +1,883 @@
+{
+ "cases": [
+  {
+   "case_id": "LX7-001",
+   "pair_id": "LX7-P01",
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "HFpEF EF 55%",
+    "CKD 3a",
+    "hypertension"
+   ],
+   "function_baseline": "walks independently, manages own medications",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "20 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 34,
+    "sleep_h": 7.1,
+    "steps": 3200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 68.5,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 70-74, RR 14-16, night SpO2 min 92-94, steps 2900-3300, weight 68.2-68.8 (scale on bathroom rug, re-zeroed Day -5). Day 0: rest HR 73, RR 15, weight 68.4, steps 3100. No monotonic drift.",
+   "caregiver_or_nurse_note": "Daughter texted Day -1: 'Mum says she feels fine, same as always. The scale keeps jumping around on the rug but she's not worried.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "scale re-zeroed Day -5"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.5
+   },
+   "router_input": "80-84 F, lives alone, HFpEF, CKD 3a, hypertension. Meds: furosemide 40 mg daily, losartan 50 mg, atorvastatin. Devices: watch, ring, scale, bp_cuff. Baseline: rest HR 72, HRV 34 ms, sleep 7.1 h, steps 3200, night SpO2 min 93, weight 68.5 kg. Last 7 days: rest HR 70-74, RR 14-16, night SpO2 min 92-94, steps 2900-3300, weight 68.2-68.8 (scale on rug, re-zeroed Day -5). Day 0: HR 73, RR 15, weight 68.4, steps 3100. No drift. Daughter texted Day -1: feels fine, scale jumps on rug. Wear 94%, no significant gaps.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "noise"
+   ],
+   "rationale": "Weight fluctuates within 0.6 kg on a rug, HR and RR are stable, no multi-stream drift. The daughter's report confirms wellness. Naive-model trap: might interpret the weight variability as early congestion and escalate to nurse_task.",
+   "decisive_feature": "No coherent multi-stream drift; weight fluctuation explained by scale on carpet.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "grade": {
+    "score": 4,
+    "grader_route": "silent_log",
+    "grader_confidence": 0.98,
+    "batch_id": [
+     "LX7"
+    ]
+   }
+  },
+  {
+   "case_id": "LX7-002",
+   "pair_id": "LX7-P01",
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "HFpEF EF 55%",
+    "CKD 3a",
+    "hypertension"
+   ],
+   "function_baseline": "walks independently, manages own medications",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "20 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 34,
+    "sleep_h": 7.1,
+    "steps": 3200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 68.5,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7: rest HR 72, RR 14, weight 68.5, steps 3200, night SpO2 min 93. Day -5: HR 74, RR 15, weight 68.7, steps 3000. Day -3: HR 76, RR 16, weight 69.0, steps 2700. Day -1: HR 78, RR 17, weight 69.2, steps 2500. Day 0: HR 80, RR 17, weight 69.3, steps 2400, night SpO2 min 91. Monotonic upward drift in HR, RR, weight; downward in steps and night SpO2.",
+   "caregiver_or_nurse_note": "Daughter called Day 0: 'Mum's been more tired this week, sleeping longer. She says she's fine but I notice she's slower.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2
+   },
+   "router_input": "80-84 F, lives alone, HFpEF, CKD 3a, hypertension. Meds: furosemide 40 mg daily, losartan 50 mg, atorvastatin. Devices: watch, ring, scale, bp_cuff. Baseline: rest HR 72, HRV 34 ms, sleep 7.1 h, steps 3200, night SpO2 min 93, weight 68.5 kg. Last 7 days: monotonic drift: rest HR 72\u219280, RR 14\u219217, weight 68.5\u219269.3 kg, steps 3200\u21922400, night SpO2 min 93\u219291%. Day 0: HR 80, RR 17, weight 69.3, steps 2400. Daughter reports increased tiredness and slowing. Wear 93%, no gaps.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "drift_not_absorbed",
+   "chest_pain_eval": null,
+   "subtle_deterioration": true,
+   "difficulty": "hard",
+   "category": [
+    "hf"
+   ],
+   "rationale": "Coherent multi-stream drift over 7 days: HR +8, RR +3, weight +0.8 kg, steps -800, night SpO2 -2%. This meets subtle deterioration criteria, requiring provider review. Naive-model trap: might dismiss because absolute values are still within normal range and no acute symptoms.",
+   "decisive_feature": "Coherent 7-day drift in HR, RR, weight, steps, and night SpO2.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "grade": {
+    "score": 4,
+    "grader_route": "provider_task",
+    "grader_confidence": 0.95,
+    "batch_id": [
+     "LX7"
+    ]
+   }
+  },
+  {
+   "case_id": "LX7-003",
+   "pair_id": "LX7-P02",
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "AFib",
+    "hypertension",
+    "CKD 3b"
+   ],
+   "function_baseline": "independent, walks daily",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 28,
+    "sleep_h": 6.5,
+    "steps": 2800,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 82.0,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 66-70, steps 2600-3000, BP 124-130/74-78. Day 0: watch HR 68-70, ring HR 68-70, except at 14:10 watch HR 110 for 3 min while ring HR 68, motion flag on watch; after strap adjustment watch HR 70. No symptoms.",
+   "caregiver_or_nurse_note": "Spouse texted: 'His watch showed a high heart rate for a few minutes but he felt fine. I tightened the strap and it went back to normal.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 95,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [
+     "watch motion flag 14:10 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "75-79 M, lives with spouse, AFib, HTN, CKD 3b. Meds: apixaban 5 mg BID, bisoprolol 2.5 mg, ramipril 5 mg. Devices: watch, ring, bp_cuff. Baseline: rest HR 68, HRV 28 ms, steps 2800, night SpO2 min 92, weight 82 kg, SBP 128, DBP 76. Last 7 days stable. Day 0: watch HR 110 for 3 min (motion flag) while ring HR 68; after strap adjustment watch HR 70. No symptoms. Spouse tightened strap, felt fine. Wear 92%, no gaps.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "noise"
+   ],
+   "rationale": "A brief HR spike on watch with motion flag, contradicted by ring, and resolved with strap adjustment. No symptoms, no recent med changes. Naive-model trap: could trigger a nurse_task for possible arrhythmia.",
+   "decisive_feature": "Watch-ring HR disagreement without recent medication change, cleared by repeat.",
+   "expected_device_ticket": "device_maintenance",
+   "src": "library_expansion_v1",
+   "grade": {
+    "score": 5,
+    "grader_route": "silent_log",
+    "grader_confidence": 0.96,
+    "batch_id": [
+     "LX7"
+    ]
+   }
+  },
+  {
+   "case_id": "LX7-005",
+   "pair_id": "LX7-P03",
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with adult child",
+   "pmh": [
+    "type 2 diabetes",
+    "CKD 3b"
+   ],
+   "function_baseline": "ambulatory, uses walker",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "insulin glargine",
+     "dose": "20 units at bedtime",
+     "started_day": -200
+    },
+    {
+     "name": "metformin",
+     "dose": "1000 mg BID",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 30,
+    "sleep_h": 7.0,
+    "steps": 2200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 75.0,
+    "glucose_mean": 130,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "CGM mean 120-140 mg/dL. Day -1 03:00 CGM 52 mg/dL for 20 min, compression flag (slept on sensor), rose to 90. Fingerstick at 03:45: 98 mg/dL. No symptoms. Day 0: CGM 130. No other lows.",
+   "caregiver_or_nurse_note": "Daughter: 'She slept on her sensor again, but the fingerprick was fine and she felt fine.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 85,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 90,
+    "artifact_flags": [
+     "CGM compression low Day -1 03:00"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2
+   },
+   "router_input": "70-74 F, lives with adult child, type 2 diabetes, CKD 3b. Meds: insulin glargine 20 U bedtime, metformin 1000 mg BID. Devices: CGM, glucometer, watch. Baseline glucose mean 130 mg/dL. Day -1 03:00 CGM 52 mg/dL (compression flag, slept on sensor), fingerstick 98 mg/dL at 03:45, asymptomatic. Day 0 CGM 130. No other lows. Daughter confirms sensor compression, fine on fingerstick.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "provider_task"
+   ],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "unreliable_reading",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "hypoglycemia"
+   ],
+   "rationale": "Asymptomatic danger-low CGM reading explained by sensor compression, confirmed normal by fingerstick. Per policy, compression-explained low on insulin/CKD routes to nurse_task. Naive-model trap: might escalate to urgent_page due to danger value.",
+   "decisive_feature": "Single compression-explained nocturnal CGM low, cleared by fingerstick.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "grade": {
+    "score": 5,
+    "grader_route": "nurse_task",
+    "grader_confidence": 0.96,
+    "batch_id": [
+     "LX7"
+    ]
+   }
+  },
+  {
+   "case_id": "LX7-006",
+   "pair_id": "LX7-P03",
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with adult child",
+   "pmh": [
+    "type 2 diabetes",
+    "CKD 3b"
+   ],
+   "function_baseline": "ambulatory, uses walker",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "insulin glargine",
+     "dose": "20 units at bedtime",
+     "started_day": -200
+    },
+    {
+     "name": "metformin",
+     "dose": "1000 mg BID",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 30,
+    "sleep_h": 7.0,
+    "steps": 2200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 75.0,
+    "glucose_mean": 130,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "CGM mean 120-140 mg/dL. Day -3 02:00 CGM 54 mg/dL, compression flag, fingerstick 102 mg/dL, asymptomatic. Day -1 16:00 CGM 51 mg/dL after gardening (heavy digging), no compression flag, fingerstick 95 mg/dL at 16:30, asymptomatic. Day 0: CGM 128.",
+   "caregiver_or_nurse_note": "Daughter: 'She had another low yesterday after working in the garden, but the fingerprick was okay. The first one was from sleeping on it.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 85,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 90,
+    "artifact_flags": [
+     "CGM compression low Day -3 02:00"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2
+   },
+   "router_input": "70-74 F, lives with adult child, type 2 diabetes, CKD 3b. Meds: insulin glargine 20 U bedtime, metformin 1000 mg BID. Devices: CGM, glucometer, watch. Baseline glucose mean 130 mg/dL. Two danger-level CGM lows within 7 days: Day -3 02:00 54 mg/dL (compression, fingerstick 102), Day -1 16:00 51 mg/dL after gardening (no compression, fingerstick 95). Asymptomatic both times. Day 0 CGM 128.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "explained",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "hypoglycemia"
+   ],
+   "rationale": "Two danger-level CGM lows within 7 days in an insulin/CKD patient, the second exertion-related, even though fingersticks were normal. Policy dictates provider review for dose adjustment. Naive-model trap: might treat each low in isolation and dismiss as device-quality issue.",
+   "decisive_feature": "Second danger-level low within 7 days, linked to exertion.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "grade": {
+    "score": 4,
+    "grader_route": "provider_task",
+    "grader_confidence": 0.94,
+    "batch_id": [
+     "LX7"
+    ]
+   }
+  },
+  {
+   "case_id": "LX7-007",
+   "pair_id": "LX7-P04",
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "CAD",
+    "coronary stent 2 years ago"
+   ],
+   "function_baseline": "walks daily, independent",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "75 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "40 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "5 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 35,
+    "sleep_h": 7.2,
+    "steps": 3500,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 78.0,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 62-66, steps 3200-3600, no chest pain events logged. Day 0: patient reported two episodes of chest tightness while walking uphill, same as usual, relieved by GTN spray within 2 min. Watch HR during episode 88 bpm, cuff BP 132/78 after episode. No rest pain.",
+   "caregiver_or_nurse_note": "Spouse: 'He had his usual tightness on the hill today, used his spray and it went away. Nothing different.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 150,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "80-84 M, lives with spouse, CAD with stent, on aspirin 75 mg, atorvastatin 40 mg, bisoprolol 5 mg. Devices: watch, bp_cuff. Baseline: rest HR 64, steps 3500, SBP 128, DBP 76. Last 7 days stable. Day 0: two episodes of exertional chest tightness walking uphill, unchanged pattern, relieved by GTN in 2 min. Watch HR 88 during episode, BP 132/78 after. No rest pain. Spouse confirms 'same as always'.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "provider_task"
+   ],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "below_band_threshold",
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "D",
+    "raw_band": "D",
+    "modifiers": [],
+    "tier": "SUPPRESSED",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "acs"
+   ],
+   "rationale": "Stable exertional angina with normal vitals and unchanged pattern falls into band D, suppressed to nurse_task. Naive-model trap: might interpret any chest pain as urgent.",
+   "decisive_feature": "Stable angina pattern with normal vitals.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "grade": {
+    "score": 4,
+    "grader_route": "nurse_task",
+    "grader_confidence": 0.98,
+    "batch_id": [
+     "LX7"
+    ]
+   }
+  },
+  {
+   "case_id": "LX7-008",
+   "pair_id": "LX7-P04",
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "CAD",
+    "coronary stent 2 years ago"
+   ],
+   "function_baseline": "walks daily, independent",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "75 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "40 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "5 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 35,
+    "sleep_h": 7.2,
+    "steps": 3500,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 78.0,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -6: one chest tightness episode walking, relieved. Day -4: two episodes walking. Day -2: three episodes, one at rest with sweating, used GTN. Day 0: fourth episode at rest, tightness with sweating, watch HR 88, cuff BP 130/80. Daughter reports episodes increasing and now happening at rest.",
+   "caregiver_or_nurse_note": "Daughter: 'Dad's chest tightness is happening more often, and today it came on while he was just sitting. He used his spray but I'm worried it's not working like before.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 150,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "80-84 M, lives with spouse, CAD with stent, on aspirin 75 mg, atorvastatin 40 mg, bisoprolol 5 mg. Devices: watch, bp_cuff. Baseline: rest HR 64, steps 3500, SBP 128, DBP 76. Crescendo angina over 7 days: episodes increased from 1 to 4, now at rest with sweating. Day 0: rest chest tightness, HR 88, BP 130/80. Daughter confirms worsening pattern and rest pain.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "C",
+    "raw_band": "D",
+    "modifiers": [
+     "crescendo",
+     "red_flags: sweating, rest pain"
+    ],
+    "tier": "CONFIRM_FIRST",
+    "timeout_min": 15
+   },
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "acs"
+   ],
+   "rationale": "Crescendo angina with rest pain and sweating, even with normal vitals, triggers HT_CHEST_PAIN_VITALS at band C due to crescendo modifier. Patient report confirms worsening, so already_confirmed, leading to urgent_page. Naive-model trap: might dismiss because vitals are normal.",
+   "decisive_feature": "Crescendo angina pattern with rest pain, differentiating from stable angina.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "grade": {
+    "score": 4,
+    "grader_route": "urgent_page",
+    "grader_confidence": 0.98,
+    "batch_id": [
+     "LX7"
+    ]
+   }
+  },
+  {
+   "case_id": "LX7-009",
+   "pair_id": "LX7-P05",
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "AFib",
+    "osteoporosis",
+    "previous TIA"
+   ],
+   "function_baseline": "walks with cane, daughter visits daily",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "apixaban",
+     "change": "held",
+     "from_dose": "5 mg BID",
+     "to_dose": null,
+     "day": -10
+    }
+   ],
+   "devices": [
+    "watch",
+    "ring",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 26,
+    "sleep_h": 6.8,
+    "steps": 1800,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 62.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 68-72, steps 1600-2000, weight 61.8-62.2. Day 0: tripped on rug, fell, no head strike, lay on floor 20 min, got up. Watch impact at 10:15, HR 90 after. Ring steps paused. Daughter found bruise on hip.",
+   "caregiver_or_nurse_note": "Daughter: 'Mum fell this morning, she was on the floor a while but got up herself. She's bruised but says her head is fine. The blood thinner was stopped for the colonoscopy and not restarted.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 110,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "85-89 F, lives alone, AFib, osteoporosis, prior TIA. Meds: bisoprolol 2.5 mg, losartan 50 mg; apixaban held Day -10 for colonoscopy. Devices: watch, ring, scale. Baseline: rest HR 70, steps 1800, weight 62 kg. Day 0: tripped on rug, fell, no head strike, lay 20 min, got up. Watch impact, HR 90, steps paused. Daughter found hip bruise. Apixaban not restarted.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "fall"
+   ],
+   "rationale": "Fall with prolonged lie and bruising in an elderly patient, off anticoagulation but with history of TIA. Requires provider review for fall evaluation and decision on restarting anticoagulation. Naive-model trap: might treat as low-acuity because no head strike and no anticoagulant.",
+   "decisive_feature": "Apixaban held, fall with long lie.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "grade": {
+    "score": 4,
+    "grader_route": "provider_task",
+    "grader_confidence": 0.92,
+    "batch_id": [
+     "LX7"
+    ]
+   }
+  },
+  {
+   "case_id": "LX7-010",
+   "pair_id": "LX7-P05",
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "AFib",
+    "osteoporosis",
+    "previous TIA"
+   ],
+   "function_baseline": "walks with cane, daughter visits daily",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 26,
+    "sleep_h": 6.8,
+    "steps": 1800,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 62.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 68-72, steps 1600-2000, weight 61.8-62.2. Day 0: tripped on rug, fell, no head strike, lay on floor 20 min, got up. Watch impact at 10:15, HR 90 after. Ring steps paused. Daughter found bruise on hip.",
+   "caregiver_or_nurse_note": "Daughter: 'Mum fell on the rug, same as before, but she's on her blood thinner. She was on the floor about 20 minutes. She's bruised.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 110,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "85-89 F, lives alone, AFib, osteoporosis, prior TIA. Meds: apixaban 5 mg BID, bisoprolol 2.5 mg, losartan 50 mg. Devices: watch, ring, scale. Baseline: rest HR 70, steps 1800, weight 62 kg. Day 0: tripped on rug, fell, no head strike, lay 20 min, got up. Watch impact, HR 90, steps paused. Daughter found hip bruise. Apixaban current.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "fall"
+   ],
+   "rationale": "Witnessed fall on apixaban triggers HT_FALL_ANTICOAG ABSOLUTE, requiring urgent_page. Naive-model trap: might underestimate because no head strike and patient got up.",
+   "decisive_feature": "Apixaban current at time of fall.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "grade": {
+    "score": 4,
+    "grader_route": "urgent_page",
+    "grader_confidence": 0.99,
+    "batch_id": [
+     "LX7"
+    ]
+   }
+  }
+ ],
+ "provenance": {
+  "batches": [
+   "gen/LX7.batch.json"
+  ],
+  "graders": [
+   "grade/LX7.grader.json"
+  ],
+  "grader_batch_ids": [
+   "LX7"
+  ],
+  "src": "library_expansion_v1",
+  "legacy": false
+ }
+}

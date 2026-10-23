@@ -1,0 +1,2010 @@
+{
+ "batch_id": "LX3+LX4",
+ "grader": "LLM3",
+ "verdicts": [
+  {
+   "case_id": "LX3-001",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_FALL_ANTICOAG",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "explained",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "Patient on apixaban had an on-wrist impact at 07:55 with only a 4-minute step pause and resumed normal walking. Live-in aide was present (07:50-08:20) and confirmed he knocked the watch on a cupboard handle with no fall or pain. Per v1.11.2 Rule E, an explained impact on an anticoagulant with a brief pause is SUPPRESSED explained and routes to nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Matches expected route nurse_task for explained anticoagulant impact with brief pause.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX3-002",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_FALL_ANTICOAG",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "explained",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "Patient on rivaroxaban had an on-wrist impact at 14:02 with a 6-minute step pause, followed by normal steps. An in-gap text at 14:05 explained she knocked the watch on the sink tap. Per v1.11.2 Rule E, a brief pause with a clear explanation is SUPPRESSED explained -> nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Matches expected route nurse_task.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX3-003",
+    "differences": [
+     "Step pause after impact is 6 minutes (14:02 to 14:08) in LX3-002 vs 34 minutes (14:02 to 14:36) in LX3-003."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX3-003",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_FALL_ANTICOAG",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "Patient on rivaroxaban had an on-wrist impact at 14:02 followed by 34 minutes of zero steps. Per v1.11.2 Rule E, an impact + >= 30 min no movement on blood thinners must be confirmed (not explained away by a relayed excuse), making it CONFIRM_FIRST -> urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Matches expected route urgent_page for >= 30 min immobility post-impact on rivaroxaban.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX3-002",
+    "differences": [
+     "Step pause after impact is 34 minutes (14:02 to 14:36) in LX3-003 vs 6 minutes (14:02 to 14:08) in LX3-002."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX3-004",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_FALL_ANTICOAG",
+    "grader_trigger_tier": "ABSOLUTE",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 1.0,
+    "reasoning": "Spouse witnessed a bathroom fall at 19:05 on edoxaban with head strike against the bath edge, scalp laceration/lump, and new confusion. Per v1.10.3 Rule 2 and v1.11.2 Rule E, a witnessed fall with head strike on an anticoagulant is HT_FALL_ANTICOAG ABSOLUTE -> urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Matches expected route urgent_page.",
+    "confidence": 1.0
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX3-005",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_FALL_PAIN",
+    "grader_trigger_tier": "ABSOLUTE",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.99,
+    "reasoning": "Confirmed fall on kitchen floor during wheelchair transfer with severe right hip and shoulder pain and inability to bear weight on the right leg (also on rivaroxaban). Per v1.10.3 Rule 7, pain and inability to bear weight after a confirmed fall triggers HT_FALL_PAIN ABSOLUTE -> urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Matches expected route urgent_page.",
+    "confidence": 0.99
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX3-006",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_FALL_ANTICOAG",
+    "grader_trigger_tier": "ABSOLUTE",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.99,
+    "reasoning": "Reported fall on wet kitchen floor in a patient on warfarin living alone with mild dementia, with a 19-minute lie, sore left wrist, and disorientation to time. Per v1.10.3 Rule 2 and v1.11.2 Rule E, a confirmed/reported fall with pain on an anticoagulant is HT_FALL_ANTICOAG ABSOLUTE -> urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Matches expected route urgent_page.",
+    "confidence": 0.99
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX3-007",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_FALL_ANTICOAG",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.97,
+    "reasoning": "Unwitnessed on-wrist impact at 21:35 in a patient with Parkinson's on dabigatran living alone, followed by 37 minutes of zero steps. Watch prompt at 22:12 has no reply yet and patient call placed at 22:15 is currently in progress at 22:16. This is an unconfirmed fall on an anticoagulant -> HT_FALL_ANTICOAG CONFIRM_FIRST -> urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Matches expected route urgent_page.",
+    "confidence": 0.97
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX3-008",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_FALL_ANTICOAG",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "explained",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "Patient on warfarin (INR 2.4 on Day -1, therapeutic) had an impact at 15:22 followed by off-wrist status until 16:40 when the watch was found under a rug. A timed aide visit at 16:40 found her walking comfortably with no pain or injury. Per v1.10.3 Rules 2 & 8, an unwitnessed possible fall with off-wrist watch cleared by caregiver check is SUPPRESSED explained -> nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Matches expected route nurse_task.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX3-009",
+    "differences": [
+     "Day -1 visit INR is 2.4 (warfarin dose unchanged) in LX3-008 vs INR 3.8 (warfarin dose not yet reviewed) in LX3-009."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX3-009",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": "HT_FALL_ANTICOAG",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "explained",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "Same off-wrist watch event cleared by timed aide visit at 16:40 (SUPPRESSED explained), but Day -1 visit shows supratherapeutic INR of 3.8 with warfarin dose not yet reviewed. The unreviewed supratherapeutic INR requires same-day clinician medication review -> provider_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Matches expected route provider_task.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX3-008",
+    "differences": [
+     "Day -1 visit INR is 3.8 (warfarin dose not yet reviewed) in LX3-009 vs INR 2.4 (warfarin dose unchanged) in LX3-008."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX3-010",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_FALL_ANTICOAG",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "explained",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "Patient on apixaban had an on-wrist impact at 18:04 followed by a 12-minute step pause. Grandson checked him at 18:06, finding him standing with a dog lead around his ankle, no fall, and no swelling. Per v1.10.3 Rule 9, a device impact with >= 10 min pause on an anticoagulant routes to at least nurse_task (SUPPRESSED explained) even when explained away."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Matches expected route nurse_task.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX3-011",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "Patient is on aspirin 75 mg daily (antiplatelet, not an anticoagulant). On-wrist impact at 10:12 had only a 2-minute pause and neighbour confirmed a shopping bag swung into the door frame, bumping the arm with no fall or pain. No hard trigger applies; explained non-fall artifact -> silent_log."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": false,
+    "issues": [
+     "Pronoun mismatch: sex is 'M' ('Adult male' in router_input), but caregiver_or_nurse_note and router_input say 'helping her with the bags... Her arm bumped. She says nothing hurts and she walked to the kitchen herself.'"
+    ]
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Matches expected route silent_log.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 4,
+   "action": "fix",
+   "fix_instructions": [
+    "Fix pronoun mismatch in caregiver_or_nurse_note and router_input (sex is 'M' / 'Adult male', but note uses 'her'/'she'/'herself'), and fix the truncated first word in rationale (' fires because...')."
+   ]
+  },
+  {
+   "case_id": "LX4-001",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "below_band_threshold",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "D",
+    "confidence": 0.98,
+    "reasoning": "Known stable exertional angina at usual frequency (twice a week on allotment hill), lasting ~4 min and relieved within 5 min by sitting and 1 GTN spray. Onset HR 92-94 bpm (raw unbanded/D; even with rate-control modifier or post-exertion it remains Band D) and BP 132/78. Per v1.11.2 Rule F and chest pain band rules, stable exertional angina in Band D is SUPPRESSED below_band_threshold -> nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Matches expected route nurse_task.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX4-002",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "C",
+    "confidence": 0.98,
+    "reasoning": "Crescendo angina pattern: episodes increasing from 1 exertional on Day -6 to 2->3->4/day including new rest/nocturnal angina lasting up to 15 min and requiring 2 GTN sprays, confirmed by daughter's Day 0 phone check. Even with normal vitals (HR 86, BP 126/74, SpO2 96%, RR 17), crescendo angina triggers HT_CHEST_PAIN_VITALS CONFIRM_FIRST (already_confirmed) -> urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Matches expected route urgent_page.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX4-003",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "B",
+    "confidence": 0.98,
+    "reasoning": "Crescendo exertional angina: progressing from 3 min (1 spray) on Day -7 to 18 min requiring 3 sprays on Day 0, confirmed by adult child's note. Raw vitals are Band D (HR 94, BP 136/82), but two red flags (crescendo +1, persistent >= 15 min +1) raise Band D to Band B -> HT_CHEST_PAIN_VITALS CONFIRM_FIRST (already_confirmed) -> urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Matches expected route urgent_page.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX4-004",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "C",
+    "confidence": 0.96,
+    "reasoning": "Rest-onset chest tightness for 8 min in armchair with watch HR 102 bpm at onset (against baseline 72-76 bpm), no rate-control drug, no exertion. HR >= 100 reaches Band C -> HT_CHEST_PAIN_VITALS CONFIRM_FIRST (patient_call, 15 min) -> urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Matches expected route urgent_page.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX4-005",
+    "differences": [
+     "Watch HR at onset of chest tightness is 102 bpm (Band C) in LX4-004 vs 96 bpm (Band D) in LX4-005."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[acs] Watch HR 102 bpm at rest-onset chest pressure against a baseline of 74 bpm, which reaches",
+    "overlap_note": "Very close mechanism to an earlier case in do_not_repeat (HR 102 vs 96 at rest-onset chest pain against baseline 74), though framed here as a once-monthly armchair episode easing with 1 GTN spray."
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX4-005",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "below_band_threshold",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "D",
+    "confidence": 0.96,
+    "reasoning": "Familiar once-a-month chest tightness lasting 8 min, relieved by 1 GTN spray, with onset HR 96 bpm (below Band C 100 bpm threshold), BP 136/82, SpO2 97%, and no red flags or rate-control meds. Stays in Band D -> HT_CHEST_PAIN_VITALS SUPPRESSED below_band_threshold -> nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Matches expected route nurse_task.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX4-004",
+    "differences": [
+     "Watch HR at onset of chest tightness is 96 bpm (Band D) in LX4-005 vs 102 bpm (Band C) in LX4-004."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[acs] Watch HR 96 bpm at the same rest-onset chest pressure, which stays in band D below",
+    "overlap_note": "Close threshold mechanism to an earlier pair in do_not_repeat, though distinct patient context."
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX4-006",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "below_band_threshold",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "D",
+    "confidence": 0.98,
+    "reasoning": "Stable exertional angina on corridor walks at her usual frequency (2 episodes/week), lasting ~3 min, relieved rapidly by stopping and 1 GTN spray, with onset HR 94-96 bpm, BP 130/76, SpO2 95%. Vitals remain in Band D -> HT_CHEST_PAIN_VITALS SUPPRESSED below_band_threshold -> nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Matches expected route nurse_task.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX4-007",
+    "differences": [
+     "Two corridor angina episodes this week (her usual count) in LX4-006 vs four corridor episodes this week (doubled frequency, reported as worsening) in LX4-007."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX4-007",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "C",
+    "confidence": 0.98,
+    "reasoning": "Crescendo exertional angina: corridor episodes doubled in frequency from her usual 2/week to 4 this week (Day -5, -4, -2, -1), with resident reporting worsening via carer log. Per the decided crescendo rule, crescendo angina with Band D vitals is lifted to Band C -> HT_CHEST_PAIN_VITALS CONFIRM_FIRST (already_confirmed) -> urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Matches expected route urgent_page.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX4-006",
+    "differences": [
+     "Four corridor angina episodes this week (crescendo frequency, reported as worsening) in LX4-007 vs two episodes (her usual weekly count) in LX4-006."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX4-008",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "D",
+    "confidence": 0.94,
+    "reasoning": "Reproducible left rib-wall ache after lifting a heavy appliance on Day -3, provoked only by palpation/twisting and absent on walking, with flat vitals (HR 60-64, BP 124-126/76-78, steps 6400) and resolving by Day 0. No cardiac chest pain trigger -> silent_log (or nurse_task)."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Matches expected route silent_log.",
+    "confidence": 0.94
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[noise] Sharp chest-wall ache reproduced by pressing the ribs after heavy lifting on Day -3, settled by",
+    "overlap_note": "Very similar scenario to an earlier case in do_not_repeat (rib ache reproduced by pressing after heavy lifting on Day -3, settled by paracetamol)."
+   },
+   "score": 4,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX4-009",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "D",
+    "confidence": 0.92,
+    "reasoning": "Exertional stair tightness on Day -5 and Day -2 with flat onset HR (72-74 bpm vs baseline 70), no vital change, and pharmacist notes the GTN spray dispensed 40 days ago is past its labelled expiration date, has lost its sting, and now requires 2 sprays on some days. This is a medication potency/replacement question needing same-business-day provider/pharmacist action -> provider_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Matches expected route provider_task.",
+    "confidence": 0.92
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX4-010",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "below_band_threshold",
+    "grader_baseline_layer": "baseline_reset",
+    "grader_chest_pain_band": "D",
+    "confidence": 0.95,
+    "reasoning": "Metoprolol was stopped on Day -4 (relearning phase / baseline_reset), explaining the resting HR rise from 60-63 to 72-78 bpm. He had his usual once-weekly hill angina on Day -2 (onset HR 92, Band D -> SUPPRESSED below_band_threshold), plus new morning orthostatic light-headedness since stopping the beta-blocker, warranting same-day provider review -> provider_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Matches expected route provider_task.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX4-011",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "D",
+    "confidence": 0.95,
+    "reasoning": "Postprandial retrosternal burning 60-90 min after fried meals in a patient with known GERD and hiatus hernia on omeprazole, relieved by sitting up and antacids, absent on exertion, with completely flat vitals (HR 68-72, RR 14-15) and spouse requesting dietary advice. No hard trigger -> nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Matches expected route nurse_task.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  }
+ ],
+ "batch_summary": {
+  "n_cases": 22,
+  "n_requested": 22,
+  "routes_actual": {
+   "silent_log": 2,
+   "nurse_task": 8,
+   "provider_task": 3,
+   "urgent_page": 9
+  },
+  "routes_requested": {
+   "silent_log": 2,
+   "nurse_task": 8,
+   "provider_task": 3,
+   "urgent_page": 9
+  },
+  "difficulty_actual": {
+   "easy": 0,
+   "medium": 4,
+   "hard": 9,
+   "adversarial": 9
+  },
+  "hard_plus_adversarial_pct": 81.8,
+  "minimums": {
+   "LX3_explained_fall": {
+    "required": 3,
+    "actual": 5,
+    "met": true
+   },
+   "LX3_head_strike_or_pain": {
+    "required": 3,
+    "actual": 3,
+    "met": true
+   },
+   "LX3_pairs": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "LX4_stable": {
+    "required": 3,
+    "actual": 3,
+    "met": true
+   },
+   "LX4_crescendo": {
+    "required": 3,
+    "actual": 3,
+    "met": true
+   },
+   "LX4_pairs": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   }
+  },
+  "all_minimums_met": true,
+  "generator_tally_matches": true,
+  "tally_discrepancies": [],
+  "actions": {
+   "keep": 21,
+   "fix": 1,
+   "reject": 0
+  },
+  "route_disagreement_ids": [],
+  "hard_trigger_issue_ids": [],
+  "critical_miss_ids": [],
+  "drift_miss_ids": [],
+  "trigger_tier_issue_ids": [],
+  "duplicate_or_near_duplicate_ids": [],
+  "notes": "Strong clinical batch across both LX3 (falls on anticoagulants) and LX4 (chest pain banding and stable vs crescendo angina) with 100% blind route and trigger-tier agreement. Only LX3-011 needs a minor mechanical fix for a male/female pronoun mismatch in the neighbour's note and a missing leading phrase in the rationale."
+ }
+}

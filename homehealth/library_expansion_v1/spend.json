@@ -1,0 +1,10 @@
+{
+ "cap_total_usd": 3.0,
+ "gen_cap_usd": 2.7,
+ "generation_usd": 0.492,
+ "grading_usd": 1.9181,
+ "total_usd": 2.4101,
+ "calls": 18,
+ "failed_calls": 0,
+ "source": "usage.cost from OpenRouter responses (state.json)"
+}

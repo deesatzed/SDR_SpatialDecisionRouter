@@ -1,0 +1,77 @@
+rejected: none
+by src: {'LIB': 68} | by llm: {'library_expansion_v1': 68} | by prompt: {'v2.3': 68}
+routes: {'silent_log': 14, 'nurse_task': 20, 'urgent_page': 17, 'provider_task': 17} | hard_trigger: 40 | tiers: {'ABSOLUTE': 8, 'CONFIRM_FIRST': 8, 'SUPPRESSED': 24}
+runner cases: 68 | Cases_Medical rows: 68 | Outcomes rows: 68
+
+{
+ "generated": 88,
+ "graded": 88,
+ "accepted_by_merge": 75,
+ "dedupe_removed": 7,
+ "accepted_final": 68,
+ "review_queue_disputed": 5,
+ "fix_list_excluded": 8,
+ "queue_reasons": {
+  "NOVELTY_REVIEW": 1,
+  "REJECT": 4,
+  "ROUTE_DISAGREE": 1,
+  "HARD_TRIGGER_DISPUTE": 1,
+  "TIER_DISPUTE": 1
+ },
+ "routes": {
+  "silent_log": 14,
+  "nurse_task": 20,
+  "urgent_page": 17,
+  "provider_task": 17
+ },
+ "tiers": {
+  "ABSOLUTE": 8,
+  "CONFIRM_FIRST": 8,
+  "SUPPRESSED": 24
+ },
+ "by_batch_accepted": {
+  "LX2": 11,
+  "LX3": 8,
+  "LX4": 9,
+  "LX5": 11,
+  "LX6": 11,
+  "LX7": 8,
+  "LX8": 10
+ },
+ "by_batch_generated": {
+  "LX1": 12,
+  "LX2": 12,
+  "LX3": 11,
+  "LX4": 11,
+  "LX5": 11,
+  "LX6": 11,
+  "LX7": 10,
+  "LX8": 10
+ },
+ "complete_pairs": 7,
+ "hospice_goals": 2,
+ "learning_period": 0,
+ "categories": {
+  "noise": 16,
+  "respiratory": 14,
+  "hypoglycemia": 11,
+  "med_change": 10,
+  "fall": 10,
+  "acs": 8,
+  "hf": 4,
+  "spo2_bias": 3,
+  "conflicting": 3,
+  "goals_of_care": 2,
+  "hyperglycemia": 1,
+  "infection": 1,
+  "sepsis": 1,
+  "dementia": 1,
+  "renal": 1,
+  "arrhythmia": 1
+ },
+ "difficulty": {
+  "hard": 40,
+  "medium": 9,
+  "adversarial": 19
+ }
+}

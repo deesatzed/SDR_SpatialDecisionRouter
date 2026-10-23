@@ -1,0 +1,2004 @@
+{
+ "batch_id": "LX5+LX6",
+ "grader": "LLM3",
+ "verdicts": [
+  {
+   "case_id": "LX5-001",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "at_patient_baseline",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "Resting ring and fingertip SpO2 of 87% is below 88%, firing HT_SPO2_LT88, but sits inside the clinician-set target floor of 86% with nightly home oxygen in use. Under v1.11.2 Rule B, an in-band COPD reading with home oxygen prescribed and stable physiology is suppressed as at_patient_baseline and routed to silent_log."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Exact match on silent_log per v1.11.2 Rule B (inside clinician-set COPD band with home O2 prescribed).",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX5-002",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "at_patient_baseline",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "Fingertip SpO2 86% and ring SpO2 87% are below 88% (firing HT_SPO2_LT88) but sit inside his clinician-set 85-90% COPD band while nightly home oxygen is prescribed. Per v1.11.2 Rule B, in-band readings with home oxygen prescribed and no new symptoms route to silent_log."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Exact match on silent_log per v1.11.2 Rule B.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX5-003",
+    "differences": [
+     "Home oxygen 2 L/min at night prescribed in LX5-002 vs home oxygen not prescribed in LX5-003, changing the route from silent_log to provider_task."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX5-003",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "at_patient_baseline",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "Fingertip SpO2 86% and ring SpO2 87% sit inside his clinician-set 85-90% COPD band (suppressing HT_SPO2_LT88 as at_patient_baseline), but the band lower bound is <=88% and no home oxygen is prescribed. Per v1.11.2 Rule B, a low COPD band without home oxygen routes to provider_task for home oxygen evaluation."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Exact match on provider_task per v1.11.2 Rule B.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX5-002",
+    "differences": [
+     "Home oxygen not prescribed in LX5-003 vs home oxygen 2 L/min at night prescribed in LX5-002, changing the route from silent_log to provider_task."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX5-004",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "at_patient_baseline",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "Resting ring SpO2 86-87% and fingertip 87% are inside her pulmonologist-documented 84-87% band, suppressing HT_SPO2_LT88 as at_patient_baseline. Because the band lower bound is <=88% and home oxygen is not prescribed (plus mild step decline and exertional breathlessness), v1.11.2 Rule B routes to provider_task for home oxygen evaluation."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Exact match on provider_task per v1.11.2 Rule B.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX5-005",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "unreliable_reading",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "Watch resting SpO2 86% is below both 88% and his 87-91% care-plan band, firing HT_SPO2_LT88, but both readings carry a low-perfusion flag (cold wrist) and no clean repeat has been obtained. Under v1.10.3 Rule 6, an uncleared unreliable reading is suppressed as unreliable_reading and routed to nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Exact match on nurse_task for an uncleared low-perfusion flagged SpO2 reading.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX5-006",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "unreliable_reading",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "Watch SpO2 84% at 03:12 has a pressure-on-sensor flag and is cleared 9 minutes later by a clean ring reading of 90% with no symptoms. Per v1.10.3 Rule 1 and v1.11.2 Rule D, an artifact cleared by a clean repeat on a second device with no symptoms is suppressed as unreliable_reading and routed to silent_log."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Exact match on silent_log for a pressure-flagged SpO2 dip cleared by a clean ring repeat.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX5-007",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "at_patient_baseline",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "Watch resting SpO2 86-87% is below 88%, firing HT_SPO2_LT88, and sits at his 30-day baseline (night min 86%, week 86-88%), but his PMH only notes 'runs in the high 80s' without a clinician-documented band. Per v1.11.2 Rule B, a PMH-only mention is not a band and routes as SUPPRESSED at_patient_baseline to nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Exact match on nurse_task per v1.11.2 Rule B (PMH-only mention 'runs in the high 80s' is not a clinician-set band).",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX5-008",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "drift_not_absorbed",
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "Resting SpO2 is 88-89% (fingertip 88%), so HT_SPO2_LT88 does not fire, but over 7 days resting RR has drifted from 16-17 to 22/min, HR from 76-78 to 84, steps from 2400 to 1500, and night SpO2 minimum from 89% to 85% with new orthopnoea. This is a multi-stream drift (drift_not_absorbed) plus a low COPD band without home oxygen, routing to provider_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Exact match on provider_task for multi-stream respiratory drift and unprescribed home O2 in a low band.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX5-009",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "Watch resting SpO2 86% is below 88% and below his clinician-set 88-92% band, firing HT_SPO2_LT88. It is confirmed by a community nurse visit fingertip reading of 86% on a good waveform, so it is CONFIRM_FIRST (already_confirmed) and routes to urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Exact match on urgent_page for a confirmed SpO2 drop below the clinician-set band.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX5-010",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.99,
+    "reasoning": "Two fingertip oximeter readings of 83% on different fingers with good waveforms (plus watch 84%, RR 22, HR 98, and new drowsiness) are below her 85-89% band and below the 85% absolute COPD floor in v1.11.2 Rule B. HT_SPO2_LT88 is CONFIRM_FIRST (already_confirmed) and routes to urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Exact match on urgent_page for confirmed SpO2 < 85% with drowsiness.",
+    "confidence": 0.99
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX5-011",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "Two good-waveform fingertip readings of 85% (below his usual 86-88% on oxygen) with RR 28/min and acute distressing orthopnoea/gasping fire HT_SPO2_LT88 (CONFIRM_FIRST, already_confirmed). Under v1.6 hospice narrowing, distressing breathlessness treatable at home (opioid, O2, positioning) is not suppressed by goals_of_care and pages the hospice nurse urgently (urgent_page, escalation_target: hospice_nurse)."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Exact match on urgent_page (escalation_target: hospice_nurse) per v1.6 hospice comfort rule.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX6-001",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "unreliable_reading",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "Overnight CGM dipped to 53 mg/dL (<=54 danger threshold, firing HT_VS_DANGER) in a patient on glipizide with CKD stage 4, but was cleared 12 minutes later by a normal fingerstick of 97 mg/dL with no symptoms and no sensor-pressure flag. Per v1.11.2 Rule A, an unexplained asymptomatic danger low on sulfonylurea + CKD with a normal recheck is SUPPRESSED (unreliable_reading) and routed to provider_task for same-day dose review."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Exact match on provider_task per v1.11.2 Rule A.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX6-002",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "explained",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "CGM dropped to 50 mg/dL on insulin degludec in CKD stage 3b, firing HT_VS_DANGER, but occurred during a logged sensor-side pressure flag while sleeping on the sensor leg and was cleared by a 98 mg/dL fingerstick with no symptoms. Per v1.11.2 Rule A, an asymptomatic danger low on CKD + insulin explained by sensor compression routes to nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Exact match on nurse_task per v1.11.2 Rule A (compression-explained low in CKD + insulin).",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX6-003",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "explained",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "CGM reached 52 mg/dL on Day -1 after heavy allotment digging (9400 steps vs 4200 baseline) in an insulin-treated CKD 3b patient, with no symptoms and a normal 88 mg/dL fingerstick recheck after a biscuit, and no other lows in the past 30 days. Per v1.11.2 Rule A, a single asymptomatic danger low on CKD + insulin explained by recent exertion is SUPPRESSED (explained) and routed to nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Exact match on nurse_task per v1.11.2 Rule A (first exertion-explained low in CKD + insulin).",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX6-004",
+    "differences": [
+     "No prior CGM low in the preceding 30 days in LX6-003 vs a prior exertion-related CGM low of 53 mg/dL on Day -5 in LX6-004, changing the route from nurse_task to provider_task."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX6-004",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "explained",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "This is the second exertion-explained CGM danger low (53 mg/dL on Day -5 and 52 mg/dL on Day -1) within 7 days in an insulin-treated CKD 3b patient, both with normal fingerstick rechecks after carbs. Per v1.11.2 Rule A, a second exertion low within 7 days on CKD + insulin escalates from nurse_task to provider_task for dose review."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": [
+     "caregiver_or_nurse_note states 'Patient diary Day -5: Two hours digging, had a shaky spell, juice, fine', which contradicts trend_last_7d and router_input ('CGM 53 mg/dL at 15:30 with no symptoms reported') and introduces a second minor difference from pair partner LX6-003."
+    ]
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Exact match on provider_task per v1.11.2 Rule A (second exertion low within 7 days).",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX6-003",
+    "differences": [
+     "Addition of a prior exertion-related CGM low (53 mg/dL) on Day -5 in LX6-004 vs no prior low in LX6-003, changing the route from nurse_task to provider_task."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 4,
+   "action": "keep",
+   "fix_instructions": [
+    "Optional polish: in caregiver_or_nurse_note, change 'had a shaky spell' to 'felt fine after juice' so it matches 'no symptoms reported' in trend_last_7d and router_input."
+   ]
+  },
+  {
+   "case_id": "LX6-005",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "ABSOLUTE",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "hard_limit_danger",
+    "grader_chest_pain_band": null,
+    "confidence": 1.0,
+    "reasoning": "CGM 47 mg/dL and glucometer 45 mg/dL on insulin glargine in a haemodialysis patient with sweating, slurred speech, only answering to her name, and HR rising to 112 bpm. Per v1.11.2 Rule A, a symptomatic danger low (<=54 mg/dL) on insulin is HT_VS_DANGER ABSOLUTE and routes to urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Exact match on urgent_page for a symptomatic meter-confirmed danger low on insulin.",
+    "confidence": 1.0
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX6-006",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "ABSOLUTE",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "hard_limit_danger",
+    "grader_chest_pain_band": null,
+    "confidence": 1.0,
+    "reasoning": "CGM 49 mg/dL and glucometer 47 mg/dL on insulin glargine with sweating, confusion, and tachycardia in a hospice patient. Per v1.7 and v1.11.2 Rule A, a symptomatic danger-level drug low is an urgent treatable comfort problem that is never suppressed by goals of care: HT_VS_DANGER ABSOLUTE, routing to urgent_page with escalation_target hospice_nurse."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Exact match on urgent_page (escalation_target: hospice_nurse) per v1.11.2 Rule A.",
+    "confidence": 1.0
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX6-007",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "On Day -2 the patient had an asymptomatic overnight CGM low of 50-53 mg/dL (glucometer 61 mg/dL) on gliclazide in CKD stage 3b, which recovered after glucose tablets and has remained stable at 112-124 mg/dL on Day -1 and Day 0. Per v1.11.2 Rule A, a recovered asymptomatic drug low on CKD 2-3 days ago (Day -3..-2) requires a same-business-day dose review (provider_task)."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Exact match on provider_task per v1.11.2 Rule A (recovered asymptomatic drug low on CKD on Day -2).",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX6-008",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "explained",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "CGM dipped to 52-54 mg/dL on Day -1 in a CKD stage 4 patient on insulin glargine, firing HT_VS_DANGER, but occurred during a sensor-side pressure flag when the live-in carer found her lying on the hip sensor, and a fingerstick 14 minutes later was 96 mg/dL with no symptoms. Per v1.11.2 Rule A, an asymptomatic danger low in CKD + insulin explained by sensor compression is SUPPRESSED (explained) and routed to nurse_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Exact match on nurse_task per v1.11.2 Rule A.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX6-009",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "unreliable_reading",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.99,
+    "reasoning": "CGM dipped to 51-53 mg/dL during a sensor-temperature out-of-range notice right after a sauna visit in a patient taking no glucose-lowering medications, and was cleared 11 minutes later by a 104 mg/dL fingerstick with no symptoms. Per v1.10.3 Rule 1, a cleared artifact with no symptoms (and not on insulin/sulfonylurea with CKD) is SUPPRESSED (unreliable_reading) and routed to silent_log."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Exact match on silent_log per v1.10.3 Rule 1.",
+    "confidence": 0.99
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX6-010",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "Following an increase in premixed insulin 30/70 from 16 to 20 units BID on Day -4, overnight CGM has run 63-68 mg/dL (nadir 63 mg/dL) for three consecutive nights without symptoms or values <=54 mg/dL. No hard trigger fires, but recurrent nocturnal Level 1 hypoglycaemia after an insulin dose increase requires same-day clinician review (provider_task)."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Exact match on provider_task for recurrent nocturnal Level 1 hypoglycaemia after a recent insulin dose increase.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX6-011",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "ABSOLUTE",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "hard_limit_danger",
+    "grader_chest_pain_band": null,
+    "confidence": 1.0,
+    "reasoning": "CGM 46 mg/dL and glucometer 44 mg/dL after a full mealtime lispro dose with only half a sandwich eaten, accompanied by pallor, sweating, slurred speech, and HR rising to 118 bpm. Per v1.11.2 Rule A, a symptomatic confirmed danger low (<=54 mg/dL) on insulin is HT_VS_DANGER ABSOLUTE and routes to urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Exact match on urgent_page for a symptomatic meter-confirmed danger low on insulin.",
+    "confidence": 1.0
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  }
+ ],
+ "batch_summary": {
+  "n_cases": 22,
+  "n_requested": 22,
+  "routes_actual": {
+   "silent_log": 4,
+   "nurse_task": 5,
+   "provider_task": 7,
+   "urgent_page": 6
+  },
+  "routes_requested": {
+   "silent_log": 4,
+   "nurse_task": 5,
+   "provider_task": 7,
+   "urgent_page": 6
+  },
+  "difficulty_actual": {
+   "easy": 0,
+   "medium": 3,
+   "hard": 11,
+   "adversarial": 8
+  },
+  "hard_plus_adversarial_pct": 86.4,
+  "minimums": {
+   "band_o2": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "band_no_o2": {
+    "required": 2,
+    "actual": 3,
+    "met": true
+   },
+   "below_band": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "ckd_low": {
+    "required": 8,
+    "actual": 8,
+    "met": true
+   },
+   "compression": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "exertion": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   }
+  },
+  "all_minimums_met": true,
+  "generator_tally_matches": false,
+  "tally_discrepancies": [
+   "LX6 tally.category_any.med_change reports 1, but actual count of cases with 'med_change' in category is 3 (LX6-003, LX6-004, LX6-010)."
+  ],
+  "actions": {
+   "keep": 22,
+   "fix": 0,
+   "reject": 0
+  },
+  "route_disagreement_ids": [],
+  "hard_trigger_issue_ids": [],
+  "critical_miss_ids": [],
+  "drift_miss_ids": [],
+  "trigger_tier_issue_ids": [],
+  "duplicate_or_near_duplicate_ids": [],
+  "notes": "Excellent batch across both LX5 (COPD clinician-set SpO2 bands) and LX6 (drug-induced hypoglycaemia in CKD) with 100% blind route and trigger-tier agreement (22/22 keep). Only a minor tally discrepancy in LX6 category_any.med_change (reported 1 vs actual 3) and a minor wording note in LX6-004 caregiver_or_nurse_note were observed."
+ }
+}

@@ -1,0 +1,96 @@
+[
+ {
+  "case_id": "LX1-001",
+  "library_match": "HV6-007",
+  "jaccard_decisive": 0.382,
+  "jaccard_text": 0.406,
+  "story_match": [
+   "HV6-007",
+   3,
+   [
+    "chest pain or",
+    "or trouble breathing",
+    "pain or trouble"
+   ]
+  ],
+  "idioms": []
+ },
+ {
+  "case_id": "LX2-005",
+  "library_match": "HX4-002",
+  "jaccard_decisive": 0.385,
+  "jaccard_text": 0.237,
+  "story_match": [
+   "HO5-005",
+   3,
+   [
+    "no worse than",
+    "says her breathing",
+    "worse than usual"
+   ]
+  ],
+  "idioms": []
+ },
+ {
+  "case_id": "LX3-002",
+  "library_match": "HO10-007",
+  "jaccard_decisive": 0.029,
+  "jaccard_text": 0.256,
+  "story_match": null,
+  "idioms": [
+   "knocked the watch on the sink"
+  ]
+ },
+ {
+  "case_id": "LX3-003",
+  "library_match": "HO10-007",
+  "jaccard_decisive": 0.0,
+  "jaccard_text": 0.253,
+  "story_match": null,
+  "idioms": [
+   "knocked the watch on the sink"
+  ]
+ },
+ {
+  "case_id": "LX4-002",
+  "library_match": "HX2-005",
+  "jaccard_decisive": 0.118,
+  "jaccard_text": 0.333,
+  "story_match": [
+   "AC1-002",
+   4,
+   [
+    "coming more often",
+    "is coming more",
+    "says the tightness",
+    "tightness is coming"
+   ]
+  ],
+  "idioms": []
+ },
+ {
+  "case_id": "LX4-004",
+  "library_match": "HO4-005",
+  "jaccard_decisive": 0.55,
+  "jaccard_text": 0.221,
+  "story_match": null,
+  "idioms": []
+ },
+ {
+  "case_id": "LX7-008",
+  "library_match": "HX8-004",
+  "jaccard_decisive": 0.429,
+  "jaccard_text": 0.317,
+  "story_match": [
+   "HX8-004",
+   4,
+   [
+    "chest tightness is",
+    "happening more often",
+    "is happening more",
+    "tightness is happening"
+   ]
+  ],
+  "idioms": []
+ }
+]

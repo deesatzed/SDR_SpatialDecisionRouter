@@ -1,0 +1,2278 @@
+{
+ "batch_id": "LX1+LX2",
+ "grader": "LLM3",
+ "verdicts": [
+  {
+   "case_id": "LX1-001",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "drift_not_absorbed",
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "The patient with HFpEF shows a 7-day monotonic multi-stream drift across resting HR (+12 bpm), RR (+3/min), weight (+1.2 kg), steps (-800), and SBP (+12 mmHg), accompanied by ankle swelling and increased fatigue. There is no hard trigger, but this coherent early HF decompensation pattern requires same-day provider review for diuretic adjustment."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Multi-stream drift over 7 days with peripheral edema in HFpEF meets rule G for same-day provider review.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[hf] Monotonic drift in HR , RR , weight , and SBP with symptoms over 8 days",
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX1-002",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "baseline_reset",
+    "grader_chest_pain_band": null,
+    "confidence": 0.9,
+    "reasoning": "Empagliflozin was started 5 days ago, and the 1.2 kg weight loss and glucose decline from 132 to 115 mg/dL are expected pharmacologic effects with stable vitals and no adverse symptoms. This represents a condition-change relearning/reset, appropriate for routine nurse follow-up or silent logging."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Expected weight and glucose decline after SGLT2i start is benign; nurse_task or silent_log is appropriate.",
+    "confidence": 0.9
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[recovery] SGLT2 inhibitor started six days ago with expected 1.2 kg weight loss and glucose decline, stable",
+    "overlap_note": "Near-exact duplicate of several do_not_repeat entries (e.g., '[recovery] SGLT2 inhibitor started six days ago with expected 1.2 kg weight loss and glucose decline, stable' and '[med_change] New SGLT2 inhibitor with expected mild changes and no adverse effects warrants routine nurse follow-up')."
+   },
+   "score": 0,
+   "action": "reject",
+   "fix_instructions": [
+    "Reject and replace: this case duplicates multiple existing do_not_repeat cases featuring an SGLT2 inhibitor start with expected ~1.2 kg weight loss and glucose decline."
+   ]
+  },
+  {
+   "case_id": "LX1-003",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "Watch steps rose from 3000 to 5400 starting after a firmware update on Day -5, while ring steps stayed flat at 2900-3100 and the patient reports no change in walking. All other vitals are stable, confirming a watch step-counting artifact that requires only silent logging."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Firmware-induced step overcount on watch contradicted by ring and patient report is noise -> silent_log.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": false,
+    "partner_id": "LX1-004",
+    "differences": [
+     "Removed ring from devices and trend",
+     "Removed firmware 4.2 update on Day -5 from trend and artifact_flags",
+     "Changed caregiver note from Home aide to Daughter"
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[noise] Firmware update caused watch step overcount, ring steps unchanged",
+    "overlap_note": "Duplicates do_not_repeat entry '[noise] Firmware update caused watch step overcount, ring steps unchanged'."
+   },
+   "score": 0,
+   "action": "reject",
+   "fix_instructions": [
+    "Reject: duplicates do_not_repeat ('[noise] Firmware update caused watch step overcount, ring steps unchanged') and has a broken pair with LX1-004 (differs in multiple facts: both the ring device and the firmware update were removed, and the partner route in LX1-004 violates rule G)."
+   ]
+  },
+  {
+   "case_id": "LX1-004",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.85,
+    "reasoning": "Watch steps increased from 3000 to 5500 over 7 days while HR, weight, and BP remained completely flat and the daughter confirms the patient is walking the same as always. Per SMART_TRIGGERS v1.11.2 rule G, a single noisy stream alone with no acute signs routes to silent_log or nurse_task, not provider_task."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "disagree",
+    "grader_route": "silent_log",
+    "reasoning": "Rule G explicitly states 'a single noisy stream alone -> silent_log or nurse_task'. Routing an isolated watch step-count increase in an asymptomatic patient (whose daughter confirms no change in walking and whose HR/BP/weight are flat) to provider_task is over-escalation.",
+    "confidence": 0.85
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": false,
+    "partner_id": "LX1-003",
+    "differences": [
+     "Removed ring device",
+     "Removed firmware 4.2 update on Day -5",
+     "Changed caregiver from Home aide to Daughter"
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 2,
+   "action": "reject",
+   "fix_instructions": [
+    "Reject: partner LX1-003 is a duplicate of do_not_repeat, the pair differs in more than one decisive fact (both ring and firmware update removed), and routing a single noisy step stream to provider_task contradicts SMART_TRIGGERS v1.11.2 rule G ('a single noisy stream alone -> silent_log or nurse_task')."
+   ]
+  },
+  {
+   "case_id": "LX1-005",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "The patient with COPD and HFpEF has a 7-day decline in wrist SpO2 (93% to 89%) and rising RR (19 to 24) and HR (78 to 98), culminating in a reliable fingertip SpO2 of 86% on Day 0 with severe dyspnea (speaking in short sentences). This fires HT_SPO2_LT88 as CONFIRM_FIRST (already_confirmed by fingertip) and requires an urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": false,
+    "issues": [
+     "router_input contains answer fields at the end: 'Hard trigger HT_SPO2_LT88, confirmed.'"
+    ]
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Confirmed fingertip SpO2 86% with severe dyspnea triggers HT_SPO2_LT88 (already_confirmed) -> urgent_page.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[respiratory] two confirmed fingertip SpO2 86% with acute dyspnoea",
+    "overlap_note": null
+   },
+   "score": 3,
+   "action": "fix",
+   "fix_instructions": [
+    "Remove answer-field leak 'Hard trigger HT_SPO2_LT88, confirmed.' from the end of router_input."
+   ]
+  },
+  {
+   "case_id": "LX1-006",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "C",
+    "confidence": 0.98,
+    "reasoning": "The patient with prior coronary stenting reports crescendo angina (exertional chest tightness increasing from weekly to daily, now occurring at rest for 10 minutes) despite normal vitals. Under the decided rule for crescendo angina with normal vitals, this triggers HT_CHEST_PAIN_VITALS at band C (CONFIRM_FIRST, already_confirmed via patient report) and routes to urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": false,
+    "issues": [
+     "trend_last_7d states 'No ECG change', implying an ECG strip was checked, or it is an inferred negative; if watch ECG was checked, clarify, otherwise omit."
+    ]
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": false,
+    "issues": [
+     "router_input contains answer-field leak at the end: 'Hard trigger HT_CHEST_PAIN_VITALS, crescendo confirmed.'",
+     "router_input omits 'scale' from the devices list."
+    ]
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Crescendo angina progressing to rest pain triggers HT_CHEST_PAIN_VITALS (band C, CONFIRM_FIRST, already_confirmed) -> urgent_page.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[acs] Exertional chest tightness rising from one episode on Day -6 to a fourth on Day 0,",
+    "overlap_note": null
+   },
+   "score": 3,
+   "action": "fix",
+   "fix_instructions": [
+    "Remove 'Hard trigger HT_CHEST_PAIN_VITALS, crescendo confirmed.' from router_input.",
+    "Include 'scale' in router_input devices list."
+   ]
+  },
+  {
+   "case_id": "LX1-007",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "drift_not_absorbed",
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "An 80-84F with HFpEF has a 7-day monotonic drift in weight (+1.8 kg), resting HR (+12 bpm), RR (+4/min), steps (-1300), and night SpO2 (-3%), with puffy ankles and fatigue reported by her daughter. This multi-stream subtle deterioration requires same-day provider review."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": false,
+    "issues": [
+     "router_input ends with a truncated/garbled fragment from answer-field scrubbing: 'No acute symptoms; fired.'"
+    ]
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Multi-stream 7-day HF drift with peripheral edema and fatigue warrants provider_task.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "Within-batch near-duplicate of LX1-001",
+    "overlap_note": "Near-duplicate of LX1-001 in the same batch: both are 80-84F living alone with PMH ['HFpEF', 'HTN', 'CKD 3a'] on furosemide 40 mg + lisinopril 10 mg, walking with a cane, presenting with a 7-day monotonic drift in HR (+12 bpm), RR (+3-4/min), weight (+1.2 to +1.8 kg), and steps, plus a daughter's text reporting puffy ankles and fatigue/slowing down."
+   },
+   "score": 2,
+   "action": "reject",
+   "fix_instructions": [
+    "Reject and replace: LX1-007 is a within-batch near-duplicate of LX1-001 (same age/sex/living, same PMH of HFpEF + HTN + CKD 3a, same meds, same daughter text about puffy ankles and fatigue, same 7-day multi-stream drift). Also clean up truncated text in router_input and rationale."
+   ]
+  },
+  {
+   "case_id": "LX1-008",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "Watch resting HR drifted from 68 to 92 bpm after a watch band replacement on Day -7, while ring resting HR stayed flat at 68-69 bpm and manual pulse is normal with no symptoms. Under SMART_TRIGGERS v1.11.2 rule C, a two-device HR disagreement > 10 bpm with no acute signs and no recent med change routes to silent_log with a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": false,
+    "issues": [
+     "router_input includes policy-summary wording at the end: 'Device disagreement (HR difference >10 bpm) with no acute signs.'"
+    ]
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Device disagreement (watch vs ring HR > 10 bpm after band replacement) with no acute symptoms -> silent_log + device_maintenance ticket per rule C.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[noise] Watch-only resting HR offset of 7-9 bpm over the ring starting with a band replacement on",
+    "overlap_note": "Very close to '[noise] Watch-only resting HR offset of 7-9 bpm over the ring starting with a band replacement on', though here it is framed as a progressive 7-day drift (68 to 92 bpm) to test rule C (>10 bpm disagreement)."
+   },
+   "score": 3,
+   "action": "fix",
+   "fix_instructions": [
+    "Remove the policy-rule annotation 'Device disagreement (HR difference >10 bpm) with no acute signs.' from the end of router_input."
+   ]
+  },
+  {
+   "case_id": "LX1-009",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.85,
+    "reasoning": "Steps doubled from 3000 to 6000 over 7 days after starting a daily morning walk with a neighbor, while resting HR rose from 75 to 85 bpm and weight, sleep, and SpO2 stayed stable. The patient feels great, so this is an explained, benign activity-related shift suitable for routine nurse follow-up or silent log."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": false,
+    "issues": [
+     "Starting a daily morning walk typically lowers or maintains true resting HR rather than causing true resting HR to climb monotonically from 75 to 85 bpm (+10 bpm) over 7 days (unless the metric is daytime average HR rather than resting HR, or the patient is overexerting/dehydrated)."
+    ]
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": false,
+    "issues": [
+     "router_input ends with a trailing comma and truncated sentence: 'No other symptoms,'"
+    ]
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Explained shift from new walking routine with no symptoms -> nurse_task (or silent_log).",
+    "confidence": 0.85
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 3,
+   "action": "fix",
+   "fix_instructions": [
+    "Fix the truncated ending in router_input ('No other symptoms,').",
+    "Clarify in trend_last_7d/caregiver_or_nurse_note that the watch/ring HR rise reflects daytime/post-walk HR or mild mild fluid/recovery lag from doubling her walking distance, as true resting HR rarely rises +10 bpm monotonically from a gentle morning walk."
+   ]
+  },
+  {
+   "case_id": "LX1-010",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "learning_period",
+    "grader_chest_pain_band": null,
+    "confidence": 0.92,
+    "reasoning": "Discharged 10 days ago for HF exacerbation and currently on monitoring day 5 (learning period), this HFrEF patient shows a 7-day monotonic worsening in weight (+1.3 kg), rest HR (72 to 88 bpm), RR (16 to 22/min), steps (2400 to 1500), and night SpO2 (94% to 90%), with new dyspnea walking to the bathroom and swollen feet. This post-discharge HF re-accumulation requires same-day provider review."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": false,
+    "issues": [
+     "Timeline contradiction: baseline_status.monitoring_day is 5 ('Monitoring day 5 post-discharge'), yet discharge.day is -10 and trend_last_7d has 8 days of continuous wearable data (Day -7 to Day 0), and baseline_30d has established 30-day wearable baselines."
+    ]
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": false,
+    "issues": [
+     "router_input ends with a truncated fragment: '; no own post-discharge baseline learned yet. (SpO2 >88%).'"
+    ]
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": false,
+    "found": [
+     "Mr. J."
+    ]
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Multi-stream worsening with dyspnea and edema post-HF discharge requires provider_task.",
+    "confidence": 0.92
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[subtle_deterioration] Learning-period drift in HR , RR , weight , and steps without a hard trigger prompts",
+    "overlap_note": "Overlaps closely with '[subtle_deterioration] Learning-period drift in HR , RR , weight , and steps without a hard trigger prompts'."
+   },
+   "score": 2,
+   "action": "fix",
+   "fix_instructions": [
+    "Remove 'Mr. J.' from caregiver_or_nurse_note (no names/initials allowed).",
+    "Fix timeline contradiction: if monitoring_day is 5 in the learning phase, trend_last_7d cannot have 8 days of wearable data (Day -7 to Day 0) and discharge cannot be Day -10 if Day 0 is day 5 post-discharge (or set phase to 'relearning' after Day -10 hospitalization with monitoring_day >= 90).",
+    "Fix truncated sentences in router_input and decisive_feature."
+   ]
+  },
+  {
+   "case_id": "LX1-011",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "ABSOLUTE",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "hard_limit_danger",
+    "grader_chest_pain_band": null,
+    "confidence": 0.99,
+    "reasoning": "Following a 7-day deterioration in HR, RR, night SpO2, and steps, the patient has two reliable resting fingertip SpO2 readings of 79% on good waveform with severe dyspnea at rest. SpO2 <= 80% triggers HT_VS_DANGER as ABSOLUTE (hard_limit_danger) and requires an immediate urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": false,
+    "issues": [
+     "router_input contains answer/rule leak at the end: 'Reliable reading below danger limit (SpO2 <=80%).'"
+    ]
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Reliable fingertip SpO2 79% <= 80% fires HT_VS_DANGER ABSOLUTE -> urgent_page.",
+    "confidence": 0.99
+   },
+   "hard_trigger_correct": {
+    "ok": false,
+    "suggested_rule": "HT_VS_DANGER",
+    "issue": "For an ABSOLUTE trigger (HT_VS_DANGER), confirm_step must be null, not 'already_confirmed'."
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": false,
+    "suggested_tier": "ABSOLUTE",
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": "confirm_step is set to 'already_confirmed' on an ABSOLUTE trigger; ABSOLUTE triggers must have confirm_step: null."
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[respiratory] Reliable fingertip 79% at 13:40 is below the 80% danger line, regardless of his usual 90%",
+    "overlap_note": "Near-duplicate of do_not_repeat entry '[respiratory] Reliable fingertip 79% at 13:40 is below the 80% danger line, regardless of his usual 90%' (even uses the exact same '79% at 13:40' timestamp and 90% baseline)."
+   },
+   "score": 0,
+   "action": "reject",
+   "fix_instructions": [
+    "Reject and replace: duplicates do_not_repeat entry '[respiratory] Reliable fingertip 79% at 13:40 is below the 80% danger line, regardless of his usual 90%' (identical 79% reading at 13:40 against a 90% baseline)."
+   ]
+  },
+  {
+   "case_id": "LX1-012",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "After a ring replacement on Day -6, ring skin temperature deviation stepped down by -0.5 to -0.6 C and remained flat there, while oral thermometer readings stayed normal at 36.5-36.6 C and HR, steps, and weight were unchanged. This is a calibration offset from the replacement ring and requires only silent_log with a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": false,
+    "issues": [
+     "router_input ends with a trailing comma and truncated sentence: 'No symptoms,'",
+     "router_input states 'Baseline: ... oral temp 36.6\u00b0C', which is from Day -7 trend rather than baseline_30d."
+    ]
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Static ring skin-temp offset after ring replacement with normal oral temperatures and stable vitals -> silent_log + device_maintenance ticket.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[noise] Watch moved from the right wrist to the left on Day -6, stepping skin-temperature deviation down",
+    "overlap_note": null
+   },
+   "score": 4,
+   "action": "fix",
+   "fix_instructions": [
+    "Fix the truncated ending in router_input ('No symptoms,')."
+   ]
+  },
+  {
+   "case_id": "LX2-001",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "Watch HRV stepped down to 22-25 ms following a watch app update on Day -9 that changed its HRV calculation method, while ring HRV remained at her 36-40 ms baseline and resting HR, steps, SpO2, and BP are all stable. With no symptoms, this two-device algorithmic discrepancy routes to silent_log with a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "App-update HRV method change on watch contradicted by stable ring HRV and clinical stability -> silent_log + device_maintenance ticket.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX2-002",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "Watch resting wrist SpO2 reads 91-92% while paired fingertip oximeter readings within 5 minutes consistently read 95-96% in an asymptomatic man with Fitzpatrick V-VI skin and stable HR, RR, and steps. Per SMART_TRIGGERS v1.11.2 rule C, wrist vs finger SpO2 disagreement > 2 points with no acute signs routes to silent_log with a supply_reference_oximeter_and_baseline ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Wrist SpO2 91-92% vs paired fingertip 95-96% (>2 points disagreement) with no symptoms -> silent_log + supply_reference_oximeter_and_baseline per rule C.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[noise] Wrist SpO2 91-92% conflicts with ring SpO2 94-95% in dark skin with no fingertip check, but",
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX2-003",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "Three days after starting carvedilol 3.125 mg BID in an HFrEF patient, watch resting HR reads 60-63 bpm while ring resting HR reads 72-75 bpm (an 11-13 bpm discrepancy), with stable BP/weight and no dizziness. Under SMART_TRIGGERS v1.11.2 rule C, an HR disagreement > 10 bpm after a rate-drug change is a 'could change care' variant requiring nurse_task (for a manual pulse check) and a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Rule C 'could change care' variant: HR disagreement > 10 bpm after starting carvedilol -> nurse_task (manual pulse check) + device_maintenance ticket.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX2-004",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.92,
+    "reasoning": "Six days after increasing bedtime insulin glargine from 16 to 18 units, morning CGM values run 20-25 mg/dL higher than concurrent morning fingerstick glucometer checks (118-124 mg/dL), and the patient is unsure whether to adjust her insulin. Because this two-device disagreement affects an active insulin titration decision with no acute hypo/hyperglycemia, it routes to nurse_task with a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "CGM vs glucometer offset after recent glargine dose increase where patient asks about dose adjustment ('could change care' variant) -> nurse_task + device_maintenance ticket.",
+    "confidence": 0.92
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX2-005",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "at_patient_baseline",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "A reliable seated fingertip SpO2 of 87% fires HT_SPO2_LT88, while the watch reads 91%. Because the patient has a clinician-documented COPD resting SpO2 band of 86-89% and no acute symptoms, the trigger is SUPPRESSED as at_patient_baseline; however, per SMART_TRIGGERS v1.11.2 rule B, a reading inside a low COPD band (lower bound <= 88%) WITHOUT home oxygen prescribed routes to provider_task to evaluate for home oxygen."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Fingertip 87% is inside the clinician-set 86-89% band (SUPPRESSED at_patient_baseline), and because no home oxygen is prescribed, rule B routes to provider_task.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[respiratory] Fingertip 87% sits inside her clinician-documented 86-88% COPD resting band, so the sub-88 trigger is at",
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX2-006",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "A single elevated BP cuff reading of 164/98 when the cuff pinched was repeated 11 minutes later after re-seating and 5 minutes of rest, reading 129/81 with no symptoms. Per SMART_TRIGGERS v1.11.2 rule D, a single odd BP cuff reading repeated within 15 minutes with SBP 90-180 and no symptoms routes to silent_log."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Single odd BP cuff reading (164/98) cleared by a repeat within 15 min (129/81) and no symptoms -> silent_log per rule D.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX2-007",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "In a woman with prediabetes on metformin monotherapy, CGM readings consistently sit 18-22 mg/dL above simultaneous glucometer checks (118-126 vs 98-104 mg/dL) with no symptoms and stable activity. Since no insulin or sulfonylurea dose decision depends on this static calibration offset, it routes to silent_log with a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Static CGM vs glucometer offset on metformin monotherapy with no acute signs and no care-changing titration -> silent_log + device_maintenance ticket.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX2-008",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "ABSOLUTE",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "hard_limit_danger",
+    "grader_chest_pain_band": null,
+    "confidence": 0.99,
+    "reasoning": "Despite a lagging CGM reading of 96 mg/dL at 03:00, the patient on glargine and aspart had a fingerstick glucometer reading of 47 mg/dL at 03:14 with diaphoresis, pallor, tachycardia (HR 108), and confusion ('only answering to his name'). Per SMART_TRIGGERS v1.11.2 rule A, glucose <= 54 mg/dL on insulin with symptoms fires HT_VS_DANGER as ABSOLUTE and requires an immediate urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Symptomatic glucometer-confirmed 47 mg/dL on insulin fires HT_VS_DANGER ABSOLUTE -> urgent_page per rule A.",
+    "confidence": 0.99
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX2-009",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "Ring skin-temperature deviation rose to +0.6 C on two nights while watch skin-temperature deviation on the opposite wrist stayed at -0.2 to 0.0 C, oral thermometer readings were normal (36.6-36.7 C), and resting HR and steps were unchanged. This benign discrepancy is explained by environmental heat exposure at work and routes to silent_log."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Explained ring vs watch skin-temp discrepancy with normal oral temperatures and stable HR -> silent_log.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[noise] Ring skin-temperature rise confined to two hot-water-bottle nights, with oral 36.5-36.6 \u00b0C each morning",
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX2-010",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.9,
+    "reasoning": "In an 80-84F wheelchair user with Fitzpatrick V-VI skin and no home oxygen, afternoon watch wrist SpO2 sits right at the borderline (88-89%) while paired seated fingertip readings are 91-92% (a 3-point disagreement), with RR 15-16/min and no acute symptoms. Because the readings sit right near the 88% threshold and the 91-92% fingertip values are slightly lower than normal without an established COPD band, a routine nurse check (or silent_log per rule C) with a supply_reference_oximeter_and_baseline ticket is appropriate."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Borderline wrist SpO2 88-89% vs fingertip 91-92% (>2 points disagreement) in a wheelchair user -> nurse_task (with silent_log as acceptable alternate) and supply_reference_oximeter_and_baseline ticket.",
+    "confidence": 0.9
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX2-011",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.92,
+    "reasoning": "Since melatonin 3 mg nightly was started on Day -5 in a patient with MCI, the watch logs 5.2-5.6 h of sleep while the ring logs 7.0-7.4 h and the bed sensor shows unchanged bed exits (1-2/night). The paid carer reports better evening settling and asks which device to trust for evaluating the new sleep medication, making nurse_task with a device_maintenance ticket appropriate."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Watch vs ring sleep duration disagreement after melatonin start where caregiver asks which to trust -> nurse_task + device_maintenance ticket.",
+    "confidence": 0.92
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX2-012",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.99,
+    "reasoning": "In an 85-89M with Fitzpatrick V-VI skin, the watch reads 93% at rest while a simultaneous seated good-waveform fingertip oximeter reads 86%, accompanied by HR 98 bpm, RR 22-24/min, and new dyspnea with short-phrase speech. This represents hidden hypoxemia on the wrist sensor with a confirmed fingertip reading < 88% (HT_SPO2_LT88, CONFIRM_FIRST, already_confirmed), requiring an immediate urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": [
+     "respiratory",
+     "spo2_bias",
+     "conflicting"
+    ]
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Fingertip SpO2 86% on good waveform with acute dyspnea and tachypnea confirms HT_SPO2_LT88 (already_confirmed) -> urgent_page.",
+    "confidence": 0.99
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  }
+ ],
+ "batch_summary": {
+  "n_cases": 24,
+  "n_requested": 24,
+  "routes_actual": {
+   "silent_log": 8,
+   "nurse_task": 6,
+   "provider_task": 5,
+   "urgent_page": 5
+  },
+  "routes_requested": {
+   "silent_log": 8,
+   "nurse_task": 6,
+   "provider_task": 5,
+   "urgent_page": 5
+  },
+  "difficulty_actual": {
+   "easy": 0,
+   "medium": 3,
+   "hard": 17,
+   "adversarial": 4
+  },
+  "hard_plus_adversarial_pct": 87.5,
+  "minimums": {
+   "LX1_part1_drift": {
+    "required": 4,
+    "actual": 5,
+    "met": true
+   },
+   "LX1_part1_single_stream": {
+    "required": 1,
+    "actual": 2,
+    "met": true
+   },
+   "LX1_part1_explained_drift": {
+    "required": 1,
+    "actual": 2,
+    "met": true
+   },
+   "LX1_part2_noise": {
+    "required": 1,
+    "actual": 3,
+    "met": true
+   },
+   "LX1_part2_single_stream": {
+    "required": 1,
+    "actual": 1,
+    "met": true
+   },
+   "LX1_part2_explained_drift": {
+    "required": 1,
+    "actual": 1,
+    "met": true
+   },
+   "LX1_part2_drift": {
+    "required": 3,
+    "actual": 4,
+    "met": true
+   },
+   "LX1_part2_hard_plus_adversarial": {
+    "required": 5,
+    "actual": 5,
+    "met": true
+   },
+   "LX1_part2_easy_max": {
+    "required": 1,
+    "actual": 0,
+    "met": true
+   },
+   "LX1_part2_outside_focus": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "LX2_device_ticket": {
+    "required": 7,
+    "actual": 10,
+    "met": true
+   },
+   "LX2_could_change_care": {
+    "required": 3,
+    "actual": 4,
+    "met": true
+   },
+   "LX2_real_change": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   }
+  },
+  "all_minimums_met": true,
+  "generator_tally_matches": false,
+  "tally_discrepancies": [
+   "In LX2 generator_tally, baseline_layers.hard_limit_danger is listed as [], but LX2-008 has baseline_layer: 'hard_limit_danger'.",
+   "In LX2 generator_tally, hidden_hypoxemia_ids is listed as [], though LX2-012 is a classic hidden hypoxemia case (Fitzpatrick V-VI, wrist 93% vs fingertip 86%)."
+  ],
+  "actions": {
+   "keep": 13,
+   "fix": 6,
+   "reject": 5
+  },
+  "route_disagreement_ids": [
+   "LX1-004"
+  ],
+  "hard_trigger_issue_ids": [
+   "LX1-011"
+  ],
+  "critical_miss_ids": [],
+  "drift_miss_ids": [],
+  "trigger_tier_issue_ids": [
+   "LX1-011"
+  ],
+  "duplicate_or_near_duplicate_ids": [
+   "LX1-002",
+   "LX1-003",
+   "LX1-007",
+   "LX1-010",
+   "LX1-011"
+  ],
+  "notes": "Sub-batch LX2 (LX2-001 through LX2-012) is flawless, with all 12 cases scoring 5/5 (keep). Sub-batch LX1 has 5 rejections due to do_not_repeat duplicates (LX1-002, LX1-003, LX1-011), a within-batch near-duplicate (LX1-007 duplicating LX1-001), and a broken pair/rule G violation (LX1-004), plus 6 cases needing mechanical fixes for answer leaks or truncated text in router_input and an initial ('Mr. J.') in LX1-010."
+ }
+}
