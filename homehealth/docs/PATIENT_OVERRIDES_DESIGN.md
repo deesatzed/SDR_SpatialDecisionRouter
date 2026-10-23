@@ -1,6 +1,8 @@
 # Per-patient rule overrides — design (NOT implemented)
 
-Status: draft for Wayne, 2026-10-22. SYNTHETIC examples only. All numbers below are **placeholders** unless they quote an existing rule.
+Status: draft for Wayne, 2026-10-22. **Revised 2026-10-23:** ABSOLUTE rules are now setting-level FOUNDATION rules
+(see `RULE_GOVERNANCE_DESIGN.md`). Patient overrides apply to **non-foundation rules only**; that doc's evaluation order
+(setting profile -> patient overrides -> safety floors) replaces the precedence section below. SYNTHETIC examples only. All numbers below are **placeholders** unless they quote an existing rule.
 
 ## Why
 The holdout_v2 review showed the same finding needs different routes for different patients (hospice HV10-002 / HV2-002 / HV6-001 vs.
