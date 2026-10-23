@@ -1,1 +1,8 @@
-[]
+[
+ {
+  "case_id": "HW6-008",
+  "library_match": "HV5-009",
+  "jaccard_decisive": 0.522,
+  "jaccard_text": 0.274
+ }
+]

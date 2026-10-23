@@ -46,10 +46,16 @@ for cid, r in rows.items():
     c = C[cid]; out_rows.append((r["k"], -RANK[r["label"]], cid, [r["why"]] + bg(c) + [c["expected_route"], c.get("hard_trigger_rule") or "", c.get("trigger_tier") or "", "", "", " | ".join(r["sys"]), "scoring_error", "", ""]))
 for cid, tier, l1t, why in res["tier_agreement"]["mismatch"]:   # Jev not run (key limit): a labelled trigger Layer 1 did not fire = unprotected by the hard floor
     if cid in rows: continue
-    c = C[cid]; out_rows.append((0 if c["expected_route"] == "urgent_page" else 2, -RANK[c["expected_route"]], cid, ["layer1_trigger_miss (" + ("critical if Jev also misses" if c["expected_route"] == "urgent_page" else "under-triage risk") + ")"] + bg(c) + [c["expected_route"], c.get("hard_trigger_rule") or "", tier or "", "", "", f"Layer 1: {l1t or 'no tier'} / {why}; Jev picks not available", "layer1_trigger_miss", "", ""]))
+    c = C[cid]; out_rows.append((3.5, -RANK[c["expected_route"]], cid, ["layer1_trigger_miss_caught_by_jev (all 3 Jev systems correct)"] + bg(c) + [c["expected_route"], c.get("hard_trigger_rule") or "", tier or "", "", "", f"Layer 1: {l1t or 'no tier'} / {why}; every Jev-backed system routed it correctly", "layer1_trigger_miss", "", ""]))
 for d in csv.DictReader(open(f"{HO}/merge_disputes.csv")):
     hi = max(RANK.get(d["author_route"], 0), RANK.get(d["grader_route"], 0))
     out_rows.append((4, -hi, d["case_id"], ["merge_dispute"] + [d[k] for k in cols] + [d["author_route"], d["author_trigger_rule"], d["author_tier"], d["grader_route"], d["grader_tier"], d["queue_reasons"] + ": " + d["grader_reasoning"], "merge_dispute (not in accepted set; no stack score)", "", ""]))
+# manual near-dup flag (Wayne 2026-10-23): HW1-001 repeats holdout_v2 HV2-001 ("went down like a sack of potatoes", eyes rolled back, unresponsive, came to on the floor); Jaccard check missed it
+ND = {"HW1-001": "NEAR-DUP of holdout_v2 HV2-001 (same syncope narrative: 'went down like a sack of potatoes', eyes rolled back, came to on the floor) - SUGGEST DROP"}
+for i, x in enumerate(out_rows):
+    if x[2] in ND: x[3][-1] = ND[x[2]]
+if not any(x[2] in ND for x in out_rows) and "HW1-001" in C:
+    c = C["HW1-001"]; out_rows.append((5, 0, "HW1-001", ["near_dup_suggest_drop"] + bg(c) + [c["expected_route"], c.get("hard_trigger_rule") or "", c.get("trigger_tier") or "", "", "", "scored correctly; flagged for provenance only", "near_dup", "", ND["HW1-001"]]))
 out_rows.sort(key=lambda x: (x[0], x[1], x[2]))
 with open(f"{HO}/review_queue.csv", "w", newline="") as fh:
     w = csv.writer(fh); w.writerow(["stakes", "rank"] + cols + ["label_or_author_route", "rule", "tier", "grader_route", "grader_tier", "detail", "queue_source", "CLINICIAN_RULING (route)", "CLINICIAN_NOTE"])

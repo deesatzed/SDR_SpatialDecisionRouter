@@ -1,69 +1,454 @@
 {
  "frozen_commit": "fb262af",
  "smart_triggers": "v1.10.3",
- "n_cases": 21,
+ "n_cases": 63,
  "systems": {
   "L1 + dual (c) [default]": {
-   "n": 21,
-   "decided": 3,
-   "accuracy": 1.0,
-   "critical_misses": 0,
-   "critical_ids": [],
-   "false_pages_per_100": 0.0,
-   "false_page_ids": [],
-   "hitm_per_100": 85.7143,
-   "errors": [],
-   "errors_caught_by_hitm": 0,
-   "errors_not_caught": [],
-   "n_errors": 0
+   "n": 63,
+   "decided": 63,
+   "accuracy": 0.8254,
+   "critical_misses": 2,
+   "critical_ids": [
+    "HW3-008",
+    "HW4-003"
+   ],
+   "false_pages_per_100": 6.3492,
+   "false_page_ids": [
+    "HW4-006",
+    "HW4-007",
+    "HW5-002",
+    "HW6-011"
+   ],
+   "hitm_per_100": 14.2857,
+   "errors": [
+    {
+     "case": "HW3-005",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "cleared_by_repeat",
+     "hitm": true
+    },
+    {
+     "case": "HW3-007",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW3-008",
+     "picked": "nurse_task",
+     "label": "urgent_page",
+     "l1": "SUPPRESSED",
+     "l1_reason": "goals_of_care",
+     "hitm": false
+    },
+    {
+     "case": "HW4-003",
+     "picked": "provider_task",
+     "label": "urgent_page",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HW4-006",
+     "picked": "urgent_page",
+     "label": "silent_log",
+     "l1": "ABSOLUTE",
+     "l1_reason": "hard_limit_danger",
+     "hitm": false
+    },
+    {
+     "case": "HW4-007",
+     "picked": "urgent_page",
+     "label": "silent_log",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "below_88_change_from_own_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HW4-008",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW5-002",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "fall_on_anticoagulant",
+     "hitm": false
+    },
+    {
+     "case": "HW6-005",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW6-011",
+     "picked": "urgent_page",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": true
+    },
+    {
+     "case": "HW7-007",
+     "picked": "silent_log",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    }
+   ],
+   "errors_caught_by_hitm": 2,
+   "errors_not_caught": [
+    "HW3-007",
+    "HW3-008",
+    "HW4-003",
+    "HW4-006",
+    "HW4-007",
+    "HW4-008",
+    "HW5-002",
+    "HW6-005",
+    "HW7-007"
+   ],
+   "n_errors": 11
   },
   "L1 + d1-ultra": {
-   "n": 21,
-   "decided": 3,
-   "accuracy": 1.0,
-   "critical_misses": 0,
-   "critical_ids": [],
-   "false_pages_per_100": 0.0,
-   "false_page_ids": [],
-   "hitm_per_100": 0.0,
-   "errors": [],
-   "errors_caught_by_hitm": 0,
-   "errors_not_caught": [],
-   "n_errors": 0
+   "n": 63,
+   "decided": 63,
+   "accuracy": 0.7937,
+   "critical_misses": 2,
+   "critical_ids": [
+    "HW3-008",
+    "HW4-003"
+   ],
+   "false_pages_per_100": 6.3492,
+   "false_page_ids": [
+    "HW4-006",
+    "HW4-007",
+    "HW5-002",
+    "HW6-011"
+   ],
+   "hitm_per_100": 4.7619,
+   "errors": [
+    {
+     "case": "HW3-005",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "cleared_by_repeat",
+     "hitm": true
+    },
+    {
+     "case": "HW3-007",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW3-008",
+     "picked": "nurse_task",
+     "label": "urgent_page",
+     "l1": "SUPPRESSED",
+     "l1_reason": "goals_of_care",
+     "hitm": false
+    },
+    {
+     "case": "HW4-003",
+     "picked": "provider_task",
+     "label": "urgent_page",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HW4-006",
+     "picked": "urgent_page",
+     "label": "silent_log",
+     "l1": "ABSOLUTE",
+     "l1_reason": "hard_limit_danger",
+     "hitm": false
+    },
+    {
+     "case": "HW4-007",
+     "picked": "urgent_page",
+     "label": "silent_log",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "below_88_change_from_own_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HW4-008",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW5-002",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "fall_on_anticoagulant",
+     "hitm": false
+    },
+    {
+     "case": "HW5-006",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "explained",
+     "hitm": false
+    },
+    {
+     "case": "HW5-007",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW6-005",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW6-011",
+     "picked": "urgent_page",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW7-007",
+     "picked": "silent_log",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    }
+   ],
+   "errors_caught_by_hitm": 1,
+   "errors_not_caught": [
+    "HW3-007",
+    "HW3-008",
+    "HW4-003",
+    "HW4-006",
+    "HW4-007",
+    "HW4-008",
+    "HW5-002",
+    "HW5-006",
+    "HW5-007",
+    "HW6-005",
+    "HW6-011",
+    "HW7-007"
+   ],
+   "n_errors": 13
   },
   "L1 + pplx": {
-   "n": 21,
-   "decided": 3,
-   "accuracy": 1.0,
-   "critical_misses": 0,
-   "critical_ids": [],
-   "false_pages_per_100": 0.0,
-   "false_page_ids": [],
-   "hitm_per_100": 0.0,
-   "errors": [],
-   "errors_caught_by_hitm": 0,
-   "errors_not_caught": [],
-   "n_errors": 0
+   "n": 63,
+   "decided": 63,
+   "accuracy": 0.8413,
+   "critical_misses": 2,
+   "critical_ids": [
+    "HW3-008",
+    "HW4-003"
+   ],
+   "false_pages_per_100": 4.7619,
+   "false_page_ids": [
+    "HW4-006",
+    "HW4-007",
+    "HW5-002"
+   ],
+   "hitm_per_100": 4.7619,
+   "errors": [
+    {
+     "case": "HW3-005",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": "SUPPRESSED",
+     "l1_reason": "cleared_by_repeat",
+     "hitm": true
+    },
+    {
+     "case": "HW3-007",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW3-008",
+     "picked": "nurse_task",
+     "label": "urgent_page",
+     "l1": "SUPPRESSED",
+     "l1_reason": "goals_of_care",
+     "hitm": false
+    },
+    {
+     "case": "HW4-003",
+     "picked": "provider_task",
+     "label": "urgent_page",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HW4-006",
+     "picked": "urgent_page",
+     "label": "silent_log",
+     "l1": "ABSOLUTE",
+     "l1_reason": "hard_limit_danger",
+     "hitm": false
+    },
+    {
+     "case": "HW4-007",
+     "picked": "urgent_page",
+     "label": "silent_log",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "below_88_change_from_own_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HW4-008",
+     "picked": "provider_task",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW5-002",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "fall_on_anticoagulant",
+     "hitm": false
+    },
+    {
+     "case": "HW6-005",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW7-007",
+     "picked": "silent_log",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    }
+   ],
+   "errors_caught_by_hitm": 1,
+   "errors_not_caught": [
+    "HW3-007",
+    "HW3-008",
+    "HW4-003",
+    "HW4-006",
+    "HW4-007",
+    "HW4-008",
+    "HW5-002",
+    "HW6-005",
+    "HW7-007"
+   ],
+   "n_errors": 10
   },
   "Layer 1 alone": {
-   "n": 21,
-   "decided": 3,
-   "accuracy": 1.0,
-   "critical_misses": 0,
-   "critical_ids": [],
-   "false_pages_per_100": 0.0,
-   "false_page_ids": [],
-   "hitm_per_100": 85.7143,
-   "errors": [],
+   "n": 63,
+   "decided": 26,
+   "accuracy": 0.8077,
+   "critical_misses": 2,
+   "critical_ids": [
+    "HW3-008",
+    "HW4-003"
+   ],
+   "false_pages_per_100": 4.7619,
+   "false_page_ids": [
+    "HW4-006",
+    "HW4-007",
+    "HW5-002"
+   ],
+   "hitm_per_100": 63.4921,
+   "errors": [
+    {
+     "case": "HW3-008",
+     "picked": "nurse_task",
+     "label": "urgent_page",
+     "l1": "SUPPRESSED",
+     "l1_reason": "goals_of_care",
+     "hitm": false
+    },
+    {
+     "case": "HW4-003",
+     "picked": "nurse_task",
+     "label": "urgent_page",
+     "l1": "SUPPRESSED",
+     "l1_reason": "at_patient_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HW4-006",
+     "picked": "urgent_page",
+     "label": "silent_log",
+     "l1": "ABSOLUTE",
+     "l1_reason": "hard_limit_danger",
+     "hitm": false
+    },
+    {
+     "case": "HW4-007",
+     "picked": "urgent_page",
+     "label": "silent_log",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "below_88_change_from_own_baseline",
+     "hitm": false
+    },
+    {
+     "case": "HW5-002",
+     "picked": "urgent_page",
+     "label": "nurse_task",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "fall_on_anticoagulant",
+     "hitm": false
+    }
+   ],
    "errors_caught_by_hitm": 0,
-   "errors_not_caught": [],
-   "n_errors": 0
+   "errors_not_caught": [
+    "HW3-008",
+    "HW4-003",
+    "HW4-006",
+    "HW4-007",
+    "HW5-002"
+   ],
+   "n_errors": 5
   }
  },
  "tier_agreement": {
-  "trigger_cases": 8,
-  "match": 3,
-  "rate": 0.375,
+  "trigger_cases": 34,
+  "match": 20,
+  "rate": 0.5882,
   "false_paging_triggers_on_no_trigger_cases": [],
   "mismatch": [
    [
@@ -93,6 +478,60 @@
    [
     "HW1-005",
     "CONFIRM_FIRST",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW3-007",
+    "SUPPRESSED",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW3-008",
+    "ABSOLUTE",
+    "SUPPRESSED",
+    "goals_of_care"
+   ],
+   [
+    "HW4-003",
+    "CONFIRM_FIRST",
+    "SUPPRESSED",
+    "at_patient_baseline"
+   ],
+   [
+    "HW4-006",
+    "SUPPRESSED",
+    "ABSOLUTE",
+    "hard_limit_danger"
+   ],
+   [
+    "HW4-007",
+    "SUPPRESSED",
+    "CONFIRM_FIRST",
+    "below_88_change_from_own_baseline"
+   ],
+   [
+    "HW4-008",
+    "SUPPRESSED",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW5-001",
+    "ABSOLUTE",
+    "CONFIRM_FIRST",
+    "fall_on_anticoagulant"
+   ],
+   [
+    "HW5-002",
+    "SUPPRESSED",
+    "CONFIRM_FIRST",
+    "fall_on_anticoagulant"
+   ],
+   [
+    "HW6-009",
+    "ARTIFACT",
     null,
     "no_trigger"
    ]
@@ -166,6 +605,300 @@
    "tier": "CONFIRM_FIRST",
    "rule": "HT_SPO2_LT88",
    "reason": "below_88_change_from_own_baseline",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW3-001": {
+   "tier": "SUPPRESSED",
+   "rule": "HT_VS_DANGER",
+   "reason": "cleared_by_repeat",
+   "hitm_required": false,
+   "default_route": "silent_log"
+  },
+  "HW3-002": {
+   "tier": "SUPPRESSED",
+   "rule": "HT_VS_DANGER",
+   "reason": "cleared_by_repeat",
+   "hitm_required": false,
+   "default_route": "silent_log"
+  },
+  "HW3-003": {
+   "tier": "SUPPRESSED",
+   "rule": "HT_VS_DANGER",
+   "reason": "cleared_by_repeat",
+   "hitm_required": false,
+   "default_route": "silent_log"
+  },
+  "HW3-004": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW3-005": {
+   "tier": "SUPPRESSED",
+   "rule": "HT_VS_DANGER",
+   "reason": "cleared_by_repeat",
+   "hitm_required": true,
+   "default_route": "nurse_task"
+  },
+  "HW3-006": {
+   "tier": "ABSOLUTE",
+   "rule": "HT_VS_DANGER",
+   "reason": "hard_limit_danger_fingerstick_confirmed",
+   "hitm_required": true,
+   "default_route": null
+  },
+  "HW3-007": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW3-008": {
+   "tier": "SUPPRESSED",
+   "rule": "HT_VS_DANGER",
+   "reason": "goals_of_care",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW3-009": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW3-010": {
+   "tier": "ABSOLUTE",
+   "rule": "HT_FALL_PAIN",
+   "reason": "pain_after_fall",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW3-011": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW4-001": {
+   "tier": "SUPPRESSED",
+   "rule": "HT_SPO2_LT88",
+   "reason": "cleared_by_repeat",
+   "hitm_required": false,
+   "default_route": "silent_log"
+  },
+  "HW4-002": {
+   "tier": "SUPPRESSED",
+   "rule": "HT_SPO2_LT88",
+   "reason": "at_patient_baseline",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW4-003": {
+   "tier": "SUPPRESSED",
+   "rule": "HT_SPO2_LT88",
+   "reason": "at_patient_baseline",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW4-004": {
+   "tier": "CONFIRM_FIRST",
+   "rule": "HT_SPO2_LT88",
+   "reason": "below_88_change_from_own_baseline",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW4-005": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW4-006": {
+   "tier": "ABSOLUTE",
+   "rule": "HT_VS_DANGER",
+   "reason": "hard_limit_danger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW4-007": {
+   "tier": "CONFIRM_FIRST",
+   "rule": "HT_SPO2_LT88",
+   "reason": "below_88_change_from_own_baseline",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW4-008": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW4-009": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW4-010": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW5-001": {
+   "tier": "CONFIRM_FIRST",
+   "rule": "HT_FALL_ANTICOAG",
+   "reason": "fall_on_anticoagulant",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW5-002": {
+   "tier": "CONFIRM_FIRST",
+   "rule": "HT_FALL_ANTICOAG",
+   "reason": "fall_on_anticoagulant",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW5-003": {
+   "tier": "ABSOLUTE",
+   "rule": "HT_FALL_PAIN",
+   "reason": "pain_after_fall",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW5-004": {
+   "tier": "CONFIRM_FIRST",
+   "rule": "HT_FALL_ANTICOAG",
+   "reason": "fall_on_anticoagulant",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW5-005": {
+   "tier": "CONFIRM_FIRST",
+   "rule": "HT_GAP48_HIGHRISK",
+   "reason": "unexplained_gap_high_risk",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW5-006": {
+   "tier": "SUPPRESSED",
+   "rule": "HT_GAP48_HIGHRISK",
+   "reason": "explained",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW5-007": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW5-008": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW5-009": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW5-010": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW5-011": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW6-001": {
+   "tier": "ABSOLUTE",
+   "rule": "HT_VS_DANGER",
+   "reason": "hard_limit_danger_fingerstick_confirmed",
+   "hitm_required": true,
+   "default_route": null
+  },
+  "HW6-002": {
+   "tier": "SUPPRESSED",
+   "rule": "HT_FALL_ANTICOAG",
+   "reason": "goals_of_care",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW6-003": {
+   "tier": "SUPPRESSED",
+   "rule": "HT_SPO2_LT88",
+   "reason": "goals_of_care",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW6-004": {
+   "tier": "CONFIRM_FIRST",
+   "rule": "HT_SPO2_LT88",
+   "reason": "outside_population_default_learning",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW6-005": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW6-006": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW6-007": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW6-009": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW6-010": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW6-011": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
    "hitm_required": false,
    "default_route": null
   },

@@ -5,22 +5,36 @@ It uses the same 8-module category mix (HW1–HW8, 11 cases each). Generators: H
 The do-not-repeat list and the near-duplicate check cover library_v2 plus all holdout_v1 and holdout_v2 generated cases.
 The generator wording examples were rotated, and the v1.10.3 focal-neuro phrases were added to the avoid list, so HT_FOCAL_NEURO is tested on wording it has not seen.
 
-## Status: PARTIAL — the run stopped at the OpenRouter per-key limit
-1. [x] Generated 88 cases (HW1–HW8), at a cost of $0.4104 for generation.
-2. [~] Graded 44 of 88 (HW1+HW2 and HW7+HW8), at a cost of $0.5978 for grading (two graders at about $0.29 each).
-   - HW3+HW4 (CGM and SpO2 artifacts) and HW5+HW6 (falls and hospice) got HTTP 402, because the key's $14 limit ran out.
-   - Those cases are kept in gen/ and have NOT been graded.
-3. [x] Merge and dedupe: 21 accepted (HW1 9, HW2 1, HW7 11; HW8 0). 16 disputed and 7 on the fix list. 0 removed as near-duplicates.
-4. [ ] Jev: not run, because the key limit was reached. jev/parsed is empty.
-   - So the three Jev-backed systems only score the cases Layer 1 decides.
-5. [x] Scoring with Layer 1 from stored rules (results/summary.json).
-   - Layer 1 decided 3 of 21 cases. All 3 were correct, with 0 false pages.
-   - Of the 8 labelled hard-trigger cases, Layer 1 fired on 3 and missed 5: HW1-001 to HW1-005, all labelled urgent_page.
-6. [x] Built review_queue.csv: 5 Layer 1 trigger misses come first, then 16 merge disputes, ordered by route stakes.
+## Status: COMPLETE (2026-10-23)
+Run 1 stopped at the OpenRouter per-key limit (HTTP 402). Wayne raised the limit, and run 2 graded HW3+HW4 and HW5+HW6.
 
-## To resume (needs the key limit raised, or a new key)
-- Re-run `python3 run_holdout_v3.py`. Checkpoints skip finished work.
-- Then run finalize_holdout_v3.py, then Jev:
-  `RUNNER_JSON=holdout_v3_runner.json CASES_JSON=holdout_v3_accepted.json JEV_OUT=<abs>/jev SPEND_CAP=0.10 jev_run.py`
-- Then run score_holdout_v3.py.
-- Remaining budget under the $3 cap: about $1.99.
+1. [x] Generated 88 cases; generation cost $0.4104.
+2. [x] Graded 88 of 88; grading cost $1.0670.
+3. [x] Merged 64, with 1 removed as a near-duplicate (HW6-008, close to HV5-009 on the decisive feature, Jaccard 0.522).
+   - 63 accepted. 17 disputed and 7 on the fix list.
+4. [x] Jev: 63 cases x 4 variants x 2 models, every row with a pick, cost $0.0141.
+5. [x] Scored (results/summary.json):
+
+| System | Decided | Accuracy | Critical misses | False pages/100 | HITM/100 | Errors (HITM caught) |
+|---|---|---|---|---|---|---|
+| Layer 1 alone | 26/63 | 80.8% | 2 | 4.76 | 63.49 | 5 (0) |
+| L1 + d1-ultra | 63/63 | 79.4% | 2 | 6.35 | 4.76 | 13 (1) |
+| L1 + pplx | 63/63 | 84.1% | 2 | 4.76 | 4.76 | 10 (1) |
+| L1 + dual (cautious_max_hitm), default | 63/63 | 82.5% | 2 | 6.35 | 14.29 | 11 (2) |
+
+Both critical misses come from Layer 1 suppressing a real danger; Jev cannot override a suppression.
+- HW3-008: confirmed symptomatic sulfonylurea low (46/47 mg/dL) in a hospice patient. goals_of_care sent it to nurse_task, but the label is an urgent comfort problem for the hospice nurse.
+- HW4-003: COPD patient with a documented 85-87% band and two good readings at 82%. at_patient_baseline sent it to nurse_task or provider_task, but this is a drop below the band.
+
+Layer 1 missed the triggers in HW1-001 to HW1-005 (unseen wording). All three Jev-backed systems routed all five to urgent_page.
+
+6. [x] review_queue.csv has 37 rows, in this order:
+   - 2 critical misses
+   - 4 false pages
+   - 4 under-triage
+   - 3 over-triage
+   - 7 Layer 1 trigger misses caught by Jev
+   - 17 disputes
+   HW1-001 is flagged as a near-duplicate of holdout_v2 HV2-001, with a suggestion to drop it.
+
+Total spend: $1.4915 of the $3 cap.
