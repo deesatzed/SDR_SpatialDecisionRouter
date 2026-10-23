@@ -4,7 +4,7 @@
  "generation_usd": 0.4104,
  "grading_usd": 1.067,
  "jev_usd": 0.0141,
- "total_usd": 1.4952,
+ "total_usd": 1.5054,
  "calls": 18,
  "failed_calls_http402": 6,
  "stopped_by": "run 1 stopped at the OpenRouter per-key limit (6 HTTP 402s, $0 cost); Wayne raised the limit 2026-10-23 and run 2 graded HW3+HW4 and HW5+HW6; Jev SPEND_CAP $0.10",
@@ -12,5 +12,8 @@
  "jev_calls": 504,
  "jev_disputes_usd": 0.0037,
  "jev_disputes_calls": 136,
- "jev_disputes_note": "2026-10-23 v1.11.0 re-score: Jev on the 17 ruled merge disputes (2 models x 4 variants), SPEND_CAP $0.02"
+ "jev_disputes_note": "2026-10-23 v1.11.0 re-score: Jev on the 17 ruled merge disputes (2 models x 4 variants), SPEND_CAP $0.02",
+ "jev_v110_usd": 0.0102,
+ "jev_v110_calls": 320,
+ "jev_v110_note": "2026-10-23 v1.11.2: Jev prompt v1.10 (v1.9 + computed 7-day trend summary) on all 80 ruled cases, base variant only, 2 models. Run 1 ($0.0051) discarded: a steps-parser bug read 'RR 15, steps' as steps; run 2 ($0.0051) after the fix is stored in jev_v110/. Combined cap $0.049."
 }

@@ -361,6 +361,12 @@ def evaluate_case(case):
                                   context={"rate_control_med": ctx["rate_control_med"], "goals": ctx["goals"]})
         if d:
             if d["tier"] == "LOG_ONLY": d = {**d, "tier": "SUPPRESSED", "reason": "below_band_threshold"}
+            sa = bool(stable) and not rf and d.get("band") == "D" and act == "active" \
+                and find(r"angina|\bCAD\b|coronary", " ".join(str(x) for x in (c.get("pmh") or [])), neg=False) \
+                and find(r"eased|settle\w*|relieved|went off|passed", chest_s + " " + note) \
+                and not find(r"at rest|while (?:sitting|resting|lying)|in bed|woke|asleep|not happened before|first time|new\b|longer|more often|more frequent\w*|worse|sick|nause\w*|vomit\w*|sweat\w*|faint", now) \
+                and not (mins and max(mins) >= 10)   # PLACEHOLDER v1.11.2: 10-min duration ceiling
+            if sa: d = {**d, "stable_angina": True}
             cands.append({**d, "source": "chest_pain", "inputs": {"activity": act, "mse": mse, "vitals": vit, "red_flags": rf, "ecg_change": sym["ecg_change"], "ecg_reliable": sym["ecg_reliable"], "rate_control": ctx["rate_control_med"]}})
     # ---- 5. fall on an anticoagulant
     F2 = T.v110(P).get("fall_v1102") or {}
@@ -527,6 +533,7 @@ def evaluate_case(case):
     best = max(cands, key=_rank)
     keep = ("rule", "tier", "reason", "route", "confirm_step", "page", "escalation_target", "notify", "band", "raw_band", "modifiers", "inputs", "source", "goals_basis", "original_tier", "own_low", "explained_by", "confirm_result", "default_route", "foundation", "candidate")
     out = {k: v for k, v in best.items() if k in keep}
+    if best.get("stable_angina"): out["stable_angina"] = True   # v1.11.2 PLACEHOLDER rule flag
     if hitm_required and out.get("tier") not in ("ABSOLUTE", "CONFIRM_FIRST"):
         out.update(default_route=ik["route"], hitm_reason="insulin_or_sulfonylurea_ckd_danger_low")
         kd = V11.get("ckd_low_dose_review")   # v1.11.0: cleared, asymptomatic, no documented compression -> prescriber dose review
@@ -562,6 +569,10 @@ def route(l1, jev_pick):
     if t in ("SUPPRESSED", "ARTIFACT"):
         # v1.10: derive the route per rule (no blanket provider_task fallback); a cleared artifact is silent; insulin+CKD lows floor nurse_task
         if l1.get("reason") == "cleared_by_repeat" and not l1.get("hitm_required") and not l1.get("acute_presentation"): return "silent_log", "layer1_cleared"
+        if l1.get("stable_angina") and not l1.get("acute_presentation") and ((T.v110(PARAMS).get("v1112") or {}).get("stable_angina_owner") or {}).get("enabled"):
+            return "nurse_task", "layer1_stable_angina"
+        if l1.get("rule") == "HT_DEVICE_DISAGREE" and not l1.get("acute_presentation") and ((T.v110(PARAMS).get("v1112") or {}).get("device_ticket_owner") or {}).get("enabled"):
+            return l1["default_route"], "layer1_device_ticket"   # v1.11.2: Layer 1 owns device-disagreement routes; Jev is not consulted
         floor = (l1.get("hitm_floor") or "nurse_task") if l1.get("hitm_required") else T.route_floor(l1, PARAMS)
         if jev_pick is None:
             p = T.suppressed_default_route(l1, PARAMS)

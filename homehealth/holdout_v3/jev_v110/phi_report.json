@@ -1,0 +1,8 @@
+{
+ "cases": 80,
+ "variants_checked": 80,
+ "phi_blocked_cases": 0,
+ "phi_hits": {},
+ "label_leak_hits": [],
+ "allowance": "relative day references (Day -N, Days -N to -M, Day -N hh:mm to Day M) removed before matching; case-sensitive titles"
+}

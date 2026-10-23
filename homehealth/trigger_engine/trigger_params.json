@@ -1,1198 +1,1226 @@
 {
- "version": "0.11.1-placeholder",
- "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
- "change_log": [
-  {
-   "ts": "2026-10-17T16:51:19-04:00",
-   "keys": [
-    "chest_pain",
-    "crescendo_rule"
-   ],
-   "old": null,
-   "new": {
-    "enabled": true,
-    "min_band": "C",
-    "no_exertion_timeout_factor_when_vitals_normal": true,
-    "_note": "DECIDED RULE (not a placeholder decision): a crescendo angina pattern (episodes becoming more frequent, or new onset in recent days) with normal vitals triggers HT_CHEST_PAIN_VITALS CONFIRM_FIRST (band C at least). min_band and the timeout remain placeholder values. With normal vitals the post-exertion timeout factor is not applied, because the trigger is the pattern."
-   },
-   "approved_by": "Wayne",
-   "reason": "Clinical owner decision 2026-10-17 16:49 EDT: crescendo angina pattern with normal vitals SHOULD trigger CONFIRM_FIRST"
+  "version": "0.11.2-placeholder",
+  "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
+  "change_log": [
+    {
+      "ts": "2026-10-17T16:51:19-04:00",
+      "keys": [
+        "chest_pain",
+        "crescendo_rule"
+      ],
+      "old": null,
+      "new": {
+        "enabled": true,
+        "min_band": "C",
+        "no_exertion_timeout_factor_when_vitals_normal": true,
+        "_note": "DECIDED RULE (not a placeholder decision): a crescendo angina pattern (episodes becoming more frequent, or new onset in recent days) with normal vitals triggers HT_CHEST_PAIN_VITALS CONFIRM_FIRST (band C at least). min_band and the timeout remain placeholder values. With normal vitals the post-exertion timeout factor is not applied, because the trigger is the pattern."
+      },
+      "approved_by": "Wayne",
+      "reason": "Clinical owner decision 2026-10-17 16:49 EDT: crescendo angina pattern with normal vitals SHOULD trigger CONFIRM_FIRST"
+    },
+    {
+      "ts": "2026-10-17T16:51:19-04:00",
+      "keys": [
+        "version"
+      ],
+      "old": "0.2-placeholder",
+      "new": "0.3-placeholder",
+      "approved_by": "Wayne",
+      "reason": "crescendo rule added (approved by Wayne)"
+    },
+    {
+      "ts": "2026-10-17T19:50:36-04:00",
+      "keys": [
+        "cgm_pressure_low"
+      ],
+      "old": null,
+      "new": {
+        "_note": "PLACEHOLDERS. CGM pressure-low (compression) artifact rule, applied to CGM readings at or below hard_limits.glucose.danger_low. A suspected pressure low becomes ARTIFACT with a fingerstick recheck. A fingerstick-confirmed or symptomatic low stays ABSOLUTE. A fingerstick above the danger limit makes it SUPPRESSED unreliable_reading.",
+        "enabled": true,
+        "fingerstick_window_min": 60,
+        "discordant_abs_mg_dl": 15,
+        "discordant_pct": 0.2,
+        "overnight_hours": [
+          22,
+          7
+        ],
+        "rapid_drop_mg_dl_per_min": 2.0,
+        "rebound_within_min": 60,
+        "pressure_cues": [
+          "pinned",
+          "pressed",
+          "compression",
+          "under the bed rail/body/arm/pillow",
+          "lying/sleeping on the sensor side"
+        ],
+        "symptoms": [
+          "sweaty/clammy",
+          "shaky/tremor",
+          "confused",
+          "drowsy/hard to rouse",
+          "seizure",
+          "unresponsive"
+        ],
+        "recheck_step": "fingerstick_recheck",
+        "recheck_timeout_min": 15
+      },
+      "approved_by": "Wayne",
+      "reason": "Next step approved 2026-10-17 19:49 EDT: CGM pressure-low artifact rule (placeholders)"
+    },
+    {
+      "ts": "2026-10-17T19:50:36-04:00",
+      "keys": [
+        "version"
+      ],
+      "old": "0.3-placeholder",
+      "new": "0.4-placeholder",
+      "approved_by": "Wayne",
+      "reason": "cgm_pressure_low added"
+    },
+    {
+      "ts": "2026-10-18T09:17:48-04:00",
+      "keys": [
+        "chest_pain",
+        "band_math"
+      ],
+      "old": null,
+      "new": {
+        "method": "net_then_clamp",
+        "_note": "DECIDED RULE (Wayne 2026-10-17, ST4-002): sum ALL band shifts first (the worst banded vital's own context modifiers, then multi-vital, red flags and concordance), then clamp once to D..A and apply the safety floors (max_total_downgrade, band_A_floor) and the crescendo floor. Replaces sequential clamping at each step. Unbanded vitals do not contribute to the base; with no banded vital the base is band D. Shift sizes remain placeholders."
+      },
+      "approved_by": "Wayne",
+      "reason": "Clinician ruling ST4-002 (2026-10-17): net modifiers first, then clamp; band C 15 min"
+    },
+    {
+      "ts": "2026-10-18T09:17:48-04:00",
+      "keys": [
+        "confirm_first",
+        "unanswered_prompt"
+      ],
+      "old": null,
+      "new": {
+        "enabled": true,
+        "prompt_steps": [
+          "patient_call",
+          "watch_prompt"
+        ],
+        "lives_alone_required": true,
+        "_note": "DECIDED RULE (Wayne 2026-10-17, ST2-009): an unanswered patient-directed confirm prompt (patient call or watch tap-to-confirm) when the patient lives alone counts as a FAILED confirm -> escalate now (confirm_step already_confirmed). Not living alone -> wait for the timeout as before. Caregiver pings are not patient prompts."
+      },
+      "approved_by": "Wayne",
+      "reason": "Clinician ruling ST2-009 (2026-10-17): unanswered watch prompt counts as failed confirm; generalize as policy rule"
+    },
+    {
+      "ts": "2026-10-18T09:17:48-04:00",
+      "keys": [
+        "goals_of_care"
+      ],
+      "old": null,
+      "new": {
+        "suppresses": "hospital_directed_escalation_only",
+        "default_notify": "hospice_nurse_same_shift",
+        "urgent_comfort": {
+          "enabled": true,
+          "escalation_target": "hospice_nurse",
+          "notify": "hospice_nurse_urgent_page",
+          "route": "urgent_page",
+          "conditions": {
+            "hypoglycemia_symptomatic": true,
+            "hypoglycemia_recurrent": true
+          },
+          "recurrent_window_h": 6,
+          "_note": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. Other conditions (e.g. distressing breathlessness) are NOT on the list until Wayne adds them; a caller may declare context comfort_treatable explicitly."
+        },
+        "_note": "DECIDED RULE (Wayne 2026-10-18, GC2-003): hospice/comfort-only goals suppress hospital-directed escalation only."
+      },
+      "approved_by": "Wayne",
+      "reason": "Clinician ruling GC2-003 (2026-10-18): hospice goals suppress hospital-directed escalation, not urgent treatable goal-consistent comfort issues"
+    },
+    {
+      "ts": "2026-10-18T09:17:48-04:00",
+      "keys": [
+        "version"
+      ],
+      "old": "0.4-placeholder",
+      "new": "0.5-placeholder",
+      "approved_by": "Wayne",
+      "reason": "v1.5 rulings: band math, unanswered prompt, hospice narrowing (approved by Wayne)"
+    },
+    {
+      "ts": "2026-10-18T09:58:41-04:00",
+      "keys": [
+        "goals_of_care",
+        "urgent_comfort",
+        "conditions",
+        "breathlessness_distressing_home_treatable"
+      ],
+      "old": null,
+      "new": true,
+      "approved_by": "Wayne",
+      "reason": "Clinician ruling 2026-10-18: add distressing breathlessness that can be treated at home to the urgent hospice-comfort list (SMART_TRIGGERS v1.6)"
+    },
+    {
+      "ts": "2026-10-18T09:58:41-04:00",
+      "keys": [
+        "goals_of_care",
+        "urgent_comfort",
+        "breathlessness_vitals"
+      ],
+      "old": null,
+      "new": [
+        "spo2",
+        "rr"
+      ],
+      "approved_by": "Wayne",
+      "reason": "v1.6: breathlessness condition applies to respiratory triggers (SpO2, RR)"
+    },
+    {
+      "ts": "2026-10-18T09:58:41-04:00",
+      "keys": [
+        "goals_of_care",
+        "urgent_comfort",
+        "_note"
+      ],
+      "old": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. Other conditions (e.g. distressing breathlessness) are NOT on the list until Wayne adds them; a caller may declare context comfort_treatable explicitly.",
+      "new": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. v1.6 adds distressing breathlessness that can be treated at home (respiratory triggers; context breathlessness {distressing, home_treatable}). Other conditions (falls, focal deficits, syncope) are NOT on the list; a caller may declare context comfort_treatable explicitly.",
+      "approved_by": "Wayne",
+      "reason": "v1.6 note update"
+    },
+    {
+      "ts": "2026-10-18T09:58:41-04:00",
+      "keys": [
+        "version"
+      ],
+      "old": "0.5-placeholder",
+      "new": "0.6-placeholder",
+      "approved_by": "Wayne",
+      "reason": "v1.6: breathlessness added to urgent hospice-comfort list (approved by Wayne)"
+    },
+    {
+      "ts": "2026-10-18T10:29:35-04:00",
+      "keys": [
+        "goals_of_care",
+        "urgent_comfort",
+        "conditions",
+        "hypoglycemia_recurrent"
+      ],
+      "old": true,
+      "new": false,
+      "approved_by": "Wayne",
+      "reason": "Clinician ruling 2026-10-18 (check 4, SMART_TRIGGERS v1.7): only SYMPTOMATIC danger-level lows page the hospice nurse urgently; recurrence within 6 h without symptoms -> SUPPRESSED goals_of_care, same-shift hospice nurse"
+    },
+    {
+      "ts": "2026-10-18T10:29:35-04:00",
+      "keys": [
+        "goals_of_care",
+        "urgent_comfort",
+        "_note"
+      ],
+      "old": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. v1.6 adds distressing breathlessness that can be treated at home (respiratory triggers; context breathlessness {distressing, home_treatable}). Other conditions (falls, focal deficits, syncope) are NOT on the list; a caller may declare context comfort_treatable explicitly.",
+      "new": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. v1.6 adds distressing breathlessness that can be treated at home (respiratory triggers; context breathlessness {distressing, home_treatable}). Other conditions (falls, focal deficits, syncope) are NOT on the list; a caller may declare context comfort_treatable explicitly. v1.7 (Wayne 2026-10-18): hypoglycemia_recurrent disabled; only a symptomatic danger-level low qualifies; recurrent_window_h is kept for when it is re-enabled.",
+      "approved_by": "Wayne",
+      "reason": "v1.7 note"
+    },
+    {
+      "ts": "2026-10-18T10:29:35-04:00",
+      "keys": [
+        "version"
+      ],
+      "old": "0.6-placeholder",
+      "new": "0.7-placeholder",
+      "approved_by": "Wayne",
+      "reason": "v1.7: hospice low rule narrowed to symptomatic lows (approved by Wayne)"
+    },
+    {
+      "ts": "2026-10-18T11:54:18-04:00",
+      "keys": [
+        "learning",
+        "outside_population_default_tier"
+      ],
+      "old": null,
+      "new": "CONFIRM_FIRST",
+      "approved_by": "Wayne",
+      "reason": "v1.8 learning-period rule (Wayne 2026-10-18, fixes ST3-001): during the onboarding/learning period (no learned baseline), a reading beyond the population default band, or SpO2 below the population threshold, goes CONFIRM_FIRST (never silent); at-baseline suppression is not allowed while learning unless a clinician set the baseline."
+    },
+    {
+      "ts": "2026-10-18T11:54:18-04:00",
+      "keys": [
+        "version"
+      ],
+      "old": "0.7-placeholder",
+      "new": "0.8-placeholder",
+      "approved_by": "Wayne",
+      "reason": "v1.8: learning-period rule formalised (approved by Wayne)"
+    },
+    {
+      "ts": "2026-10-21T17:41:51-04:00",
+      "keys": [
+        "layer1_v110"
+      ],
+      "old": null,
+      "new": {
+        "_note": "SMART_TRIGGERS v1.10 (Wayne 2026-10-21). Layer 1 fixes from Wayne's review-queue rulings. Placeholders; developed on hand-written practice cases (test_layer1_v110.py), not on holdout text.",
+        "clean_repeat": {
+          "_note": "An abnormal reading cleared by a clean repeat (other finger/hand, second device, or fingerstick) within the window, with no symptoms -> SUPPRESSED cleared_by_repeat, route silent_log.",
+          "window_min": 15,
+          "spo2_clean_min": 92,
+          "glucose_window_min": 60
+        },
+        "insulin_ckd_low": {
+          "_note": "Insulin user with CKD and a danger-level CGM/glucose low: always HITM review (hard flag regardless of models); route floor nurse_task (overrides cleared_by_repeat).",
+          "insulin_rx": "insulin|glargine|detemir|degludec|lispro|aspart|glulisine|NPH",
+          "ckd_rx": "\\bCKD\\b|chronic kidney|renal (?:failure|impairment|insufficiency)|eGFR\\s*\\d",
+          "route": "nurse_task"
+        },
+        "suppressed_default_route": {
+          "_note": "Layer 1 route on a SUPPRESSED/ARTIFACT trigger when no model pick is available (replaces the v1.9 provider_task fallback).",
+          "cleared_by_repeat": "silent_log",
+          "unreliable_reading": "nurse_task",
+          "explained": "nurse_task",
+          "explained_caregiver_check": "nurse_task",
+          "at_patient_baseline": "nurse_task",
+          "below_band_threshold": "nurse_task",
+          "ARTIFACT": "silent_log",
+          "_other": "nurse_task"
+        },
+        "route_floor": {
+          "_note": "Minimum route for these suppressed reasons even when a model picks lower (models still capped at provider_task unless acute).",
+          "explained_caregiver_check": "nurse_task",
+          "HT_SPO2_LT88:at_patient_baseline": "nurse_task",
+          "HT_BRADY_RATE_DRUG:below_band_threshold": "nurse_task"
+        },
+        "fall_anticoag": {
+          "_note": "Confirmed (witnessed / patient or caregiver reports a fall) fall on an anticoagulant -> ABSOLUTE. Unwitnessed possible fall (impact or device signal) cleared by a caregiver check -> SUPPRESSED explained_caregiver_check, nurse_task (confirm with the patient there was no fall).",
+          "confirmed_tier": "ABSOLUTE"
+        },
+        "bradycardia_rate_drug": {
+          "_note": "Resting HR below threshold on a rate-slowing drug: symptomatic -> CONFIRM_FIRST patient_call; asymptomatic -> SUPPRESSED below_band_threshold (nurse_task).",
+          "hr_below": 45,
+          "drugs_rx": "amiodarone|dronedarone|digoxin|sotalol|bisoprolol|metoprolol|atenolol|carvedilol|nebivolol|propranolol|diltiazem|verapamil|ivabradine|donepezil",
+          "symptoms_rx": "dizz\\w*|light-?headed|near[- ]?faint|faint\\w*|presyncop\\w*|confus\\w*|unusually tired|exhausted|breathless\\w*|short of breath|chest (?:pain|pressure)|fell|collapsed"
+        },
+        "gap_contact_exclude": {
+          "_note": "Device transmissions are not contact for the 48 h gap trigger: a sentence about scale weigh-ins, syncs or uploads with no person-to-person contact word does not explain a gap.",
+          "device_rx": "scale|weigh-?in|weighed|weight (?:reading|transmi\\w*)|sync\\w*|upload\\w*|transmi\\w*|bed sensor|pillbox|dispenser",
+          "human_rx": "video call|phoned|phone call|visited|saw (?:him|her)|spoke|talked|checked on (?:him|her)|answered the (?:phone|door)"
+        },
+        "wording": {
+          "_note": "Synonym lists (generic clinical phrasing, no case IDs). Added to the v1.9 patterns.",
+          "syncope": [
+            "loss of tone",
+            "lost tone",
+            "collapsed",
+            "collapse\\b",
+            "passed out",
+            "slumped",
+            "unresponsive (?:briefly|for)",
+            "briefly unresponsive",
+            "keeled over",
+            "dropped to the floor",
+            "went down and did not respond",
+            "out cold"
+          ],
+          "focal_neuro": [
+            "one-sided weakness",
+            "weak(?:ness)? on one side",
+            "face (?:is )?drooping",
+            "drooping (?:mouth|face|eyelid)",
+            "arm drift",
+            "trouble (?:speaking|finding words)",
+            "speech (?:is |was |became )?(?:slurred|garbled|jumbled)",
+            "words (?:came out )?(?:jumbled|wrong)",
+            "(?:sudden )?loss of vision in one eye",
+            "can(?:no|')t (?:raise|lift) (?:the |his |her )?(?:left|right) arm",
+            "dragging (?:the |his |her )?(?:left|right) (?:leg|foot)",
+            "numb(?:ness)? (?:on|down) (?:the |his |her )?(?:left|right) side"
+          ],
+          "chest_pain": [
+            "crushing (?:pain|feeling)",
+            "pressure (?:on|in) (?:his|her|the) chest",
+            "band (?:around|across) (?:his|her|the) chest",
+            "elephant on (?:his|her|my) chest",
+            "chest (?:felt|feels) (?:heavy|tight)",
+            "heaviness (?:behind|under) (?:the|his|her) (?:breastbone|sternum)",
+            "retrosternal (?:pain|pressure|discomfort)"
+          ]
+        }
+      },
+      "approved_by": "Wayne",
+      "reason": "SMART_TRIGGERS v1.10 Layer 1 fixes from review-queue rulings (approved by Wayne 2026-10-21)"
+    },
+    {
+      "ts": "2026-10-21T17:41:51-04:00",
+      "keys": [
+        "version"
+      ],
+      "old": "0.8-placeholder",
+      "new": "0.10-placeholder",
+      "approved_by": "Wayne",
+      "reason": "v1.10 Layer 1 fixes (approved by Wayne 2026-10-21)"
+    },
+    {
+      "ts": "2026-10-21T17:55:00-04:00",
+      "keys": [
+        "layer1_v110"
+      ],
+      "old": "v1.10 draft",
+      "new": "dev fixes on library practice data: two over-broad chest-pain synonyms removed (cough 'chest feels tight', reflux 'retrosternal'); asymptomatic bradycardia makes no decision",
+      "approved_by": "Wayne",
+      "reason": "within Wayne's 2026-10-21 v1.10 approval; tuned on library (dev) cases only"
+    },
+    {
+      "ts": "2026-10-21T17:58:00-04:00",
+      "keys": [
+        "layer1_v110",
+        "clean_repeat",
+        "glucose_clean_min"
+      ],
+      "old": null,
+      "new": 70,
+      "approved_by": "Wayne",
+      "reason": "within Wayne's v1.10 approval; library dev case: a confirming low fingerstick is not a clean repeat"
+    },
+    {
+      "ts": "2026-10-21T18:24:14-04:00",
+      "keys": [
+        "layer1_v110",
+        "insulin_ckd_low",
+        "sulfonylurea_rx"
+      ],
+      "old": null,
+      "new": "glimepiride|glipizide|glyburide|glibenclamide|gliclazide",
+      "approved_by": "Wayne",
+      "reason": "v1.10.1: extend the insulin+CKD danger-low exception to sulfonylurea users with CKD (approved by Wayne 2026-10-21)"
+    },
+    {
+      "ts": "2026-10-21T18:24:14-04:00",
+      "keys": [
+        "layer1_v110",
+        "insulin_ckd_low",
+        "_note"
+      ],
+      "old": "Insulin user with CKD and a danger-level CGM/glucose low: always HITM review (hard flag regardless of models); route floor nurse_task (overrides cleared_by_repeat).",
+      "new": "Insulin OR sulfonylurea user (v1.10.1) with CKD and a danger-level low (CGM or meter <= danger limit): always HITM review (hard flag regardless of models); route floor nurse_task, never silent (overrides cleared_by_repeat).",
+      "approved_by": "Wayne",
+      "reason": "v1.10.1 note"
+    },
+    {
+      "ts": "2026-10-21T18:24:14-04:00",
+      "keys": [
+        "version"
+      ],
+      "old": "0.10-placeholder",
+      "new": "0.10.1-placeholder",
+      "approved_by": "Wayne",
+      "reason": "v1.10.1 sulfonylurea+CKD low exception (approved by Wayne 2026-10-21)"
+    },
+    {
+      "ts": "2026-10-23T06:45:00-04:00",
+      "keys": [
+        "version",
+        "layer1_v110.fall_v1102",
+        "layer1_v110.spo2_rest_dyspnea",
+        "layer1_v110.route_floor",
+        "layer1_v110.suppressed_default_route"
+      ],
+      "old": "0.10.1-placeholder",
+      "new": "0.10.2-placeholder",
+      "approved_by": "Wayne",
+      "reason": "v1.10.2 Layer 1 fixes from holdout_v2 rulings (approved by Wayne 2026-10-23); built on practice cases (test_layer1_v1102.py)"
+    },
+    {
+      "ts": "2026-10-23T07:40:00-04:00",
+      "keys": [
+        "version",
+        "layer1_v110.wording.focal_neuro"
+      ],
+      "old": "0.10.2-placeholder",
+      "new": "0.10.3-placeholder",
+      "approved_by": "Wayne",
+      "reason": "v1.10.3 HT_FOCAL_NEURO lay-wording synonyms (approved by Wayne 2026-10-23)"
+    },
+    {
+      "ts": "2026-10-23T11:30:00-04:00",
+      "keys": [
+        "version",
+        "layer1_v110.v1110",
+        "layer1_v110.clean_repeat.bp_window_min",
+        "layer1_v110.clean_repeat.sbp_clean_low",
+        "layer1_v110.clean_repeat.sbp_clean_high",
+        "layer1_v110.suppressed_default_route",
+        "layer1_v110.route_floor"
+      ],
+      "old": "0.10.3-placeholder",
+      "new": "0.11.0-placeholder",
+      "approved_by": "Wayne",
+      "reason": "SMART_TRIGGERS v1.11.0 Layer 1 fixes from Wayne's holdout_v3 review-queue rulings (approved by Wayne 2026-10-23): drug-induced low foundation floor, CKD dose-review lows, patient-level SpO2 bands, impact+inactivity cap, clean-repeat timestamp fix + BP cuff, device tickets, plain reasons, serotonergic-confusion candidate (off). Built on practice cases (test_layer1_v1110.py)."
+    },
+    {
+      "ts": "2026-10-23T11:45:00-04:00",
+      "keys": [
+        "version",
+        "layer1_v110.v1111",
+        "layer1_v110.route_floor",
+        "layer1_v110.suppressed_default_route",
+        "layer1_v110.route_floor.HT_GAP48_HIGHRISK:explained"
+      ],
+      "old": "0.11.0-placeholder",
+      "new": "0.11.1-placeholder",
+      "approved_by": "Wayne",
+      "reason": "SMART_TRIGGERS v1.11.1 (Wayne 2026-10-23): explained CKD lows (compression / exertion) -> nurse_task; dose review only when unexplained or repeated; COPD in-band without home oxygen -> provider_task; gap contact detail in the next sentence; 72 h glucose-low lookback. Placeholders."
+    },
+    {
+      "ts": "2026-10-23T12:00:00-04:00",
+      "keys": [
+        "version",
+        "layer1_v110.v1112",
+        "layer1_v110.route_floor.HT_FALL_ANTICOAG:explained",
+        "layer1_v110.v1112.stable_angina_owner"
+      ],
+      "old": "0.11.1-placeholder",
+      "new": "0.11.2-placeholder",
+      "approved_by": "Wayne",
+      "reason": "v1.11.2: Layer 1 owns device-disagreement routes (no acute signs); nurse_task floor for an explained fall on an anticoagulant. Stable-angina nurse_task owner (PLACEHOLDER gates; built from 5 practice vignettes incl. 4 crescendo/red-flag negatives). Jev prompt v1.10 adds a computed 7-day trend summary (PLACEHOLDER flat thresholds in jev_baseline/trend_summary.py)."
+    }
+  ],
+  "hard_limits": {
+    "_note": "Layer 1. Fixed, never learned. implausible -> ARTIFACT (auto recheck, no page). danger -> ABSOLUTE regardless of baseline (goals of care still apply).",
+    "hr": {
+      "unit": "bpm",
+      "implausible_low": 20,
+      "implausible_high": 250,
+      "danger_low": 35,
+      "danger_high": 180,
+      "max_rate_per_s": 30,
+      "flatline_s": 60
+    },
+    "spo2": {
+      "unit": "%",
+      "implausible_low": 50,
+      "implausible_high": 100,
+      "danger_low": 80,
+      "danger_high": null,
+      "max_rate_per_s": 2.0,
+      "flatline_s": null
+    },
+    "rr": {
+      "unit": "/min",
+      "implausible_low": 3,
+      "implausible_high": 70,
+      "danger_low": 6,
+      "danger_high": 35,
+      "max_rate_per_s": null,
+      "flatline_s": null
+    },
+    "sbp": {
+      "unit": "mmHg",
+      "implausible_low": 50,
+      "implausible_high": 300,
+      "danger_low": 80,
+      "danger_high": 200,
+      "max_rate_per_s": null,
+      "flatline_s": null
+    },
+    "glucose": {
+      "unit": "mg/dL",
+      "implausible_low": 20,
+      "implausible_high": 600,
+      "danger_low": 54,
+      "danger_high": 400,
+      "max_rate_per_s": 0.1,
+      "flatline_s": null
+    },
+    "temp_c": {
+      "unit": "C",
+      "implausible_low": 30,
+      "implausible_high": 43,
+      "danger_low": 35.0,
+      "danger_high": 40.0,
+      "max_rate_per_s": null,
+      "flatline_s": null
+    }
   },
-  {
-   "ts": "2026-10-17T16:51:19-04:00",
-   "keys": [
-    "version"
-   ],
-   "old": "0.2-placeholder",
-   "new": "0.3-placeholder",
-   "approved_by": "Wayne",
-   "reason": "crescendo rule added (approved by Wayne)"
+  "population_defaults": {
+    "_note": "Conservative bands used during learning and as the fallback when a stratum has too few samples. Outside the band during learning -> CONFIRM_FIRST (confirm-first widened).",
+    "hr": {
+      "sleep": [
+        40,
+        90
+      ],
+      "rest": [
+        50,
+        100
+      ],
+      "active": [
+        60,
+        140
+      ]
+    },
+    "spo2": {
+      "sleep": [
+        90,
+        100
+      ],
+      "rest": [
+        92,
+        100
+      ],
+      "active": [
+        92,
+        100
+      ]
+    },
+    "rr": {
+      "sleep": [
+        8,
+        20
+      ],
+      "rest": [
+        10,
+        22
+      ],
+      "active": [
+        12,
+        30
+      ]
+    },
+    "sbp": {
+      "sleep": [
+        90,
+        150
+      ],
+      "rest": [
+        95,
+        160
+      ],
+      "active": [
+        100,
+        180
+      ]
+    },
+    "glucose": {
+      "sleep": [
+        70,
+        180
+      ],
+      "rest": [
+        70,
+        180
+      ],
+      "active": [
+        70,
+        180
+      ]
+    },
+    "temp_c": {
+      "sleep": [
+        35.8,
+        37.8
+      ],
+      "rest": [
+        35.8,
+        37.8
+      ],
+      "active": [
+        35.8,
+        38.0
+      ]
+    }
   },
-  {
-   "ts": "2026-10-17T19:50:36-04:00",
-   "keys": [
-    "cgm_pressure_low"
-   ],
-   "old": null,
-   "new": {
+  "learning": {
+    "_note": "Layer 2. Per-patient onboarding window. Baselines per vital x activity_state x time_of_day.",
+    "onboarding_days": 10,
+    "onboarding_days_range": [
+      7,
+      14
+    ],
+    "activity_states": [
+      "sleep",
+      "rest",
+      "active"
+    ],
+    "time_of_day_bins": {
+      "night": [
+        0,
+        6
+      ],
+      "morning": [
+        6,
+        12
+      ],
+      "afternoon": [
+        12,
+        18
+      ],
+      "evening": [
+        18,
+        24
+      ]
+    },
+    "min_samples_per_stratum": 20,
+    "confirm_widening": {
+      "_note": "During learning, at_patient_baseline suppression is not allowed (unless clinician_set_baseline). Outside the population band -> CONFIRM_FIRST.",
+      "allow_at_baseline_suppression": false
+    },
+    "outside_population_default_tier": "CONFIRM_FIRST"
+  },
+  "adaptation": {
+    "_note": "Layer 3. Rolling robust baseline (weighted median / MAD) with bounds, condition-change resets and a drift guard.",
+    "rolling_window_days": 28,
+    "z_confirm": 3.0,
+    "z_watch": 2.0,
+    "mad_floor": {
+      "hr": 3.0,
+      "spo2": 1.0,
+      "rr": 1.5,
+      "sbp": 6.0,
+      "glucose": 10.0,
+      "temp_c": 0.2
+    },
+    "learn_bounds": {
+      "_note": "A learned baseline median is clamped inside these bounds (always inside the hard limits); every clamp is logged.",
+      "hr": [
+        40,
+        120
+      ],
+      "spo2": [
+        85,
+        100
+      ],
+      "rr": [
+        8,
+        26
+      ],
+      "sbp": [
+        90,
+        170
+      ],
+      "glucose": [
+        70,
+        250
+      ],
+      "temp_c": [
+        35.5,
+        37.8
+      ]
+    },
+    "condition_change": {
+      "_note": "Partial reset: older samples of the affected vitals keep retain_weight, and a shortened learning period is re-entered. Constraint (validated): relearn_days > retain_weight x rolling_window_days, so that after relearning the new data outweigh a full window of old data.",
+      "retain_weight": 0.1,
+      "relearn_days": 4,
+      "affected_vitals": {
+        "rate_control_med": [
+          "hr"
+        ],
+        "new_diagnosis": [
+          "hr",
+          "spo2",
+          "rr",
+          "sbp",
+          "glucose",
+          "temp_c"
+        ],
+        "hospitalization": [
+          "hr",
+          "spo2",
+          "rr",
+          "sbp",
+          "glucose",
+          "temp_c"
+        ],
+        "hospice_enrollment": [
+          "hr",
+          "spo2",
+          "rr",
+          "sbp",
+          "glucose",
+          "temp_c"
+        ],
+        "diuretic_change": [
+          "sbp"
+        ],
+        "glucose_med_change": [
+          "glucose"
+        ],
+        "oxygen_change": [
+          "spo2",
+          "rr"
+        ]
+      }
+    },
+    "drift_guard": {
+      "_note": "A slow monotonic drift toward abnormal is NOT learned. It is flagged SUBTLE_DETERIORATION_TREND for review, and the drifting samples are excluded from the baseline. Total change = mean of the last k daily rest medians minus the first k in the window (k<=3); samples from the window start onward are excluded once the drift flag is raised (conservative).",
+      "enabled": true,
+      "window_days": 21,
+      "min_days": 7,
+      "min_kendall_tau": 0.6,
+      "min_total_change": {
+        "hr": 8,
+        "spo2": 3,
+        "rr": 3,
+        "sbp": 15,
+        "glucose": 30,
+        "temp_c": 0.5
+      },
+      "abnormal_direction": {
+        "hr": "up",
+        "spo2": "down",
+        "rr": "up",
+        "sbp": "both",
+        "glucose": "up",
+        "temp_c": "up"
+      },
+      "stratum": "rest",
+      "explained_by_condition_change_days": 14
+    }
+  },
+  "confirm_first": {
+    "spo2_population_threshold": 88,
+    "default_steps": {
+      "spo2": "fingertip_recheck",
+      "hr": "patient_call",
+      "rr": "patient_call",
+      "sbp": "patient_call",
+      "glucose": "patient_call",
+      "temp_c": "patient_call"
+    },
+    "timeouts_min": {
+      "fingertip_recheck": 15,
+      "patient_call": 10,
+      "caregiver_ping": 30,
+      "device_recheck": 10
+    },
+    "unanswered_prompt": {
+      "enabled": true,
+      "prompt_steps": [
+        "patient_call",
+        "watch_prompt"
+      ],
+      "lives_alone_required": true,
+      "_note": "DECIDED RULE (Wayne 2026-10-17, ST2-009): an unanswered patient-directed confirm prompt (patient call or watch tap-to-confirm) when the patient lives alone counts as a FAILED confirm -> escalate now (confirm_step already_confirmed). Not living alone -> wait for the timeout as before. Caregiver pings are not patient prompts."
+    }
+  },
+  "chest_pain": {
+    "_note": "HT_CHEST_PAIN_VITALS is a parametric rule, replacing the flat 10-min CONFIRM_FIRST, which the clinical owner rejected. ALL VALUES ARE PLACEHOLDERS. Order: hard limits (implausible -> recheck, danger -> ABSOLUTE) -> reliable ECG change -> ABSOLUTE -> per-vital band -> side-specific context modifiers -> symptom modifiers -> safety floors -> band -> output.",
+    "bands": {
+      "A": {
+        "tier": "ABSOLUTE"
+      },
+      "B": {
+        "tier": "CONFIRM_FIRST",
+        "timeout_min": 5
+      },
+      "C": {
+        "tier": "CONFIRM_FIRST",
+        "timeout_min": 15
+      },
+      "D": {
+        "tier": "LOG_ONLY",
+        "route": "nurse_task"
+      }
+    },
+    "vital_bands": {
+      "_note": "With chest pain present, population rest thresholds. high: value >= threshold; low: value <= threshold.",
+      "hr": {
+        "high": {
+          "A": 130,
+          "B": 110,
+          "C": 100
+        },
+        "low": {
+          "A": 40,
+          "B": 47,
+          "C": 54
+        }
+      },
+      "sbp": {
+        "high": {
+          "A": 180,
+          "B": 170,
+          "C": 160
+        },
+        "low": {
+          "A": 90,
+          "B": 99,
+          "C": 104
+        }
+      },
+      "spo2": {
+        "high": null,
+        "low": {
+          "A": 88,
+          "B": 91,
+          "C": 93
+        }
+      },
+      "rr": {
+        "high": {
+          "A": 30,
+          "B": 25,
+          "C": 21
+        },
+        "low": {
+          "A": 8,
+          "B": null,
+          "C": null
+        }
+      }
+    },
+    "modifiers": {
+      "_note": "Band shifts: -1 = one band less severe, +1 = one band more severe. Side-specific: *_low applies only when the vital is on its low side, *_high only on its high side.",
+      "sleep": {
+        "hr_low": -1,
+        "rr_low": -1
+      },
+      "post_exertion": {
+        "window_min": 20,
+        "hr_high": -1,
+        "rr_high": -1,
+        "sbp_high": -1,
+        "timeout_factor": 2.0
+      },
+      "rate_control_med": {
+        "hr_low": -1,
+        "hr_high": 1
+      },
+      "pacemaker": {
+        "_note": "HR at or above the programmed lower rate (within 2 bpm) -> the HR is not banded; below the lower rate -> +1 (possible pacing failure).",
+        "tolerance_bpm": 2,
+        "below_lower_rate": 1
+      },
+      "known_brady": {
+        "hr_low": -1,
+        "_note": "documented usual low HR range; applies when the HR is within the range minus 3 bpm"
+      },
+      "known_tachy": {
+        "hr_high": -1,
+        "_note": "documented usual high HR (e.g. rate-controlled AF); applies when the HR is within the range max + 10 bpm"
+      },
+      "red_flags": {
+        "features": [
+          "diaphoresis",
+          "radiation",
+          "dyspnea",
+          "syncope_or_presyncope",
+          "persistent_ge_15min",
+          "crescendo_pattern",
+          "pallor"
+        ],
+        "per_flag": 1,
+        "max_total": 2
+      },
+      "multi_vital": {
+        "min_vitals_at_B_or_worse": 2,
+        "shift": 1
+      },
+      "concordance": {
+        "concordant": 1,
+        "discordant": -1,
+        "_note": "discordant may only lower band B or C; it never lowers A"
+      },
+      "device_reliability": {
+        "_note": "A quality-flagged vital is not banded and the output becomes a recheck (CONFIRM_FIRST device_recheck) unless the reliable inputs already give band A.",
+        "recheck_step": "device_recheck",
+        "recheck_timeout_min": 5
+      }
+    },
+    "safety": {
+      "max_total_downgrade": 2,
+      "band_A_floor": "B",
+      "_note": "Context can lower a raw band by at most 2 and can never turn raw band A into log-only. Hard danger limits (HT_VS_DANGER) and a reliable ECG change are always ABSOLUTE (goals of care still apply)."
+    },
+    "timeout_bounds_min": [
+      5,
+      60
+    ],
+    "default_confirm_step": "patient_call",
+    "crescendo_rule": {
+      "enabled": true,
+      "min_band": "C",
+      "no_exertion_timeout_factor_when_vitals_normal": true,
+      "_note": "DECIDED RULE (not a placeholder decision): a crescendo angina pattern (episodes becoming more frequent, or new onset in recent days) with normal vitals triggers HT_CHEST_PAIN_VITALS CONFIRM_FIRST (band C at least). min_band and the timeout remain placeholder values. With normal vitals the post-exertion timeout factor is not applied, because the trigger is the pattern."
+    },
+    "band_math": {
+      "method": "net_then_clamp",
+      "_note": "DECIDED RULE (Wayne 2026-10-17, ST4-002): sum ALL band shifts first (the worst banded vital's own context modifiers, then multi-vital, red flags and concordance), then clamp once to D..A and apply the safety floors (max_total_downgrade, band_A_floor) and the crescendo floor. Replaces sequential clamping at each step. Unbanded vitals do not contribute to the base; with no banded vital the base is band D. Shift sizes remain placeholders."
+    }
+  },
+  "cgm_pressure_low": {
     "_note": "PLACEHOLDERS. CGM pressure-low (compression) artifact rule, applied to CGM readings at or below hard_limits.glucose.danger_low. A suspected pressure low becomes ARTIFACT with a fingerstick recheck. A fingerstick-confirmed or symptomatic low stays ABSOLUTE. A fingerstick above the danger limit makes it SUPPRESSED unreliable_reading.",
     "enabled": true,
     "fingerstick_window_min": 60,
     "discordant_abs_mg_dl": 15,
     "discordant_pct": 0.2,
     "overnight_hours": [
-     22,
-     7
+      22,
+      7
     ],
     "rapid_drop_mg_dl_per_min": 2.0,
     "rebound_within_min": 60,
     "pressure_cues": [
-     "pinned",
-     "pressed",
-     "compression",
-     "under the bed rail/body/arm/pillow",
-     "lying/sleeping on the sensor side"
+      "pinned",
+      "pressed",
+      "compression",
+      "under the bed rail/body/arm/pillow",
+      "lying/sleeping on the sensor side"
     ],
     "symptoms": [
-     "sweaty/clammy",
-     "shaky/tremor",
-     "confused",
-     "drowsy/hard to rouse",
-     "seizure",
-     "unresponsive"
+      "sweaty/clammy",
+      "shaky/tremor",
+      "confused",
+      "drowsy/hard to rouse",
+      "seizure",
+      "unresponsive"
     ],
     "recheck_step": "fingerstick_recheck",
     "recheck_timeout_min": 15
-   },
-   "approved_by": "Wayne",
-   "reason": "Next step approved 2026-10-17 19:49 EDT: CGM pressure-low artifact rule (placeholders)"
   },
-  {
-   "ts": "2026-10-17T19:50:36-04:00",
-   "keys": [
-    "version"
-   ],
-   "old": "0.3-placeholder",
-   "new": "0.4-placeholder",
-   "approved_by": "Wayne",
-   "reason": "cgm_pressure_low added"
-  },
-  {
-   "ts": "2026-10-18T09:17:48-04:00",
-   "keys": [
-    "chest_pain",
-    "band_math"
-   ],
-   "old": null,
-   "new": {
-    "method": "net_then_clamp",
-    "_note": "DECIDED RULE (Wayne 2026-10-17, ST4-002): sum ALL band shifts first (the worst banded vital's own context modifiers, then multi-vital, red flags and concordance), then clamp once to D..A and apply the safety floors (max_total_downgrade, band_A_floor) and the crescendo floor. Replaces sequential clamping at each step. Unbanded vitals do not contribute to the base; with no banded vital the base is band D. Shift sizes remain placeholders."
-   },
-   "approved_by": "Wayne",
-   "reason": "Clinician ruling ST4-002 (2026-10-17): net modifiers first, then clamp; band C 15 min"
-  },
-  {
-   "ts": "2026-10-18T09:17:48-04:00",
-   "keys": [
-    "confirm_first",
-    "unanswered_prompt"
-   ],
-   "old": null,
-   "new": {
-    "enabled": true,
-    "prompt_steps": [
-     "patient_call",
-     "watch_prompt"
-    ],
-    "lives_alone_required": true,
-    "_note": "DECIDED RULE (Wayne 2026-10-17, ST2-009): an unanswered patient-directed confirm prompt (patient call or watch tap-to-confirm) when the patient lives alone counts as a FAILED confirm -> escalate now (confirm_step already_confirmed). Not living alone -> wait for the timeout as before. Caregiver pings are not patient prompts."
-   },
-   "approved_by": "Wayne",
-   "reason": "Clinician ruling ST2-009 (2026-10-17): unanswered watch prompt counts as failed confirm; generalize as policy rule"
-  },
-  {
-   "ts": "2026-10-18T09:17:48-04:00",
-   "keys": [
-    "goals_of_care"
-   ],
-   "old": null,
-   "new": {
+  "goals_of_care": {
     "suppresses": "hospital_directed_escalation_only",
     "default_notify": "hospice_nurse_same_shift",
     "urgent_comfort": {
-     "enabled": true,
-     "escalation_target": "hospice_nurse",
-     "notify": "hospice_nurse_urgent_page",
-     "route": "urgent_page",
-     "conditions": {
-      "hypoglycemia_symptomatic": true,
-      "hypoglycemia_recurrent": true
-     },
-     "recurrent_window_h": 6,
-     "_note": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. Other conditions (e.g. distressing breathlessness) are NOT on the list until Wayne adds them; a caller may declare context comfort_treatable explicitly."
+      "enabled": true,
+      "escalation_target": "hospice_nurse",
+      "notify": "hospice_nurse_urgent_page",
+      "route": "urgent_page",
+      "conditions": {
+        "hypoglycemia_symptomatic": true,
+        "hypoglycemia_recurrent": false,
+        "breathlessness_distressing_home_treatable": true
+      },
+      "recurrent_window_h": 6,
+      "_note": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. v1.6 adds distressing breathlessness that can be treated at home (respiratory triggers; context breathlessness {distressing, home_treatable}). Other conditions (falls, focal deficits, syncope) are NOT on the list; a caller may declare context comfort_treatable explicitly. v1.7 (Wayne 2026-10-18): hypoglycemia_recurrent disabled; only a symptomatic danger-level low qualifies; recurrent_window_h is kept for when it is re-enabled.",
+      "breathlessness_vitals": [
+        "spo2",
+        "rr"
+      ]
     },
     "_note": "DECIDED RULE (Wayne 2026-10-18, GC2-003): hospice/comfort-only goals suppress hospital-directed escalation only."
-   },
-   "approved_by": "Wayne",
-   "reason": "Clinician ruling GC2-003 (2026-10-18): hospice goals suppress hospital-directed escalation, not urgent treatable goal-consistent comfort issues"
   },
-  {
-   "ts": "2026-10-18T09:17:48-04:00",
-   "keys": [
-    "version"
-   ],
-   "old": "0.4-placeholder",
-   "new": "0.5-placeholder",
-   "approved_by": "Wayne",
-   "reason": "v1.5 rulings: band math, unanswered prompt, hospice narrowing (approved by Wayne)"
-  },
-  {
-   "ts": "2026-10-18T09:58:41-04:00",
-   "keys": [
-    "goals_of_care",
-    "urgent_comfort",
-    "conditions",
-    "breathlessness_distressing_home_treatable"
-   ],
-   "old": null,
-   "new": true,
-   "approved_by": "Wayne",
-   "reason": "Clinician ruling 2026-10-18: add distressing breathlessness that can be treated at home to the urgent hospice-comfort list (SMART_TRIGGERS v1.6)"
-  },
-  {
-   "ts": "2026-10-18T09:58:41-04:00",
-   "keys": [
-    "goals_of_care",
-    "urgent_comfort",
-    "breathlessness_vitals"
-   ],
-   "old": null,
-   "new": [
-    "spo2",
-    "rr"
-   ],
-   "approved_by": "Wayne",
-   "reason": "v1.6: breathlessness condition applies to respiratory triggers (SpO2, RR)"
-  },
-  {
-   "ts": "2026-10-18T09:58:41-04:00",
-   "keys": [
-    "goals_of_care",
-    "urgent_comfort",
-    "_note"
-   ],
-   "old": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. Other conditions (e.g. distressing breathlessness) are NOT on the list until Wayne adds them; a caller may declare context comfort_treatable explicitly.",
-   "new": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. v1.6 adds distressing breathlessness that can be treated at home (respiratory triggers; context breathlessness {distressing, home_treatable}). Other conditions (falls, focal deficits, syncope) are NOT on the list; a caller may declare context comfort_treatable explicitly.",
-   "approved_by": "Wayne",
-   "reason": "v1.6 note update"
-  },
-  {
-   "ts": "2026-10-18T09:58:41-04:00",
-   "keys": [
-    "version"
-   ],
-   "old": "0.5-placeholder",
-   "new": "0.6-placeholder",
-   "approved_by": "Wayne",
-   "reason": "v1.6: breathlessness added to urgent hospice-comfort list (approved by Wayne)"
-  },
-  {
-   "ts": "2026-10-18T10:29:35-04:00",
-   "keys": [
-    "goals_of_care",
-    "urgent_comfort",
-    "conditions",
-    "hypoglycemia_recurrent"
-   ],
-   "old": true,
-   "new": false,
-   "approved_by": "Wayne",
-   "reason": "Clinician ruling 2026-10-18 (check 4, SMART_TRIGGERS v1.7): only SYMPTOMATIC danger-level lows page the hospice nurse urgently; recurrence within 6 h without symptoms -> SUPPRESSED goals_of_care, same-shift hospice nurse"
-  },
-  {
-   "ts": "2026-10-18T10:29:35-04:00",
-   "keys": [
-    "goals_of_care",
-    "urgent_comfort",
-    "_note"
-   ],
-   "old": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. v1.6 adds distressing breathlessness that can be treated at home (respiratory triggers; context breathlessness {distressing, home_treatable}). Other conditions (falls, focal deficits, syncope) are NOT on the list; a caller may declare context comfort_treatable explicitly.",
-   "new": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. v1.6 adds distressing breathlessness that can be treated at home (respiratory triggers; context breathlessness {distressing, home_treatable}). Other conditions (falls, focal deficits, syncope) are NOT on the list; a caller may declare context comfort_treatable explicitly. v1.7 (Wayne 2026-10-18): hypoglycemia_recurrent disabled; only a symptomatic danger-level low qualifies; recurrent_window_h is kept for when it is re-enabled.",
-   "approved_by": "Wayne",
-   "reason": "v1.7 note"
-  },
-  {
-   "ts": "2026-10-18T10:29:35-04:00",
-   "keys": [
-    "version"
-   ],
-   "old": "0.6-placeholder",
-   "new": "0.7-placeholder",
-   "approved_by": "Wayne",
-   "reason": "v1.7: hospice low rule narrowed to symptomatic lows (approved by Wayne)"
-  },
-  {
-   "ts": "2026-10-18T11:54:18-04:00",
-   "keys": [
-    "learning",
-    "outside_population_default_tier"
-   ],
-   "old": null,
-   "new": "CONFIRM_FIRST",
-   "approved_by": "Wayne",
-   "reason": "v1.8 learning-period rule (Wayne 2026-10-18, fixes ST3-001): during the onboarding/learning period (no learned baseline), a reading beyond the population default band, or SpO2 below the population threshold, goes CONFIRM_FIRST (never silent); at-baseline suppression is not allowed while learning unless a clinician set the baseline."
-  },
-  {
-   "ts": "2026-10-18T11:54:18-04:00",
-   "keys": [
-    "version"
-   ],
-   "old": "0.7-placeholder",
-   "new": "0.8-placeholder",
-   "approved_by": "Wayne",
-   "reason": "v1.8: learning-period rule formalised (approved by Wayne)"
-  },
-  {
-   "ts": "2026-10-21T17:41:51-04:00",
-   "keys": [
-    "layer1_v110"
-   ],
-   "old": null,
-   "new": {
+  "layer1_v110": {
     "_note": "SMART_TRIGGERS v1.10 (Wayne 2026-10-21). Layer 1 fixes from Wayne's review-queue rulings. Placeholders; developed on hand-written practice cases (test_layer1_v110.py), not on holdout text.",
     "clean_repeat": {
-     "_note": "An abnormal reading cleared by a clean repeat (other finger/hand, second device, or fingerstick) within the window, with no symptoms -> SUPPRESSED cleared_by_repeat, route silent_log.",
-     "window_min": 15,
-     "spo2_clean_min": 92,
-     "glucose_window_min": 60
+      "_note": "An abnormal reading cleared by a clean repeat (other finger/hand, second device, or fingerstick) within the window, with no symptoms -> SUPPRESSED cleared_by_repeat, route silent_log. A CGM low counts as cleared only if the fingerstick reads in the normal range (>= glucose_clean_min); a fingerstick that confirms a low (e.g. 57) is not a clean repeat.",
+      "window_min": 15,
+      "spo2_clean_min": 92,
+      "glucose_window_min": 60,
+      "glucose_clean_min": 70,
+      "bp_window_min": 15,
+      "sbp_clean_low": 90,
+      "sbp_clean_high": 180,
+      "_note_v1110": "v1.11.0 (Wayne 2026-10-23): clearance applies whatever the artifact flag (timestamp parsing fixed so readings with the time earlier in the sentence or 'at hh:mm' after the value are timed). Extended to BP cuffs: a device-flagged, implausible or danger-level SBP plus a repeat with SBP in [sbp_clean_low, sbp_clean_high] within bp_window_min, no symptoms -> SUPPRESSED cleared_by_repeat, silent_log. PLACEHOLDERS: bp_window_min, sbp_clean_low, sbp_clean_high."
     },
     "insulin_ckd_low": {
-     "_note": "Insulin user with CKD and a danger-level CGM/glucose low: always HITM review (hard flag regardless of models); route floor nurse_task (overrides cleared_by_repeat).",
-     "insulin_rx": "insulin|glargine|detemir|degludec|lispro|aspart|glulisine|NPH",
-     "ckd_rx": "\\bCKD\\b|chronic kidney|renal (?:failure|impairment|insufficiency)|eGFR\\s*\\d",
-     "route": "nurse_task"
+      "_note": "Insulin OR sulfonylurea user (v1.10.1) with CKD and a danger-level low (CGM or meter <= danger limit): always HITM review (hard flag regardless of models); route floor nurse_task, never silent (overrides cleared_by_repeat).",
+      "insulin_rx": "insulin|glargine|detemir|degludec|lispro|aspart|glulisine|NPH",
+      "ckd_rx": "\\bCKD\\b|chronic kidney|renal (?:failure|impairment|insufficiency)|eGFR\\s*\\d",
+      "route": "nurse_task",
+      "sulfonylurea_rx": "glimepiride|glipizide|glyburide|glibenclamide|gliclazide"
     },
     "suppressed_default_route": {
-     "_note": "Layer 1 route on a SUPPRESSED/ARTIFACT trigger when no model pick is available (replaces the v1.9 provider_task fallback).",
-     "cleared_by_repeat": "silent_log",
-     "unreliable_reading": "nurse_task",
-     "explained": "nurse_task",
-     "explained_caregiver_check": "nurse_task",
-     "at_patient_baseline": "nurse_task",
-     "below_band_threshold": "nurse_task",
-     "ARTIFACT": "silent_log",
-     "_other": "nurse_task"
+      "_note": "Layer 1 route on a SUPPRESSED/ARTIFACT trigger when no model pick is available (replaces the v1.9 provider_task fallback).",
+      "cleared_by_repeat": "silent_log",
+      "unreliable_reading": "nurse_task",
+      "explained": "nurse_task",
+      "explained_caregiver_check": "nurse_task",
+      "at_patient_baseline": "nurse_task",
+      "below_band_threshold": "nurse_task",
+      "ARTIFACT": "silent_log",
+      "_other": "nurse_task",
+      "possible_fall_unverified": "nurse_task",
+      "within_patient_band": "silent_log",
+      "device_disagreement": "silent_log",
+      "device_disagreement_could_change_care": "nurse_task",
+      "ckd_low_dose_review": "provider_task",
+      "repeated_lows_dose_review": "provider_task",
+      "ckd_low_compression_explained": "nurse_task",
+      "ckd_low_exertion_explained": "nurse_task",
+      "within_band_low_no_home_o2": "provider_task",
+      "recent_ckd_low_dose_review": "provider_task"
     },
     "route_floor": {
-     "_note": "Minimum route for these suppressed reasons even when a model picks lower (models still capped at provider_task unless acute).",
-     "explained_caregiver_check": "nurse_task",
-     "HT_SPO2_LT88:at_patient_baseline": "nurse_task",
-     "HT_BRADY_RATE_DRUG:below_band_threshold": "nurse_task"
+      "_note": "Minimum route for these suppressed reasons even when a model picks lower (models still capped at provider_task unless acute).",
+      "explained_caregiver_check": "nurse_task",
+      "HT_SPO2_LT88:at_patient_baseline": "nurse_task",
+      "HT_BRADY_RATE_DRUG:below_band_threshold": "nurse_task",
+      "possible_fall_unverified": "nurse_task",
+      "device_disagreement_could_change_care": "nurse_task",
+      "ckd_low_dose_review": "provider_task",
+      "repeated_lows_dose_review": "provider_task",
+      "ckd_low_compression_explained": "nurse_task",
+      "ckd_low_exertion_explained": "nurse_task",
+      "within_band_low_no_home_o2": "provider_task",
+      "recent_ckd_low_dose_review": "provider_task",
+      "HT_GAP48_HIGHRISK:explained": "nurse_task",
+      "HT_FALL_ANTICOAG:explained": "nurse_task"
     },
     "fall_anticoag": {
-     "_note": "Confirmed (witnessed / patient or caregiver reports a fall) fall on an anticoagulant -> ABSOLUTE. Unwitnessed possible fall (impact or device signal) cleared by a caregiver check -> SUPPRESSED explained_caregiver_check, nurse_task (confirm with the patient there was no fall).",
-     "confirmed_tier": "ABSOLUTE"
+      "_note": "Confirmed (witnessed / patient or caregiver reports a fall) fall on an anticoagulant -> ABSOLUTE. Unwitnessed possible fall (impact or device signal) cleared by a caregiver check -> SUPPRESSED explained_caregiver_check, nurse_task (confirm with the patient there was no fall).",
+      "confirmed_tier": "ABSOLUTE"
     },
     "bradycardia_rate_drug": {
-     "_note": "Resting HR below threshold on a rate-slowing drug: symptomatic -> CONFIRM_FIRST patient_call; asymptomatic -> SUPPRESSED below_band_threshold (nurse_task).",
-     "hr_below": 45,
-     "drugs_rx": "amiodarone|dronedarone|digoxin|sotalol|bisoprolol|metoprolol|atenolol|carvedilol|nebivolol|propranolol|diltiazem|verapamil|ivabradine|donepezil",
-     "symptoms_rx": "dizz\\w*|light-?headed|near[- ]?faint|faint\\w*|presyncop\\w*|confus\\w*|unusually tired|exhausted|breathless\\w*|short of breath|chest (?:pain|pressure)|fell|collapsed"
+      "_note": "Resting HR below threshold on a rate-slowing drug with symptoms -> CONFIRM_FIRST patient_call. Asymptomatic: no Layer 1 decision (a new rule never lowers or caps the route).",
+      "hr_below": 45,
+      "drugs_rx": "amiodarone|dronedarone|digoxin|sotalol|bisoprolol|metoprolol|atenolol|carvedilol|nebivolol|propranolol|diltiazem|verapamil|ivabradine|donepezil",
+      "symptoms_rx": "dizz\\w*|light-?headed|near[- ]?faint|faint\\w*|presyncop\\w*|confus\\w*|unusually tired|exhausted|breathless\\w*|short of breath|chest (?:pain|pressure)|fell|collapsed"
     },
     "gap_contact_exclude": {
-     "_note": "Device transmissions are not contact for the 48 h gap trigger: a sentence about scale weigh-ins, syncs or uploads with no person-to-person contact word does not explain a gap.",
-     "device_rx": "scale|weigh-?in|weighed|weight (?:reading|transmi\\w*)|sync\\w*|upload\\w*|transmi\\w*|bed sensor|pillbox|dispenser",
-     "human_rx": "video call|phoned|phone call|visited|saw (?:him|her)|spoke|talked|checked on (?:him|her)|answered the (?:phone|door)"
+      "_note": "Device transmissions are not contact for the 48 h gap trigger: a sentence about scale weigh-ins, syncs or uploads with no person-to-person contact word does not explain a gap.",
+      "device_rx": "scale|weigh-?in|weighed|weight (?:reading|transmi\\w*)|sync\\w*|upload\\w*|transmi\\w*|bed sensor|pillbox|dispenser",
+      "human_rx": "video call|phoned|phone call|visited|saw (?:him|her)|spoke|talked|checked on (?:him|her)|answered the (?:phone|door)"
     },
     "wording": {
-     "_note": "Synonym lists (generic clinical phrasing, no case IDs). Added to the v1.9 patterns.",
-     "syncope": [
-      "loss of tone",
-      "lost tone",
-      "collapsed",
-      "collapse\\b",
-      "passed out",
-      "slumped",
-      "unresponsive (?:briefly|for)",
-      "briefly unresponsive",
-      "keeled over",
-      "dropped to the floor",
-      "went down and did not respond",
-      "out cold"
-     ],
-     "focal_neuro": [
-      "one-sided weakness",
-      "weak(?:ness)? on one side",
-      "face (?:is )?drooping",
-      "drooping (?:mouth|face|eyelid)",
-      "arm drift",
-      "trouble (?:speaking|finding words)",
-      "speech (?:is |was |became )?(?:slurred|garbled|jumbled)",
-      "words (?:came out )?(?:jumbled|wrong)",
-      "(?:sudden )?loss of vision in one eye",
-      "can(?:no|')t (?:raise|lift) (?:the |his |her )?(?:left|right) arm",
-      "dragging (?:the |his |her )?(?:left|right) (?:leg|foot)",
-      "numb(?:ness)? (?:on|down) (?:the |his |her )?(?:left|right) side"
-     ],
-     "chest_pain": [
-      "crushing (?:pain|feeling)",
-      "pressure (?:on|in) (?:his|her|the) chest",
-      "band (?:around|across) (?:his|her|the) chest",
-      "elephant on (?:his|her|my) chest",
-      "chest (?:felt|feels) (?:heavy|tight)",
-      "heaviness (?:behind|under) (?:the|his|her) (?:breastbone|sternum)",
-      "retrosternal (?:pain|pressure|discomfort)"
-     ]
-    }
-   },
-   "approved_by": "Wayne",
-   "reason": "SMART_TRIGGERS v1.10 Layer 1 fixes from review-queue rulings (approved by Wayne 2026-10-21)"
-  },
-  {
-   "ts": "2026-10-21T17:41:51-04:00",
-   "keys": [
-    "version"
-   ],
-   "old": "0.8-placeholder",
-   "new": "0.10-placeholder",
-   "approved_by": "Wayne",
-   "reason": "v1.10 Layer 1 fixes (approved by Wayne 2026-10-21)"
-  },
-  {
-   "ts": "2026-10-21T17:55:00-04:00",
-   "keys": [
-    "layer1_v110"
-   ],
-   "old": "v1.10 draft",
-   "new": "dev fixes on library practice data: two over-broad chest-pain synonyms removed (cough 'chest feels tight', reflux 'retrosternal'); asymptomatic bradycardia makes no decision",
-   "approved_by": "Wayne",
-   "reason": "within Wayne's 2026-10-21 v1.10 approval; tuned on library (dev) cases only"
-  },
-  {
-   "ts": "2026-10-21T17:58:00-04:00",
-   "keys": [
-    "layer1_v110",
-    "clean_repeat",
-    "glucose_clean_min"
-   ],
-   "old": null,
-   "new": 70,
-   "approved_by": "Wayne",
-   "reason": "within Wayne's v1.10 approval; library dev case: a confirming low fingerstick is not a clean repeat"
-  },
-  {
-   "ts": "2026-10-21T18:24:14-04:00",
-   "keys": [
-    "layer1_v110",
-    "insulin_ckd_low",
-    "sulfonylurea_rx"
-   ],
-   "old": null,
-   "new": "glimepiride|glipizide|glyburide|glibenclamide|gliclazide",
-   "approved_by": "Wayne",
-   "reason": "v1.10.1: extend the insulin+CKD danger-low exception to sulfonylurea users with CKD (approved by Wayne 2026-10-21)"
-  },
-  {
-   "ts": "2026-10-21T18:24:14-04:00",
-   "keys": [
-    "layer1_v110",
-    "insulin_ckd_low",
-    "_note"
-   ],
-   "old": "Insulin user with CKD and a danger-level CGM/glucose low: always HITM review (hard flag regardless of models); route floor nurse_task (overrides cleared_by_repeat).",
-   "new": "Insulin OR sulfonylurea user (v1.10.1) with CKD and a danger-level low (CGM or meter <= danger limit): always HITM review (hard flag regardless of models); route floor nurse_task, never silent (overrides cleared_by_repeat).",
-   "approved_by": "Wayne",
-   "reason": "v1.10.1 note"
-  },
-  {
-   "ts": "2026-10-21T18:24:14-04:00",
-   "keys": [
-    "version"
-   ],
-   "old": "0.10-placeholder",
-   "new": "0.10.1-placeholder",
-   "approved_by": "Wayne",
-   "reason": "v1.10.1 sulfonylurea+CKD low exception (approved by Wayne 2026-10-21)"
-  },
-  {
-   "ts": "2026-10-23T06:45:00-04:00",
-   "keys": [
-    "version",
-    "layer1_v110.fall_v1102",
-    "layer1_v110.spo2_rest_dyspnea",
-    "layer1_v110.route_floor",
-    "layer1_v110.suppressed_default_route"
-   ],
-   "old": "0.10.1-placeholder",
-   "new": "0.10.2-placeholder",
-   "approved_by": "Wayne",
-   "reason": "v1.10.2 Layer 1 fixes from holdout_v2 rulings (approved by Wayne 2026-10-23); built on practice cases (test_layer1_v1102.py)"
-  },
-  {
-   "ts": "2026-10-23T07:40:00-04:00",
-   "keys": [
-    "version",
-    "layer1_v110.wording.focal_neuro"
-   ],
-   "old": "0.10.2-placeholder",
-   "new": "0.10.3-placeholder",
-   "approved_by": "Wayne",
-   "reason": "v1.10.3 HT_FOCAL_NEURO lay-wording synonyms (approved by Wayne 2026-10-23)"
-  },
-  {
-   "ts": "2026-10-23T11:30:00-04:00",
-   "keys": [
-    "version",
-    "layer1_v110.v1110",
-    "layer1_v110.clean_repeat.bp_window_min",
-    "layer1_v110.clean_repeat.sbp_clean_low",
-    "layer1_v110.clean_repeat.sbp_clean_high",
-    "layer1_v110.suppressed_default_route",
-    "layer1_v110.route_floor"
-   ],
-   "old": "0.10.3-placeholder",
-   "new": "0.11.0-placeholder",
-   "approved_by": "Wayne",
-   "reason": "SMART_TRIGGERS v1.11.0 Layer 1 fixes from Wayne's holdout_v3 review-queue rulings (approved by Wayne 2026-10-23): drug-induced low foundation floor, CKD dose-review lows, patient-level SpO2 bands, impact+inactivity cap, clean-repeat timestamp fix + BP cuff, device tickets, plain reasons, serotonergic-confusion candidate (off). Built on practice cases (test_layer1_v1110.py)."
-  },
-  {
-   "ts": "2026-10-23T11:45:00-04:00",
-   "keys": [
-    "version",
-    "layer1_v110.v1111",
-    "layer1_v110.route_floor",
-    "layer1_v110.suppressed_default_route",
-    "layer1_v110.route_floor.HT_GAP48_HIGHRISK:explained"
-   ],
-   "old": "0.11.0-placeholder",
-   "new": "0.11.1-placeholder",
-   "approved_by": "Wayne",
-   "reason": "SMART_TRIGGERS v1.11.1 (Wayne 2026-10-23): explained CKD lows (compression / exertion) -> nurse_task; dose review only when unexplained or repeated; COPD in-band without home oxygen -> provider_task; gap contact detail in the next sentence; 72 h glucose-low lookback. Placeholders."
-  }
- ],
- "hard_limits": {
-  "_note": "Layer 1. Fixed, never learned. implausible -> ARTIFACT (auto recheck, no page). danger -> ABSOLUTE regardless of baseline (goals of care still apply).",
-  "hr": {
-   "unit": "bpm",
-   "implausible_low": 20,
-   "implausible_high": 250,
-   "danger_low": 35,
-   "danger_high": 180,
-   "max_rate_per_s": 30,
-   "flatline_s": 60
-  },
-  "spo2": {
-   "unit": "%",
-   "implausible_low": 50,
-   "implausible_high": 100,
-   "danger_low": 80,
-   "danger_high": null,
-   "max_rate_per_s": 2.0,
-   "flatline_s": null
-  },
-  "rr": {
-   "unit": "/min",
-   "implausible_low": 3,
-   "implausible_high": 70,
-   "danger_low": 6,
-   "danger_high": 35,
-   "max_rate_per_s": null,
-   "flatline_s": null
-  },
-  "sbp": {
-   "unit": "mmHg",
-   "implausible_low": 50,
-   "implausible_high": 300,
-   "danger_low": 80,
-   "danger_high": 200,
-   "max_rate_per_s": null,
-   "flatline_s": null
-  },
-  "glucose": {
-   "unit": "mg/dL",
-   "implausible_low": 20,
-   "implausible_high": 600,
-   "danger_low": 54,
-   "danger_high": 400,
-   "max_rate_per_s": 0.1,
-   "flatline_s": null
-  },
-  "temp_c": {
-   "unit": "C",
-   "implausible_low": 30,
-   "implausible_high": 43,
-   "danger_low": 35.0,
-   "danger_high": 40.0,
-   "max_rate_per_s": null,
-   "flatline_s": null
-  }
- },
- "population_defaults": {
-  "_note": "Conservative bands used during learning and as the fallback when a stratum has too few samples. Outside the band during learning -> CONFIRM_FIRST (confirm-first widened).",
-  "hr": {
-   "sleep": [
-    40,
-    90
-   ],
-   "rest": [
-    50,
-    100
-   ],
-   "active": [
-    60,
-    140
-   ]
-  },
-  "spo2": {
-   "sleep": [
-    90,
-    100
-   ],
-   "rest": [
-    92,
-    100
-   ],
-   "active": [
-    92,
-    100
-   ]
-  },
-  "rr": {
-   "sleep": [
-    8,
-    20
-   ],
-   "rest": [
-    10,
-    22
-   ],
-   "active": [
-    12,
-    30
-   ]
-  },
-  "sbp": {
-   "sleep": [
-    90,
-    150
-   ],
-   "rest": [
-    95,
-    160
-   ],
-   "active": [
-    100,
-    180
-   ]
-  },
-  "glucose": {
-   "sleep": [
-    70,
-    180
-   ],
-   "rest": [
-    70,
-    180
-   ],
-   "active": [
-    70,
-    180
-   ]
-  },
-  "temp_c": {
-   "sleep": [
-    35.8,
-    37.8
-   ],
-   "rest": [
-    35.8,
-    37.8
-   ],
-   "active": [
-    35.8,
-    38.0
-   ]
-  }
- },
- "learning": {
-  "_note": "Layer 2. Per-patient onboarding window. Baselines per vital x activity_state x time_of_day.",
-  "onboarding_days": 10,
-  "onboarding_days_range": [
-   7,
-   14
-  ],
-  "activity_states": [
-   "sleep",
-   "rest",
-   "active"
-  ],
-  "time_of_day_bins": {
-   "night": [
-    0,
-    6
-   ],
-   "morning": [
-    6,
-    12
-   ],
-   "afternoon": [
-    12,
-    18
-   ],
-   "evening": [
-    18,
-    24
-   ]
-  },
-  "min_samples_per_stratum": 20,
-  "confirm_widening": {
-   "_note": "During learning, at_patient_baseline suppression is not allowed (unless clinician_set_baseline). Outside the population band -> CONFIRM_FIRST.",
-   "allow_at_baseline_suppression": false
-  },
-  "outside_population_default_tier": "CONFIRM_FIRST"
- },
- "adaptation": {
-  "_note": "Layer 3. Rolling robust baseline (weighted median / MAD) with bounds, condition-change resets and a drift guard.",
-  "rolling_window_days": 28,
-  "z_confirm": 3.0,
-  "z_watch": 2.0,
-  "mad_floor": {
-   "hr": 3.0,
-   "spo2": 1.0,
-   "rr": 1.5,
-   "sbp": 6.0,
-   "glucose": 10.0,
-   "temp_c": 0.2
-  },
-  "learn_bounds": {
-   "_note": "A learned baseline median is clamped inside these bounds (always inside the hard limits); every clamp is logged.",
-   "hr": [
-    40,
-    120
-   ],
-   "spo2": [
-    85,
-    100
-   ],
-   "rr": [
-    8,
-    26
-   ],
-   "sbp": [
-    90,
-    170
-   ],
-   "glucose": [
-    70,
-    250
-   ],
-   "temp_c": [
-    35.5,
-    37.8
-   ]
-  },
-  "condition_change": {
-   "_note": "Partial reset: older samples of the affected vitals keep retain_weight, and a shortened learning period is re-entered. Constraint (validated): relearn_days > retain_weight x rolling_window_days, so that after relearning the new data outweigh a full window of old data.",
-   "retain_weight": 0.1,
-   "relearn_days": 4,
-   "affected_vitals": {
-    "rate_control_med": [
-     "hr"
-    ],
-    "new_diagnosis": [
-     "hr",
-     "spo2",
-     "rr",
-     "sbp",
-     "glucose",
-     "temp_c"
-    ],
-    "hospitalization": [
-     "hr",
-     "spo2",
-     "rr",
-     "sbp",
-     "glucose",
-     "temp_c"
-    ],
-    "hospice_enrollment": [
-     "hr",
-     "spo2",
-     "rr",
-     "sbp",
-     "glucose",
-     "temp_c"
-    ],
-    "diuretic_change": [
-     "sbp"
-    ],
-    "glucose_med_change": [
-     "glucose"
-    ],
-    "oxygen_change": [
-     "spo2",
-     "rr"
-    ]
-   }
-  },
-  "drift_guard": {
-   "_note": "A slow monotonic drift toward abnormal is NOT learned. It is flagged SUBTLE_DETERIORATION_TREND for review, and the drifting samples are excluded from the baseline. Total change = mean of the last k daily rest medians minus the first k in the window (k<=3); samples from the window start onward are excluded once the drift flag is raised (conservative).",
-   "enabled": true,
-   "window_days": 21,
-   "min_days": 7,
-   "min_kendall_tau": 0.6,
-   "min_total_change": {
-    "hr": 8,
-    "spo2": 3,
-    "rr": 3,
-    "sbp": 15,
-    "glucose": 30,
-    "temp_c": 0.5
-   },
-   "abnormal_direction": {
-    "hr": "up",
-    "spo2": "down",
-    "rr": "up",
-    "sbp": "both",
-    "glucose": "up",
-    "temp_c": "up"
-   },
-   "stratum": "rest",
-   "explained_by_condition_change_days": 14
-  }
- },
- "confirm_first": {
-  "spo2_population_threshold": 88,
-  "default_steps": {
-   "spo2": "fingertip_recheck",
-   "hr": "patient_call",
-   "rr": "patient_call",
-   "sbp": "patient_call",
-   "glucose": "patient_call",
-   "temp_c": "patient_call"
-  },
-  "timeouts_min": {
-   "fingertip_recheck": 15,
-   "patient_call": 10,
-   "caregiver_ping": 30,
-   "device_recheck": 10
-  },
-  "unanswered_prompt": {
-   "enabled": true,
-   "prompt_steps": [
-    "patient_call",
-    "watch_prompt"
-   ],
-   "lives_alone_required": true,
-   "_note": "DECIDED RULE (Wayne 2026-10-17, ST2-009): an unanswered patient-directed confirm prompt (patient call or watch tap-to-confirm) when the patient lives alone counts as a FAILED confirm -> escalate now (confirm_step already_confirmed). Not living alone -> wait for the timeout as before. Caregiver pings are not patient prompts."
-  }
- },
- "chest_pain": {
-  "_note": "HT_CHEST_PAIN_VITALS is a parametric rule, replacing the flat 10-min CONFIRM_FIRST, which the clinical owner rejected. ALL VALUES ARE PLACEHOLDERS. Order: hard limits (implausible -> recheck, danger -> ABSOLUTE) -> reliable ECG change -> ABSOLUTE -> per-vital band -> side-specific context modifiers -> symptom modifiers -> safety floors -> band -> output.",
-  "bands": {
-   "A": {
-    "tier": "ABSOLUTE"
-   },
-   "B": {
-    "tier": "CONFIRM_FIRST",
-    "timeout_min": 5
-   },
-   "C": {
-    "tier": "CONFIRM_FIRST",
-    "timeout_min": 15
-   },
-   "D": {
-    "tier": "LOG_ONLY",
-    "route": "nurse_task"
-   }
-  },
-  "vital_bands": {
-   "_note": "With chest pain present, population rest thresholds. high: value >= threshold; low: value <= threshold.",
-   "hr": {
-    "high": {
-     "A": 130,
-     "B": 110,
-     "C": 100
+      "_note": "Synonym lists (generic clinical phrasing, no case IDs). Added to the v1.9 patterns.",
+      "syncope": [
+        "loss of tone",
+        "lost tone",
+        "collapsed",
+        "collapse\\b",
+        "passed out",
+        "slumped",
+        "unresponsive (?:briefly|for)",
+        "briefly unresponsive",
+        "keeled over",
+        "dropped to the floor",
+        "went down and did not respond",
+        "out cold"
+      ],
+      "focal_neuro": [
+        "one-sided weakness",
+        "weak(?:ness)? on one side",
+        "face (?:is )?drooping",
+        "drooping (?:mouth|face|eyelid)",
+        "arm drift",
+        "trouble (?:speaking|finding words)",
+        "speech (?:is |was |became )?(?:slurred|garbled|jumbled)",
+        "words (?:came out )?(?:jumbled|wrong)",
+        "(?:sudden )?loss of vision in one eye",
+        "can(?:no|')t (?:raise|lift) (?:the |his |her )?(?:left|right) arm",
+        "dragging (?:the |his |her )?(?:left|right) (?:leg|foot)",
+        "numb(?:ness)? (?:on|down) (?:the |his |her )?(?:left|right) side",
+        "lopsided (?:smile|face|mouth|grin)",
+        "(?:smile|mouth|face|grin) (?:is |looks |looked |went |has gone |became )?(?:lopsided|crooked|uneven|droopy|drooping|droops)",
+        "one side of (?:his|her|the) (?:face|mouth) (?:has )?(?:dropped|drooped|droops|is drooping|sagg\\w*|slipped)",
+        "face (?:has )?(?:dropped|sagg\\w*|slipped) on one side",
+        "(?:can't|cannot|couldn't|could not|unable to) (?:hold|grip|grasp|pick up) (?:the |a |his |her )?(?:cup|mug|glass|spoon|fork|pen|phone|kettle)[^.;]{0,15}(?:in|with) (?:his|her|the) (?:left|right) hand",
+        "suddenly (?:can't|cannot|couldn't|could not) (?:hold|grip|grasp) ",
+        "dropping (?:things|everything|the \\w+) (?:from|with|in|out of) (?:his|her|the) (?:left|right) hand",
+        "(?:left|right) hand (?:keeps )?dropping",
+        "(?:left|right) (?:arm|hand|leg) (?:went |has gone |is |feels )?(?:dead|limp|heavy|floppy|useless)",
+        "words (?:are |were |keep |kept )?(?:coming|came|come) out (?:all )?(?:wrong|jumbled|muddled|garbled|mixed up)",
+        "mix(?:ing|ed)? up (?:his|her) words",
+        "(?:can't|cannot|couldn't|could not) (?:get|find) (?:the |his |her )?(?:right )?words(?: out)?",
+        "speech (?:is |sounds |was |went )?(?:thick|muddled|slurry|funny|strange) (?:all of a )?sudden\\w*",
+        "slurring"
+      ],
+      "chest_pain": [
+        "crushing (?:pain|feeling)",
+        "pressure (?:on|in) (?:his|her|the) chest",
+        "band (?:around|across) (?:his|her|the) chest",
+        "elephant on (?:his|her|my) chest",
+        "heaviness (?:behind|under) (?:the|his|her) (?:breastbone|sternum)"
+      ],
+      "_note_v1103": "v1.10.3 (Wayne 2026-10-23): lay wording for facial droop, one-sided hand/arm weakness, speech; practice cases in test_layer1_v1103.py. One-sided or sudden qualifiers required for grip/dropping to avoid tremor/arthritis."
     },
-    "low": {
-     "A": 40,
-     "B": 47,
-     "C": 54
-    }
-   },
-   "sbp": {
-    "high": {
-     "A": 180,
-     "B": 170,
-     "C": 160
+    "fall_v1102": {
+      "_note": "SMART_TRIGGERS v1.10.2 (Wayne 2026-10-23). PLACEHOLDERS. (1) A witnessed fall cannot be cleared by caregiver/patient reassurance. (2) Pain after a confirmed/witnessed fall blocks suppression -> HT_FALL_PAIN ABSOLUTE urgent_page, with or without an anticoagulant (goals of care still apply). (3) On an anticoagulant an off-wrist/charging reading does not suppress a possible fall: SUPPRESSED possible_fall_unverified, floor nurse_task. (4) On an anticoagulant, an on-wrist impact (Day -1 or Day 0) followed by inactivity >= inactivity_min fires HT_FALL_ANTICOAG at least nurse_task, even when explained away.",
+      "witnessed_rx": "watched (?:it happen|(?:him|her) (?:fall|go down|slide|slip))|saw (?:him|her|it) (?:fall|go down|slide|slip|happen)|(?:in front of|right in front of) (?:me|us)|slid (?:off|down|to the floor)|went down|seen (?:to )?fall|watched (?:him|her) (?:lose (?:his|her) footing|trip|stumble|land)|saw (?:him|her) (?:lose (?:his|her) footing|trip|stumble|land)",
+      "pain_rx": "holding (?:her|his) (?:hip|leg|wrist|arm|side|back|head)|(?:hip|leg|wrist|back|head|side) (?:hurts|is sore|pain)|\\bhurts\\b|\\bin pain\\b|(?:can't|cannot|can not|unable to) (?:bear|put) weight|won't put weight|(?:new )?pain (?:in|at) (?:her|his|the) (?:hip|leg|groin|wrist|back|head)|wincing|crying out",
+      "inactivity_min": 10,
+      "route": "urgent_page"
     },
-    "low": {
-     "A": 90,
-     "B": 99,
-     "C": 104
-    }
-   },
-   "spo2": {
-    "high": null,
-    "low": {
-     "A": 88,
-     "B": 91,
-     "C": 93
-    }
-   },
-   "rr": {
-    "high": {
-     "A": 30,
-     "B": 25,
-     "C": 21
+    "spo2_rest_dyspnea": {
+      "_note": "SMART_TRIGGERS v1.10.2 candidate (Wayne 2026-10-23). PLACEHOLDERS. HF or COPD, not comfort-only: SpO2 <= spo2_max confirmed (two reliable fingertip readings, or fingertip + reliable wrist) at rest with dyspnea at rest / short phrases -> HT_SPO2_REST_DYSPNEA CONFIRM_FIRST already_confirmed -> urgent_page.",
+      "spo2_max": 90,
+      "dx_rx": "heart failure|\\bHF\\w*\\b|HFrEF|HFpEF|cardiomyopathy|COPD|emphysema|chronic bronchitis",
+      "dyspnea_rx": "short phrases|few words|(?:can't|cannot) finish (?:a |her |his )?sentences?|(?:short of breath|breathless\\w*|dyspn\\w*) (?:at rest|sitting|in (?:the|a|her|his) chair|lying)|struggling to breathe|fighting for breath|breathing (?:feels )?(?:tight|hard) (?:at rest|sitting)"
     },
-    "low": {
-     "A": 8,
-     "B": null,
-     "C": null
+    "v1110": {
+      "_note": "SMART_TRIGGERS v1.11.0 (Wayne 2026-10-23). Layer 1 fixes from the holdout_v3 review-queue rulings. Every number is a PLACEHOLDER for the clinical owner. Developed on hand-written practice cases (jev_baseline/test_layer1_v1110.py), never on holdout text.",
+      "drug_low_floor": {
+        "_note": "FOUNDATION (hard floor). A confirmed (meter at/below glucose_confirm_max, or two sensor readings at/below the danger limit) AND symptomatic danger-level low on insulin or a sulfonylurea -> HT_DRUG_LOW ABSOLUTE urgent_page. Applies in hospice (escalation_target hospice_nurse) and regardless of CKD. Never suppressed by goals of care, a setting profile or a patient override (foundation=true). Rationale (Wayne): a drug-induced low is harm, not comfort care.",
+        "glucose_confirm_max": 54,
+        "symptoms_rx": "confus\\w*|drowsy|sweat\\w*|clammy|damp|shak(?:y|ing|es)|trembl\\w*|slurred|not making sense|only (?:to|when) (?:her|his) name|unresponsive|hard to (?:wake|rouse)|seizure|fitting|disorient\\w*|agitat\\w*|combative",
+        "route": "urgent_page",
+        "foundation": true
+      },
+      "ckd_low_dose_review": {
+        "_note": "Insulin or sulfonylurea + CKD, danger-level CGM low cleared by a normal recheck, no symptoms and no documented sensor compression -> SUPPRESSED ckd_low_dose_review, provider_task (prescriber dose review), HITM flag kept. With documented compression the v1.10 nurse_task HITM floor still applies. Without CKD: a single low cleared by an untreated normal recheck stays silent_log; a prior danger-level low in the last 7 days (pattern) -> repeated_lows_dose_review provider_task.",
+        "route": "provider_task",
+        "prior_low_days": 7
+      },
+      "patient_band": {
+        "_note": "Patient-level SpO2 band documented in advance (e.g. COPD 'usual resting SpO2 86-88%'). A reliable resting reading inside the band does not fire HT_SPO2_LT88 (SUPPRESSED within_patient_band, silent_log). A reading below the band is NOT baseline: the band's lower bound replaces night minimums as own baseline. Outside hospice, a confirmed SpO2 below copd_urgent_below in COPD -> CONFIRM_FIRST already_confirmed -> urgent_page (pulmonary hypertension / demand ischaemia).",
+        "copd_rx": "COPD|emphysema|chronic bronchitis",
+        "copd_urgent_below": 85
+      },
+      "impact_inactivity_cap": {
+        "_note": "On an anticoagulant, an on-wrist impact + inactivity >= fall_v1102.inactivity_min is capped at nurse_task (SUPPRESSED possible_fall_unverified) unless a confirmed fall, pain after a fall, or a head strike is documented. An unanswered check prompt is not capped (safety exception, kept from v1.10). The cap does not apply (v1.10.2 behaviour kept) when inactivity lasts >= long_inactivity_min (PLACEHOLDER) or the patient lives alone with dementia/cognitive impairment (a denial is not a reliable check).",
+        "head_strike_rx": "(?:hit|banged|bumped|struck|knocked|cut) (?:his|her|the back of (?:his|her)) head|head (?:strike|injury|wound|knock)|bleeding from (?:his|her|the) (?:head|scalp)|(?:lump|bump|gash) on (?:his|her) head",
+        "long_inactivity_min": 30
+      },
+      "device_ticket": {
+        "_note": "Device disagreement / likely device fault with a stable patient (no symptoms, no ABSOLUTE or CONFIRM_FIRST trigger): clinical route silent_log + a non-interruptive device_ticket. Ticket types: device_maintenance (default; routed to the device-maintenance process, else whoever can check the device), supply_reference_oximeter_and_baseline (SpO2 disagreement with no fingertip oximeter on the device list), ecg_strip_request (rhythm disagreement). EXCEPTION: if the disagreement could change care (HR disagreement after a rate-drug start/increase) -> nurse_task (manual pulse) + device_maintenance ticket. Wrist-vs-finger SpO2 differences within spo2_wrist_finger_variance_points are accepted (cold hands, device differences). PLACEHOLDERS: spo2_wrist_finger_variance_points, spo2_device_variance_points, hr_disagree_bpm.",
+        "spo2_wrist_finger_variance_points": 2,
+        "spo2_device_variance_points": 2,
+        "hr_disagree_bpm": 10,
+        "persist_rx": "since|all week|every|daily|keeps|kept|remained|consistently|throughout|same mornings|each (?:morning|day)|on (?:the )?same|repeatedly|\\d+ times|days? -?\\d+ to|simultaneously",
+        "rate_change_rx": "(?:increase\\w*|increas\\w*|up-?titrat\\w*|start\\w*|dose (?:went )?up|higher dose|new)[^.;]{0,30}",
+        "ticket_types": [
+          "device_maintenance",
+          "supply_reference_oximeter_and_baseline",
+          "ecg_strip_request"
+        ]
+      },
+      "plain_reason": {
+        "_note": "Every routed alert (nurse_task, provider_task, urgent_page) carries a short plain_reason saying why it was routed that way, written for the receiver (Wayne: 'recently discharged HF patient not wearing his device, not a broken device'). Layer 1 templates per rule/reason; Jev-owned routes get a model-routed reason naming the strongest context facts."
+      },
+      "serotonergic_confusion": {
+        "_note": "CANDIDATE (disabled by default, enabled=false). New confusion on a serotonergic combination (e.g. tramadol + SSRI/SNRI) after a recent start: urgent_page if the patient is currently more confused than baseline, else provider_task. Conditional ruling pattern (Wayne 2026-10-23). The 'currently more confused' read needs a live check, so it stays a candidate until reviewed.",
+        "enabled": false,
+        "drugs_a_rx": "tramadol|linezolid|methylene blue|fentanyl|meperidine|pethidine|triptan|\\w*triptan|ondansetron|trazodone|lithium|dextromethorphan",
+        "drugs_b_rx": "sertraline|citalopram|escitalopram|fluoxetine|paroxetine|fluvoxamine|venlafaxine|duloxetine|desvenlafaxine|mirtazapine|phenelzine|selegiline",
+        "confusion_rx": "(?:more |newly |acutely )?confus\\w*|mixed up|disorient\\w*|not making sense|muddled",
+        "current_rx": "(?:now|currently|right now|today|at the moment|this (?:morning|afternoon|evening))[^.;]{0,40}(?:more )?confus\\w*|(?:more )?confus\\w*[^.;]{0,30}(?:now|right now|than (?:usual|baseline|normal))|worse than (?:usual|baseline|yesterday)"
+      }
+    },
+    "v1111": {
+      "_note": "SMART_TRIGGERS v1.11.1 (Wayne 2026-10-23 rulings on HO2-007, HV3-004, HV3-005, HW4-002, HW2-006, HW3-007). Every number is a PLACEHOLDER for the clinical owner. Built on synthetic practice vignettes (jev_baseline/test_layer1_v1111.py), never on holdout text.",
+      "ckd_low_explained": {
+        "_note": "Insulin/sulfonylurea + CKD danger-level low, normal recheck, no symptoms: explained by sensor compression (witness or artifact flag) -> ckd_low_compression_explained nurse_task (check sensor placement, confirm no symptoms); explained by recent exertion -> ckd_low_exertion_explained nurse_task (exercise-precaution teaching). A prior danger low within ckd_low_dose_review.prior_low_days overrides both -> repeated_lows_dose_review provider_task. Unexplained -> ckd_low_dose_review provider_task.",
+        "compression_rx": "compression|pinned|pressed|sensor[- ](?:side|arm) lying|lying on (?:the |his |her )?sensor|(?:rolled|lay|lying|slept|sleeps?|sleeping)\\b[^.;]{0,20}?\\b(?:on|onto) (?:the |his |her )?(?:sensor|left|right)\\b[^.;]{0,60}\\bsensor",
+        "exertion_rx": "\\bhoe\\w*|\\bdig(?:ging)?\\b|\\bmow\\w*|\\brak(?:e|ed|ing)\\b|shovel\\w*|garden\\w*|yard ?work|\\bweed\\w*|brisk walk|long walk|\\bhik\\w*|exercis\\w*|\\bcycl(?:ed|ing)\\b|\\bswim\\w*|\\bdanc\\w*|workout|\\bgym\\b",
+        "route": "nurse_task"
+      },
+      "glucose_lookback": {
+        "_note": "A recovered, asymptomatic drug-related CKD danger low earlier than Day -1 but within lookback_h (PLACEHOLDER 72 h = Day -3..-2) -> recent_ckd_low_dose_review provider_task (same explanations apply).",
+        "lookback_h": 72,
+        "route": "provider_task"
+      },
+      "band_no_home_o2": {
+        "_note": "COPD reading inside a documented patient band, but the band (lower bound) or the night minimum sits at/below band_low_max with NO home oxygen on the med/device/problem list -> within_band_low_no_home_o2 provider_task (evaluate for home oxygen). With home oxygen the reading stays within_patient_band silent_log.",
+        "band_low_max": 88,
+        "night_min_below": 88,
+        "route": "provider_task"
+      },
+      "gap_contact": {
+        "_note": "A contact sentence may carry its 'looked fine / well' detail in the next sentence of the same note (e.g. 'We did a video call on Day -1 at 17:00. He looked fine.') An explained high-risk gap is SUPPRESSED with a nurse_task floor (Wayne: nurse_task SUPPRESSED, as HW8-006), so a model cannot drop it to silent_log.",
+        "next_sentence": true
+      }
+    },
+    "v1112": {
+      "_note": "SMART_TRIGGERS v1.11.2 (Wayne 2026-10-23). Placeholders. Practice vignettes: jev_baseline/test_layer1_v1112.py.",
+      "device_ticket_owner": {
+        "_note": "Layer 1 owns HT_DEVICE_DISAGREE routes (silent_log + ticket, or nurse_task + ticket when it could change care) when there are no acute signs; Jev is not consulted.",
+        "enabled": true
+      },
+      "fall_explained_floor": {
+        "_note": "HT_FALL_ANTICOAG:explained floors at nurse_task (see route_floor)."
+      },
+      "stable_angina_owner": {
+        "enabled": true,
+        "note": "PLACEHOLDER v1.11.2: Layer 1 owns nurse_task for chest pain band D with explicit unchanged/stable pattern, exertional onset relieved by rest/GTN, no red flags, no rest onset, no new/longer/more-frequent wording, no sweating/nausea, episode duration < 10 min (PLACEHOLDER)."
+      }
     }
-   }
-  },
-  "modifiers": {
-   "_note": "Band shifts: -1 = one band less severe, +1 = one band more severe. Side-specific: *_low applies only when the vital is on its low side, *_high only on its high side.",
-   "sleep": {
-    "hr_low": -1,
-    "rr_low": -1
-   },
-   "post_exertion": {
-    "window_min": 20,
-    "hr_high": -1,
-    "rr_high": -1,
-    "sbp_high": -1,
-    "timeout_factor": 2.0
-   },
-   "rate_control_med": {
-    "hr_low": -1,
-    "hr_high": 1
-   },
-   "pacemaker": {
-    "_note": "HR at or above the programmed lower rate (within 2 bpm) -> the HR is not banded; below the lower rate -> +1 (possible pacing failure).",
-    "tolerance_bpm": 2,
-    "below_lower_rate": 1
-   },
-   "known_brady": {
-    "hr_low": -1,
-    "_note": "documented usual low HR range; applies when the HR is within the range minus 3 bpm"
-   },
-   "known_tachy": {
-    "hr_high": -1,
-    "_note": "documented usual high HR (e.g. rate-controlled AF); applies when the HR is within the range max + 10 bpm"
-   },
-   "red_flags": {
-    "features": [
-     "diaphoresis",
-     "radiation",
-     "dyspnea",
-     "syncope_or_presyncope",
-     "persistent_ge_15min",
-     "crescendo_pattern",
-     "pallor"
-    ],
-    "per_flag": 1,
-    "max_total": 2
-   },
-   "multi_vital": {
-    "min_vitals_at_B_or_worse": 2,
-    "shift": 1
-   },
-   "concordance": {
-    "concordant": 1,
-    "discordant": -1,
-    "_note": "discordant may only lower band B or C; it never lowers A"
-   },
-   "device_reliability": {
-    "_note": "A quality-flagged vital is not banded and the output becomes a recheck (CONFIRM_FIRST device_recheck) unless the reliable inputs already give band A.",
-    "recheck_step": "device_recheck",
-    "recheck_timeout_min": 5
-   }
-  },
-  "safety": {
-   "max_total_downgrade": 2,
-   "band_A_floor": "B",
-   "_note": "Context can lower a raw band by at most 2 and can never turn raw band A into log-only. Hard danger limits (HT_VS_DANGER) and a reliable ECG change are always ABSOLUTE (goals of care still apply)."
-  },
-  "timeout_bounds_min": [
-   5,
-   60
-  ],
-  "default_confirm_step": "patient_call",
-  "crescendo_rule": {
-   "enabled": true,
-   "min_band": "C",
-   "no_exertion_timeout_factor_when_vitals_normal": true,
-   "_note": "DECIDED RULE (not a placeholder decision): a crescendo angina pattern (episodes becoming more frequent, or new onset in recent days) with normal vitals triggers HT_CHEST_PAIN_VITALS CONFIRM_FIRST (band C at least). min_band and the timeout remain placeholder values. With normal vitals the post-exertion timeout factor is not applied, because the trigger is the pattern."
-  },
-  "band_math": {
-   "method": "net_then_clamp",
-   "_note": "DECIDED RULE (Wayne 2026-10-17, ST4-002): sum ALL band shifts first (the worst banded vital's own context modifiers, then multi-vital, red flags and concordance), then clamp once to D..A and apply the safety floors (max_total_downgrade, band_A_floor) and the crescendo floor. Replaces sequential clamping at each step. Unbanded vitals do not contribute to the base; with no banded vital the base is band D. Shift sizes remain placeholders."
   }
- },
- "cgm_pressure_low": {
-  "_note": "PLACEHOLDERS. CGM pressure-low (compression) artifact rule, applied to CGM readings at or below hard_limits.glucose.danger_low. A suspected pressure low becomes ARTIFACT with a fingerstick recheck. A fingerstick-confirmed or symptomatic low stays ABSOLUTE. A fingerstick above the danger limit makes it SUPPRESSED unreliable_reading.",
-  "enabled": true,
-  "fingerstick_window_min": 60,
-  "discordant_abs_mg_dl": 15,
-  "discordant_pct": 0.2,
-  "overnight_hours": [
-   22,
-   7
-  ],
-  "rapid_drop_mg_dl_per_min": 2.0,
-  "rebound_within_min": 60,
-  "pressure_cues": [
-   "pinned",
-   "pressed",
-   "compression",
-   "under the bed rail/body/arm/pillow",
-   "lying/sleeping on the sensor side"
-  ],
-  "symptoms": [
-   "sweaty/clammy",
-   "shaky/tremor",
-   "confused",
-   "drowsy/hard to rouse",
-   "seizure",
-   "unresponsive"
-  ],
-  "recheck_step": "fingerstick_recheck",
-  "recheck_timeout_min": 15
- },
- "goals_of_care": {
-  "suppresses": "hospital_directed_escalation_only",
-  "default_notify": "hospice_nurse_same_shift",
-  "urgent_comfort": {
-   "enabled": true,
-   "escalation_target": "hospice_nurse",
-   "notify": "hospice_nurse_urgent_page",
-   "route": "urgent_page",
-   "conditions": {
-    "hypoglycemia_symptomatic": true,
-    "hypoglycemia_recurrent": false,
-    "breathlessness_distressing_home_treatable": true
-   },
-   "recurrent_window_h": 6,
-   "_note": "PLACEHOLDERS for the condition list and window. An urgent, treatable, goal-consistent comfort problem (e.g. recurrent symptomatic hypoglycaemia) in a comfort-only/hospice patient keeps its tier and pages the hospice nurse NOW (not same-shift); it is not suppressed. v1.6 adds distressing breathlessness that can be treated at home (respiratory triggers; context breathlessness {distressing, home_treatable}). Other conditions (falls, focal deficits, syncope) are NOT on the list; a caller may declare context comfort_treatable explicitly. v1.7 (Wayne 2026-10-18): hypoglycemia_recurrent disabled; only a symptomatic danger-level low qualifies; recurrent_window_h is kept for when it is re-enabled.",
-   "breathlessness_vitals": [
-    "spo2",
-    "rr"
-   ]
-  },
-  "_note": "DECIDED RULE (Wayne 2026-10-18, GC2-003): hospice/comfort-only goals suppress hospital-directed escalation only."
- },
- "layer1_v110": {
-  "_note": "SMART_TRIGGERS v1.10 (Wayne 2026-10-21). Layer 1 fixes from Wayne's review-queue rulings. Placeholders; developed on hand-written practice cases (test_layer1_v110.py), not on holdout text.",
-  "clean_repeat": {
-   "_note": "An abnormal reading cleared by a clean repeat (other finger/hand, second device, or fingerstick) within the window, with no symptoms -> SUPPRESSED cleared_by_repeat, route silent_log. A CGM low counts as cleared only if the fingerstick reads in the normal range (>= glucose_clean_min); a fingerstick that confirms a low (e.g. 57) is not a clean repeat.",
-   "window_min": 15,
-   "spo2_clean_min": 92,
-   "glucose_window_min": 60,
-   "glucose_clean_min": 70,
-   "bp_window_min": 15,
-   "sbp_clean_low": 90,
-   "sbp_clean_high": 180,
-   "_note_v1110": "v1.11.0 (Wayne 2026-10-23): clearance applies whatever the artifact flag (timestamp parsing fixed so readings with the time earlier in the sentence or 'at hh:mm' after the value are timed). Extended to BP cuffs: a device-flagged, implausible or danger-level SBP plus a repeat with SBP in [sbp_clean_low, sbp_clean_high] within bp_window_min, no symptoms -> SUPPRESSED cleared_by_repeat, silent_log. PLACEHOLDERS: bp_window_min, sbp_clean_low, sbp_clean_high."
-  },
-  "insulin_ckd_low": {
-   "_note": "Insulin OR sulfonylurea user (v1.10.1) with CKD and a danger-level low (CGM or meter <= danger limit): always HITM review (hard flag regardless of models); route floor nurse_task, never silent (overrides cleared_by_repeat).",
-   "insulin_rx": "insulin|glargine|detemir|degludec|lispro|aspart|glulisine|NPH",
-   "ckd_rx": "\\bCKD\\b|chronic kidney|renal (?:failure|impairment|insufficiency)|eGFR\\s*\\d",
-   "route": "nurse_task",
-   "sulfonylurea_rx": "glimepiride|glipizide|glyburide|glibenclamide|gliclazide"
-  },
-  "suppressed_default_route": {
-   "_note": "Layer 1 route on a SUPPRESSED/ARTIFACT trigger when no model pick is available (replaces the v1.9 provider_task fallback).",
-   "cleared_by_repeat": "silent_log",
-   "unreliable_reading": "nurse_task",
-   "explained": "nurse_task",
-   "explained_caregiver_check": "nurse_task",
-   "at_patient_baseline": "nurse_task",
-   "below_band_threshold": "nurse_task",
-   "ARTIFACT": "silent_log",
-   "_other": "nurse_task",
-   "possible_fall_unverified": "nurse_task",
-   "within_patient_band": "silent_log",
-   "device_disagreement": "silent_log",
-   "device_disagreement_could_change_care": "nurse_task",
-   "ckd_low_dose_review": "provider_task",
-   "repeated_lows_dose_review": "provider_task",
-   "ckd_low_compression_explained": "nurse_task",
-   "ckd_low_exertion_explained": "nurse_task",
-   "within_band_low_no_home_o2": "provider_task",
-   "recent_ckd_low_dose_review": "provider_task"
-  },
-  "route_floor": {
-   "_note": "Minimum route for these suppressed reasons even when a model picks lower (models still capped at provider_task unless acute).",
-   "explained_caregiver_check": "nurse_task",
-   "HT_SPO2_LT88:at_patient_baseline": "nurse_task",
-   "HT_BRADY_RATE_DRUG:below_band_threshold": "nurse_task",
-   "possible_fall_unverified": "nurse_task",
-   "device_disagreement_could_change_care": "nurse_task",
-   "ckd_low_dose_review": "provider_task",
-   "repeated_lows_dose_review": "provider_task",
-   "ckd_low_compression_explained": "nurse_task",
-   "ckd_low_exertion_explained": "nurse_task",
-   "within_band_low_no_home_o2": "provider_task",
-   "recent_ckd_low_dose_review": "provider_task",
-   "HT_GAP48_HIGHRISK:explained": "nurse_task"
-  },
-  "fall_anticoag": {
-   "_note": "Confirmed (witnessed / patient or caregiver reports a fall) fall on an anticoagulant -> ABSOLUTE. Unwitnessed possible fall (impact or device signal) cleared by a caregiver check -> SUPPRESSED explained_caregiver_check, nurse_task (confirm with the patient there was no fall).",
-   "confirmed_tier": "ABSOLUTE"
-  },
-  "bradycardia_rate_drug": {
-   "_note": "Resting HR below threshold on a rate-slowing drug with symptoms -> CONFIRM_FIRST patient_call. Asymptomatic: no Layer 1 decision (a new rule never lowers or caps the route).",
-   "hr_below": 45,
-   "drugs_rx": "amiodarone|dronedarone|digoxin|sotalol|bisoprolol|metoprolol|atenolol|carvedilol|nebivolol|propranolol|diltiazem|verapamil|ivabradine|donepezil",
-   "symptoms_rx": "dizz\\w*|light-?headed|near[- ]?faint|faint\\w*|presyncop\\w*|confus\\w*|unusually tired|exhausted|breathless\\w*|short of breath|chest (?:pain|pressure)|fell|collapsed"
-  },
-  "gap_contact_exclude": {
-   "_note": "Device transmissions are not contact for the 48 h gap trigger: a sentence about scale weigh-ins, syncs or uploads with no person-to-person contact word does not explain a gap.",
-   "device_rx": "scale|weigh-?in|weighed|weight (?:reading|transmi\\w*)|sync\\w*|upload\\w*|transmi\\w*|bed sensor|pillbox|dispenser",
-   "human_rx": "video call|phoned|phone call|visited|saw (?:him|her)|spoke|talked|checked on (?:him|her)|answered the (?:phone|door)"
-  },
-  "wording": {
-   "_note": "Synonym lists (generic clinical phrasing, no case IDs). Added to the v1.9 patterns.",
-   "syncope": [
-    "loss of tone",
-    "lost tone",
-    "collapsed",
-    "collapse\\b",
-    "passed out",
-    "slumped",
-    "unresponsive (?:briefly|for)",
-    "briefly unresponsive",
-    "keeled over",
-    "dropped to the floor",
-    "went down and did not respond",
-    "out cold"
-   ],
-   "focal_neuro": [
-    "one-sided weakness",
-    "weak(?:ness)? on one side",
-    "face (?:is )?drooping",
-    "drooping (?:mouth|face|eyelid)",
-    "arm drift",
-    "trouble (?:speaking|finding words)",
-    "speech (?:is |was |became )?(?:slurred|garbled|jumbled)",
-    "words (?:came out )?(?:jumbled|wrong)",
-    "(?:sudden )?loss of vision in one eye",
-    "can(?:no|')t (?:raise|lift) (?:the |his |her )?(?:left|right) arm",
-    "dragging (?:the |his |her )?(?:left|right) (?:leg|foot)",
-    "numb(?:ness)? (?:on|down) (?:the |his |her )?(?:left|right) side",
-    "lopsided (?:smile|face|mouth|grin)",
-    "(?:smile|mouth|face|grin) (?:is |looks |looked |went |has gone |became )?(?:lopsided|crooked|uneven|droopy|drooping|droops)",
-    "one side of (?:his|her|the) (?:face|mouth) (?:has )?(?:dropped|drooped|droops|is drooping|sagg\\w*|slipped)",
-    "face (?:has )?(?:dropped|sagg\\w*|slipped) on one side",
-    "(?:can't|cannot|couldn't|could not|unable to) (?:hold|grip|grasp|pick up) (?:the |a |his |her )?(?:cup|mug|glass|spoon|fork|pen|phone|kettle)[^.;]{0,15}(?:in|with) (?:his|her|the) (?:left|right) hand",
-    "suddenly (?:can't|cannot|couldn't|could not) (?:hold|grip|grasp) ",
-    "dropping (?:things|everything|the \\w+) (?:from|with|in|out of) (?:his|her|the) (?:left|right) hand",
-    "(?:left|right) hand (?:keeps )?dropping",
-    "(?:left|right) (?:arm|hand|leg) (?:went |has gone |is |feels )?(?:dead|limp|heavy|floppy|useless)",
-    "words (?:are |were |keep |kept )?(?:coming|came|come) out (?:all )?(?:wrong|jumbled|muddled|garbled|mixed up)",
-    "mix(?:ing|ed)? up (?:his|her) words",
-    "(?:can't|cannot|couldn't|could not) (?:get|find) (?:the |his |her )?(?:right )?words(?: out)?",
-    "speech (?:is |sounds |was |went )?(?:thick|muddled|slurry|funny|strange) (?:all of a )?sudden\\w*",
-    "slurring"
-   ],
-   "chest_pain": [
-    "crushing (?:pain|feeling)",
-    "pressure (?:on|in) (?:his|her|the) chest",
-    "band (?:around|across) (?:his|her|the) chest",
-    "elephant on (?:his|her|my) chest",
-    "heaviness (?:behind|under) (?:the|his|her) (?:breastbone|sternum)"
-   ],
-   "_note_v1103": "v1.10.3 (Wayne 2026-10-23): lay wording for facial droop, one-sided hand/arm weakness, speech; practice cases in test_layer1_v1103.py. One-sided or sudden qualifiers required for grip/dropping to avoid tremor/arthritis."
-  },
-  "fall_v1102": {
-   "_note": "SMART_TRIGGERS v1.10.2 (Wayne 2026-10-23). PLACEHOLDERS. (1) A witnessed fall cannot be cleared by caregiver/patient reassurance. (2) Pain after a confirmed/witnessed fall blocks suppression -> HT_FALL_PAIN ABSOLUTE urgent_page, with or without an anticoagulant (goals of care still apply). (3) On an anticoagulant an off-wrist/charging reading does not suppress a possible fall: SUPPRESSED possible_fall_unverified, floor nurse_task. (4) On an anticoagulant, an on-wrist impact (Day -1 or Day 0) followed by inactivity >= inactivity_min fires HT_FALL_ANTICOAG at least nurse_task, even when explained away.",
-   "witnessed_rx": "watched (?:it happen|(?:him|her) (?:fall|go down|slide|slip))|saw (?:him|her|it) (?:fall|go down|slide|slip|happen)|(?:in front of|right in front of) (?:me|us)|slid (?:off|down|to the floor)|went down|seen (?:to )?fall|watched (?:him|her) (?:lose (?:his|her) footing|trip|stumble|land)|saw (?:him|her) (?:lose (?:his|her) footing|trip|stumble|land)",
-   "pain_rx": "holding (?:her|his) (?:hip|leg|wrist|arm|side|back|head)|(?:hip|leg|wrist|back|head|side) (?:hurts|is sore|pain)|\\bhurts\\b|\\bin pain\\b|(?:can't|cannot|can not|unable to) (?:bear|put) weight|won't put weight|(?:new )?pain (?:in|at) (?:her|his|the) (?:hip|leg|groin|wrist|back|head)|wincing|crying out",
-   "inactivity_min": 10,
-   "route": "urgent_page"
-  },
-  "spo2_rest_dyspnea": {
-   "_note": "SMART_TRIGGERS v1.10.2 candidate (Wayne 2026-10-23). PLACEHOLDERS. HF or COPD, not comfort-only: SpO2 <= spo2_max confirmed (two reliable fingertip readings, or fingertip + reliable wrist) at rest with dyspnea at rest / short phrases -> HT_SPO2_REST_DYSPNEA CONFIRM_FIRST already_confirmed -> urgent_page.",
-   "spo2_max": 90,
-   "dx_rx": "heart failure|\\bHF\\w*\\b|HFrEF|HFpEF|cardiomyopathy|COPD|emphysema|chronic bronchitis",
-   "dyspnea_rx": "short phrases|few words|(?:can't|cannot) finish (?:a |her |his )?sentences?|(?:short of breath|breathless\\w*|dyspn\\w*) (?:at rest|sitting|in (?:the|a|her|his) chair|lying)|struggling to breathe|fighting for breath|breathing (?:feels )?(?:tight|hard) (?:at rest|sitting)"
-  },
-  "v1110": {
-   "_note": "SMART_TRIGGERS v1.11.0 (Wayne 2026-10-23). Layer 1 fixes from the holdout_v3 review-queue rulings. Every number is a PLACEHOLDER for the clinical owner. Developed on hand-written practice cases (jev_baseline/test_layer1_v1110.py), never on holdout text.",
-   "drug_low_floor": {
-    "_note": "FOUNDATION (hard floor). A confirmed (meter at/below glucose_confirm_max, or two sensor readings at/below the danger limit) AND symptomatic danger-level low on insulin or a sulfonylurea -> HT_DRUG_LOW ABSOLUTE urgent_page. Applies in hospice (escalation_target hospice_nurse) and regardless of CKD. Never suppressed by goals of care, a setting profile or a patient override (foundation=true). Rationale (Wayne): a drug-induced low is harm, not comfort care.",
-    "glucose_confirm_max": 54,
-    "symptoms_rx": "confus\\w*|drowsy|sweat\\w*|clammy|damp|shak(?:y|ing|es)|trembl\\w*|slurred|not making sense|only (?:to|when) (?:her|his) name|unresponsive|hard to (?:wake|rouse)|seizure|fitting|disorient\\w*|agitat\\w*|combative",
-    "route": "urgent_page",
-    "foundation": true
-   },
-   "ckd_low_dose_review": {
-    "_note": "Insulin or sulfonylurea + CKD, danger-level CGM low cleared by a normal recheck, no symptoms and no documented sensor compression -> SUPPRESSED ckd_low_dose_review, provider_task (prescriber dose review), HITM flag kept. With documented compression the v1.10 nurse_task HITM floor still applies. Without CKD: a single low cleared by an untreated normal recheck stays silent_log; a prior danger-level low in the last 7 days (pattern) -> repeated_lows_dose_review provider_task.",
-    "route": "provider_task",
-    "prior_low_days": 7
-   },
-   "patient_band": {
-    "_note": "Patient-level SpO2 band documented in advance (e.g. COPD 'usual resting SpO2 86-88%'). A reliable resting reading inside the band does not fire HT_SPO2_LT88 (SUPPRESSED within_patient_band, silent_log). A reading below the band is NOT baseline: the band's lower bound replaces night minimums as own baseline. Outside hospice, a confirmed SpO2 below copd_urgent_below in COPD -> CONFIRM_FIRST already_confirmed -> urgent_page (pulmonary hypertension / demand ischaemia).",
-    "copd_rx": "COPD|emphysema|chronic bronchitis",
-    "copd_urgent_below": 85
-   },
-   "impact_inactivity_cap": {
-    "_note": "On an anticoagulant, an on-wrist impact + inactivity >= fall_v1102.inactivity_min is capped at nurse_task (SUPPRESSED possible_fall_unverified) unless a confirmed fall, pain after a fall, or a head strike is documented. An unanswered check prompt is not capped (safety exception, kept from v1.10). The cap does not apply (v1.10.2 behaviour kept) when inactivity lasts >= long_inactivity_min (PLACEHOLDER) or the patient lives alone with dementia/cognitive impairment (a denial is not a reliable check).",
-    "head_strike_rx": "(?:hit|banged|bumped|struck|knocked|cut) (?:his|her|the back of (?:his|her)) head|head (?:strike|injury|wound|knock)|bleeding from (?:his|her|the) (?:head|scalp)|(?:lump|bump|gash) on (?:his|her) head",
-    "long_inactivity_min": 30
-   },
-   "device_ticket": {
-    "_note": "Device disagreement / likely device fault with a stable patient (no symptoms, no ABSOLUTE or CONFIRM_FIRST trigger): clinical route silent_log + a non-interruptive device_ticket. Ticket types: device_maintenance (default; routed to the device-maintenance process, else whoever can check the device), supply_reference_oximeter_and_baseline (SpO2 disagreement with no fingertip oximeter on the device list), ecg_strip_request (rhythm disagreement). EXCEPTION: if the disagreement could change care (HR disagreement after a rate-drug start/increase) -> nurse_task (manual pulse) + device_maintenance ticket. Wrist-vs-finger SpO2 differences within spo2_wrist_finger_variance_points are accepted (cold hands, device differences). PLACEHOLDERS: spo2_wrist_finger_variance_points, spo2_device_variance_points, hr_disagree_bpm.",
-    "spo2_wrist_finger_variance_points": 2,
-    "spo2_device_variance_points": 2,
-    "hr_disagree_bpm": 10,
-    "persist_rx": "since|all week|every|daily|keeps|kept|remained|consistently|throughout|same mornings|each (?:morning|day)|on (?:the )?same|repeatedly|\\d+ times|days? -?\\d+ to|simultaneously",
-    "rate_change_rx": "(?:increase\\w*|increas\\w*|up-?titrat\\w*|start\\w*|dose (?:went )?up|higher dose|new)[^.;]{0,30}",
-    "ticket_types": [
-     "device_maintenance",
-     "supply_reference_oximeter_and_baseline",
-     "ecg_strip_request"
-    ]
-   },
-   "plain_reason": {
-    "_note": "Every routed alert (nurse_task, provider_task, urgent_page) carries a short plain_reason saying why it was routed that way, written for the receiver (Wayne: 'recently discharged HF patient not wearing his device, not a broken device'). Layer 1 templates per rule/reason; Jev-owned routes get a model-routed reason naming the strongest context facts."
-   },
-   "serotonergic_confusion": {
-    "_note": "CANDIDATE (disabled by default, enabled=false). New confusion on a serotonergic combination (e.g. tramadol + SSRI/SNRI) after a recent start: urgent_page if the patient is currently more confused than baseline, else provider_task. Conditional ruling pattern (Wayne 2026-10-23). The 'currently more confused' read needs a live check, so it stays a candidate until reviewed.",
-    "enabled": false,
-    "drugs_a_rx": "tramadol|linezolid|methylene blue|fentanyl|meperidine|pethidine|triptan|\\w*triptan|ondansetron|trazodone|lithium|dextromethorphan",
-    "drugs_b_rx": "sertraline|citalopram|escitalopram|fluoxetine|paroxetine|fluvoxamine|venlafaxine|duloxetine|desvenlafaxine|mirtazapine|phenelzine|selegiline",
-    "confusion_rx": "(?:more |newly |acutely )?confus\\w*|mixed up|disorient\\w*|not making sense|muddled",
-    "current_rx": "(?:now|currently|right now|today|at the moment|this (?:morning|afternoon|evening))[^.;]{0,40}(?:more )?confus\\w*|(?:more )?confus\\w*[^.;]{0,30}(?:now|right now|than (?:usual|baseline|normal))|worse than (?:usual|baseline|yesterday)"
-   }
-  },
-  "v1111": {
-   "_note": "SMART_TRIGGERS v1.11.1 (Wayne 2026-10-23 rulings on HO2-007, HV3-004, HV3-005, HW4-002, HW2-006, HW3-007). Every number is a PLACEHOLDER for the clinical owner. Built on synthetic practice vignettes (jev_baseline/test_layer1_v1111.py), never on holdout text.",
-   "ckd_low_explained": {
-    "_note": "Insulin/sulfonylurea + CKD danger-level low, normal recheck, no symptoms: explained by sensor compression (witness or artifact flag) -> ckd_low_compression_explained nurse_task (check sensor placement, confirm no symptoms); explained by recent exertion -> ckd_low_exertion_explained nurse_task (exercise-precaution teaching). A prior danger low within ckd_low_dose_review.prior_low_days overrides both -> repeated_lows_dose_review provider_task. Unexplained -> ckd_low_dose_review provider_task.",
-    "compression_rx": "compression|pinned|pressed|sensor[- ](?:side|arm) lying|lying on (?:the |his |her )?sensor|(?:rolled|lay|lying|slept|sleeps?|sleeping)\\b[^.;]{0,20}?\\b(?:on|onto) (?:the |his |her )?(?:sensor|left|right)\\b[^.;]{0,60}\\bsensor",
-    "exertion_rx": "\\bhoe\\w*|\\bdig(?:ging)?\\b|\\bmow\\w*|\\brak(?:e|ed|ing)\\b|shovel\\w*|garden\\w*|yard ?work|\\bweed\\w*|brisk walk|long walk|\\bhik\\w*|exercis\\w*|\\bcycl(?:ed|ing)\\b|\\bswim\\w*|\\bdanc\\w*|workout|\\bgym\\b",
-    "route": "nurse_task"
-   },
-   "glucose_lookback": {
-    "_note": "A recovered, asymptomatic drug-related CKD danger low earlier than Day -1 but within lookback_h (PLACEHOLDER 72 h = Day -3..-2) -> recent_ckd_low_dose_review provider_task (same explanations apply).",
-    "lookback_h": 72,
-    "route": "provider_task"
-   },
-   "band_no_home_o2": {
-    "_note": "COPD reading inside a documented patient band, but the band (lower bound) or the night minimum sits at/below band_low_max with NO home oxygen on the med/device/problem list -> within_band_low_no_home_o2 provider_task (evaluate for home oxygen). With home oxygen the reading stays within_patient_band silent_log.",
-    "band_low_max": 88,
-    "night_min_below": 88,
-    "route": "provider_task"
-   },
-   "gap_contact": {
-    "_note": "A contact sentence may carry its 'looked fine / well' detail in the next sentence of the same note (e.g. 'We did a video call on Day -1 at 17:00. He looked fine.') An explained high-risk gap is SUPPRESSED with a nurse_task floor (Wayne: nurse_task SUPPRESSED, as HW8-006), so a model cannot drop it to silent_log.",
-    "next_sentence": true
-   }
-  }
- }
 }
