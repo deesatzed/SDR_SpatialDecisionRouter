@@ -106,3 +106,5 @@ and flags if the event looks like a carve-back. Prompt change = new prompt versi
 ## v1.11.1: low band without home oxygen (2026-10-23)
 
 A COPD patient's band can sit at or near the urgent floor: band lower bound <= 88% or night minimum < 88% (both PLACEHOLDERS). If there is NO home oxygen on the med, device or problem list, a reading inside the band is `within_band_low_no_home_o2`, provider_task. The plain reason is "at her documented baseline but that baseline is low without oxygen; evaluate for home oxygen". With oxygen prescribed, a reading inside the band stays `within_patient_band`, silent_log. This resolves holdout_v3 HW4-002 (ruled provider_task).
+
+- Wayne 2026-10-23: repeated compression-explained CKD lows stay nurse_task by default; escalating them to a provider dose review is a patient-specific override, not a foundation rule.
