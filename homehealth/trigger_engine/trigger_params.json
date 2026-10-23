@@ -1,5 +1,5 @@
 {
- "version": "0.10.1-placeholder",
+ "version": "0.10.2-placeholder",
  "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
  "change_log": [
   {
@@ -413,6 +413,20 @@
    "new": "0.10.1-placeholder",
    "approved_by": "Wayne",
    "reason": "v1.10.1 sulfonylurea+CKD low exception (approved by Wayne 2026-10-21)"
+  },
+  {
+   "ts": "2026-10-23T06:45:00-04:00",
+   "keys": [
+    "version",
+    "layer1_v110.fall_v1102",
+    "layer1_v110.spo2_rest_dyspnea",
+    "layer1_v110.route_floor",
+    "layer1_v110.suppressed_default_route"
+   ],
+   "old": "0.10.1-placeholder",
+   "new": "0.10.2-placeholder",
+   "approved_by": "Wayne",
+   "reason": "v1.10.2 Layer 1 fixes from holdout_v2 rulings (approved by Wayne 2026-10-23); built on practice cases (test_layer1_v1102.py)"
   }
  ],
  "hard_limits": {
@@ -954,13 +968,15 @@
    "at_patient_baseline": "nurse_task",
    "below_band_threshold": "nurse_task",
    "ARTIFACT": "silent_log",
-   "_other": "nurse_task"
+   "_other": "nurse_task",
+   "possible_fall_unverified": "nurse_task"
   },
   "route_floor": {
    "_note": "Minimum route for these suppressed reasons even when a model picks lower (models still capped at provider_task unless acute).",
    "explained_caregiver_check": "nurse_task",
    "HT_SPO2_LT88:at_patient_baseline": "nurse_task",
-   "HT_BRADY_RATE_DRUG:below_band_threshold": "nurse_task"
+   "HT_BRADY_RATE_DRUG:below_band_threshold": "nurse_task",
+   "possible_fall_unverified": "nurse_task"
   },
   "fall_anticoag": {
    "_note": "Confirmed (witnessed / patient or caregiver reports a fall) fall on an anticoagulant -> ABSOLUTE. Unwitnessed possible fall (impact or device signal) cleared by a caregiver check -> SUPPRESSED explained_caregiver_check, nurse_task (confirm with the patient there was no fall).",
@@ -1014,6 +1030,19 @@
     "elephant on (?:his|her|my) chest",
     "heaviness (?:behind|under) (?:the|his|her) (?:breastbone|sternum)"
    ]
+  },
+  "fall_v1102": {
+   "_note": "SMART_TRIGGERS v1.10.2 (Wayne 2026-10-23). PLACEHOLDERS. (1) A witnessed fall cannot be cleared by caregiver/patient reassurance. (2) Pain after a confirmed/witnessed fall blocks suppression -> HT_FALL_PAIN ABSOLUTE urgent_page, with or without an anticoagulant (goals of care still apply). (3) On an anticoagulant an off-wrist/charging reading does not suppress a possible fall: SUPPRESSED possible_fall_unverified, floor nurse_task. (4) On an anticoagulant, an on-wrist impact (Day -1 or Day 0) followed by inactivity >= inactivity_min fires HT_FALL_ANTICOAG at least nurse_task, even when explained away.",
+   "witnessed_rx": "watched (?:it happen|(?:him|her) (?:fall|go down|slide|slip))|saw (?:him|her|it) (?:fall|go down|slide|slip|happen)|(?:in front of|right in front of) (?:me|us)|slid (?:off|down|to the floor)|went down|seen (?:to )?fall",
+   "pain_rx": "holding (?:her|his) (?:hip|leg|wrist|arm|side|back|head)|(?:hip|leg|wrist|back|head|side) (?:hurts|is sore|pain)|\\bhurts\\b|\\bin pain\\b|(?:can't|cannot|can not|unable to) (?:bear|put) weight|won't put weight|(?:new )?pain (?:in|at) (?:her|his|the) (?:hip|leg|groin|wrist|back|head)|wincing|crying out",
+   "inactivity_min": 10,
+   "route": "urgent_page"
+  },
+  "spo2_rest_dyspnea": {
+   "_note": "SMART_TRIGGERS v1.10.2 candidate (Wayne 2026-10-23). PLACEHOLDERS. HF or COPD, not comfort-only: SpO2 <= spo2_max confirmed (two reliable fingertip readings, or fingertip + reliable wrist) at rest with dyspnea at rest / short phrases -> HT_SPO2_REST_DYSPNEA CONFIRM_FIRST already_confirmed -> urgent_page.",
+   "spo2_max": 90,
+   "dx_rx": "heart failure|\\bHF\\w*\\b|HFrEF|HFpEF|cardiomyopathy|COPD|emphysema|chronic bronchitis",
+   "dyspnea_rx": "short phrases|few words|(?:can't|cannot) finish (?:a |her |his )?sentences?|(?:short of breath|breathless\\w*|dyspn\\w*) (?:at rest|sitting|in (?:the|a|her|his) chair|lying)|struggling to breathe|fighting for breath|breathing (?:feels )?(?:tight|hard) (?:at rest|sitting)"
   }
  }
 }

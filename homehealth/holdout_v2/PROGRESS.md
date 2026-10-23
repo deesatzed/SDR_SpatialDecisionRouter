@@ -23,10 +23,11 @@ Only pipeline change: grade_merge accepts v1.10 labels (HT_FALL_ANTICOAG ABSOLUT
   Data fixes in key: HV9-006 living -> "with spouse and adult child"; HV4-007 last_condition_change -> medication_change.
 - [x] `python3 score_ruled.py` -> results_ruled/summary.json (stored picks, 0 calls). Disputed 16 have no picks: Layer 1 alone only.
 - [x] Design doc: ../docs/PATIENT_OVERRIDES_DESIGN.md (per-patient overrides; not implemented).
-## Pending: Layer 1 v1.10.2 fixes (from holdout_v2 rulings; build with practice cases, NOT holdout text; not implemented)
-- [ ] Witnessed fall ("saw her fall", "watched it happen") cannot be cleared by caregiver/patient reassurance (HV3-010).
-- [ ] Pain after a fall (e.g. holding hip) blocks suppression and escalates, even off anticoagulant (HV3-010, HV5-002).
-- [ ] unreliable_reading suppression does not apply to a possible fall on anticoagulant (HV5-003).
-- [ ] On anticoagulant: on-wrist impact + post-impact inactivity fires the fall trigger even if the patient explains it away (HV7-005).
-- [ ] Candidate: confirmed SpO2 <= 90% + dyspnea at rest (HF) -> escalate (HV1-007). Threshold is Wayne's call.
+## Layer 1 v1.10.2 fixes — IMPLEMENTED 2026-10-23 (params 0.10.2-placeholder; jev_baseline/test_layer1_v1102.py; results jev_baseline/results_v1102/SUMMARY.md) (from holdout_v2 rulings; build with practice cases, NOT holdout text; not implemented)
+- [x] Witnessed fall ("saw her fall", "watched it happen") cannot be cleared by caregiver/patient reassurance (HV3-010).
+- [x] Pain after (rule HT_FALL_PAIN) a fall (e.g. holding hip) blocks suppression and escalates, even off anticoagulant (HV3-010, HV5-002).
+- [x] unreliable_reading (now possible_fall_unverified, floor nurse_task) suppression does not apply to a possible fall on anticoagulant (HV5-003).
+- [x] On anticoagulant: on-wrist (inactivity_min 10, placeholder) impact + post-impact inactivity fires the fall trigger even if the patient explains it away (HV7-005).
+- [x] (candidate, HT_SPO2_REST_DYSPNEA, spo2_max 90 placeholder; fired on no stored case) Candidate: confirmed SpO2 <= 90% + dyspnea at rest (HF) -> escalate (HV1-007). Threshold is Wayne's call.
 - Dropped by Wayne: digoxin/hospice bradycardia page rule (HV10-002); HF weight-gain trigger (HV5-007).
+- Caveat: holdout_v2 is now partly tuning data for v1.10.2; next unbiased check needs holdout_v3.

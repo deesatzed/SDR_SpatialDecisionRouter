@@ -117,6 +117,19 @@ def context(c):
     return {"goals": "comfort_only" if comfort else None, "lives_alone": alone, "anticoag": bool(re.search(ANTICOAG, meds, re.I)),
             "rate_control_med": bool(re.search(RATE_CONTROL, meds, re.I)), "high_risk": hr_, "meds": meds, "pmh": pmh}
 
+INACT_RX = r"(?:no|0|zero) steps[^.;]{0,25}?(?:for )?(\d{1,3})\s*min|(?:still|motionless|no movement)[^.;]{0,15}?(?:for )?(\d{1,3})\s*min|(\d{1,3})\s*min\w*[^.;]{0,20}(?:without|with no|of no) (?:steps|movement)"
+def impact_then_inactive(pre, day0, min_inactive):
+    """v1.10.2: an on-wrist device impact on Day -1 or Day 0 followed by >= min_inactive minutes without steps/movement."""
+    m = re.search(r"\bDay -1\b(?!\s*(?:to|-|\u2013)\s*Day)", pre or "")
+    txt = (pre[m.start():] if m else "") + " " + (day0 or "")
+    for s in sentences(txt):
+        if not re.search(r"\bimpact\b", s, re.I) or re.search(r"off[- ]wrist|not (?:on|worn)|on (?:the )?charger|charging", s, re.I): continue
+        i = txt.find(s); win = txt[i:i + len(s) + 200]; mins = []
+        for mm in re.finditer(INACT_RX, win, re.I): mins.append(int(next(g for g in mm.groups() if g)))
+        for mm in re.finditer(r"(?:0|no|zero) steps from (\d{1,2}):(\d{2}) to (\d{1,2}):(\d{2})", win, re.I):
+            a, b_, c_, d_ = map(int, mm.groups()); mins.append((c_ * 60 + d_) - (a * 60 + b_))
+        if mins and max(mins) >= min_inactive: return True
+    return False
 def _dec(rule, tier, reason=None, **kw): return {"rule": rule, "tier": tier, "reason": reason, **kw}
 RANK = {"ABSOLUTE": 5, "CONFIRM_FIRST": 4, "SUPPRESSED_goals": 3, "SUPPRESSED": 2, "LOG_ONLY": 2, "ARTIFACT": 1}
 def _rank(d): return RANK["SUPPRESSED_goals"] if d["tier"] == "SUPPRESSED" and d.get("reason") == "goals_of_care" else RANK.get(d["tier"], 0)
@@ -227,18 +240,28 @@ def evaluate_case(case):
             if d["tier"] == "LOG_ONLY": d = {**d, "tier": "SUPPRESSED", "reason": "below_band_threshold"}
             cands.append({**d, "source": "chest_pain", "inputs": {"activity": act, "mse": mse, "vitals": vit, "red_flags": rf, "ecg_change": sym["ecg_change"], "ecg_reliable": sym["ecg_reliable"], "rate_control": ctx["rate_control_med"]}})
     # ---- 5. fall on an anticoagulant
-    FALL = r"\bimpact\b|\bfell\b|\bfall(?:en)?\b(?! risk)|found (?:him|her) on|on the (?:\w+ )?floor|slipp\w*|sat down hard|went down|go down|tripped|lost (?:his|her) footing"
-    if ctx["anticoag"] and find(FALL, now):
-        confirmed = any(find(r"\bfell\b|slipp?\w*|\bslip\b|sat down hard|found (?:him|her) on (?:the )?floor|on the (?:\w+ )?floor|tripped|went down|go down|had a fall|fallen", x)
+    F2 = T.v110(P).get("fall_v1102") or {}
+    FALL = (F2.get("witnessed_rx") + "|" if F2 else "") + r"\bimpact\b|\bfell\b|\bfall(?:en)?\b(?! risk)|found (?:him|her) on|on the (?:\w+ )?floor|slipp\w*|sat down hard|went down|go down|tripped|lost (?:his|her) footing"
+    # v1.10.2: witnessed fall / pain after a fall / on-wrist impact + inactivity (Day -1 or Day 0)
+    witnessed = bool(F2) and find(F2["witnessed_rx"], now) is not None
+    fell_any = witnessed or any(find(r"\bfell\b|had a fall|\bfallen\b|tripped and fell|on the (?:\w+ )?floor", x) and not re.search(r"\b(?:watch|band|device|phone|ring)\b[^.;]{0,40}\bfloor\b", x, re.I) for x in sentences(now))
+    pain_after = bool(F2) and fell_any and find(F2["pain_rx"], now) is not None
+    if pain_after:   # blocks suppression; escalates with or without an anticoagulant
+        cands.append(T.apply_goals_of_care(_dec("HT_FALL_PAIN", "ABSOLUTE", "pain_after_fall", route=F2.get("route", "urgent_page"), confirm_step=None, page=True), P, ectx, None))
+    imp_inact = bool(F2) and ctx["anticoag"] and impact_then_inactive(pre, day0, F2.get("inactivity_min", 10))
+    if ctx["anticoag"] and not pain_after and (find(FALL, now) or imp_inact):
+        confirmed = witnessed or any(find(r"\bfell\b|slipp?\w*|\bslip\b|sat down hard|found (?:him|her) on (?:the )?floor|on the (?:\w+ )?floor|tripped|went down|go down|had a fall|fallen", x)
                         and not re.search(r"\b(?:watch|band|device|phone|ring)\b[^.;]{0,40}\bfloor\b|\bfloor\b[^.;]{0,25}\b(?:watch|band|device)\b", x, re.I) for x in sentences(note))
         cg_check = (not confirmed) and find(r"checked (?:on )?(?:him|her)|went to (?:check|see)|found (?:him|her) (?:walking|sitting|standing|in bed|well|fine)|(?:she|he) (?:was|is) (?:walking|fine|well|pain-?free)|pain-?free|(?:did not|didn't|denies having) fall\w*|no (?:sign of a )?fall|no injur\w*", note, neg=False)
         fA = (T.v110(P).get("fall_anticoag") or {}).get("confirmed_tier", "CONFIRM_FIRST")
-        if find(r"dropped (?:the |his |her )?(?:watch|band)|watch (?:fell|slid|dropped|clatter\w*|came off)|clatter\w*|caught (?:herself|himself)|stayed on (?:her|his) feet|near[- ]fall|knocked (?:the|her|his) (?:watch|wrist)", now, neg=False):
+        if not witnessed and not imp_inact and find(r"dropped (?:the |his |her )?(?:watch|band)|watch (?:fell|slid|dropped|clatter\w*|came off)|clatter\w*|caught (?:herself|himself)|stayed on (?:her|his) feet|near[- ]fall|knocked (?:the|her|his) (?:watch|wrist)", now, neg=False):
             cands.append(_dec("HT_FALL_ANTICOAG", "SUPPRESSED", "explained", route=None))
+        elif imp_inact and not confirmed:   # v1.10.2: on-wrist impact + inactivity on an anticoagulant, even if explained away
+            cands.append(_dec("HT_FALL_ANTICOAG", "SUPPRESSED", "possible_fall_unverified", route=None))
         elif cg_check and not find(r"\bfell\b|had a fall|fallen", note):   # v1.10: unwitnessed possible fall cleared by a caregiver check -> nurse confirms no fall
             cands.append(_dec("HT_FALL_ANTICOAG", "SUPPRESSED", "explained_caregiver_check", route=None, explained_by=cg_check.group(0)))
         elif not confirmed and find(r"off[- ]wrist|on (?:the )?(?:bedside )?charger|charging|not on (?:the|her|his) wrist", day0):
-            cands.append(_dec("HT_FALL_ANTICOAG", "SUPPRESSED", "unreliable_reading", route=None))
+            cands.append(_dec("HT_FALL_ANTICOAG", "SUPPRESSED", "possible_fall_unverified" if F2 else "unreliable_reading", route=None))   # v1.10.2: floor nurse_task
         elif confirmed and fA == "ABSOLUTE":   # v1.10: a confirmed fall on an anticoagulant is ABSOLUTE (Wayne: HK6-001, GL1-005)
             cands.append(T.apply_goals_of_care(_dec("HT_FALL_ANTICOAG", "ABSOLUTE", "fall_on_anticoagulant_confirmed", route="urgent_page", confirm_step=None, page=True), P, ectx, None))
         else:
@@ -269,6 +292,13 @@ def evaluate_case(case):
                 d = _dec("HT_SPO2_LT88", "CONFIRM_FIRST", "below_88_change_from_own_baseline", route="urgent_page", confirm_step="already_confirmed" if conf else "fingertip_recheck", page=True if conf else "if_confirmed_or_timeout", own_low=own)
                 basis = T.urgent_comfort_basis({"vital": "spo2", "value": min(r[0] for r in rel)}, None, P, {**ectx, "breathlessness": breath, "trigger_family": "respiratory"})
                 cands.append(T.apply_goals_of_care(d, P, ectx, basis))
+    # ---- 6b. v1.10.2 candidate: confirmed SpO2 <= max at rest + rest dyspnea in HF/COPD (not comfort-only)
+    s5 = T.v110(P).get("spo2_rest_dyspnea")
+    if s5 and not learning and ctx["goals"] != "comfort_only" and re.search(s5["dx_rx"], ctx["pmh"], re.I):
+        sp5 = [r for r in recs(c, "spo2") if not r[2] and not r[8] and r[3] != "active" and r[0] <= s5["spo2_max"] and r[0] > P["hard_limits"]["spo2"]["danger_low"]]
+        tips5 = [r for r in sp5 if r[6] == "fingertip"]
+        if (len(tips5) >= 2 or (tips5 and len(sp5) >= 2)) and find(s5["dyspnea_rx"], now):
+            cands.append(_dec("HT_SPO2_REST_DYSPNEA", "CONFIRM_FIRST", "spo2_le_max_confirmed_rest_dyspnea", route="urgent_page", confirm_step="already_confirmed", page=True))
     # ---- 7. 48 h data gap in a high-risk patient
     dq = c.get("data_quality") or {}
     if (dq.get("longest_gap_h") or 0) >= 48 and ctx["high_risk"]:
