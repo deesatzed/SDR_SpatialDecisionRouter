@@ -1,0 +1,78 @@
+rejected: none
+by src: {'LIB': 67} | by llm: {'holdout_v4': 67} | by prompt: {'v2.3': 67}
+routes: {'urgent_page': 22, 'silent_log': 14, 'nurse_task': 19, 'provider_task': 12} | hard_trigger: 43 | tiers: {'ABSOLUTE': 12, 'CONFIRM_FIRST': 10, 'SUPPRESSED': 19, 'ARTIFACT': 2}
+runner cases: 67 | Cases_Medical rows: 67 | Outcomes rows: 67
+
+{
+ "generated": 82,
+ "graded": 82,
+ "accepted_by_merge": 68,
+ "dedupe_removed": 1,
+ "accepted_final": 67,
+ "review_queue_disputed": 9,
+ "fix_list_excluded": 5,
+ "queue_reasons": {
+  "REJECT": 3,
+  "TIER_DISPUTE": 2,
+  "NOVELTY_REVIEW": 2,
+  "HARD_TRIGGER_DISPUTE": 2
+ },
+ "routes": {
+  "urgent_page": 22,
+  "silent_log": 14,
+  "nurse_task": 19,
+  "provider_task": 12
+ },
+ "tiers": {
+  "ABSOLUTE": 12,
+  "CONFIRM_FIRST": 10,
+  "SUPPRESSED": 19,
+  "ARTIFACT": 2
+ },
+ "by_batch_accepted": {
+  "HX1": 11,
+  "HX2": 11,
+  "HX3": 11,
+  "HX4": 10,
+  "HX5": 11,
+  "HX6": 11,
+  "HX7": 2
+ },
+ "by_batch_generated": {
+  "HX1": 11,
+  "HX2": 11,
+  "HX3": 11,
+  "HX4": 11,
+  "HX5": 11,
+  "HX6": 11,
+  "HX7": 11,
+  "HX8": 5
+ },
+ "complete_pairs": 4,
+ "hospice_goals": 2,
+ "learning_period": 0,
+ "categories": {
+  "noise": 17,
+  "med_change": 12,
+  "acs": 11,
+  "respiratory": 8,
+  "hypoglycemia": 8,
+  "fall": 6,
+  "hf": 5,
+  "renal": 3,
+  "spo2_bias": 3,
+  "arrhythmia": 3,
+  "missing_data": 3,
+  "goals_of_care": 2,
+  "conflicting": 2,
+  "syncope": 1,
+  "stroke": 1,
+  "recovery": 1,
+  "dementia": 1
+ },
+ "difficulty": {
+  "hard": 35,
+  "adversarial": 23,
+  "medium": 9
+ }
+}

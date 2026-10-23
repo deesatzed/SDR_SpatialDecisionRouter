@@ -1,0 +1,18 @@
+[
+ {
+  "case_id": "HX4-008",
+  "library_match": "HW6-003",
+  "jaccard_decisive": 0.152,
+  "jaccard_text": 0.303,
+  "story_match": [
+   "HX4-004",
+   3,
+   [
+    "full sentences at",
+    "in full sentences",
+    "sentences at rest"
+   ]
+  ],
+  "idioms": []
+ }
+]

@@ -1,0 +1,605 @@
+{
+ "cases": [
+  {
+   "case_id": "HX8-001",
+   "pair_id": "HX8-P01",
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "AFib",
+    "HTN"
+   ],
+   "function_baseline": "independent, walks daily",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 38,
+    "sleep_h": 7.2,
+    "steps": 3200,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 68.5,
+    "glucose_mean": null,
+    "sbp": 134,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -7 to -3: watch HR 70-78, ring HR 68-76, steps 3000-3400, weight 68.3-68.6 kg, BP 130-138/76-82. Day -2: watch HR spikes to 104-112 irregular for 2 h, ring HR 72-78 regular; steps 3100. Day -1: watch HR 100-115 irregular 3 h, ring 70-76; rest of day watch back to 70s. Day 0: watch HR 108-112 irregular since 08:00, ring HR 74-78 regular; BP 136/80. No symptoms. Watch wear 98%, ring 95%.",
+   "caregiver_or_nurse_note": "Spouse texted: 'his watch keeps saying his heart is racing but the ring says normal and he feels fine, no dizziness or anything. Is the watch broken?'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "75-79F, Fitzpatrick V-VI, lives with spouse. PMH AFib, HTN. Meds apixaban 5 mg BID, losartan 50 mg daily, no recent changes. Devices: watch, ring, scale, bp_cuff. Baseline rest HR 72, HRV 38 ms, sleep 7.2 h, steps 3200, night SpO2 94%, weight 68.5 kg, SBP 134, DBP 78. Trend: Day -2 to 0 watch HR irregular spikes 104-115 bpm, while ring HR regular 70-78 bpm; BP 136/80, steps 3100, no symptoms. Spouse text: watch says racing, ring normal, feels fine, asks if watch broken. Wear 96%, no gaps.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "noise"
+   ],
+   "rationale": "The watch and ring give conflicting heart rates: watch shows irregular tachycardia 104-115 bpm, ring shows regular 70-78 bpm. No symptoms, no recent medication change, and all other streams stable. This is a device disagreement without clinical correlate, requiring a maintenance ticket rather than a clinical response. Naive-model trap: A shallow model might page for tachycardia based on the watch's high irregular HR, ignoring the concordant ring and absence of symptoms, leading to alert fatigue.",
+   "decisive_feature": "No recent medication change makes the watch-ring HR disagreement a device artifact rather than a clinical change.",
+   "expected_device_ticket": "device_maintenance"
+  },
+  {
+   "case_id": "HX8-002",
+   "pair_id": "HX8-P01",
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "AFib",
+    "HTN"
+   ],
+   "function_baseline": "independent, walks daily",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "metoprolol",
+     "dose": "50 mg BID",
+     "started_day": -2
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "metoprolol",
+     "change": "dose_increased",
+     "from_dose": "25 mg BID",
+     "to_dose": "50 mg BID",
+     "day": -2
+    }
+   ],
+   "devices": [
+    "watch",
+    "ring",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 38,
+    "sleep_h": 7.2,
+    "steps": 3200,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 68.5,
+    "glucose_mean": null,
+    "sbp": 134,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -7 to -3: watch HR 70-78, ring HR 68-76, steps 3000-3400, weight 68.3-68.6 kg, BP 130-138/76-82. Day -2: metoprolol increased to 50 mg BID; watch HR spikes to 104-112 irregular for 2 h, ring HR 72-78 regular. Day -1: watch HR 100-115 irregular 3 h, ring 70-76; spouse reports lightheadedness once when standing. Day 0: watch HR 108-112 irregular since 08:00, ring HR 74-78 regular; BP 136/80. Watch wear 98%, ring 95%.",
+   "caregiver_or_nurse_note": "Spouse texted: 'He felt a bit woozy yesterday after the new higher dose, but today just the watch acting up again. I'm not sure if his heart is really racing or not.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "75-79F, Fitzpatrick V-VI, lives with spouse. PMH AFib, HTN. Meds apixaban 5 mg BID, losartan 50 mg daily, metoprolol increased to 50 mg BID Day -2. Devices: watch, ring, scale, bp_cuff. Baseline rest HR 72, HRV 38 ms, sleep 7.2 h, steps 3200, night SpO2 94%, weight 68.5 kg, SBP 134, DBP 78. Trend: Day -2 to 0 watch HR irregular spikes 104-115 bpm, ring HR regular 70-78 bpm; Day -1 lightheadedness once. Spouse unsure if heart racing. Wear 96%, no gaps.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "arrhythmia",
+    "med_change"
+   ],
+   "rationale": "The same watch-ring HR discrepancy now follows a metoprolol dose increase, with reported lightheadedness. The disagreement could reflect inadequate rate control or a device error, and the recent medication change makes this clinically ambiguous. A provider (e.g., pharmacist or cardiology agent) should review the dose, symptoms, and request an ECG strip to clarify the rhythm before adjusting therapy. Naive-model trap: The same HR discrepancy could be dismissed as artifact, but the recent metoprolol increase and reported lightheadedness make it a potential under-treatment of AFib requiring same-day provider review.",
+   "decisive_feature": "Recent metoprolol dose increase makes the watch-ring HR disagreement clinically relevant, requiring provider evaluation.",
+   "expected_device_ticket": "ecg_strip_request"
+  },
+  {
+   "case_id": "HX8-003",
+   "pair_id": "HX8-P02",
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "CAD, stent 2019",
+    "HTN",
+    "hyperlipidemia"
+   ],
+   "function_baseline": "walks to shops, independent",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "81 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "20 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "metoprolol",
+     "dose": "25 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "GTN spray",
+     "dose": "prn",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 42,
+    "sleep_h": 7.0,
+    "steps": 2400,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 78.0,
+    "glucose_mean": null,
+    "sbp": 132,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -7 to -3: steps 2200-2500, rest HR 62-66, BP 128-136/78-84. Day -2: walked to post box, chest tightness after 5 min, used 1 spray GTN, eased in 3 min; watch HR peaked 92. Day -1: similar episode on walk, HR 88, relieved. Day 0: morning walk tightness, HR 90, used spray, ok. No rest pain, no sweating. Weight 77.8-78.2 kg.",
+   "caregiver_or_nurse_note": "Patient's own log: 'Same as always, two or three times a week when I walk to the letterbox, spray fixes it quick. No trouble sitting or sleeping.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "80-84M, Fitzpatrick I-IV, lives alone. PMH CAD with stent 2019, HTN, hyperlipidemia. Meds aspirin 81 mg, atorvastatin 20 mg, metoprolol 25 mg BID, GTN spray prn. Devices: watch, bp_cuff, scale. Baseline rest HR 64, HRV 42 ms, steps 2400, weight 78 kg, SBP 132. Trend: stable steps 2200-2500, rest HR 62-66, BP 128-136/78-84. Day -2 to 0: exertional chest tightness on walking to post box, HR 88-92, relieved by 1 spray GTN in 3 min. No rest pain, no sweating. Patient log: same pattern as always, 2-3 times/week.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "silent_log"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "acs"
+   ],
+   "rationale": "The patient reports his usual exertional angina, unchanged in frequency, duration, and relief. Vital signs during episodes remain consistent with his baseline. This is stable chronic angina, warranting routine nurse follow-up for medication adherence and symptom review, not an urgent page. Naive-model trap: Chest pain often triggers urgent escalation, but this patient's unchanged stable pattern over months indicates routine nurse follow-up for chronic angina management.",
+   "decisive_feature": "Stable exertional angina pattern with unchanged frequency, duration, and relief by GTN, no rest pain or autonomic symptoms.",
+   "expected_device_ticket": null
+  },
+  {
+   "case_id": "HX8-004",
+   "pair_id": "HX8-P02",
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "CAD, stent 2019",
+    "HTN",
+    "hyperlipidemia"
+   ],
+   "function_baseline": "walks to shops, independent",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "81 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "20 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "metoprolol",
+     "dose": "25 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "GTN spray",
+     "dose": "prn",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 42,
+    "sleep_h": 7.0,
+    "steps": 2400,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 78.0,
+    "glucose_mean": null,
+    "sbp": 132,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -4: usual walk tightness, HR 90. Day -3: two episodes, one on walk, one while sitting watching TV after lunch, tightness lasted 15 min, used spray, eased slowly; HR during rest episode 98, BP 138/86. Day -2: three episodes, one at rest again with sweating, HR 102. Day -1: two episodes, one at night waking him. Day 0: morning tightness at rest, sweating, HR 104, BP 142/90; patient called daughter.",
+   "caregiver_or_nurse_note": "Daughter phoned: 'Dad says the chest tightness is happening more often, even when he's just sitting, and he got clammy. He's worried.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "80-84M, Fitzpatrick I-IV, lives alone. PMH CAD with stent, HTN, hyperlipidemia. Meds aspirin, atorvastatin, metoprolol 25 mg BID, GTN spray. Devices: watch, bp_cuff, scale. Baseline rest HR 64, SBP 132. Trend: Day -3 to 0 escalating chest tightness\u2014now at rest, lasting 15 min, with sweating. Day 0 rest HR 104, BP 142/90. Daughter called: more often, even sitting, clammy.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "A",
+    "raw_band": "C",
+    "modifiers": [
+     "red_flags: sweating",
+     "red_flags: persistent>=15min"
+    ],
+    "tier": "ABSOLUTE",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "acs"
+   ],
+   "rationale": "The patient's angina has escalated in frequency, now occurring at rest with diaphoresis and prolonged duration. HR 104 bpm (band C) plus two red flags raises the band to A, making this an ABSOLUTE trigger. The crescendo pattern and autonomic symptoms indicate unstable angina requiring immediate clinician evaluation. Naive-model trap: A shallow model might treat this as another stable angina episode and route to nurse, missing the crescendo pattern and rest pain that demand immediate clinician attention.",
+   "decisive_feature": "Crescendo angina with rest pain, sweating, and prolonged episodes converts stable pattern to an ABSOLUTE trigger.",
+   "expected_device_ticket": null
+  },
+  {
+   "case_id": "HX8-005",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "AFib",
+    "dementia mild",
+    "HTN",
+    "CKD 3a"
+   ],
+   "function_baseline": "walks with stick, spouse assists with meds",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "2.5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "losartan",
+     "dose": "25 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "donepezil",
+     "dose": "5 mg daily",
+     "started_day": -200
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "apixaban",
+     "change": "missed",
+     "from_dose": null,
+     "to_dose": null,
+     "day": -3,
+     "days_missed": 2
+    }
+   ],
+   "devices": [
+    "watch",
+    "ring",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 30,
+    "sleep_h": 6.5,
+    "steps": 1800,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 62.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 66-70, steps 1600-1900, weight 61.8-62.2 kg, night SpO2 92-94%. Day -3 and -2: apixaban not given. No falls, no new symptoms. Day 0: HR 68, steps 1750, weight 62.1 kg.",
+   "caregiver_or_nurse_note": "Spouse called nurse: 'I've been down with a bad cold and forgot to give her the blood thinner the last two days. I'm just so tired, can someone help me with her pills?'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 150,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.0
+   },
+   "router_input": "85-89F, Fitzpatrick I-IV, lives with spouse. PMH AFib, mild dementia, HTN, CKD 3a. Meds apixaban 2.5 mg BID, losartan 25 mg, donepezil 5 mg. Apixaban missed Day -3 and -2. Devices: watch, ring, scale. Baseline rest HR 68, steps 1800, weight 62 kg. Trend: vitals stable, no falls. Spouse exhausted, forgot blood thinner, asks for pill help.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "provider_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "med_change",
+    "caregiver"
+   ],
+   "rationale": "Two missed apixaban doses in a patient with AFib and dementia, due to caregiver exhaustion. Although no fall or clinical change occurred, the interruption of anticoagulation poses a stroke risk and the caregiver's capacity is compromised. A nurse should contact the family to arrange medication support, assess caregiver burden, and ensure doses are resumed safely. Naive-model trap: The absence of a fall or clinical change might lead to silent logging, but missed anticoagulant doses in a dementia patient with caregiver burnout require nurse intervention to prevent future harm.",
+   "decisive_feature": "Missed apixaban doses due to caregiver exhaustion, without any fall or clinical change, warranting nurse-led medication support.",
+   "expected_device_ticket": null
+  }
+ ],
+ "tally": {
+  "n": 5,
+  "id_range": [
+   "HX8-007",
+   "HX8-011"
+  ],
+  "routes": {
+   "silent_log": 1,
+   "nurse_task": 2,
+   "provider_task": 1,
+   "urgent_page": 1
+  },
+  "difficulty": {
+   "easy": 0,
+   "medium": 0,
+   "hard": 3,
+   "adversarial": 2
+  },
+  "hard_plus_adversarial_pct": 100,
+  "category_primary": {
+   "noise": 1,
+   "arrhythmia": 1,
+   "acs": 2,
+   "med_change": 1
+  },
+  "category_any": {
+   "noise": 1,
+   "arrhythmia": 1,
+   "acs": 2,
+   "med_change": 2,
+   "caregiver": 1
+  },
+  "hidden_hypoxemia_ids": [],
+  "subtle_deterioration_ids": [],
+  "pairs": {
+   "HX8-P01": [
+    "HX8-007",
+    "HX8-008"
+   ],
+   "HX8-P02": [
+    "HX8-009",
+    "HX8-010"
+   ]
+  },
+  "hard_trigger_ids": {
+   "HT_CHEST_PAIN_VITALS": [
+    "HX8-010"
+   ]
+  },
+  "trigger_tiers": {
+   "ABSOLUTE": [
+    "HX8-010"
+   ],
+   "CONFIRM_FIRST": [],
+   "SUPPRESSED": [],
+   "ARTIFACT": []
+  },
+  "baseline_layers": {
+   "learning_period": [],
+   "baseline_reset": [],
+   "drift_not_absorbed": [],
+   "hard_limit_artifact": [],
+   "hard_limit_danger": []
+  },
+  "fitzpatrick_v_vi_count": 2,
+  "minimums": {
+   "noise": {
+    "required": 1,
+    "actual": 1,
+    "met": true
+   },
+   "spo2_bias": {
+    "required": 0,
+    "actual": 0,
+    "met": true
+   },
+   "hidden_hypoxemia": {
+    "required": 0,
+    "actual": 0,
+    "met": true
+   },
+   "subtle_deterioration": {
+    "required": 0,
+    "actual": 0,
+    "met": true
+   },
+   "med_change": {
+    "required": 1,
+    "actual": 2,
+    "met": true
+   },
+   "dementia": {
+    "required": 1,
+    "actual": 1,
+    "met": true
+   },
+   "caregiver": {
+    "required": 1,
+    "actual": 1,
+    "met": true
+   },
+   "conflicting": {
+    "required": 0,
+    "actual": 0,
+    "met": true
+   },
+   "goals_of_care": {
+    "required": 0,
+    "actual": 0,
+    "met": true
+   },
+   "missing_data": {
+    "required": 0,
+    "actual": 0,
+    "met": true
+   },
+   "recovery": {
+    "required": 0,
+    "actual": 0,
+    "met": true
+   },
+   "pairs": {
+    "required": 4,
+    "actual": 2,
+    "met": false
+   }
+  },
+  "all_minimums_met": false,
+  "self_check_failures_fixed": 0
+ },
+ "meta": {
+  "batch": "HX8",
+  "model": "deepseek/deepseek-v4-pro",
+  "module": "deepseek",
+  "n_requested": 11,
+  "n_got": 5,
+  "split": false,
+  "id_fixes": 5
+ }
+}

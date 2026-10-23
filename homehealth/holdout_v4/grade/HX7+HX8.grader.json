@@ -1,0 +1,1591 @@
+{
+ "batch_id": "HX7+HX8",
+ "grader": "LLM3",
+ "verdicts": [
+  {
+   "case_id": "HX7-001",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "drift_not_absorbed",
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "This patient with HFrEF shows a steady 7-day monotonic drift across multiple streams (weight up 1.9 kg, resting HR up 10 bpm, RR up 3/min, steps down ~31%) without acute symptoms. Per v1.11.2 rule G and drift guard rules, slow multi-stream drift over 7 days with no acute signs routes to provider_task and is flagged as drift_not_absorbed."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Agree with provider_task for 7-day multi-stream HF drift.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": false,
+    "suggested": "drift_not_absorbed",
+    "drift_miss": false,
+    "issue": "Case shows monotonic 7-day drift with subtle_deterioration=true (and is listed in generator_tally under drift_not_absorbed), but baseline_layer is null instead of 'drift_not_absorbed'."
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[hf] Monotonic 7-day drift in HR, RR, weight and steps without acute symptoms",
+    "overlap_note": "Near-exact duplicate of the do_not_repeat entry '[hf] Monotonic 7-day drift in HR, RR, weight and steps without acute symptoms'."
+   },
+   "score": 2,
+   "action": "reject",
+   "fix_instructions": [
+    "Case is a near-exact duplicate of do_not_repeat '[hf] Monotonic 7-day drift in HR, RR, weight and steps without acute symptoms'; replace with a novel scenario.",
+    "If kept/reworked as a drift case, set baseline_layer to 'drift_not_absorbed'."
+   ]
+  },
+  {
+   "case_id": "HX7-002",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "Nocturnal watch SpO2 dips to 89-90% carry motion flags and are contradicted by concurrent ring SpO2 of 94-95%, with stable HR, steps, and sleep and no symptoms. This is explained motion artifact requiring silent_log."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": [
+     "noise",
+     "spo2_bias"
+    ]
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Agree with silent_log for motion-flagged wrist SpO2 dips contradicted by the ring.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "HX7-003",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "learning_period",
+    "grader_chest_pain_band": null,
+    "confidence": 0.9,
+    "reasoning": "On day 4 of the learning period with no established own baseline, a reliable resting ring SpO2 of 87% fires HT_SPO2_LT88 as CONFIRM_FIRST (never suppressed as at_patient_baseline during learning without a clinician-documented band). With no fingertip oximeter available to recheck, it requires patient_call confirmation and routes to urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Agree with urgent_page for CONFIRM_FIRST HT_SPO2_LT88 during the learning period.",
+    "confidence": 0.9
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": false,
+    "suggested_tier": "CONFIRM_FIRST",
+    "suggested_confirm_step": "patient_call",
+    "critical_miss": false,
+    "issue": "Rationale and decisive_feature claim 'the watch prompt went unanswered, so the confirm step is failed and the tier escalates to already_confirmed', but the patient only has a 'ring' (no watch), and neither trend_last_7d, caregiver_or_nurse_note, nor router_input mentions any unanswered prompt or call. Either add the unanswered patient call to the facts or set confirm_step to 'patient_call' with confirm_timeout_min: 15."
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[respiratory] Monitoring day 4 with no learned own baseline, so a single 87% ring rest reading fires",
+    "overlap_note": "Very close to existing learning-day-4 ring 87% cases in do_not_repeat."
+   },
+   "score": 3,
+   "action": "fix",
+   "fix_instructions": [
+    "The rationale and decisive_feature state that a watch prompt went unanswered, but the patient only has a ring and no unanswered prompt/call is documented in the case facts (trend_last_7d, caregiver_or_nurse_note, router_input). Either document an unanswered patient call in the facts/router_input, or change confirm_step to 'patient_call' with confirm_timeout_min: 15 and update rationale/decisive_feature."
+   ]
+  },
+  {
+   "case_id": "HX7-004",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_FALL_ANTICOAG",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "goals_of_care",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "A witnessed slide/fall onto the floor while taking apixaban fires HT_FALL_ANTICOAG, which would normally be ABSOLUTE. However, the patient has a hospice comfort-only plan with no hospital transfers and no pain or injury, so hospital-directed escalation is suppressed under goals_of_care and routed to same-shift hospice nurse (nurse_task)."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Agree with nurse_task (same-shift hospice nurse) for fall on anticoagulant suppressed by hospice comfort-only goals.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[fall] Confirmed ground-level fall in a patient currently taking apixaban, meeting HT_FALL_ANTICOAG, with comfort-focused hospice goals",
+    "overlap_note": "Near-duplicate of do_not_repeat '[fall] Confirmed ground-level fall in a patient currently taking apixaban, meeting HT_FALL_ANTICOAG, with comfort-focused hospice goals'."
+   },
+   "score": 2,
+   "action": "reject",
+   "fix_instructions": [
+    "Reject/replace: near-duplicate of do_not_repeat '[fall] Confirmed ground-level fall in a patient currently taking apixaban, meeting HT_FALL_ANTICOAG, with comfort-focused hospice goals'."
+   ]
+  },
+  {
+   "case_id": "HX7-005",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "A hospice patient has worsening hip pain not controlled by her current PRN morphine, with a mild HR rise to 80 and sleep reduction, and no respiratory distress or hard trigger. Under hospice goals, uncontrolled routine pain without a hard trigger warrants same-shift hospice nurse follow-up (nurse_task) to adjust analgesia."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": false,
+    "suggested": [
+     "noise",
+     "goals_of_care",
+     "caregiver"
+    ],
+    "issue": "category[0] is 'caregiver', which is a context tag, not an allowed primary mechanism."
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Agree with nurse_task for hospice pain management.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[goals_of_care] Escalating pain in hospice without any hard trigger requires nurse contact for symptom management, not urgent",
+    "overlap_note": "Near-duplicate of '[goals_of_care] Escalating pain in hospice without any hard trigger requires nurse contact for symptom management, not urgent' and '[noise] Night pain needing extra morphine doses with sleep halved and steps down, while heart rate and'."
+   },
+   "score": 2,
+   "action": "reject",
+   "fix_instructions": [
+    "category[0] must be a valid primary mechanism from the fixed vocabulary (not 'caregiver').",
+    "Scenario duplicates do_not_repeat '[goals_of_care] Escalating pain in hospice without any hard trigger requires nurse contact for symptom management, not urgent'; replace with a novel case."
+   ]
+  },
+  {
+   "case_id": "HX7-006",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "drift_not_absorbed",
+    "grader_chest_pain_band": null,
+    "confidence": 0.85,
+    "reasoning": "Following a watch band replacement on Day -4, the watch reads 12 bpm lower than the ring (device disagreement needing a maintenance ticket), while the reliable ring stream shows a monotonic 7-day upward HR drift (70 to 78 bpm) accompanied by a 20% decline in steps (3000 to 2400) and caregiver-reported slowing. The subtle multi-stream clinical decline alongside device conflict warrants provider_task (or nurse_task)."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Agree with provider_task (with nurse_task as acceptable alternate) for combined device discrepancy and 7-day HR/steps drift.",
+    "confidence": 0.85
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": false,
+    "suggested": "drift_not_absorbed",
+    "drift_miss": false,
+    "issue": "Case has subtle_deterioration=true for a 7-day monotonic drift (and is listed under drift_not_absorbed in generator_tally), but baseline_layer is null."
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[noise] Watch-only resting HR offset of 7-9 bpm over the ring starting with a band replacement on",
+    "overlap_note": "Combines the band-replacement HR offset with a true ring HR and step drift."
+   },
+   "score": 3,
+   "action": "fix",
+   "fix_instructions": [
+    "Set baseline_layer to 'drift_not_absorbed' to match subtle_deterioration: true and the generator tally."
+   ]
+  },
+  {
+   "case_id": "HX7-007",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "drift_not_absorbed",
+    "grader_chest_pain_band": null,
+    "confidence": 0.9,
+    "reasoning": "An older patient with Alzheimer's dementia has a 7-day monotonic drift in resting HR (70 to 77 bpm), steps (1820 to 1400), sleep (7.2 to 6.5 h), and weight (+0.6 kg), accompanied by acute/subacute worsening confusion (not recognizing neighbour), increased evening wandering, and reduced oral intake. This syndromic multi-stream drift and subacute delirium picture warrants same-day provider evaluation (provider_task)."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": [
+     "Patient is reported to be 'eating less' with subacute delirium/wandering, yet weight increases monotonically every single day from 62.0 to 62.6 kg without HF or edema explanation."
+    ]
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": [
+     "delirium",
+     "dementia",
+     "caregiver"
+    ]
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Agree with provider_task for multi-stream drift with emerging delirium in dementia.",
+    "confidence": 0.9
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": false,
+    "suggested": "drift_not_absorbed",
+    "drift_miss": false,
+    "issue": "Case has subtle_deterioration=true for 7-day monotonic drift (and is listed in generator_tally under drift_not_absorbed), but baseline_layer is null."
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 3,
+   "action": "fix",
+   "fix_instructions": [
+    "Set baseline_layer to 'drift_not_absorbed' to match subtle_deterioration: true and the generator tally.",
+    "Consider making weight drift downward (e.g. 62.0 -> 61.3 kg) to match 'eating less', as gaining weight while eating less in a patient without HF/edema is physiologically incongruent."
+   ]
+  },
+  {
+   "case_id": "HX7-008",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.85,
+    "reasoning": "The patient has variable home BP cuff readings (128-152/78-92 mmHg) well within safe bounds, with completely stable HR, steps, and glucose and no symptoms, and asks for help with cuff inconsistency. This is a routine device/technique issue appropriate for nurse_task (or silent_log with a device_maintenance ticket)."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "acceptable_alternate",
+    "grader_route": "nurse_task",
+    "reasoning": "nurse_task is listed in acceptable_alternates; a nurse normally handles cuff technique/replacement rather than a same-day provider.",
+    "confidence": 0.85
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[noise] Caregiver reports inconsistent BP cuff readings, requiring nurse to replace device",
+    "overlap_note": "Very close to do_not_repeat '[noise] Caregiver reports inconsistent BP cuff readings, requiring nurse to replace device'."
+   },
+   "score": 3,
+   "action": "fix",
+   "fix_instructions": [
+    "Case overlaps closely with do_not_repeat '[noise] Caregiver reports inconsistent BP cuff readings, requiring nurse to replace device' and routes to provider_task for a simple cuff check; change expected_route to nurse_task or silent_log with device_maintenance ticket, or replace with a fresher noise scenario."
+   ]
+  },
+  {
+   "case_id": "HX7-009",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "ABSOLUTE",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "A",
+    "confidence": 0.99,
+    "reasoning": "Following a 7-day HF drift, the patient develops acute crushing chest pain at rest with diaphoresis, pallor, watch HR 118 bpm (band B, +1 on bisoprolol -> A), and reliable ring SpO2 87% (band A). This triggers HT_CHEST_PAIN_VITALS at band A (ABSOLUTE), requiring an immediate urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": [
+     "acs",
+     "hf"
+    ]
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Agree with urgent_page for ABSOLUTE HT_CHEST_PAIN_VITALS (band A).",
+    "confidence": 0.99
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "HX7-010",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "All vital streams (HR, oral temperature, steps, sleep, SpO2) have returned to the 30-day baseline after completing antibiotic treatment for a UTI, and the spouse confirms she is back to her normal self. Completed recovery routes to silent_log."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Agree with silent_log for completed post-UTI recovery.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[recovery] Full return to baseline after UTI treatment with no new symptoms justifies silent log",
+    "overlap_note": "Exact duplicate of do_not_repeat '[recovery] Full return to baseline after UTI treatment with no new symptoms justifies silent log' and '[recovery] All vital signs returned to baseline after UTI treatment, no ongoing issues'."
+   },
+   "score": 2,
+   "action": "reject",
+   "fix_instructions": [
+    "Reject/replace: duplicates do_not_repeat '[recovery] Full return to baseline after UTI treatment with no new symptoms justifies silent log'."
+   ]
+  },
+  {
+   "case_id": "HX7-011",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_SPO2_LT88",
+    "grader_trigger_tier": "CONFIRM_FIRST",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.92,
+    "reasoning": "A hospice patient with COPD and HFpEF has an acute desaturation to 85% with RR 28, HR 96, and distressing breathlessness at rest (speaking in short phrases, still working hard to breathe after initial PRN morphine and O2 increase). Under SMART_TRIGGERS v1.6, distressing breathlessness treatable at home in a hospice patient is NOT suppressed; it keeps its tier and routes to urgent_page with escalation_target: hospice_nurse."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": [
+     "router_input omits that the patient is still working hard to breathe after the PRN morphine and oxygen increase ('She's a bit easier now but still working hard'), which is decisive for why an urgent hospice-nurse page is still needed."
+    ]
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Agree with urgent_page (escalation_target: hospice_nurse) for distressing breathlessness treatable at home in a hospice patient.",
+    "confidence": 0.92
+   },
+   "hard_trigger_correct": {
+    "ok": false,
+    "suggested_rule": "HT_SPO2_LT88",
+    "issue": "SMART_TRIGGERS v1.10.3 rule 10 defines HT_SPO2_REST_DYSPNEA specifically for 'heart failure or COPD (not hospice), SpO2 <= 90% confirmed by two reliable readings at rest, plus breathlessness at rest'. Because this patient is in hospice and SpO2 is 85% (< 88%), the applicable rule is HT_SPO2_LT88 (with hospice comfort exception for distressing breathlessness treatable at home)."
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[respiratory] Confirmed resting fingertip SpO2 86% on repeat with increased dyspnoea in a comfort-focused hospice patient who",
+    "overlap_note": null
+   },
+   "score": 3,
+   "action": "fix",
+   "fix_instructions": [
+    "Change hard_trigger_rule from 'HT_SPO2_REST_DYSPNEA' (which explicitly states 'not hospice') to 'HT_SPO2_LT88'.",
+    "Include in router_input that she is 'still working hard' to breathe after the initial PRN morphine and O2 increase."
+   ]
+  },
+  {
+   "case_id": "HX8-001",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.9,
+    "reasoning": "The watch logs intermittent irregular HR spikes of 104-115 bpm while the concurrent ring shows a regular HR of 70-78 bpm, with normal BP, stable steps, no recent medication changes, and no symptoms. Per SMART_TRIGGERS v1.11.2 rule C, device disagreement with no acute signs and no care-changing context routes to silent_log with a device ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": [
+     "Sex is listed as 'F', but caregiver_or_nurse_note refers to the patient as 'his' and 'he' ('his watch keeps saying his heart is racing... he feels fine')."
+    ]
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": [
+     "noise",
+     "conflicting"
+    ]
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Agree with silent_log and device_maintenance ticket per v1.11.2 rule C.",
+    "confidence": 0.9
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "HX8-002",
+    "differences": [
+     "HX8-002 adds a Day -2 metoprolol dose increase (25 to 50 mg BID) with transient lightheadedness, shifting route from silent_log to nurse_task/provider_task."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[arrhythmia] Watch irregular-rhythm notifications conflict with regular ring rhythm, asymptomatic",
+    "overlap_note": "Paired specifically under v1.11.2 rule C against a rate-control dose change in HX8-002."
+   },
+   "score": 4,
+   "action": "fix",
+   "fix_instructions": [
+    "Fix pronoun mismatch: sex is 'F', but caregiver_or_nurse_note uses 'his' and 'he'."
+   ]
+  },
+  {
+   "case_id": "HX8-002",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.85,
+    "reasoning": "Watch HR (100-115 irregular) and ring HR (70-78 regular) disagree 2 days after a metoprolol dose increase, with one episode of lightheadedness yesterday. Per SMART_TRIGGERS v1.11.2 rule C, the 'could change care' variant (e.g. HR disagreement after a rate-drug dose change) routes to nurse_task (manual pulse/check) with a device ticket, though provider_task is also clinically reasonable."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": [
+     "Sex is listed as 'F', but caregiver_or_nurse_note refers to the patient as 'He' and 'his'."
+    ]
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": [
+     "arrhythmia",
+     "med_change",
+     "conflicting"
+    ]
+   },
+   "expected_route_agree": {
+    "verdict": "acceptable_alternate",
+    "grader_route": "nurse_task",
+    "reasoning": "nurse_task is in acceptable_alternates; note that SMART_TRIGGERS v1.11.2 rule C explicitly specifies 'nurse_task (manual pulse/check)' for HR disagreement after a rate-drug dose change.",
+    "confidence": 0.85
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "HX8-001",
+    "differences": [
+     "Adds Day -2 metoprolol dose increase and transient lightheadedness compared to HX8-001."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 3,
+   "action": "fix",
+   "fix_instructions": [
+    "Fix pronoun mismatch: sex is 'F', but caregiver_or_nurse_note uses 'He' and 'his'.",
+    "Consider setting expected_route to 'nurse_task' with 'provider_task' as acceptable_alternate to match SMART_TRIGGERS v1.11.2 rule C ('HR disagreement after a rate-drug dose change -> nurse_task')."
+   ]
+  },
+  {
+   "case_id": "HX8-003",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "below_band_threshold",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "D",
+    "confidence": 0.95,
+    "reasoning": "The patient has stable chronic exertional angina at his usual frequency (2-3 times/week walking to the post box), relieved within 3 minutes by 1 spray of GTN, with no rest pain, no diaphoresis, and peak exertional HR 88-92 bpm (band D). Per SMART_TRIGGERS v1.11.2 rule F and chest pain banding rules, stable exertional angina with band D vitals is SUPPRESSED (below_band_threshold) and routes to nurse_task (never silent_log)."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Agree with nurse_task for stable exertional angina in band D.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": false,
+    "suggested_rule": "HT_CHEST_PAIN_VITALS",
+    "issue": "Per policy: 'A stable pattern (usual frequency, unchanged) with normal vitals stays band D: SUPPRESSED below_band_threshold, nurse_task (never silent_log). Fill chest_pain_eval {band, raw_band, modifiers, tier, timeout_min} on every chest-pain case.' Here hard_trigger is false, trigger_tier/suppression_reason/chest_pain_eval are null, and silent_log is wrongly listed in acceptable_alternates."
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": false,
+    "suggested_tier": "SUPPRESSED",
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": "Should be hard_trigger: true, hard_trigger_rule: 'HT_CHEST_PAIN_VITALS', trigger_tier: 'SUPPRESSED', suppression_reason: 'below_band_threshold', with chest_pain_eval populated for band D, and acceptable_alternates: [] (never silent_log)."
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "HX8-004",
+    "differences": [
+     "HX8-004 changes stable exertional angina to crescendo/rest angina with diaphoresis, 15-min duration, and rest HR 104 bpm."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[acs] Exertional chest tightness at his usual, unchanged frequency , with watch HR 66 bpm at onset",
+    "overlap_note": null
+   },
+   "score": 3,
+   "action": "fix",
+   "fix_instructions": [
+    "Set hard_trigger: true, hard_trigger_rule: 'HT_CHEST_PAIN_VITALS', trigger_tier: 'SUPPRESSED', suppression_reason: 'below_band_threshold', and populate chest_pain_eval: {'band': 'D', 'raw_band': 'D', 'modifiers': [], 'tier': 'SUPPRESSED', 'timeout_min': null}.",
+    "Remove 'silent_log' from acceptable_alternates (band D chest pain is never silent_log)."
+   ]
+  },
+  {
+   "case_id": "HX8-004",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+    "grader_trigger_tier": "ABSOLUTE",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": "A",
+    "confidence": 0.98,
+    "reasoning": "The patient's angina has escalated to a crescendo pattern with rest episodes lasting 15 minutes, diaphoresis, and resting HR 104 bpm while on metoprolol (raw band C + 1 for rate-control med + 2 for red flags [crescendo, diaphoresis, persistent >=15 min] -> clamped to band A). This is an ABSOLUTE HT_CHEST_PAIN_VITALS trigger requiring urgent_page."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Agree with urgent_page for ABSOLUTE HT_CHEST_PAIN_VITALS.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": false,
+    "suggested_tier": "ABSOLUTE",
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": "Trigger tier is ABSOLUTE, so confirm_step must be null (not 'already_confirmed')."
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "HX8-003",
+    "differences": [
+     "Changes stable exertional angina in HX8-003 to crescendo/rest angina with diaphoresis, 15-min duration, and HR 104 bpm."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 4,
+   "action": "fix",
+   "fix_instructions": [
+    "Set confirm_step to null (ABSOLUTE triggers do not use confirm_step)."
+   ]
+  },
+  {
+   "case_id": "HX8-005",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.9,
+    "reasoning": "An elderly patient with AFib and mild dementia has missed two days of apixaban because her spouse/caregiver is ill and exhausted, while all device vitals remain stable at baseline and no fall has occurred. This requires routine nurse follow-up (nurse_task) to support medication adherence and caregiver burden."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": false,
+    "suggested": [
+     "noise",
+     "med_change",
+     "caregiver",
+     "dementia"
+    ],
+    "issue": "category[0] is 'med_change', which is a context tag, not an allowed primary mechanism."
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Agree with nurse_task for missed apixaban due to caregiver illness/exhaustion.",
+    "confidence": 0.9
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[med_change] An exhausted spouse has missed several apixaban doses in an otherwise stable anticoagulated patient; the determining",
+    "overlap_note": "Near-exact duplicate of do_not_repeat '[med_change] An exhausted spouse has missed several apixaban doses in an otherwise stable anticoagulated patient; the determining'."
+   },
+   "score": 2,
+   "action": "reject",
+   "fix_instructions": [
+    "category[0] must be a primary mechanism from the fixed vocabulary (not 'med_change').",
+    "Reject/replace: near-exact duplicate of do_not_repeat '[med_change] An exhausted spouse has missed several apixaban doses in an otherwise stable anticoagulated patient; the determining'."
+   ]
+  }
+ ],
+ "batch_summary": {
+  "n_cases": 16,
+  "n_requested": 16,
+  "routes_actual": {
+   "silent_log": 3,
+   "nurse_task": 4,
+   "provider_task": 5,
+   "urgent_page": 4
+  },
+  "routes_requested": {
+   "silent_log": 4,
+   "nurse_task": 4,
+   "provider_task": 5,
+   "urgent_page": 3
+  },
+  "difficulty_actual": {
+   "easy": 1,
+   "medium": 3,
+   "hard": 8,
+   "adversarial": 4
+  },
+  "hard_plus_adversarial_pct": 75.0,
+  "minimums": {
+   "noise": {
+    "required": 7,
+    "actual": 3,
+    "met": false
+   },
+   "spo2_bias": {
+    "required": 3,
+    "actual": 0,
+    "met": false
+   },
+   "hidden_hypoxemia": {
+    "required": 2,
+    "actual": 0,
+    "met": false
+   },
+   "subtle_deterioration": {
+    "required": 4,
+    "actual": 4,
+    "met": true
+   },
+   "med_change": {
+    "required": 4,
+    "actual": 2,
+    "met": false
+   },
+   "dementia": {
+    "required": 4,
+    "actual": 2,
+    "met": false
+   },
+   "caregiver": {
+    "required": 3,
+    "actual": 3,
+    "met": true
+   },
+   "conflicting": {
+    "required": 2,
+    "actual": 1,
+    "met": false
+   },
+   "goals_of_care": {
+    "required": 2,
+    "actual": 3,
+    "met": true
+   },
+   "missing_data": {
+    "required": 1,
+    "actual": 0,
+    "met": false
+   },
+   "recovery": {
+    "required": 2,
+    "actual": 1,
+    "met": false
+   }
+  },
+  "all_minimums_met": false,
+  "generator_tally_matches": false,
+  "tally_discrepancies": [
+   "HX7 generator_tally.routes claims silent_log: 3, provider_task: 4, but actual HX7 routes are silent_log: 2 (HX7-002, HX7-010), provider_task: 4 (HX7-001, HX7-006, HX7-007, HX7-008), nurse_task: 2 (HX7-004, HX7-005), urgent_page: 3 (HX7-003, HX7-009, HX7-011) -> sum in tally was 11 but miscounted silent_log=3 and urgent_page=2.",
+   "HX7 generator_tally.category_primary sums to 12 for 11 cases (claims noise: 3 and respiratory: 2, actual is noise: 2 and respiratory: 2).",
+   "HX7 generator_tally.baseline_layers lists drift_not_absorbed: ['HX7-001', 'HX7-006', 'HX7-007'], but all three cases have baseline_layer: null in the case objects.",
+   "HX8 generator_tally uses case IDs HX8-007..HX8-011 in id_range, pairs, and hard_trigger_ids, whereas the actual case_ids are HX8-001..HX8-005."
+  ],
+  "actions": {
+   "keep": 2,
+   "fix": 9,
+   "reject": 5
+  },
+  "route_disagreement_ids": [],
+  "hard_trigger_issue_ids": [
+   "HX7-011",
+   "HX8-003"
+  ],
+  "critical_miss_ids": [],
+  "drift_miss_ids": [],
+  "trigger_tier_issue_ids": [
+   "HX7-003",
+   "HX8-003",
+   "HX8-004"
+  ],
+  "duplicate_or_near_duplicate_ids": [
+   "HX7-001",
+   "HX7-004",
+   "HX7-005",
+   "HX7-008",
+   "HX7-010",
+   "HX8-005"
+  ],
+  "notes": "Five cases (HX7-001, HX7-004, HX7-005, HX7-010, HX8-005) are direct duplicates of scenarios in do_not_repeat and must be replaced. Several cases have mechanical schema/policy issues including null baseline_layer on drift cases (HX7-001, HX7-006, HX7-007), context tags in category[0] (HX7-005, HX8-005), pronoun/sex mismatches (HX8-001, HX8-002), and unpopulated HT_CHEST_PAIN_VITALS band D fields (HX8-003)."
+ }
+}

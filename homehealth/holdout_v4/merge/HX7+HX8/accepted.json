@@ -1,0 +1,211 @@
+{
+ "cases": [
+  {
+   "case_id": "HX7-002",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with adult child",
+   "pmh": [
+    "HTN",
+    "OA"
+   ],
+   "function_baseline": "walks indoors unaided",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -600
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 28,
+    "sleep_h": 7.2,
+    "steps": 3400,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: watch night SpO2 minima 92-93%, ring 94-95%. Day -3: watch 89% at 02:40, motion flag; ring 95%. Day -1: watch 90% at 03:10, motion flag; ring 94%. Day 0: watch 89% at 03:25, motion flag; ring 95%. Rest HR 70-74, steps 3300-3500, sleep 7.0-7.3 h. No daytime SpO2 drops.",
+   "caregiver_or_nurse_note": "Daughter (text): 'Mum slept right through, no coughing or anything. The ring says her oxygen was fine.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [
+     "motion during SpO2 sample Day -3 02:40",
+     "motion during SpO2 sample Day -1 03:10",
+     "motion during SpO2 sample Day 0 03:25"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.0
+   },
+   "router_input": "75-79 F, Fitzpatrick V-VI, lives with adult child, HTN, OA. Med: amlodipine. Devices: watch, ring. Baseline: rest_hr 72, spo2_night_min 93. Established phase. Trend: night watch dips to 89-90% on motion-flagged samples Day -3, -1, 0; ring always 94-95%. HR, steps, sleep stable. Daughter reports no symptoms.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "noise"
+   ],
+   "rationale": "The watch night SpO2 dips are all accompanied by motion flags and are contradicted by the ring\u2019s stable 94-95% readings, with no corroborating clinical signs. This is classic motion artifact, requiring no action. Naive-model trap: a naive model might interpret the 89% watch dips as early hypoxemia and trigger a nurse call.",
+   "decisive_feature": "Motion-flagged watch SpO2 dips to 89-90% contradicted by ring SpO2 94-95% and no symptoms.",
+   "expected_device_ticket": null,
+   "src": "holdout_v4",
+   "grade": {
+    "score": 5,
+    "grader_route": "silent_log",
+    "grader_confidence": 0.95,
+    "batch_id": [
+     "HX7+HX8"
+    ]
+   }
+  },
+  {
+   "case_id": "HX7-009",
+   "pair_id": null,
+   "age_band": "65-69",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "CAD (stent 2 years ago)",
+    "HFmrEF EF 45%",
+    "HTN",
+    "ex-smoker"
+   ],
+   "function_baseline": "gardens, walks 30 min daily",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "75 mg daily",
+     "started_day": -800
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "5 mg daily",
+     "started_day": -800
+    },
+    {
+     "name": "ramipril",
+     "dose": "10 mg daily",
+     "started_day": -800
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "40 mg nightly",
+     "started_day": -800
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 38,
+    "sleep_h": 7.0,
+    "steps": 3500,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 88.0,
+    "glucose_mean": null,
+    "sbp": 130,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -7: weight 88.0, rest HR 64, steps 3520, RR 16, SBP 130/78. Day -6: 88.3, 66, 3400, 16, 132/80. Day -5: 88.6, 67, 3300, 17, 131/79. Day -4: 88.9, 69, 3100, 17, 133/81. Day -3: 89.2, 70, 2900, 18, 134/82. Day -2: 89.5, 72, 2700, 18, 136/84. Day -1: 89.8, 73, 2550, 19, 135/83. Day 0: 90.2, 74, 2500, 19, 138/86 (at 08:00). At 10:00: watch HR 118, ring SpO2 87% (no motion flag), cuff BP 148/92. Spouse called: 'He\u2019s holding his chest, says it\u2019s a heavy weight, and he\u2019s all sweaty.'",
+   "caregiver_or_nurse_note": "Spouse (phone): 'He was sitting in his chair and suddenly grabbed his chest. He\u2019s gone pale and clammy. Says it\u2019s like a car sitting on him.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 500,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.0
+   },
+   "router_input": "65-69 M, CAD stent, HFmrEF, HTN, ex-smoker. Meds: aspirin, bisoprolol, ramipril, atorvastatin. Devices: watch, ring, scale, bp_cuff. Baseline rest_hr 64, weight 88.0 kg, SBP 130/78. 7-day drift: weight +2.2 kg, rest HR +10, steps \u22121000, RR +3. Day 0 10:00: acute chest heaviness, diaphoresis, watch HR 118, ring SpO2 87%, cuff BP 148/92.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "A",
+    "raw_band": "A",
+    "modifiers": [
+     "diaphoresis +1"
+    ],
+    "tier": "ABSOLUTE",
+    "timeout_min": null
+   },
+   "subtle_deterioration": true,
+   "difficulty": "hard",
+   "category": [
+    "acs"
+   ],
+   "rationale": "The preceding drift suggested decompensation, and the acute chest pain with SpO2 87% (band A) and diaphoresis triggers HT_CHEST_PAIN_VITALS at ABSOLUTE tier. Immediate escalation is required. Naive-model trap: a model might focus on the drift and route to provider_task, missing the acute coronary syndrome presentation.",
+   "decisive_feature": "Acute chest pressure with SpO2 87%, tachycardia, and diaphoresis after a 7-day HF drift, meeting ABSOLUTE chest-pain trigger.",
+   "expected_device_ticket": null,
+   "src": "holdout_v4",
+   "grade": {
+    "score": 5,
+    "grader_route": "urgent_page",
+    "grader_confidence": 0.99,
+    "batch_id": [
+     "HX7+HX8"
+    ]
+   }
+  }
+ ],
+ "provenance": {
+  "batches": [
+   "gen/HX7.batch.json",
+   "gen/HX8.batch.json"
+  ],
+  "graders": [
+   "grade/HX7+HX8.grader.json"
+  ],
+  "grader_batch_ids": [
+   "HX7+HX8"
+  ],
+  "src": "holdout_v4",
+  "legacy": false
+ }
+}

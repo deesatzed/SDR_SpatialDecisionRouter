@@ -1,0 +1,1049 @@
+{
+ "cases": [
+  {
+   "case_id": "HX1-001",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "hypertension",
+    "osteoarthritis of hips"
+   ],
+   "function_baseline": "walks yard with stick, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -700
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 66,
+    "hrv_ms": 38,
+    "sleep_h": 7.1,
+    "steps": 3100,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 136,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -6 to -1 watch worn 90-95%, steps 2600-3300, rest HR 64-68, night SpO2 92-94%. Day 0 steps 0 from 06:45 to 06:55; watch HR 46 bpm 06:48-06:51, 58 at 06:55, 71 at 07:20; steps resumed 07:30. Cuff 138/82 mmHg seated 07:35.",
+   "caregiver_or_nurse_note": "Neighbour phone call 07:02 Day 0: he went floppy by the water trough, did not answer for half a minute, then sat up looking like a ghost; he says he is fine and wants to keep working.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 64,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [
+     "on-wrist 06:45-07:30 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 75-79, male, Fitzpatrick I-IV, lives alone. PMH: hypertension, osteoarthritis of hips. Function: walks yard with stick, independent ADLs. Meds: amlodipine 5 mg daily since Day -700. Devices: watch, BP cuff. Baseline 30 days: rest HR 66, HRV 38 ms, sleep 7.1 h, steps 3100, night SpO2 93%, skin deviation 0.0 C, SBP 136, DBP 80. Trend: Day -6 to -1 watch worn 90-95%, steps 2600-3300, rest HR 64-68, night SpO2 92-94%. Day 0 steps 0 from 06:45 to 06:55; watch HR 46 bpm 06:48-06:51, 58 at 06:55, 71 at 07:20; steps resumed 07:30; cuff 138/82 mmHg seated 07:35. Neighbour phone call 07:02 Day 0: he went floppy by the water trough, did not answer for half a minute, then sat up looking like a ghost; he says he is fine and wants to keep working. Device state: on-wrist 06:45-07:30 Day 0. Wear 93%, longest gap 0 h. Baseline status: established, monitoring day 64.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_SYNCOPE",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "syncope"
+   ],
+   "rationale": "The watch was on-wrist through the event and logged HR 46 bpm against his own rest baseline of 64-68, so the reading is reliable and the change is from his baseline. A neighbour saw him go floppy by the water trough and not answer for half a minute, which is a witnessed episode with loss of tone, and the record holds no timed contact or dock log that explains it. No comfort plan applies, so all four checks pass and HT_SYNCOPE is ABSOLUTE. Naive-model trap: his statement that he is fine and wants to keep working pulls toward nurse_task or silent_log, but a witnessed episode of this kind is not cleared by the patient's own account.",
+   "decisive_feature": "Neighbour-witnessed floppy spell by the water trough with watch HR 46 bpm and no steps, after which he says he is fine.",
+   "expected_device_ticket": null
+  },
+  {
+   "case_id": "HX1-002",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "hypertension",
+    "bilateral hearing loss"
+   ],
+   "function_baseline": "walks with frame indoors, independent with lift, uses shower stool",
+   "patient_goals": "full active treatment wanted",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 29,
+    "sleep_h": 7.4,
+    "steps": 1400,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.1,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 146,
+    "dbp": 82
+   },
+   "trend_last_7d": "Day -6 to -1 steps 1100-1600, rest HR 70-74, watch worn 94-97%, sleep 6.8-7.6 h, no night events. Day 0 steps 180 before 14:00 then 0 from 14:04 to 14:40; HR 76 at 14:05, 82 at 14:20, 80 at 14:40; cuff 162/94 mmHg seated 14:33.",
+   "caregiver_or_nurse_note": "Granddaughter's text 14:44 Day 0: her right hand has gone like a dead fish, her right leg is not taking weight, and she could not lift the right side of her face when asked to smile. At lunch she was fine.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 58,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [
+     "on-wrist 14:00-14:45 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 85-89, female, Fitzpatrick V-VI, lives alone. PMH: hypertension, bilateral hearing loss. Function: walks with frame indoors, independent with lift, uses shower stool. Goals: full active treatment wanted. Meds: amlodipine 5 mg daily since Day -500. Devices: watch, BP cuff. Baseline 30 days: rest HR 72, HRV 29 ms, sleep 7.4 h, steps 1400, night SpO2 93%, skin deviation 0.1 C, SBP 146, DBP 82. Trend: Day -6 to -1 steps 1100-1600, rest HR 70-74, watch worn 94-97%, sleep 6.8-7.6 h, no night events. Day 0 steps 180 before 14:00, then 0 from 14:04 to 14:40; HR 76 at 14:05, 82 at 14:20, 80 at 14:40; cuff 162/94 mmHg seated 14:33. Granddaughter's text 14:44 Day 0: her right hand has gone like a dead fish, her right leg is not taking weight, and she could not lift the right side of her face when asked to smile; at lunch she was fine. Device state: on-wrist 14:00-14:45 Day 0. Wear 96%, longest gap 0 h. Baseline status: established, monitoring day 58.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FOCAL_NEURO",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "stroke"
+   ],
+   "rationale": "The cuff reading was taken seated at 14:33 and the watch steps and HR trace are continuous, so the data are reliable. Her own record shows she was fine at lunch, so a right-hand and right-leg weakness with loss of the right face lift is a new focal change from her baseline. Nothing in the record explains it as an acute non-neurological cause, and no comfort-only plan applies, so all four checks pass and HT_FOCAL_NEURO is ABSOLUTE. Naive-model trap: the step count stopping at lunch and the elevated cuff could look like ordinary tiredness that a nurse can see tomorrow, but a new one-sided deficit is a focal neurological event that needs a clinician now.",
+   "decisive_feature": "Granddaughter's text describes sudden right-hand and right-leg weakness with the right face unable to lift, after lunch steps stopped and the cuff read 162/94 mmHg.",
+   "expected_device_ticket": null
+  },
+  {
+   "case_id": "HX1-003",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "ischaemic heart disease with stents two years ago",
+    "type 2 diabetes"
+   ],
+   "function_baseline": "independent ADLs, carries own water",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "75 mg daily",
+     "started_day": -700
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "40 mg nightly",
+     "started_day": -700
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 42,
+    "sleep_h": 7.0,
+    "steps": 2600,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -6 to -1 watch worn 93-96%, steps 2300-2900, rest HR 60-64. Day 0 steps 1100 by 07:05 carrying water. Watch single-lead ECG strip 08:02 at rest, contact good, showing ST-segment elevation; HR 88 at strip time. Ring rest HR 84 at 08:05. Fingertip SpO2 95% at 08:10 on good waveform.",
+   "caregiver_or_nurse_note": "Son-in-law's typed message 08:20 Day 0 in plain English: Dad says there is a stone sitting on his chest since breakfast, it goes into the left forearm when he carries the water cans, and he is sweaty and does not want to sit down.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 64,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "on-wrist 06:50-08:30 Day 0",
+     "ECG contact good 08:02 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 70-74, male, Fitzpatrick V-VI, lives alone. PMH: ischaemic heart disease with stents two years ago, type 2 diabetes. Meds: aspirin 75 mg daily since Day -700; atorvastatin 40 mg nightly since Day -700. Devices: watch, ring, fingertip oximeter. Baseline 30 days: rest HR 62, HRV 42 ms, sleep 7.0 h, steps 2600, night SpO2 93%, skin deviation 0.0 C. Trend: Day -6 to -1 watch worn 93-96%, steps 2300-2900, rest HR 60-64. Day 0 steps 1100 by 07:05 carrying water. Watch single-lead ECG strip 08:02 at rest, contact good, showing ST-segment elevation; HR 88 at strip time. Ring rest HR 84 at 08:05. Fingertip SpO2 95% at 08:10 on good waveform. Son-in-law's typed message 08:20 Day 0 in plain English: Dad says there is a stone sitting on his chest since breakfast, it goes into the left forearm when he carries the water cans, and he is sweaty and does not want to sit down. Device state: on-wrist 06:50-08:30 Day 0; ECG contact good 08:02. Wear 94%, longest gap 0 h. Baseline status: established, monitoring day 64.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_ECG",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": null,
+    "raw_band": null,
+    "modifiers": [],
+    "tier": "ABSOLUTE",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "acs"
+   ],
+   "rationale": "The watch strip has good contact and shows ST-segment elevation at rest, which is an ECG change, and the son-in-law reports a stone-like chest pressure since breakfast, so the chest pain and ECG criteria both pass. The watch is reliable for the strip, the record holds no explanation for the strip, and no comfort plan applies, so the checks pass and HT_CHEST_PAIN_ECG is ABSOLUTE with no band needed. Naive-model trap: a resting HR of 88, a fingertip SpO2 of 95% and a calm-sounding ring reading lead a shallow model toward provider_task, but an ST-elevation strip with ongoing chest pain is a page regardless of resting numbers.",
+   "decisive_feature": "Clean-contact watch strip at rest showing ST-segment elevation, matched by a son-in-law's plain-English message of a stone on the chest since breakfast.",
+   "expected_device_ticket": null
+  },
+  {
+   "case_id": "HX1-004",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with adult child",
+   "pmh": [
+    "hypertension",
+    "osteoarthritis"
+   ],
+   "function_baseline": "independent indoors, walks to garden gate",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 30,
+    "sleep_h": 6.9,
+    "steps": 2100,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 142,
+    "dbp": 84
+   },
+   "trend_last_7d": "Day -6 to -1 watch worn 90-94%, steps 1800-2400, rest HR 68-72. Day 0 steps 0 from 10:20; watch HR 118 at 10:34, 136 at 10:38, 134 at 10:42 seated; wrist SpO2 90% at 10:40; cuff 96/60 mmHg seated 10:41; fingertip SpO2 91% at 10:45 on good waveform.",
+   "caregiver_or_nurse_note": "Granddaughter's voice note transcribed 10:47 Day 0: Gran says her chest is being pressed from inside, she is sweaty all over, she cannot finish her sentences, and she thinks it may be heartburn.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 58,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [
+     "on-wrist continuous 10:20-10:50 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 80-84, female, Fitzpatrick I-IV, lives with adult child. PMH: hypertension, osteoarthritis. Function: independent indoors, walks to garden gate. Meds: ramipril 5 mg daily since Day -400. Devices: watch, BP cuff, fingertip oximeter. Baseline 30 days: rest HR 70, HRV 30 ms, sleep 6.9 h, steps 2100, night SpO2 92%, skin deviation 0.0 C, SBP 142, DBP 84. Trend: Day -6 to -1 watch worn 90-94%, steps 1800-2400, rest HR 68-72. Day 0 steps 0 from 10:20; watch HR 118 at 10:34, 136 at 10:38, 134 at 10:42 seated; wrist SpO2 90% at 10:40; cuff 96/60 mmHg seated 10:41; fingertip SpO2 91% at 10:45 on good waveform. Granddaughter's voice note transcribed 10:47 Day 0: Gran says her chest is being pressed from inside, she is sweaty all over, she cannot finish her sentences, and she thinks it may be heartburn. Device state: on-wrist continuous 10:20-10:50 Day 0. Wear 92%, longest gap 0 h. Baseline status: established, monitoring day 58.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "A",
+    "raw_band": "A",
+    "modifiers": [
+     "diaphoresis +1",
+     "dyspnoea +1 (red-flag cap reached)"
+    ],
+    "tier": "ABSOLUTE",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "acs"
+   ],
+   "rationale": "Seated watch HR reached 136 bpm against her own 68-72 bpm baseline, which is raw band A, and the cuff read 96/60 mmHg with wrist SpO2 falling to 90%. The sweating and breathlessness are red flags, and the net modifiers cannot lower a raw band A, so the chest pain check is met. The watch is continuously worn, the fingertip reading is 91% on good waveform, the change is from her own baseline, no explanation is recorded and no comfort plan applies, so HT_CHEST_PAIN_VITALS is ABSOLUTE. Naive-model trap: the granddaughter's guess of heartburn and an SpO2 of only 91% tempt a provider_task, but a band-A heart rate with pressure and sweating needs a page now.",
+   "decisive_feature": "Seated watch HR 136 with sweating and breathlessness against a 68-72 bpm baseline, with cuff SBP 96 and steps stopped since 10:20.",
+   "expected_device_ticket": null
+  },
+  {
+   "case_id": "HX1-005",
+   "pair_id": null,
+   "age_band": "90-94",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "assisted living",
+   "pmh": [
+    "hypertension",
+    "prostate cancer treated three years ago"
+   ],
+   "function_baseline": "walks lounge with rollator, independent with meals",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -900
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "fingertip_oximeter"
+   ],
+   "baseline_30d": {
+    "rest_hr": 74,
+    "hrv_ms": 26,
+    "sleep_h": 6.6,
+    "steps": 1900,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -6 to -1 wrist rest SpO2 93-95%, rest HR 72-76, steps 1500-2100. Day -2 onward new cough; mornings wrist SpO2 88-90% at rest and rest HR 80-86. Day 0 wrist SpO2 88% at 09:30 and 87% at 09:52.",
+   "caregiver_or_nurse_note": "visit: district nurse fingertip SpO2 86% at 11:05 Day 0, good waveform, seated in lounge. Care staff log Day 0: cough since Day -2, quieter than usual at tea.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 64,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 91,
+    "artifact_flags": [
+     "on-wrist 09:20-11:10 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 90-94, male, Fitzpatrick V-VI, lives in assisted living. PMH: hypertension, prostate cancer treated three years ago. Function: walks lounge with rollator, independent with meals. Meds: amlodipine 5 mg daily since Day -900. Devices: watch, fingertip oximeter. Baseline 30 days: rest HR 74, HRV 26 ms, sleep 6.6 h, steps 1900, night SpO2 93%, skin deviation 0.0 C. Trend: Day -6 to -1 wrist rest SpO2 93-95%, rest HR 72-76, steps 1500-2100. Day -2 onward new cough; mornings wrist SpO2 88-90% at rest and rest HR 80-86. Day 0 wrist SpO2 88% at 09:30 and 87% at 09:52. Visit: district nurse fingertip SpO2 86% at 11:05 Day 0 on good waveform, seated in lounge. Care staff log Day 0: cough since Day -2, quieter than usual at tea. Device state: on-wrist 09:20-11:10 Day 0. Wear 91%, longest gap 0 h. Baseline status: established, monitoring day 64.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_SPO2_LT88",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "respiratory"
+   ],
+   "rationale": "The district-nurse fingertip reading of 86% on good waveform is a clinician-confirmed value below 88%, so the rule's confirmation is already in the record and the reading is reliable. It is 7 points below his own established 93-95% resting band, which passes the own-baseline check, and no explanatory device gap or comfort-only plan is present. The confirmation is therefore already_confirmed and the route is urgent_page with no alternates. Naive-model trap: the new cough and the care staff noting he is quieter at tea would send a shallow model to provider_task, but a confirmed fingertip SpO2 of 86% against his own baseline is a page now.",
+   "decisive_feature": "District-nurse fingertip SpO2 86% on good waveform after two days of new cough, against a 93-95% own resting baseline.",
+   "expected_device_ticket": null
+  },
+  {
+   "case_id": "HX1-006",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with adult child",
+   "pmh": [
+    "hypertension",
+    "osteoarthritis",
+    "hearing loss"
+   ],
+   "function_baseline": "walks with stick outdoors, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "ramipril",
+     "dose": "2.5 mg daily",
+     "started_day": -500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 30,
+    "sleep_h": 7.5,
+    "steps": 2600,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 138,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -6 to -1 watch worn 92-95%, rest HR 66-70, steps 2000-2800. Day -2 steps stopped 13:17 at the bus shelter; watch HR 54 bpm 13:18-13:21 on wrist, 66 bpm seated at 13:22. Cuff 132/78 mmHg seated 13:40.",
+   "caregiver_or_nurse_note": "Daughter's message Day -2: Mum said the shelter spun and she sat down on the bench before the spinning got bad, never hit the ground, and was back to herself in a minute with a cup of tea. visit: GP review Day -1 documented full recovery and no further spells.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 64,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [
+     "on-wrist 13:15-13:25 Day -2"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 85-89, female, Fitzpatrick I-IV, lives with adult child. PMH: hypertension, osteoarthritis, hearing loss. Function: walks with stick outdoors, independent ADLs. Meds: ramipril 2.5 mg daily since Day -500. Devices: watch, BP cuff. Baseline 30 days: rest HR 68, HRV 30 ms, sleep 7.5 h, steps 2600, night SpO2 93%, skin deviation 0.0 C, SBP 138, DBP 80. Trend: Day -6 to -1 watch worn 92-95%, rest HR 66-70, steps 2000-2800. Day -2 steps stopped 13:17 at the bus shelter; watch HR 54 bpm 13:18-13:21 on wrist, 66 bpm seated at 13:22; cuff 132/78 mmHg seated 13:40. Daughter's message Day -2: Mum said the shelter spun and she sat down on the bench before the spinning got bad, never hit the ground, and was back to herself in a minute with a cup of tea. Visit: GP review Day -1 documented full recovery and no further spells. Device state: on-wrist 13:15-13:25 Day -2. Wear 93%, longest gap 0 h. Baseline status: established, monitoring day 64.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "recovery"
+   ],
+   "rationale": "This was a near-faint at a bus shelter: she sat down before the spell became severe, her daughter reports she never hit the ground, and the on-wrist watch shows HR 54 for a few minutes that returned to 66 bpm seated. No loss of tone is documented, so the syncope rule is not met, and the GP review the next day records full recovery and no further spells. The data are reliable and her baseline is unchanged, so the event is closed and silent logging is correct, with a nurse call as the only sensible alternate. Naive-model trap: the words spinning and faint in an elderly woman push a shallow model toward urgent_page through the syncope rule, but without loss of tone and with documented full recovery there is nothing to page.",
+   "decisive_feature": "Near-faint at a bus shelter that she sat through before any loss of tone, with the GP documenting full recovery the next day.",
+   "expected_device_ticket": null
+  },
+  {
+   "case_id": "HX1-007",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "Parkinson's disease for six years",
+    "constipation"
+   ],
+   "function_baseline": "walks indoors with rollator, grips mug and cutlery independently",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "carbidopa-levodopa",
+     "dose": "25/100 mg three times daily",
+     "started_day": -900
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "carbidopa-levodopa",
+     "change": "missed",
+     "from_dose": null,
+     "to_dose": null,
+     "day": -2
+    }
+   ],
+   "devices": [
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 36,
+    "sleep_h": 6.2,
+    "steps": 2400,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 79.3,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -6 to -2 watch worn 90-94%, rest HR 62-66, steps 2100-2600, scale 79.0-79.4 kg. Day -2 midday carbidopa-levodopa dose missed. Day -1 right-hand tremor from late morning; watch HR 64-70 bpm, with motion during the 10:14-10:20 sample. Day 0 scale 79.2 kg at 07:10; steps 2300 by 14:00.",
+   "caregiver_or_nurse_note": "Neighbour phone call 11:02 Day 0: his right hand is going like a paint mixer again, he says it is the tablets being late, he can still grip his mug, and his speech and face look the same as ever.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 60,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 88,
+    "artifact_flags": [
+     "motion during HR sample Day -1 10:14-10:20",
+     "off-wrist 22:00-22:30 Day -3"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "Age band 80-84, male, Fitzpatrick I-IV, lives with spouse. PMH: Parkinson's disease for six years, constipation. Meds: carbidopa-levodopa 25/100 mg three times daily since Day -900. Recent change: one carbidopa-levodopa dose missed Day -2 midday. Devices: watch, scale. Baseline 30 days: rest HR 64, HRV 36 ms, sleep 6.2 h, steps 2400, night SpO2 94%, skin deviation 0.0 C, weight 79.3 kg. Trend: Day -6 to -2 watch worn 90-94%, rest HR 62-66, steps 2100-2600, scale 79.0-79.4 kg. Day -1 right-hand tremor from late morning; watch HR 64-70 bpm with motion during the 10:14-10:20 sample. Day 0 scale 79.2 kg at 07:10; steps 2300 by 14:00. Neighbour phone call 11:02 Day 0: his right hand is going like a paint mixer again, he says it is the tablets being late, he can still grip his mug, and his speech and face look the same as ever. Device state: off-wrist 22:00-22:30 Day -3; motion during HR sample Day -1 10:14-10:20. Wear 88%, longest gap 0.5 h. Baseline status: established, monitoring day 60.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "provider_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "noise",
+    "med_change"
+   ],
+   "rationale": "The neighbour describes a right-hand tremor after a missed levodopa dose, while grip, speech and face are described as unchanged, so there is no focal deficit in the record. Watch HR of 64-70 bpm is steady apart from a motion-affected sample, and the scale weight holds at 79.2 kg, so no other stream shows an acute change. This is a medication-timing question that the nurse can close within a day rather than an acute event or a trigger. Naive-model trap: the words right hand going and the mention of tablets could tempt a shallow model to call a right-sided deficit, but a Parkinsonian tremor with preserved grip and speech is not a focal neurological event.",
+   "decisive_feature": "Rhythmic right-hand tremor after a missed levodopa dose, with grip, speech and face described as unchanged by a neighbour.",
+   "expected_device_ticket": null
+  },
+  {
+   "case_id": "HX1-008",
+   "pair_id": null,
+   "age_band": "65-69",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with adult child",
+   "pmh": [
+    "hypertension",
+    "stress urinary incontinence"
+   ],
+   "function_baseline": "independent ADLs, lifts laundry",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -250
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 40,
+    "sleep_h": 7.2,
+    "steps": 3800,
+    "spo2_night_min": 95,
+    "skin_temp_dev_c": 0.1,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -6 to -1 watch worn 94-96%, steps 3400-4200, rest HR 68-72, night SpO2 94-96%. Day 0 at 16:20 after lifting a laundry basket onto the stairs: left-side chest ache under the breast, sharp on deep breath; pressing the rib margin at 16:30 reproduces it. Watch HR 74 at 16:20 and 76 at 16:40; wrist SpO2 97% at 16:40; ring HR 75 at 16:40.",
+   "caregiver_or_nurse_note": "Adult child's text 16:45 Day 0: Mum says her side hurts when she breathes in, and when I press her ribs it is the same ache; no sweats, no pain in arm or neck.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 64,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [
+     "on-wrist all Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 65-69, female, Fitzpatrick V-VI, lives with adult child. PMH: hypertension, stress urinary incontinence. Function: independent ADLs, lifts laundry. Meds: losartan 50 mg daily since Day -250. Devices: watch, ring. Baseline 30 days: rest HR 70, HRV 40 ms, sleep 7.2 h, steps 3800, night SpO2 95%, skin deviation 0.1 C. Trend: Day -6 to -1 watch worn 94-96%, steps 3400-4200, rest HR 68-72, night SpO2 94-96%. Day 0 at 16:20 after lifting a laundry basket onto the stairs: left-side chest ache under the breast, sharp on deep breath; pressing the rib margin at 16:30 reproduces it. Watch HR 74 at 16:20 and 76 at 16:40; wrist SpO2 97% at 16:40; ring HR 75 at 16:40. Adult child's text 16:45 Day 0: Mum says her side hurts when she breathes in, and when I press her ribs it is the same ache; no sweats, no pain in arm or neck. Device state: on-wrist all Day 0. Wear 95%, longest gap 0 h. Baseline status: established, monitoring day 64.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "provider_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "D",
+    "raw_band": "D",
+    "modifiers": [],
+    "tier": "not_fired",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "noise"
+   ],
+   "rationale": "The ache is reproduced by pressing the rib margin after a laundry lift, watch HR stays at 74-76 bpm through the episode, wrist SpO2 is 97%, and the ring agrees on heart rate, so no vital-sign change meets the chest pain rule and there is no ECG change. The data are reliable and continuously worn, and the family describes no sweats and no arm or neck pain. A nurse contact within a day can close the loop on the chest-wall cause and review when to call back. Naive-model trap: chest pain in this age band with a pain-on-breathing component pulls a shallow model toward a page or an acute coronary escalation, but reproduction on pressing with steady vitals makes this a non-trigger case.",
+   "decisive_feature": "Left-chest ache reproduced by pressing the rib margin after a laundry lift, with watch HR steady at 74-76 bpm and wrist SpO2 97%.",
+   "expected_device_ticket": null
+  },
+  {
+   "case_id": "HX1-009",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with paid caregiver",
+   "pmh": [
+    "hypertension",
+    "chronic kidney disease stage 3a"
+   ],
+   "function_baseline": "walks with frame, independent with meals",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "metoprolol succinate",
+     "dose": "50 mg daily",
+     "started_day": -2
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -600
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "metoprolol succinate",
+     "change": "dose_increased",
+     "from_dose": "25 mg daily",
+     "to_dose": "50 mg daily",
+     "day": -2
+    }
+   ],
+   "devices": [
+    "watch",
+    "ring",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 34,
+    "sleep_h": 7.0,
+    "steps": 2700,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 136,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -6 to -3 watch rest HR 64-68 and ring rest HR 66-69, agreeing within 3 bpm. Day -1 07:10 watch 58 bpm vs ring 72 bpm; Day 0 07:05 watch 59 bpm vs ring 73 bpm. Day 0 09:20 after strap re-seat: watch 71 bpm vs ring 72 bpm. Cuff 118/72 mmHg seated Day 0 07:12; 124/76 mmHg at 13:05.",
+   "caregiver_or_nurse_note": "Live-in carer Day 0 07:20: She feels fine, no dizziness, eating breakfast. The watch says 59 and the ring says 73; which one do I believe for her tablets?",
+   "baseline_status": {
+    "phase": "relearning",
+    "monitoring_day": 62,
+    "learning_days_total": 10,
+    "last_condition_change": {
+     "type": "rate_control_med",
+     "day": -2
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [
+     "watch strap re-seated Day 0 09:10",
+     "ring worn continuously Day -1 to Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 75-79, female, Fitzpatrick I-IV, lives with paid caregiver. PMH: hypertension, chronic kidney disease stage 3a. Meds: metoprolol succinate 50 mg daily since Day -2; ramipril 5 mg daily since Day -600. Recent change: metoprolol succinate dose increased from 25 mg daily to 50 mg daily on Day -2. Devices: watch, ring, BP cuff. Baseline 30 days: rest HR 68 (watch), HRV 34 ms, sleep 7.0 h, steps 2700, night SpO2 94%, skin deviation 0.0 C, SBP 136, DBP 80. Trend: Day -6 to -3 watch rest HR 64-68 and ring rest HR 66-69, agreeing within 3 bpm. Day -1 07:10 watch 58 bpm vs ring 72 bpm; Day 0 07:05 watch 59 bpm vs ring 73 bpm. Day 0 09:20 after strap re-seat: watch 71 bpm vs ring 72 bpm. Cuff 118/72 mmHg seated Day 0 07:12; 124/76 mmHg at 13:05. Carer's message Day 0 07:20: She feels fine, no dizziness, eating breakfast. The watch says 59 and the ring says 73; which one do I believe for her tablets? Device state: watch strap re-seated Day 0 09:10; ring worn continuously Day -1 to Day 0. Wear 92%, longest gap 0 h. Baseline status: relearning, monitoring day 62, rate-control change Day -2.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "silent_log",
+    "provider_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "noise",
+    "med_change"
+   ],
+   "rationale": "Two devices disagree on resting HR by 13-14 bpm on Day -1 and Day 0, and they agree within 1 bpm only after the watch strap was re-seated, which points to a device-fit cause. Because the rate-control dose was doubled on Day -2 and the carer must decide on the tablets, the disagreement could change a care decision, so a nurse manual pulse check and a device maintenance ticket are needed rather than silent logging. The patient has no symptoms and cuff readings are 118-124 systolic, so no acute trigger applies and no page is needed. Naive-model trap: a stable, symptom-free patient with a fresh dose change looks like silent_log to a shallow model, but a rate-control decision that depends on a disputed reading needs a human check today.",
+   "decisive_feature": "Watch and ring resting HR 13-14 bpm apart on the morning after a metoprolol dose doubling, closing only after a strap re-seat.",
+   "expected_device_ticket": "device_maintenance"
+  },
+  {
+   "case_id": "HX1-010",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "HFpEF with EF 55%",
+    "hypertension"
+   ],
+   "function_baseline": "walks around flat with stick, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -500
+    },
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "ring",
+    "watch",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 46,
+    "sleep_h": 7.0,
+    "steps": 3100,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 70.8,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -6 to -4 ring nightly HRV 45-48 ms, night skin deviation +0.1 to +0.2 C, watch steps 2900-3300, scale 70.9-71.1 kg. Day -3 to -1 ring nightly HRV 41, 39, 37 ms; night skin deviation +0.2, +0.3, +0.3 C; watch steps 2500, 2300, 2100; scale 71.2, 71.3, 71.3 kg. Day 0 ring nightly HRV 36 ms, night skin deviation +0.4 C; watch rest HR 66; steps 2000 by 14:00; scale 71.3 kg; cuff 132/78 mmHg at 08:10.",
+   "caregiver_or_nurse_note": "Patient's note Day 0 08:25: I feel fine, just tired, my shoes are tight.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 66,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [
+     "ring worn all nights Day -6 to Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 80-84, female, Fitzpatrick V-VI, lives alone. PMH: HFpEF with EF 55%, hypertension. Function: walks around flat with stick, independent ADLs. Meds: bisoprolol 2.5 mg daily since Day -500; furosemide 40 mg daily since Day -500. Devices: ring, watch, scale, BP cuff. Baseline 30 days: ring nightly HRV 46 ms, watch rest HR 62, steps 3100, sleep 7.0 h, night SpO2 93%, skin deviation 0.0 C, weight 70.8 kg, SBP 128, DBP 76. Trend: Day -6 to -4 ring nightly HRV 45-48 ms, night skin deviation +0.1 to +0.2 C, watch steps 2900-3300, scale 70.9-71.1 kg. Day -3 to -1 ring nightly HRV 41, 39, 37 ms; night skin deviation +0.2, +0.3, +0.3 C; watch steps 2500, 2300, 2100; scale 71.2, 71.3, 71.3 kg. Day 0 ring nightly HRV 36 ms, night skin deviation +0.4 C; watch rest HR 66; steps 2000 by 14:00; scale 71.3 kg; cuff 132/78 mmHg at 08:10. Patient's note Day 0 08:25: I feel fine, just tired, my shoes are tight. Device state: ring worn all nights Day -6 to Day 0. Wear 93%, longest gap 0 h. Baseline status: established, monitoring day 66.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "drift_not_absorbed",
+   "chest_pain_eval": null,
+   "subtle_deterioration": true,
+   "difficulty": "medium",
+   "category": [
+    "hf"
+   ],
+   "rationale": "Each stream moves only a little, but together they form a seven-day drift in an HFpEF patient: nightly HRV falls from about 46 to 36 ms, night skin deviation climbs to +0.4 C, steps fall by about a third and weight rises 0.5 kg. The ring, scale and watch are reliable and no single value breaks a hard limit, so the change is a drift that has not been absorbed into her baseline. It needs same-day clinician review rather than silent logging, and the drift layer is recorded as drift_not_absorbed with subtle deterioration set. Naive-model trap: no single number is out of range, so silent_log or nurse_task looks reasonable to a shallow model, but a monotonic multi-stream creep over a week is exactly the pattern the drift guard exists to catch.",
+   "decisive_feature": "Seven-day creep of nightly HRV from 46 to 36 ms, night skin deviation to +0.4 C, steps down a third and weight up 0.5 kg in HFpEF.",
+   "expected_device_ticket": null
+  },
+  {
+   "case_id": "HX1-011",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "CKD stage 4",
+    "recurrent urinary tract infections",
+    "hypertension"
+   ],
+   "function_baseline": "walks indoors, needs help with shower",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "nitrofurantoin",
+     "dose": "100 mg twice daily",
+     "started_day": -4
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -700
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "nitrofurantoin",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "100 mg twice daily",
+     "day": -4
+    }
+   ],
+   "devices": [
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 28,
+    "sleep_h": 7.2,
+    "steps": 1800,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 74.6,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -6 to -5 watch steps 1700-1900, rest HR 68-70. Day -4 nitrofurantoin started. Day -3 to -1 rest HR 71, 72, 74; steps 1600, 1400, 1200; sleep 6.4-6.8 h; scale 74.2-74.5 kg. Day 0 steps 1100 by 14:00, rest HR 75.",
+   "caregiver_or_nurse_note": "visit: Day -1 creatinine 2.1 mg/dL and eGFR 26, against creatinine 1.6 mg/dL at a Day -28 visit. Spouse's note Day 0: still giving the water-infection tablets twice a day; he is tired and ate half of lunch.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 64,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 90,
+    "artifact_flags": [
+     "on-wrist Day -6 to Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 85-89, male, Fitzpatrick I-IV, lives with spouse. PMH: CKD stage 4, recurrent urinary tract infections, hypertension. Function: walks indoors, needs help with shower. Meds: nitrofurantoin 100 mg twice daily since Day -4; amlodipine 5 mg daily since Day -700. Recent change: nitrofurantoin started Day -4 at 100 mg twice daily. Devices: watch, scale. Baseline 30 days: rest HR 70, HRV 28 ms, sleep 7.2 h, steps 1800, night SpO2 93%, skin deviation 0.0 C, weight 74.6 kg. Trend: Day -6 to -5 watch steps 1700-1900, rest HR 68-70. Day -3 to -1 rest HR 71, 72, 74; steps 1600, 1400, 1200; sleep 6.4-6.8 h; scale 74.2-74.5 kg. Day 0 steps 1100 by 14:00, rest HR 75. Visit: Day -1 creatinine 2.1 mg/dL and eGFR 26, against creatinine 1.6 mg/dL at a Day -28 visit. Spouse's note Day 0: still giving the water-infection tablets twice a day; he is tired and ate half of lunch. Device state: on-wrist Day -6 to Day 0. Wear 90%, longest gap 0 h. Baseline status: established, monitoring day 64.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "renal",
+    "med_change"
+   ],
+   "rationale": "Nitrofurantoin 100 mg twice daily was started on Day -4 and is still given at eGFR 26, with creatinine up from 1.6 to 2.1 mg/dL since a Day -28 visit, which makes an agent to avoid at this renal function. Watch resting HR has crept from 70 to 75 bpm while steps fall and he eats half a lunch, so the picture is a medication-related harm that needs a same-day prescriber review. No hard limit or trigger is met and he is not acutely unwell, so provider_task is the right route rather than a page. Naive-model trap: a stable baseline with no acute symptoms pushes a shallow model toward nurse_task, but a drug that should be avoided at this kidney function still needs a prescriber today.",
+   "decisive_feature": "Nitrofurantoin still given twice daily on Day -1 at eGFR 26, with creatinine up from 1.6 to 2.1 mg/dL since Day -28.",
+   "expected_device_ticket": null
+  }
+ ],
+ "tally": {
+  "n": 11,
+  "id_range": [
+   "HX1-001",
+   "HX1-011"
+  ],
+  "routes": {
+   "silent_log": 1,
+   "nurse_task": 3,
+   "provider_task": 2,
+   "urgent_page": 5
+  },
+  "difficulty": {
+   "easy": 0,
+   "medium": 2,
+   "hard": 6,
+   "adversarial": 3
+  },
+  "hard_plus_adversarial_pct": 82,
+  "category_primary": {
+   "noise": 3,
+   "recovery": 1,
+   "hf": 1,
+   "arrhythmia": 0,
+   "acs": 2,
+   "stroke": 1,
+   "syncope": 1,
+   "fall": 0,
+   "delirium": 0,
+   "infection": 0,
+   "sepsis": 0,
+   "respiratory": 1,
+   "hypoglycemia": 0,
+   "hyperglycemia": 0,
+   "dehydration": 0,
+   "electrolyte": 0,
+   "renal": 1,
+   "missing_data": 0
+  },
+  "category_any": {
+   "noise": 3,
+   "recovery": 1,
+   "hf": 1,
+   "acs": 2,
+   "stroke": 1,
+   "syncope": 1,
+   "respiratory": 1,
+   "renal": 1,
+   "med_change": 3
+  },
+  "hidden_hypoxemia_ids": [],
+  "subtle_deterioration_ids": [
+   "HX1-010"
+  ],
+  "pairs": {},
+  "hard_trigger_ids": {
+   "HT_SYNCOPE": [
+    "HX1-001"
+   ],
+   "HT_FOCAL_NEURO": [
+    "HX1-002"
+   ],
+   "HT_CHEST_PAIN_ECG": [
+    "HX1-003"
+   ],
+   "HT_CHEST_PAIN_VITALS": [
+    "HX1-004"
+   ],
+   "HT_SPO2_LT88": [
+    "HX1-005"
+   ]
+  },
+  "trigger_tiers": {
+   "ABSOLUTE": [
+    "HX1-001",
+    "HX1-002",
+    "HX1-003",
+    "HX1-004"
+   ],
+   "CONFIRM_FIRST": [
+    "HX1-005"
+   ],
+   "SUPPRESSED": [],
+   "ARTIFACT": []
+  },
+  "baseline_layers": {
+   "learning_period": [],
+   "baseline_reset": [],
+   "drift_not_absorbed": [
+    "HX1-010"
+   ],
+   "hard_limit_artifact": [],
+   "hard_limit_danger": []
+  },
+  "fitzpatrick_v_vi_count": 5,
+  "module_focus": {
+   "focus_cases": [
+    "HX1-001",
+    "HX1-002",
+    "HX1-003",
+    "HX1-004",
+    "HX1-006",
+    "HX1-007",
+    "HX1-008"
+   ],
+   "outside_focus_cases": [
+    "HX1-005",
+    "HX1-009",
+    "HX1-010",
+    "HX1-011"
+   ],
+   "outside_focus_pct": 36
+  },
+  "minimums": {
+   "absolute": {
+    "required": 4,
+    "actual": 4,
+    "met": true
+   },
+   "lookalike": {
+    "required": 3,
+    "actual": 3,
+    "met": true
+   }
+  },
+  "all_minimums_met": true,
+  "self_check_failures_fixed": 0
+ },
+ "meta": {
+  "batch": "HX1",
+  "model": "anthropic/claude-haiku-5.5",
+  "module": "haiku",
+  "n_requested": 11,
+  "n_got": 11,
+  "split": false,
+  "id_fixes": 0
+ }
+}

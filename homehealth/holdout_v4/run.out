@@ -1,0 +1,56 @@
+12:56:03 HOLDOUT_V4 START cap $2.30 spend $0.000 seed 20261023
+12:58:19 CALL gen HX7 try1 deepseek/deepseek-v4-pro err=None finish=stop lat=136.2s cost=0.1222 total=$0.122
+12:58:19 GEN HX7 ok n=11 split=False id_fixes=0
+13:00:54 CALL gen HX5 try1 anthropic/claude-haiku-5.5 err=None finish=stop lat=291.5s cost=0.0421 total=$0.164
+13:00:54 GEN HX5 ok n=11 split=False id_fixes=0
+13:01:30 CALL gen HX3 try1 anthropic/claude-haiku-5.5 err=None finish=stop lat=327.0s cost=0.0447 total=$0.209
+13:01:30 GEN HX3 ok n=11 split=False id_fixes=0
+13:01:41 CALL gen HX1 try1 anthropic/claude-haiku-5.5 err=None finish=stop lat=338.5s cost=0.0463 total=$0.255
+13:01:41 GEN HX1 ok n=11 split=False id_fixes=0
+13:02:23 CALL gen HX8 try1 deepseek/deepseek-v4-pro err=None finish=stop lat=243.9s cost=0.0555 total=$0.311
+13:02:23 GEN HX8 truncated/invalid (finish=stop, parse=invalid)
+13:22:20 CALL gen HX4 try1 anthropic/claude-haiku-5.5 err=TimeoutError('The read operation timed out') finish=None lat=1250.4s cost=0.0000 total=$0.311
+13:22:20 GEN HX4 bad result: err=TimeoutError('The read operation timed out') parse=invalid n=0
+13:22:21 CALL gen HX6 try1 anthropic/claude-haiku-5.5 err=TimeoutError('The read operation timed out') finish=None lat=1286.5s cost=0.0000 total=$0.311
+13:22:21 GEN HX6 bad result: err=TimeoutError('The read operation timed out') parse=invalid n=0
+13:22:22 CALL gen HX8 part1 try1 deepseek/deepseek-v4-pro err=TimeoutError('The read operation timed out') finish=None lat=1199.4s cost=0.0000 total=$0.311
+13:22:22 GEN HX8 bad result: err=TimeoutError('The read operation timed out') parse=invalid n=0
+13:22:22 CALL gen HX2 try1 anthropic/claude-haiku-5.5 err=TimeoutError('The read operation timed out') finish=None lat=1241.4s cost=0.0000 total=$0.311
+13:22:22 GEN HX2 bad result: err=TimeoutError('The read operation timed out') parse=invalid n=0
+13:47:42 CALL gen HX8 part1 try2 deepseek/deepseek-v4-pro err=TimeoutError('The read operation timed out') finish=None lat=1519.9s cost=0.0000 total=$0.311
+13:47:42 GEN HX8 bad result: err=TimeoutError('The read operation timed out') parse=invalid n=0
+13:47:42 CALL gen HX2 try2 anthropic/claude-haiku-5.5 err=TimeoutError('The read operation timed out') finish=None lat=1519.9s cost=0.0000 total=$0.311
+13:47:42 GEN HX2 bad result: err=TimeoutError('The read operation timed out') parse=invalid n=0
+13:47:43 CALL gen HX4 try2 anthropic/claude-haiku-5.5 err=TimeoutError('The read operation timed out') finish=None lat=1523.0s cost=0.0000 total=$0.311
+13:47:43 GEN HX4 bad result: err=TimeoutError('The read operation timed out') parse=invalid n=0
+13:47:44 CALL gen HX6 try2 anthropic/claude-haiku-5.5 err=TimeoutError('The read operation timed out') finish=None lat=1522.9s cost=0.0000 total=$0.311
+13:47:44 GEN HX6 bad result: err=TimeoutError('The read operation timed out') parse=invalid n=0
+13:57:45 HOLDOUT_V4 START cap $2.30 spend $0.311 seed 20261023
+14:02:55 CALL gen HX2 try1 anthropic/claude-haiku-5.5 err=None finish=stop lat=310.2s cost=0.0444 total=$0.355
+14:02:55 GEN HX2 ok n=11 split=False id_fixes=0
+14:27:49 CALL grade HX1+HX2 try1 google/gemini-4-argon err=TimeoutError('The read operation timed out') finish=None lat=1493.6s cost=0.0000 total=$0.355
+14:27:49 GRADE HX1+HX2 bad output parse=invalid verdicts=0
+14:31:38 CALL grade HX1+HX2 try2 google/gemini-4-argon err=None finish=stop lat=229.9s cost=0.3065 total=$0.662
+14:31:38 GRADE HX1+HX2: ok
+14:36:24 CALL gen HX4 try1 anthropic/claude-haiku-5.5 err=None finish=stop lat=285.7s cost=0.0415 total=$0.703
+14:36:24 GEN HX4 ok n=11 split=False id_fixes=0
+14:39:01 CALL grade HX3+HX4 try1 google/gemini-4-argon err=None finish=stop lat=156.5s cost=0.2422 total=$0.946
+14:39:01 GRADE HX3+HX4: ok
+14:43:36 CALL gen HX6 try1 anthropic/claude-haiku-5.5 err=None finish=stop lat=274.9s cost=0.0393 total=$0.985
+14:43:36 GEN HX6 ok n=11 split=False id_fixes=0
+14:46:16 CALL grade HX5+HX6 try1 google/gemini-4-argon err=None finish=stop lat=159.8s cost=0.2447 total=$1.229
+14:46:16 GRADE HX5+HX6: ok
+14:49:34 CALL gen HX8 try1 deepseek/deepseek-v4-pro err=None finish=stop lat=198.0s cost=0.0417 total=$1.271
+14:49:34 GEN HX8 truncated/invalid (finish=stop, parse=invalid)
+14:52:17 CALL gen HX8 part1 try1 deepseek/deepseek-v4-pro err=None finish=stop lat=163.2s cost=0.0357 total=$1.307
+14:52:17 GEN HX8 truncated/invalid (finish=stop, parse=invalid)
+14:56:34 CALL gen HX8 part1 try2 deepseek/deepseek-v4-pro err=None finish=stop lat=257.2s cost=0.0325 total=$1.339
+14:56:34 GEN HX8 truncated/invalid (finish=stop, parse=invalid)
+14:59:21 CALL gen HX8 part1 try3 deepseek/deepseek-v4-pro err=None finish=stop lat=166.6s cost=0.0227 total=$1.362
+14:59:21 GEN HX8 truncated/invalid (finish=stop, parse=invalid)
+14:59:21 GEN HX8 part 1 failed after retries
+15:04:33 CALL gen HX8 part2 try1 deepseek/deepseek-v4-pro err=None finish=stop lat=312.4s cost=0.0616 total=$1.424
+15:04:33 GEN HX8 ok n=5 split=False id_fixes=5
+15:07:00 CALL grade HX7+HX8 try1 google/gemini-4-argon err=None finish=stop lat=147.3s cost=0.2112 total=$1.635
+15:07:00 GRADE HX7+HX8: ok
+15:07:00 HOLDOUT_V4 END spend=$1.635 stopped=False

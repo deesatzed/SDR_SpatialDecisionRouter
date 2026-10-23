@@ -1,0 +1,4 @@
+rule,fired,ABSOLUTE,CONFIRM_FIRST,SUPPRESSED,ARTIFACT,actionable_escalation_rate,critical_miss,flag
+HT_CHEST_PAIN_VITALS,1,0,0,1,0,0.0,0,
+HT_SPO2_LT88,5,0,3,2,0,0.6,0,
+HT_VS_DANGER,9,3,0,6,0,0.333,0,NOISY

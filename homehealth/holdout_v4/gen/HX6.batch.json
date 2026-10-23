@@ -1,0 +1,1156 @@
+{
+ "cases": [
+  {
+   "case_id": "HX6-001",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "AFib on long-term anticoagulant",
+    "CKD 3a",
+    "knee osteoarthritis"
+   ],
+   "function_baseline": "walks on deck with a stick, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -700
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -300
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 38,
+    "sleep_h": 7.1,
+    "steps": 3100,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.1,
+    "weight_kg": 84.6,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: steps 2600-3300/day, rest HR 60-64, scale 84.4-84.8 kg, watch worn 96% of hours. Day 0: watch logged an on-wrist impact at 18:20 while on a moving houseboat; steps 0 from 18:20 to 18:26, then resumed; HR 78 at impact and 84 at 18:27.",
+   "caregiver_or_nurse_note": "Patient's own text to grandchild 18:31 Day 0: boat lurched, bumped wrist on galley hatch, wrist fine, going to bed. Grandchild reply 18:40: 'ok grandad, ring tomorrow'.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 88,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "off-wrist 02:10-02:40 Day -3",
+     "impact logged on-wrist 18:20 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Male 75-79, lives alone, Fitzpatrick I-IV. PMH: AFib on long-term apixaban 5 mg BID, CKD 3a, knee osteoarthritis. Amlodipine 5 mg daily (long-standing). Devices: watch, scale. Baseline: rest HR 62, HRV 38 ms, sleep 7.1 h, steps 3100/day, night SpO2 93%, skin temp dev 0.1 C, weight 84.6 kg. Trend Day -7 to -1: steps 2600-3300, rest HR 60-64, weight 84.4-84.8 kg, watch worn 96%. Day 0: watch logged an on-wrist impact at 18:20 on a moving houseboat; steps 0 from 18:20 to 18:26, then resumed; HR 78 at impact, 84 at 18:27. Day 0 18:31 patient texted grandchild that the boat lurched and he bumped his wrist on a galley hatch, wrist fine; grandchild replied 18:40. Device flags: off-wrist 02:10-02:40 Day -3; impact logged on-wrist 18:20 Day 0. Wear 94% over 7 days; 0 h missing in last 48; longest gap 1 h. Baseline established, monitoring day 88.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "explained",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "fall"
+   ],
+   "rationale": "A watch impact on a patient taking apixaban meets the HT_FALL_ANTICOAG rule, but the four checks decide the tier. The device is on-wrist and reliable, and the impact is followed by only a 6-minute steps pause (18:20-18:26) with HR back to 84 by 18:27, which stays under the 10-minute no-movement threshold. The patient's own timed text at 18:31 explains a galley-hatch bump with the wrist fine, so check 3 (explained) passes, and check 4 passes because no comfort plan applies. SUPPRESSED explained, so nurse_task: a call the next day to check the wrist for bruising. Naive-model trap: a shallow model sees 'impact on apixaban' and pages urgently, when the brief pause and the timed self-report explain it.",
+   "decisive_feature": "Impact on apixaban followed by only a 6-minute steps pause and a timed text from the patient explaining a galley-hatch bump, wrist fine.",
+   "expected_device_ticket": null,
+   "route_basis": null,
+   "escalation_target": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "HX6-002",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "AFib",
+    "hypertension",
+    "osteoporosis"
+   ],
+   "function_baseline": "walks indoors with a frame, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "2.5 mg BID",
+     "started_day": -420
+    },
+    {
+     "name": "ramipril",
+     "dose": "2.5 mg daily",
+     "started_day": -300
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 29,
+    "sleep_h": 6.4,
+    "steps": 1800,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 63.2,
+    "glucose_mean": null,
+    "sbp": 136,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -7 to -1: steps 1500-2000/day, rest HR 68-72, scale 63.0-63.4 kg, cuff SBP 132-140, watch worn 95%. Day 0: watch logged an on-wrist impact at 06:48 while getting up toward the bathroom; steps 0 from 06:48 to 07:20; HR 104 at 06:49 and 96 at 07:05; cuff 148/82 at 07:25.",
+   "caregiver_or_nurse_note": "Neighbour across the landing to daughter, 07:02 Day 0: 'Found her on the hall tiles. She hit her head on the radiator, small cut above one eye, she is talking sensibly.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 140,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [
+     "impact logged on-wrist 06:48 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Female 85-89, lives alone, Fitzpatrick V-VI. PMH: AFib, hypertension, osteoporosis. Long-standing apixaban 2.5 mg BID and ramipril 2.5 mg daily. Devices: watch, bp_cuff, scale. Baseline: rest HR 70, HRV 29 ms, sleep 6.4 h, steps 1800/day, night SpO2 94%, skin temp dev 0.0 C, weight 63.2 kg, seated BP 136/78. Trend Day -7 to -1: steps 1500-2000, rest HR 68-72, weight 63.0-63.4 kg, cuff SBP 132-140. Day 0: watch logged an on-wrist impact at 06:48 while she got up toward the bathroom; steps 0 from 06:48 to 07:20; HR 104 at 06:49, 96 at 07:05; cuff 148/82 at 07:25. A neighbour across the landing found her on the hall tiles after the impact: head struck the radiator, small cut above one eye. Neighbour message to daughter 07:02: she is talking sensibly. Device flags: impact logged on-wrist 06:48 Day 0. Wear 95%; 0 h missing in last 48; longest gap 1 h. Baseline established, monitoring day 140.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "fall"
+   ],
+   "rationale": "The watch logged an on-wrist impact at 06:48 on apixaban, and a neighbour saw her on the hall floor with a radiator head strike, so HT_FALL_ANTICOAG fires. Check 1 passes (on-wrist watch, with direct observation of the fall), check 2 does not apply to a fall, and check 3 fails because nothing explains the impact; the 32-minute steps pause follows it. Check 4 passes with no comfort plan, so the tier is ABSOLUTE and the route is urgent_page with no confirm step. A witnessed fall with a head strike cannot be cleared by reassurance such as 'talking sensibly'. Naive-model trap: a shallow model reads 'talking sensibly, small cut' and books a nurse task, which misses the head strike on an anticoagulant.",
+   "decisive_feature": "Neighbour saw her on the hall floor after a 06:48 watch impact, with a radiator head strike, on apixaban 2.5 mg BID.",
+   "expected_device_ticket": null,
+   "route_basis": null,
+   "escalation_target": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "HX6-003",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "AFib",
+    "rheumatoid arthritis",
+    "CKD 2"
+   ],
+   "function_baseline": "independent ADLs, walks outdoors daily",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "rivaroxaban",
+     "dose": "20 mg daily",
+     "started_day": -280
+    },
+    {
+     "name": "hydroxychloroquine",
+     "dose": "200 mg daily",
+     "started_day": -1200
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 66,
+    "hrv_ms": 42,
+    "sleep_h": 7.4,
+    "steps": 4200,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -7 to -1: steps 3800-4500/day, rest HR 64-68, ring skin temp dev 0.0 to +0.1 C, watch worn 93%. Day 0: watch logged an on-wrist impact at 10:14 as she sat down heavily onto the kitchen stool; steps 0 from 10:14 to 10:19; HR 79 at impact and 88 at 10:20; cuff 124/74 at 10:30.",
+   "caregiver_or_nurse_note": "Spouse note 10:18 Day 0: 'She dropped onto the stool, sat, said no pain, went to make the tea.' Patient reports no pain at 10:30.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 201,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [
+     "impact logged on-wrist 10:14 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Female 70-74, lives with spouse, Fitzpatrick I-IV. PMH: AFib, rheumatoid arthritis, CKD 2. Long-standing rivaroxaban 20 mg daily and hydroxychloroquine 200 mg daily. Devices: watch, ring, bp_cuff. Baseline: rest HR 66, HRV 42 ms, sleep 7.4 h, steps 4200/day, night SpO2 94%, skin temp dev 0.0 C, seated BP 128/76. Trend Day -7 to -1: steps 3800-4500, rest HR 64-68, ring skin temp dev 0.0 to +0.1 C, wear 93%. Day 0: watch logged an on-wrist impact at 10:14 as she sat down heavily onto the kitchen stool; steps 0 from 10:14 to 10:19; HR 79 at impact, 88 at 10:20; cuff 124/74 at 10:30. Spouse, in the same room, noted at 10:18 that she sat on the stool, said no pain, and went to make tea. Patient reports no pain at 10:30. Device flags: impact logged on-wrist 10:14 Day 0. 0 h missing in last 48; longest gap 1 h. Baseline established, monitoring day 201.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "explained",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "fall"
+   ],
+   "rationale": "An impact on rivaroxaban fires HT_FALL_ANTICOAG, but the story is a heavy sit-down onto a stool, not a fall. Check 1 passes on a reliable on-wrist watch, and check 2 does not apply to a fall. Check 3 passes: the steps pause was only 5 minutes (10:14-10:19), her spouse saw her seated at 10:17-10:18 with no pain reported, and she was moving to make tea at 10:20. Check 4 passes with no comfort plan. SUPPRESSED explained, nurse_task with a same-day call to check for bruising. Naive-model trap: a shallow model treats any impact on an anticoagulant as a fall and pages, when a short pause plus a witness and a pain-free report explain it.",
+   "decisive_feature": "Impact from sitting down heavily onto a stool, with a 5-minute steps pause and a spouse check at 10:17 finding her seated and pain-free.",
+   "expected_device_ticket": null,
+   "route_basis": null,
+   "escalation_target": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "HX6-004",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "hypertension",
+    "type 2 diabetes"
+   ],
+   "function_baseline": "independent ADLs, walks to the shops",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -500
+    },
+    {
+     "name": "metformin",
+     "dose": "500 mg BID",
+     "started_day": -900
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "bp_cuff",
+    "watch"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 33,
+    "sleep_h": 6.9,
+    "steps": 3300,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 132,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -7 to -1: cuff 128-136/76-82, watch rest HR 66-70, steps 3000-3500/day, watch worn 92%. Day 0 07:40: cuff read 176/98 mmHg with the cuff fitted over a cardigan sleeve; watch HR 70. Day 0 07:52: repeat 134/80 after refitting on bare skin; watch HR 70 steady.",
+   "caregiver_or_nurse_note": "Spouse note 07:56 Day 0: 'Cuff was over the cardigan sleeve, took it again, 134 over 80. She says no headache, no chest pain.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 95,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [
+     "cuff fitted over cardigan sleeve Day 0 07:40"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Female 80-84, lives with spouse, Fitzpatrick I-IV. PMH: hypertension, type 2 diabetes. Long-standing amlodipine 5 mg daily and metformin 500 mg BID. Devices: bp_cuff, watch. Baseline: rest HR 68, HRV 33 ms, sleep 6.9 h, steps 3300/day, night SpO2 94%, skin temp dev 0.0 C, seated BP 132/80. Trend Day -7 to -1: cuff 128-136/76-82, watch HR 66-70, steps 3000-3500. Day 0 07:40: cuff read 176/98 mmHg with the cuff fitted over a cardigan sleeve; watch HR 70. Day 0 07:52: repeat 134/80 after refitting on bare skin; watch HR 70 steady. Spouse note 07:56: she says no headache and no chest pain. Device flags: cuff fitted over cardigan sleeve Day 0 07:40. Wear 92%; 0 h missing in last 48; longest gap 1 h. Baseline established, monitoring day 95.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "noise"
+   ],
+   "rationale": "A single cuff reading of 176/98 at 07:40 sits inside the 90-180 band, but the device flag records a cardigan sleeve under the cuff. A clean repeat at 07:52 (12 minutes later, on bare skin) reads 134/80, the watch HR stays steady at 70, and the spouse reports no headache or chest pain. The week's cuff readings (128-136/76-82) match the baseline, so there is no trend change and no trigger fires. Silent log, with a fitting reminder for the family. Naive-model trap: a shallow model sees a systolic of 176 and books a nurse call or a page, when the clean repeat within 15 minutes clears a fitting error.",
+   "decisive_feature": "A 176/98 cuff reading over a cardigan sleeve that cleared to 134/80 on a repeat 12 minutes later, with no symptoms.",
+   "expected_device_ticket": null,
+   "route_basis": null,
+   "escalation_target": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "HX6-005",
+   "pair_id": "HX6-P01",
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "HFrEF EF 35%",
+    "AFib",
+    "CKD 3b"
+   ],
+   "function_baseline": "walks indoors with a stick, cooks simple meals",
+   "patient_goals": null,
+   "discharge": {
+    "day": -12,
+    "reason": "HF exacerbation"
+   },
+   "meds": [
+    {
+     "name": "warfarin",
+     "dose": "3 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -12
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -600
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "furosemide",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "40 mg daily",
+     "day": -12
+    }
+   ],
+   "devices": [
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 36,
+    "sleep_h": 7.0,
+    "steps": 2600,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 66.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -4: steps 1400-1800/day, rest HR 74-78, scale 67.9 kg (Day -7), 67.6 kg (Day -5), 67.3 kg (Day -4). Day -3: steps 1500, rest HR 76, watch worn. Watch data stop Day -2 10:50. Scale uploads Day -1 08:15 66.8 kg and Day 0 08:05 67.4 kg. Watch data resume Day 0 14:50.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "relearning",
+    "monitoring_day": 10,
+    "learning_days_total": 10,
+    "last_condition_change": {
+     "type": "diuretic_change",
+     "day": -12
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 81,
+    "artifact_flags": [
+     "watch on charger dock Day -2 10:50 to Day 0 14:50 (dock log)"
+    ],
+    "missing_hours_last_48": 47,
+    "longest_gap_h": 52
+   },
+   "router_input": "Female 80-84, lives alone, Fitzpatrick V-VI. PMH: HFrEF EF 35%, AFib, CKD 3b. Discharged Day -12 after HF exacerbation; furosemide 40 mg daily started Day -12. Long-standing warfarin 3 mg daily and bisoprolol 2.5 mg daily. Devices: watch, scale. Baseline: rest HR 70, HRV 36 ms, sleep 7.0 h, steps 2600/day, night SpO2 92%, skin temp dev 0.0 C, weight 66.0 kg. Trend Day -7 to -4: steps 1400-1800, rest HR 74-78, weight 67.9, 67.6, 67.3 kg. Day -3: steps 1500, rest HR 76. Watch data stop Day -2 10:50 and resume Day 0 14:50 (52 h). Scale uploads inside the gap: Day -1 08:15 66.8 kg; Day 0 08:05 67.4 kg. Device flags: watch on charger dock Day -2 10:50 to Day 0 14:50 (dock log). Wear 81% over 7 days; 47 h missing in last 48; longest gap 52 h. Baseline relearning, monitoring day 10 of 10.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_GAP48_HIGHRISK",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "explained",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "missing_data"
+   ],
+   "rationale": "A 52-hour watch gap in a high-risk patient (HF discharge 12 days ago) fires HT_GAP48_HIGHRISK, so the rule is on. Check 1 is not the issue here: the gap is a device-state gap. Check 3 passes because the dock log places the watch on its charger for the whole window, with the patient at home, and scale uploads are not counted as contact but do not undermine the dock explanation. Check 4 passes with no comfort plan. SUPPRESSED explained, nurse_task to confirm she is well and that the watch was off the wrist by choice. Naive-model trap: a shallow model counts 52 hours in a high-risk HF patient as a page, when a charger log covers the whole window and the pair member has no such log.",
+   "decisive_feature": "Dock log covering the whole 52-hour watch gap, so the only entries inside it are charger records and scale uploads.",
+   "expected_device_ticket": null,
+   "route_basis": null,
+   "escalation_target": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "HX6-006",
+   "pair_id": "HX6-P01",
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "HFrEF EF 35%",
+    "AFib",
+    "CKD 3b"
+   ],
+   "function_baseline": "walks indoors with a stick, cooks simple meals",
+   "patient_goals": null,
+   "discharge": {
+    "day": -12,
+    "reason": "HF exacerbation"
+   },
+   "meds": [
+    {
+     "name": "warfarin",
+     "dose": "3 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -12
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -600
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "furosemide",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "40 mg daily",
+     "day": -12
+    }
+   ],
+   "devices": [
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 36,
+    "sleep_h": 7.0,
+    "steps": 2600,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 66.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -4: steps 1400-1800/day, rest HR 74-78, scale 67.9 kg (Day -7), 67.6 kg (Day -5), 67.3 kg (Day -4). Day -3: steps 1500, rest HR 76, watch worn. Watch data stop Day -2 10:50. Scale uploads Day -1 08:15 66.8 kg and Day 0 08:05 67.4 kg. Watch data resume Day 0 14:50.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "relearning",
+    "monitoring_day": 10,
+    "learning_days_total": 10,
+    "last_condition_change": {
+     "type": "diuretic_change",
+     "day": -12
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 81,
+    "artifact_flags": [
+     "no watch data Day -2 10:50 to Day 0 14:50",
+     "no dock or charger log for that window"
+    ],
+    "missing_hours_last_48": 47,
+    "longest_gap_h": 52
+   },
+   "router_input": "Female 80-84, lives alone, Fitzpatrick V-VI. PMH: HFrEF EF 35%, AFib, CKD 3b. Discharged Day -12 after HF exacerbation; furosemide 40 mg daily started Day -12. Long-standing warfarin 3 mg daily and bisoprolol 2.5 mg daily. Devices: watch, scale. Baseline: rest HR 70, HRV 36 ms, sleep 7.0 h, steps 2600/day, night SpO2 92%, skin temp dev 0.0 C, weight 66.0 kg. Trend Day -7 to -4: steps 1400-1800, rest HR 74-78, weight 67.9, 67.6, 67.3 kg. Day -3: steps 1500, rest HR 76. Watch data stop Day -2 10:50 and resume Day 0 14:50 (52 h). Scale uploads inside the gap: Day -1 08:15 66.8 kg; Day 0 08:05 67.4 kg. Device flags: no watch data Day -2 10:50 to Day 0 14:50; no dock or charger log for that window. Wear 81% over 7 days; 47 h missing in last 48; longest gap 52 h. Baseline relearning, monitoring day 10 of 10.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_GAP48_HIGHRISK",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "caregiver_ping",
+   "confirm_timeout_min": 60,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "missing_data"
+   ],
+   "rationale": "The same 52-hour watch gap in the same high-risk HF patient fires HT_GAP48_HIGHRISK, and nothing explains it. Check 1 fails because the device has no data for the whole window, and check 3 fails because the only items inside it are scale uploads, which are not contact (the weight also rose 0.6 kg across them). Check 4 passes with no comfort plan, so the tier is CONFIRM_FIRST with a caregiver ping at 60 minutes, and the route is urgent_page while that is pending. Naive-model trap: a shallow model reads 'scale uploads, weight nearly stable' as reassurance and books a nurse task, when uploads are not contact in a high-risk patient.",
+   "decisive_feature": "Same 52-hour gap with no charger or dock record: only scale uploads sit inside it, and no person contact is logged.",
+   "expected_device_ticket": null,
+   "route_basis": null,
+   "escalation_target": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "HX6-007",
+   "pair_id": null,
+   "age_band": "90-94",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with paid caregiver",
+   "pmh": [
+    "AFib on warfarin",
+    "prostate enlargement",
+    "hip osteoarthritis"
+   ],
+   "function_baseline": "walks short distances with a frame, live-in carer for bathing",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "warfarin",
+     "dose": "1.5 mg daily",
+     "started_day": -900
+    },
+    {
+     "name": "tamsulosin",
+     "dose": "0.4 mg daily",
+     "started_day": -300
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch"
+   ],
+   "baseline_30d": {
+    "rest_hr": 66,
+    "hrv_ms": 24,
+    "sleep_h": 6.8,
+    "steps": 900,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: steps 700-1100/day, rest HR 64-68, watch worn 96%. Day 0: watch logged an on-wrist impact at 08:33; HR 118 at impact; steps 0 from 08:33 to 08:40. Carer log 08:41: right knee not bearing weight.",
+   "caregiver_or_nurse_note": "Live-in carer log 08:33 Day 0: saw him slide off the bath edge onto the tiles, watch impact logged. Right knee will not bear weight, pain 7/10 on moving. No head strike seen. Did not stand him up.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 122,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 97,
+    "artifact_flags": [
+     "impact logged on-wrist 08:33 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Male 90-94, lives with paid live-in caregiver, Fitzpatrick I-IV. PMH: AFib on warfarin, prostate enlargement, hip osteoarthritis. Long-standing warfarin 1.5 mg daily and tamsulosin 0.4 mg daily. Devices: watch. Baseline: rest HR 66, HRV 24 ms, sleep 6.8 h, steps 900/day, night SpO2 93%, skin temp dev 0.0 C. Trend Day -7 to -1: steps 700-1100, rest HR 64-68, wear 96%. Day 0: watch logged an on-wrist impact at 08:33; HR 118 at impact; steps 0 from 08:33 to 08:40. Carer log 08:33: watched him slide off the bath edge onto the tiles; right knee will not bear weight; pain 7/10 on moving; no head strike seen; not stood up. Carer log 08:41: right knee not bearing weight. Device flags: impact logged on-wrist 08:33 Day 0. Wear 97%; 0 h missing in last 48; longest gap 1 h. Baseline established, monitoring day 122.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "fall"
+   ],
+   "rationale": "A carer-witnessed slide off the bath edge on warfarin fires HT_FALL_ANTICOAG with an on-wrist impact at 08:33 and HR 118. Check 1 passes on a reliable on-wrist watch, and check 2 does not apply to a fall. Check 3 fails: the carer watched the event, and a witnessed fall cannot be cleared by reassurance. The right-knee pain of 7/10 with no weight-bearing also fires HT_FALL_PAIN, which is ABSOLUTE, and check 4 passes with no comfort plan. The tier is ABSOLUTE, so urgent_page with no confirm fields. Naive-model trap: a shallow model reads 'no head strike seen, carer has him settled' and books a nurse task, missing the unweightable knee after a witnessed fall on warfarin.",
+   "decisive_feature": "Carer-witnessed bath-edge slide on warfarin, with an on-wrist impact and a right knee that will not bear weight at pain 7/10.",
+   "expected_device_ticket": null,
+   "route_basis": null,
+   "escalation_target": null,
+   "secondary_triggers": [
+    {
+     "hard_trigger_rule": "HT_FALL_PAIN",
+     "trigger_tier": "ABSOLUTE",
+     "confirm_step": null,
+     "confirm_timeout_min": null,
+     "suppression_reason": null,
+     "if_confirmed_route": "urgent_page",
+     "evidence": "right knee pain 7/10, not bearing weight, after the carer-witnessed fall"
+    }
+   ]
+  },
+  {
+   "case_id": "HX6-008",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "assisted living",
+   "pmh": [
+    "AFib",
+    "hypertension"
+   ],
+   "function_baseline": "independent ADLs with weekly carer support, walks in the corridor",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -360
+    },
+    {
+     "name": "metoprolol succinate",
+     "dose": "25 mg daily",
+     "started_day": -500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 66,
+    "hrv_ms": 31,
+    "sleep_h": 6.9,
+    "steps": 1300,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 126,
+    "dbp": 74
+   },
+   "trend_last_7d": "Day -7 to -1: steps 1100-1500/day, rest HR 64-68, cuff 122-130/72-78, watch worn 90%. Day 0: steps 1420 by 18:55. Watch off-wrist 18:58-19:24; an impact was recorded at 19:05 while off-wrist. Wrist-on from 19:24; HR 72 at 19:30; cuff 126/74 at 19:40.",
+   "caregiver_or_nurse_note": "Night carer log 19:12 Day 0: seated in the lounge; says she was carrying washing down the stairs and the watch came off into the basket. No pain, no bruising, walking fine.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 210,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 90,
+    "artifact_flags": [
+     "off-wrist 18:58-19:24 Day 0",
+     "impact logged while off-wrist 19:05 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Female 85-89, lives in assisted living, Fitzpatrick V-VI. PMH: AFib, hypertension. Long-standing apixaban 5 mg BID and metoprolol succinate 25 mg daily. Devices: watch, bp_cuff. Baseline: rest HR 66, HRV 31 ms, sleep 6.9 h, steps 1300/day, night SpO2 94%, skin temp dev 0.0 C, seated BP 126/74. Trend Day -7 to -1: steps 1100-1500, rest HR 64-68, cuff 122-130/72-78, wear 90%. Day 0: steps 1420 by 18:55. Watch off-wrist 18:58-19:24; impact recorded at 19:05 while off-wrist and found in a laundry basket at the foot of the stairs. Wrist-on from 19:24; HR 72 at 19:30; cuff 126/74 at 19:40. Night carer log 19:12: seated in the lounge; she says she was carrying washing and the watch came off into the basket; no pain, no bruising, walking fine. Device flags: off-wrist 18:58-19:24 Day 0; impact logged while off-wrist 19:05 Day 0. Wear 90%; 0 h missing in last 48; longest gap 1 h. Baseline established, monitoring day 210.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "explained",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "fall"
+   ],
+   "rationale": "An off-wrist impact signal on apixaban fires HT_FALL_ANTICOAG, and the watch reading is not a reliable reading, so check 1 fails. Under the anticoagulant rule an off-wrist reading is not cleared as unreliable; it needs an explanation. Check 3 passes: the carer's timed log at 19:12 places her seated in the lounge with no pain or bruising, and the watch came off into a laundry basket while she carried washing. Check 4 passes. SUPPRESSED explained, nurse_task with a call to confirm she has no pain or bruising. Naive-model trap: a shallow model dismisses an off-wrist impact as an unreliable reading and logs it silently, when an anticoagulated possible fall needs at least a nurse check.",
+   "decisive_feature": "Watch found in a laundry basket at the stair foot after an off-wrist impact signal, with a carer log at 19:12 showing her seated and pain-free, on apixaban.",
+   "expected_device_ticket": null,
+   "route_basis": null,
+   "escalation_target": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "HX6-009",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "dementia moderate (proxy report only)",
+    "HFpEF EF 58%",
+    "hypertension"
+   ],
+   "function_baseline": "walks short distances with a frame, prompted for meals",
+   "patient_goals": null,
+   "discharge": {
+    "day": -20,
+    "reason": "HF exacerbation"
+   },
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -20
+    },
+    {
+     "name": "donepezil",
+     "dose": "10 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "furosemide",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "40 mg daily",
+     "day": -20
+    }
+   ],
+   "devices": [
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 28,
+    "sleep_h": 6.9,
+    "steps": 1200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 80.6,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -3: steps 900-1300/day, rest HR 70-74, scale 80.8 kg (Day -7), 80.5 kg (Day -5), 80.3 kg (Day -4). Watch data stop Day -2 10:40 and resume Day 0 16:10 (53.5 h). Scale uploads inside the gap: Day -1 07:55 80.1 kg; Day 0 08:02 81.2 kg.",
+   "caregiver_or_nurse_note": "Last logged person contact: daughter's phone call Day -3 19:00, before the gap. No contact logged since.",
+   "baseline_status": {
+    "phase": "relearning",
+    "monitoring_day": 20,
+    "learning_days_total": 10,
+    "last_condition_change": {
+     "type": "diuretic_change",
+     "day": -20
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 84,
+    "artifact_flags": [
+     "no watch data Day -2 10:40 to Day 0 16:10"
+    ],
+    "missing_hours_last_48": 48,
+    "longest_gap_h": 53.5
+   },
+   "router_input": "Male 85-89, lives alone, Fitzpatrick V-VI. PMH: dementia moderate (proxy reports only), HFpEF EF 58%, hypertension. Discharged Day -20 after HF exacerbation; furosemide 40 mg daily started Day -20. Long-standing donepezil 10 mg daily. Devices: watch, scale. Baseline: rest HR 72, HRV 28 ms, sleep 6.9 h, steps 1200/day, night SpO2 93%, skin temp dev 0.0 C, weight 80.6 kg. Trend Day -7 to -3: steps 900-1300, rest HR 70-74, weight 80.8, 80.5, 80.3 kg. Watch data stop Day -2 10:40 and resume Day 0 16:10 (53.5 h). Scale uploads inside the gap: Day -1 07:55 80.1 kg; Day 0 08:02 81.2 kg. Last logged person contact: daughter's phone call Day -3 19:00, before the gap; no contact logged since. Device flags: no watch data Day -2 10:40 to Day 0 16:10. Wear 84% over 7 days; 48 h missing in last 48; longest gap 53.5 h. Baseline relearning, monitoring day 20.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_GAP48_HIGHRISK",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "caregiver_ping",
+   "confirm_timeout_min": 60,
+   "suppression_reason": null,
+   "baseline_layer": "baseline_reset",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "missing_data",
+    "dementia"
+   ],
+   "rationale": "A 53.5-hour watch blackout in a high-risk HF patient (discharged 20 days ago) with dementia fires HT_GAP48_HIGHRISK, so the rule is on. Check 1 fails because no device data exists for the whole window. Check 3 fails: only two scale uploads sit inside the gap (weight 80.1 kg Day -1, 81.2 kg Day 0), and those are not contact; the last person contact was a phone call on Day -3, before the gap. Check 4 passes with no comfort plan, so the tier is CONFIRM_FIRST with a caregiver ping at 60 minutes, and urgent_page while it is pending, since a proxy cannot self-report. Naive-model trap: a shallow model reads the 1.1 kg upload rise as the only news and routes provider_task, when a high-risk gap with no person contact needs a prompt.",
+   "decisive_feature": "53.5-hour watch blackout in a dementia patient living alone, bridged only by two scale uploads, with no person contact logged since Day -3.",
+   "expected_device_ticket": null,
+   "route_basis": null,
+   "escalation_target": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "HX6-010",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "relapsing multiple sclerosis",
+    "leg spasticity"
+   ],
+   "function_baseline": "walks outdoors with a stick, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "dimethyl fumarate",
+     "dose": "240 mg BID",
+     "started_day": -700
+    },
+    {
+     "name": "tizanidine",
+     "dose": "2 mg at bedtime",
+     "started_day": -9
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "tizanidine",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "2 mg at bedtime",
+     "day": -9
+    }
+   ],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 74,
+    "hrv_ms": 35,
+    "sleep_h": 7.2,
+    "steps": 2600,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 61.8,
+    "glucose_mean": null,
+    "sbp": 124,
+    "dbp": 74
+   },
+   "trend_last_7d": "Day -8: rest HR 74, seated cuff 124/74, steps 2600, sleep 7.2 h, scale 61.8 kg. Day -4: rest HR 66, seated cuff 116/70, steps 1900, sleep 8.1 h. Day 0: rest HR 62, seated cuff 110/66, steps 1500, sleep 8.6 h, scale 61.6 kg. Watch worn 95%; no impact events logged.",
+   "caregiver_or_nurse_note": "Spouse: 'She's sleepy by nine in the morning now and walks slower to the post box. No falls.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 62,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Female 70-74, lives with spouse, Fitzpatrick I-IV. PMH: relapsing multiple sclerosis, leg spasticity. Long-standing dimethyl fumarate 240 mg BID. Tizanidine 2 mg at bedtime started Day -9. Devices: watch, bp_cuff, scale. Baseline: rest HR 74, HRV 35 ms, sleep 7.2 h, steps 2600/day, night SpO2 94%, skin temp dev 0.0 C, weight 61.8 kg, seated BP 124/74. Trend: Day -8 rest HR 74, seated BP 124/74, steps 2600, sleep 7.2 h, weight 61.8 kg. Day -4 rest HR 66, seated BP 116/70, steps 1900, sleep 8.1 h. Day 0 rest HR 62, seated BP 110/66, steps 1500, sleep 8.6 h, weight 61.6 kg. Watch worn 95%; no impact events logged. Spouse note: sleepy by nine in the morning and walks slower to the post box; no falls. Wear 95%; 0 h missing in last 48. Baseline established, monitoring day 62.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "arrhythmia",
+    "med_change"
+   ],
+   "rationale": "Tizanidine started Day -9 is followed by a steady fall in resting HR (74 to 62 bpm), seated SBP (124 to 110 mmHg), and steps (2600 to 1500/day), with sleep lengthening to 8.6 hours. No fall, impact, or focal change is recorded, so no hard trigger fires and no page is warranted. The combined multi-stream change is a plausible medication effect that needs a same-day review of dose and orthostatic risk by the prescriber or pharmacist, rather than a silent log. Naive-model trap: a shallow model sees 'HR and BP falling, nothing abnormal' and logs it silently, when a new muscle relaxant with a steady multi-stream fall in activity needs a same-day look.",
+   "decisive_feature": "Tizanidine started Day -9 with resting HR down 12 bpm, seated SBP down 14 mmHg and steps down 42% across the nine days.",
+   "expected_device_ticket": null,
+   "route_basis": null,
+   "escalation_target": null,
+   "secondary_triggers": []
+  },
+  {
+   "case_id": "HX6-011",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with adult child",
+   "pmh": [
+    "hypertension",
+    "CKD 4",
+    "gout"
+   ],
+   "function_baseline": "walks round the flat, independent with meals",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "10 mg daily",
+     "started_day": -700
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -700
+    },
+    {
+     "name": "allopurinol",
+     "dose": "100 mg daily",
+     "started_day": -200
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "bp_cuff",
+    "watch"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 30,
+    "sleep_h": 6.5,
+    "steps": 2000,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": 138,
+    "dbp": 82
+   },
+   "trend_last_7d": "Day -7 to -1: cuff 132-142/78-86, watch rest HR 68-72, steps 1800-2200, watch worn 90%. Day 0 09:14: seated cuff 214/108 mmHg after 5 minutes rest, watch HR 92. Day 0 09:18: repeat cuff 212/106 after 4 more minutes rest with the cuff re-seated on the bare arm.",
+   "caregiver_or_nurse_note": "Adult child, Day 0 09:25: 'Dad says he has had a headache since he got up. He is talking normally, moving both arms, no chest pain.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 90,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Male 75-79, lives with adult child, Fitzpatrick V-VI. PMH: hypertension, CKD 4, gout. Long-standing amlodipine 10 mg daily, ramipril 5 mg daily; allopurinol 100 mg daily started Day -200. Devices: bp_cuff, watch. Baseline: rest HR 70, HRV 30 ms, sleep 6.5 h, steps 2000/day, night SpO2 93%, skin temp dev 0.0 C, seated BP 138/82. Trend Day -7 to -1: cuff 132-142/78-86, watch rest HR 68-72, steps 1800-2200. Day 0 09:14: seated cuff 214/108 mmHg after 5 minutes rest; watch HR 92. Day 0 09:18: repeat cuff 212/106 after 4 more minutes rest, cuff re-seated on the bare arm. Adult child note 09:25: headache since he got up; talking normally, moving both arms; no chest pain. Wear 90%; 0 h missing in last 48; longest gap 1 h. Baseline established, monitoring day 120.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "hard_limit_danger",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "renal"
+   ],
+   "rationale": "Two reliable seated cuff readings of 214/108 and 212/106 mmHg, the second taken 4 minutes later after re-seating the cuff, both exceed the 200 mmHg danger line, so HT_VS_DANGER fires as ABSOLUTE regardless of his usual 138/82 baseline. Check 1 passes with a verified cuff fit, check 2 does not apply to a danger value, and check 3 has no explanation: a headache is reported, while the adult child describes normal speech and both arms moving with no chest pain. Check 4 passes with no comfort plan, so the layer is hard_limit_danger and the route is urgent_page. Naive-model trap: a shallow model sees a headache with normal speech and no chest pain, then books a nurse task, when a reliable SBP above 200 with headache needs a clinician now.",
+   "decisive_feature": "Two reliable cuff readings of 214/108 and 212/106 with a headache, above the 200 mmHg danger line against a usual 138/82.",
+   "expected_device_ticket": null,
+   "route_basis": null,
+   "escalation_target": null,
+   "secondary_triggers": []
+  }
+ ],
+ "tally": {
+  "n": 11,
+  "id_range": [
+   "HX6-001",
+   "HX6-011"
+  ],
+  "routes": {
+   "silent_log": 1,
+   "nurse_task": 4,
+   "provider_task": 1,
+   "urgent_page": 5
+  },
+  "difficulty": {
+   "easy": 0,
+   "medium": 1,
+   "hard": 8,
+   "adversarial": 2
+  },
+  "hard_plus_adversarial_pct": 91,
+  "category_primary": {
+   "noise": 1,
+   "fall": 5,
+   "missing_data": 3,
+   "arrhythmia": 1,
+   "renal": 1
+  },
+  "category_any": {
+   "fall": 5,
+   "missing_data": 3,
+   "noise": 1,
+   "arrhythmia": 1,
+   "renal": 1,
+   "dementia": 1,
+   "med_change": 1
+  },
+  "hidden_hypoxemia_ids": [],
+  "subtle_deterioration_ids": [],
+  "pairs": {
+   "HX6-P01": [
+    "HX6-005",
+    "HX6-006"
+   ]
+  },
+  "hard_trigger_ids": {
+   "HT_FALL_ANTICOAG": [
+    "HX6-001",
+    "HX6-002",
+    "HX6-003",
+    "HX6-007",
+    "HX6-008"
+   ],
+   "HT_FALL_PAIN": [
+    "HX6-007"
+   ],
+   "HT_GAP48_HIGHRISK": [
+    "HX6-005",
+    "HX6-006",
+    "HX6-009"
+   ],
+   "HT_VS_DANGER": [
+    "HX6-011"
+   ]
+  },
+  "trigger_tiers": {
+   "ABSOLUTE": [
+    "HX6-002",
+    "HX6-007",
+    "HX6-011"
+   ],
+   "CONFIRM_FIRST": [
+    "HX6-006",
+    "HX6-009"
+   ],
+   "SUPPRESSED": [
+    "HX6-001",
+    "HX6-003",
+    "HX6-005",
+    "HX6-008"
+   ],
+   "ARTIFACT": []
+  },
+  "baseline_layers": {
+   "learning_period": [],
+   "baseline_reset": [
+    "HX6-009"
+   ],
+   "drift_not_absorbed": [],
+   "hard_limit_artifact": [],
+   "hard_limit_danger": [
+    "HX6-011"
+   ]
+  },
+  "fitzpatrick_v_vi_count": 6,
+  "module_notes": {
+   "focus_cases": [
+    "HX6-001",
+    "HX6-002",
+    "HX6-003",
+    "HX6-005",
+    "HX6-006",
+    "HX6-007",
+    "HX6-008"
+   ],
+   "outside_focus_cases": [
+    "HX6-004",
+    "HX6-009",
+    "HX6-010",
+    "HX6-011"
+   ],
+   "outside_focus_pct": 36,
+   "gap_009_note": "High-risk gap in a patient not on an anticoagulant, counted toward the gaps minimum."
+  },
+  "minimums": {
+   "explained_fall": {
+    "required": 3,
+    "actual": 3,
+    "met": true,
+    "ids": [
+     "HX6-001",
+     "HX6-003",
+     "HX6-008"
+    ]
+   },
+   "witnessed": {
+    "required": 2,
+    "actual": 2,
+    "met": true,
+    "ids": [
+     "HX6-002",
+     "HX6-007"
+    ]
+   },
+   "gaps": {
+    "required": 3,
+    "actual": 3,
+    "met": true,
+    "ids": [
+     "HX6-005",
+     "HX6-006",
+     "HX6-009"
+    ]
+   },
+   "outside_focus_30pct": {
+    "required": 4,
+    "actual": 4,
+    "met": true
+   }
+  },
+  "all_minimums_met": true,
+  "self_check_failures_fixed": 0
+ },
+ "meta": {
+  "batch": "HX6",
+  "model": "anthropic/claude-haiku-5.5",
+  "module": "haiku",
+  "n_requested": 11,
+  "n_got": 11,
+  "split": false,
+  "id_fixes": 0
+ }
+}

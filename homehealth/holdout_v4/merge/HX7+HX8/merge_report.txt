@@ -1,0 +1,6 @@
+cases in: 16 | verdicts matched: 16
+accepted: 2 | graded cases where grader chose an acceptable alternate: 2
+fix_list: 5
+review_queue: 9 | reasons: ROUTE_DISAGREE=0, HARD_TRIGGER_DISPUTE=2, REJECT=3, NOVELTY_REVIEW=2, UNGRADED=0, GRADER_ROUTE_INVALID=0, CRITICAL_MISS=0, TIER_DISPUTE=2, DRIFT_MISS=0
+accepted routes: {"silent_log": 1, "urgent_page": 1}
+smart triggers: {"HT_CHEST_PAIN_VITALS": {"fired": 2, "ABSOLUTE": 2}, "HT_FALL_ANTICOAG": {"fired": 1, "SUPPRESSED": 1}, "HT_SPO2_LT88": {"fired": 1, "CONFIRM_FIRST": 1}, "HT_SPO2_REST_DYSPNEA": {"fired": 1, "CONFIRM_FIRST": 1}}

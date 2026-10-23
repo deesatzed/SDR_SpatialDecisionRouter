@@ -1,0 +1,6 @@
+cases in: 22 | verdicts matched: 22
+accepted: 22 | graded cases where grader chose an acceptable alternate: 0
+fix_list: 0
+review_queue: 0 | reasons: ROUTE_DISAGREE=0, HARD_TRIGGER_DISPUTE=0, REJECT=0, NOVELTY_REVIEW=0, UNGRADED=0, GRADER_ROUTE_INVALID=0, CRITICAL_MISS=0, TIER_DISPUTE=0, DRIFT_MISS=0
+accepted routes: {"silent_log": 6, "nurse_task": 7, "provider_task": 2, "urgent_page": 7}
+smart triggers: {"HT_FALL_ANTICOAG": {"fired": 6, "SUPPRESSED": 4, "ABSOLUTE": 2}, "HT_GAP48_HIGHRISK": {"fired": 3, "SUPPRESSED": 1, "CONFIRM_FIRST": 2}, "HT_SPO2_LT88": {"fired": 2, "SUPPRESSED": 1, "CONFIRM_FIRST": 1}, "HT_VS_DANGER": {"fired": 3, "ABSOLUTE": 2, "SUPPRESSED": 1}, "HT_VS_IMPLAUSIBLE": {"fired": 1, "ARTIFACT": 1}}
