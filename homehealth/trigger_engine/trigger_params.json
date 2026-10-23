@@ -1,5 +1,5 @@
 {
- "version": "0.10.2-placeholder",
+ "version": "0.10.3-placeholder",
  "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
  "change_log": [
   {
@@ -427,6 +427,17 @@
    "new": "0.10.2-placeholder",
    "approved_by": "Wayne",
    "reason": "v1.10.2 Layer 1 fixes from holdout_v2 rulings (approved by Wayne 2026-10-23); built on practice cases (test_layer1_v1102.py)"
+  },
+  {
+   "ts": "2026-10-23T07:40:00-04:00",
+   "keys": [
+    "version",
+    "layer1_v110.wording.focal_neuro"
+   ],
+   "old": "0.10.2-placeholder",
+   "new": "0.10.3-placeholder",
+   "approved_by": "Wayne",
+   "reason": "v1.10.3 HT_FOCAL_NEURO lay-wording synonyms (approved by Wayne 2026-10-23)"
   }
  ],
  "hard_limits": {
@@ -1021,7 +1032,21 @@
     "(?:sudden )?loss of vision in one eye",
     "can(?:no|')t (?:raise|lift) (?:the |his |her )?(?:left|right) arm",
     "dragging (?:the |his |her )?(?:left|right) (?:leg|foot)",
-    "numb(?:ness)? (?:on|down) (?:the |his |her )?(?:left|right) side"
+    "numb(?:ness)? (?:on|down) (?:the |his |her )?(?:left|right) side",
+    "lopsided (?:smile|face|mouth|grin)",
+    "(?:smile|mouth|face|grin) (?:is |looks |looked |went |has gone |became )?(?:lopsided|crooked|uneven|droopy|drooping|droops)",
+    "one side of (?:his|her|the) (?:face|mouth) (?:has )?(?:dropped|drooped|droops|is drooping|sagg\\w*|slipped)",
+    "face (?:has )?(?:dropped|sagg\\w*|slipped) on one side",
+    "(?:can't|cannot|couldn't|could not|unable to) (?:hold|grip|grasp|pick up) (?:the |a |his |her )?(?:cup|mug|glass|spoon|fork|pen|phone|kettle)[^.;]{0,15}(?:in|with) (?:his|her|the) (?:left|right) hand",
+    "suddenly (?:can't|cannot|couldn't|could not) (?:hold|grip|grasp) ",
+    "dropping (?:things|everything|the \\w+) (?:from|with|in|out of) (?:his|her|the) (?:left|right) hand",
+    "(?:left|right) hand (?:keeps )?dropping",
+    "(?:left|right) (?:arm|hand|leg) (?:went |has gone |is |feels )?(?:dead|limp|heavy|floppy|useless)",
+    "words (?:are |were |keep |kept )?(?:coming|came|come) out (?:all )?(?:wrong|jumbled|muddled|garbled|mixed up)",
+    "mix(?:ing|ed)? up (?:his|her) words",
+    "(?:can't|cannot|couldn't|could not) (?:get|find) (?:the |his |her )?(?:right )?words(?: out)?",
+    "speech (?:is |sounds |was |went )?(?:thick|muddled|slurry|funny|strange) (?:all of a )?sudden\\w*",
+    "slurring"
    ],
    "chest_pain": [
     "crushing (?:pain|feeling)",
@@ -1029,7 +1054,8 @@
     "band (?:around|across) (?:his|her|the) chest",
     "elephant on (?:his|her|my) chest",
     "heaviness (?:behind|under) (?:the|his|her) (?:breastbone|sternum)"
-   ]
+   ],
+   "_note_v1103": "v1.10.3 (Wayne 2026-10-23): lay wording for facial droop, one-sided hand/arm weakness, speech; practice cases in test_layer1_v1103.py. One-sided or sudden qualifiers required for grip/dropping to avoid tremor/arthritis."
   },
   "fall_v1102": {
    "_note": "SMART_TRIGGERS v1.10.2 (Wayne 2026-10-23). PLACEHOLDERS. (1) A witnessed fall cannot be cleared by caregiver/patient reassurance. (2) Pain after a confirmed/witnessed fall blocks suppression -> HT_FALL_PAIN ABSOLUTE urgent_page, with or without an anticoagulant (goals of care still apply). (3) On an anticoagulant an off-wrist/charging reading does not suppress a possible fall: SUPPRESSED possible_fall_unverified, floor nurse_task. (4) On an anticoagulant, an on-wrist impact (Day -1 or Day 0) followed by inactivity >= inactivity_min fires HT_FALL_ANTICOAG at least nurse_task, even when explained away.",
