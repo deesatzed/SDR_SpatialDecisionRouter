@@ -102,3 +102,7 @@ and flags if the event looks like a carve-back. Prompt change = new prompt versi
 - The drug-low foundation rule (RULE_GOVERNANCE_DESIGN section 10) cannot be overridden by any patient plan, including hospice; hospice changes the receiver, not the page.
 - Conditional clinician rulings are recorded as overrides with a condition string and stay advisory (not enforced) until the condition is expressible as a tested rule.
 - Known conflict: holdout_v3 HW4-002 (accepted label nurse_task, 85% inside a documented 85-87% band) now routes silent under the band principle; needs a ruling on whether a reading at the band floor should still get a nurse check.
+
+## v1.11.1: low band without home oxygen (2026-10-23)
+
+A COPD patient's band can sit at or near the urgent floor: band lower bound <= 88% or night minimum < 88% (both PLACEHOLDERS). If there is NO home oxygen on the med, device or problem list, a reading inside the band is `within_band_low_no_home_o2`, provider_task. The plain reason is "at her documented baseline but that baseline is low without oxygen; evaluate for home oxygen". With oxygen prescribed, a reading inside the band stays `within_patient_band`, silent_log. This resolves holdout_v3 HW4-002 (ruled provider_task).

@@ -195,6 +195,10 @@ def device_disagreement(c, ctx, dt):
 PLAIN = {   # v1.11.0 plain reasons, keyed by rule:reason, then reason, then rule
     "HT_DRUG_LOW": "confirmed low blood sugar with symptoms on {glu}; a drug-induced low is a foundation rule and is never suppressed{hosp}",
     "ckd_low_dose_review": "low blood sugar on {glu} with kidney disease, recovered without symptoms; please review the dose (not a nurse visit)",
+    "ckd_low_compression_explained": "low blood sugar on {glu} with kidney disease, likely sensor compression, normal recheck; check sensor placement and confirm no symptoms",
+    "ckd_low_exertion_explained": "low blood sugar on {glu} with kidney disease after exertion, recovered without symptoms; teach exercise precautions (a repeat goes to the provider)",
+    "recent_ckd_low_dose_review": "a recent low blood sugar on {glu} with kidney disease (within 72 hours), recovered without symptoms; please review the dose",
+    "within_band_low_no_home_o2": "at her documented baseline but that baseline is low without oxygen; evaluate for home oxygen",
     "repeated_lows_dose_review": "repeated low blood sugars on {glu}; please review the dose",
     "below_patient_band_copd_lt85": "COPD oxygen level confirmed below 85% and below the patient's own band; this is not baseline",
     "below_88_change_from_own_baseline": "oxygen level below 88% and below this patient's own usual level",
@@ -413,7 +417,10 @@ def evaluate_case(case):
             if not rel or (tips and min(t[0] for t in tips) >= 92):
                 cands.append(_dec("HT_SPO2_LT88", "SUPPRESSED", "unreliable_reading", route=None))
             elif band and band_rule and pb and min(r[0] for r in rel) >= band[0] and not distress:   # v1.11.0: inside a patient-level band -> rule does not fire
-                cands.append(_dec("HT_SPO2_LT88", "SUPPRESSED", "within_patient_band", route=None, default_route="silent_log", own_low=band[0], band=list(band)))
+                bn = (T.v110(P).get("v1111") or {}).get("band_no_home_o2")
+                if bn and re.search(pb["copd_rx"], ctx["pmh"], re.I) and "home_O2" not in ctx["high_risk"] and (band[0] <= bn["band_low_max"] or (base30.get("spo2_night_min") or 100) < bn["night_min_below"]):
+                    cands.append(_dec("HT_SPO2_LT88", "SUPPRESSED", "within_band_low_no_home_o2", route=None, default_route=bn["route"], own_low=band[0], band=list(band)))   # v1.11.1: evaluate for home oxygen
+                else: cands.append(_dec("HT_SPO2_LT88", "SUPPRESSED", "within_patient_band", route=None, default_route="silent_log", own_low=band[0], band=list(band)))
             elif own is not None and min(r[0] for r in rel) >= own:
                 cands.append(_dec("HT_SPO2_LT88", "SUPPRESSED", "at_patient_baseline", route=None, own_low=own))
             else:
@@ -435,8 +442,10 @@ def evaluate_case(case):
         gs = re.search(r"(?:offline|no [\w ,]*data|data[\w ,]* (?:run|ran|stop\w*)[\w ]* to|last [\w ]*sync|from)\s*(?:from\s*)?Day (-\d+)(?:\s+(\d{1,2}):(\d{2}))?", flags + " ; " + trend, re.I)
         g_day = int(gs.group(1)) if gs else None; g_min = (int(gs.group(2)) * 60 + int(gs.group(3))) if (gs and gs.group(2)) else 0
         contact = None
-        for x in sentences(note + " " + trend):
+        _ss = sentences(note + " " + trend); _nx = (T.v110(P).get("v1111") or {}).get("gap_contact", {}).get("next_sentence")
+        for _i, x in enumerate(_ss):
             m = re.search(r"Day (-?\d+)\s*(?:at\s*)?(\d{1,2}):(\d{2})", x)
+            if m and _nx and _i + 1 < len(_ss) and not re.search(r"Day -?\d+", _ss[_i + 1]): x = x + " " + _ss[_i + 1]   # v1.11.1: detail in the next sentence
             if not (m and re.search(r"video call|phoned|phone (?:call|check)|called|visited|visit\b|check-?in|checked on|saw (?:him|her)|texted|spoke|talked", x, re.I)): continue
             if find(r"not answered|no answer|did not answer|didn't answer|unanswered|no call|no check-?in|no contact", x, neg=False): continue
             gx = T.v110(P).get("gap_contact_exclude") or {}
@@ -503,6 +512,17 @@ def evaluate_case(case):
     # ---- acute presentation flag (the router lets Jev's clinical read stand on a suppressed trigger when this is set)
     rr0 = [r[0] for r in recs(c, "rr") if not r[2] and not r[8]]; hr0 = [r[0] for r in recs(c, "hr") if not r[2] and r[3] != "active" and not r[8]]
     acute = bool((rr0 and max(rr0) >= 24) or distress or (hr0 and base30.get("rest_hr") and max(hr0) >= base30["rest_hr"] + 20 and find(r"(?:breathless|short of breath)(?![^.;]{0,25}(?:after|walking|climbing|on) (?:the )?(?:stairs|walk|exertion|hill))(?<!after the stairs)", now)))
+    V111 = T.v110(P).get("v1111") or {}; ce = V111.get("ckd_low_explained"); gb = V111.get("glucose_lookback")
+    def ckd_expl():   # v1.11.1: compression (witness/artifact flag) or recent exertion explains a recovered, asymptomatic CKD low
+        if not ce: return None
+        if cgm_pressure or re.search(ce["compression_rx"], flags + " " + note + " " + trend, re.I): return "ckd_low_compression_explained"
+        if re.search(ce["exertion_rx"], (split_day0(trend)[1] or "") + " " + note, re.I): return "ckd_low_exertion_explained"
+        return None
+    if gb and ik and drug_lowering and not hitm_required and not symptomatic and re.search(ik["ckd_rx"], ctx["pmh"], re.I) and not any(d.get("rule") == "HT_VS_DANGER" for d in cands):
+        days = max(2, -(-gb["lookback_h"] // 24))
+        old = [r for r in readings(split_day0(trend)[0], "glucose") if r[7] is not None and -days <= r[7] < -1 and r[0] <= gmin]
+        if old:   # v1.11.1: a recent (<= 72 h, placeholder) recovered drug-related CKD low is still a dose review
+            cands.append(_dec("HT_VS_DANGER", "SUPPRESSED", "recent_ckd_low_dose_review", route=None, default_route=gb["route"], source=f"lookback:glucose={min(r[0] for r in old)}"))
     if not cands: return {"tier": None, "rule": None, "reason": "no_trigger", "acute_presentation": acute, "hitm_required": hitm_required, "context": {k: ctx[k] for k in ("goals", "lives_alone", "high_risk")}, "candidates": [], **({"device_ticket": ticket} if ticket else {})}
     best = max(cands, key=_rank)
     keep = ("rule", "tier", "reason", "route", "confirm_step", "page", "escalation_target", "notify", "band", "raw_band", "modifiers", "inputs", "source", "goals_basis", "original_tier", "own_low", "explained_by", "confirm_result", "default_route", "foundation", "candidate")
@@ -510,8 +530,11 @@ def evaluate_case(case):
     if hitm_required and out.get("tier") not in ("ABSOLUTE", "CONFIRM_FIRST"):
         out.update(default_route=ik["route"], hitm_reason="insulin_or_sulfonylurea_ckd_danger_low")
         kd = V11.get("ckd_low_dose_review")   # v1.11.0: cleared, asymptomatic, no documented compression -> prescriber dose review
-        if kd and out.get("reason") == "cleared_by_repeat" and str(out.get("source", "")).startswith("evaluate:glucose") and not symptomatic and not cgm_pressure:
-            out.update(reason="ckd_low_dose_review", default_route=kd["route"], hitm_floor=kd["route"])
+        if kd and out.get("reason") == "cleared_by_repeat" and str(out.get("source", "")).startswith("evaluate:glucose") and not symptomatic:
+            ex = ckd_expl()
+            if ex != "ckd_low_compression_explained" and prior_danger_low(c, gmin, kd["prior_low_days"]): out.update(reason="repeated_lows_dose_review", default_route=kd["route"], hitm_floor=kd["route"])   # v1.11.1: a repeat (exertion or unexplained) escalates; repeated compression artifacts stay nurse_task
+            elif ex: out.update(reason=ex, default_route=ce["route"], hitm_floor=ce["route"])   # v1.11.1: explained -> nurse_task
+            elif not cgm_pressure: out.update(reason="ckd_low_dose_review", default_route=kd["route"], hitm_floor=kd["route"])
     elif drug_lowering and out.get("reason") == "cleared_by_repeat" and V11.get("ckd_low_dose_review") and prior_danger_low(c, gmin, V11["ckd_low_dose_review"]["prior_low_days"]):
         out.update(reason="repeated_lows_dose_review", default_route=V11["ckd_low_dose_review"]["route"])   # v1.11.0: a pattern of lows -> dose review
     if ticket: out["device_ticket"] = ticket

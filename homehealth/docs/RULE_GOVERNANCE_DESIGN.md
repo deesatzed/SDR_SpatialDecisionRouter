@@ -160,3 +160,12 @@ non-foundation thresholds to that person's documented baseline and wishes.
 - **Conditional rulings.** A clinician ruling can be conditional ("provider_task unless X, then urgent"). The key stores the base route plus the condition in `clinician_note`; scoring uses the base route. Rules that would encode the condition (e.g. `serotonergic_confusion`, HW6-011's ruling) ship **disabled** (`enabled: false`) until confirmed on practice cases.
 - **Other fixes:** BP cuff clean-repeat (repeat within 15 min with SBP 90-180 clears a single cuff reading; placeholders), witnessed-fall wording (watched/saw lose footing), head strike = confirmed fall, the impact-cap is bypassed for long inactivity (>= 30 min placeholder) or living alone with dementia.
 - **Earlier keys that now conflict with the drug-low / dose-review direction:** holdout_v1 HO2-007, holdout_v2 HV3-004 and HV3-005 (labelled nurse_task, v1.11.0 routes provider_task dose review). Need re-ruling.
+
+## 11. Layer 1 v1.11.1 (2026-10-23, params 0.11.1-placeholder; placeholders)
+
+- **Explained CKD lows.** These rules cover a drug-related (insulin or sulfonylurea) danger-level CKD low with a normal recheck and no symptoms:
+  - If sensor compression explains it (a witness account or an artifact flag), the route is `ckd_low_compression_explained`, nurse_task. The plain reason is "check sensor placement and confirm no symptoms". This replaces the v1.11.0 compromise.
+  - If recent exertion explains it, the route is `ckd_low_exertion_explained`, nurse_task, for exercise-precaution teaching. A repeat danger low within 7 days goes to `repeated_lows_dose_review`, provider_task.
+  - The provider dose review (`ckd_low_dose_review`) now applies only to unexplained lows, or to repeated lows that are unexplained or exertion-explained. Repeated lows explained by compression stay nurse_task; this is pending Wayne's confirmation (holdout_v1 HO3-004).
+- **72 h glucose-low lookback (placeholder).** A recovered, asymptomatic drug-related CKD low from Day -3 to Day -2 gives `recent_ckd_low_dose_review`, provider_task.
+- **Explained high-risk gap.** A gap can be explained by a contact whose "looked fine / well" detail sits in the next sentence. An explained gap is SUPPRESSED with a nurse_task floor and never pages.

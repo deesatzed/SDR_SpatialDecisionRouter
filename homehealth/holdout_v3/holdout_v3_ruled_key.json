@@ -2259,7 +2259,7 @@
     "longest_gap_h": 1
    },
    "router_input": "Age band 80-84, female, Fitzpatrick V-VI, lives with spouse. History: COPD GOLD 3, osteoporosis. Walks indoors with a rollator, independent ADLs. Meds: tiotropium 2.5 mcg two puffs daily, long-standing; alendronate 70 mg weekly, long-standing. Devices: watch, fingertip oximeter, bp_cuff. Baseline 30 days: resting HR 84, HRV 24 ms, sleep 7.0 h, steps 1800, night SpO2 minimum 83%, skin-temp deviation 0.0 C, SBP 136, DBP 82. Baseline status: established, monitoring day 74 of 10 learning days, no condition change. Trend last 7 days: watch resting SpO2 85-87%, night minimum 82-84%, resting HR 80-88, RR 18-19, steps 1500-2100, wear 94%. Day 0 10:20 fingertip SpO2 85% seated, good waveform; 10:23 fingertip SpO2 85%, good waveform. Day 0 10:21 watch HR 86, RR 18. Steps 1700 by 12:00. Caregiver note: visit Day -40 clinic note records usual resting fingertip SpO2 85-87%; spouse says breathlessness on stairs is her usual, no new cough, no fever, no new confusion. Data quality: wear 94%; missing 0 h in last 48 h; longest gap 1 h.",
-   "expected_route": "nurse_task",
+   "expected_route": "provider_task",
    "acceptable_alternates": [],
    "hard_trigger": true,
    "hard_trigger_rule": "HT_SPO2_LT88",
@@ -2294,7 +2294,9 @@
     "jaccard_decisive": 0.333,
     "jaccard_text": 0.352
    },
-   "key_source": "author_label_accepted"
+   "author_route": "nurse_task",
+   "key_source": "clinician_ruling_accepted_2026-10-23",
+   "clinician_note": "Wayne 2026-10-23: COPD documented band 85-87% at/near the urgent floor with no home oxygen -> provider_task for a home-oxygen evaluation (with oxygen prescribed, inside the band stays silent_log, as HW8-009)."
   },
   {
    "case_id": "HW4-003",

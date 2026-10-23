@@ -1,5 +1,5 @@
 {
- "version": "0.11.0-placeholder",
+ "version": "0.11.1-placeholder",
  "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
  "change_log": [
   {
@@ -454,6 +454,20 @@
    "new": "0.11.0-placeholder",
    "approved_by": "Wayne",
    "reason": "SMART_TRIGGERS v1.11.0 Layer 1 fixes from Wayne's holdout_v3 review-queue rulings (approved by Wayne 2026-10-23): drug-induced low foundation floor, CKD dose-review lows, patient-level SpO2 bands, impact+inactivity cap, clean-repeat timestamp fix + BP cuff, device tickets, plain reasons, serotonergic-confusion candidate (off). Built on practice cases (test_layer1_v1110.py)."
+  },
+  {
+   "ts": "2026-10-23T11:45:00-04:00",
+   "keys": [
+    "version",
+    "layer1_v110.v1111",
+    "layer1_v110.route_floor",
+    "layer1_v110.suppressed_default_route",
+    "layer1_v110.route_floor.HT_GAP48_HIGHRISK:explained"
+   ],
+   "old": "0.11.0-placeholder",
+   "new": "0.11.1-placeholder",
+   "approved_by": "Wayne",
+   "reason": "SMART_TRIGGERS v1.11.1 (Wayne 2026-10-23): explained CKD lows (compression / exertion) -> nurse_task; dose review only when unexplained or repeated; COPD in-band without home oxygen -> provider_task; gap contact detail in the next sentence; 72 h glucose-low lookback. Placeholders."
   }
  ],
  "hard_limits": {
@@ -1005,7 +1019,11 @@
    "device_disagreement": "silent_log",
    "device_disagreement_could_change_care": "nurse_task",
    "ckd_low_dose_review": "provider_task",
-   "repeated_lows_dose_review": "provider_task"
+   "repeated_lows_dose_review": "provider_task",
+   "ckd_low_compression_explained": "nurse_task",
+   "ckd_low_exertion_explained": "nurse_task",
+   "within_band_low_no_home_o2": "provider_task",
+   "recent_ckd_low_dose_review": "provider_task"
   },
   "route_floor": {
    "_note": "Minimum route for these suppressed reasons even when a model picks lower (models still capped at provider_task unless acute).",
@@ -1015,7 +1033,12 @@
    "possible_fall_unverified": "nurse_task",
    "device_disagreement_could_change_care": "nurse_task",
    "ckd_low_dose_review": "provider_task",
-   "repeated_lows_dose_review": "provider_task"
+   "repeated_lows_dose_review": "provider_task",
+   "ckd_low_compression_explained": "nurse_task",
+   "ckd_low_exertion_explained": "nurse_task",
+   "within_band_low_no_home_o2": "provider_task",
+   "recent_ckd_low_dose_review": "provider_task",
+   "HT_GAP48_HIGHRISK:explained": "nurse_task"
   },
   "fall_anticoag": {
    "_note": "Confirmed (witnessed / patient or caregiver reports a fall) fall on an anticoagulant -> ABSOLUTE. Unwitnessed possible fall (impact or device signal) cleared by a caregiver check -> SUPPRESSED explained_caregiver_check, nurse_task (confirm with the patient there was no fall).",
@@ -1145,6 +1168,30 @@
     "drugs_b_rx": "sertraline|citalopram|escitalopram|fluoxetine|paroxetine|fluvoxamine|venlafaxine|duloxetine|desvenlafaxine|mirtazapine|phenelzine|selegiline",
     "confusion_rx": "(?:more |newly |acutely )?confus\\w*|mixed up|disorient\\w*|not making sense|muddled",
     "current_rx": "(?:now|currently|right now|today|at the moment|this (?:morning|afternoon|evening))[^.;]{0,40}(?:more )?confus\\w*|(?:more )?confus\\w*[^.;]{0,30}(?:now|right now|than (?:usual|baseline|normal))|worse than (?:usual|baseline|yesterday)"
+   }
+  },
+  "v1111": {
+   "_note": "SMART_TRIGGERS v1.11.1 (Wayne 2026-10-23 rulings on HO2-007, HV3-004, HV3-005, HW4-002, HW2-006, HW3-007). Every number is a PLACEHOLDER for the clinical owner. Built on synthetic practice vignettes (jev_baseline/test_layer1_v1111.py), never on holdout text.",
+   "ckd_low_explained": {
+    "_note": "Insulin/sulfonylurea + CKD danger-level low, normal recheck, no symptoms: explained by sensor compression (witness or artifact flag) -> ckd_low_compression_explained nurse_task (check sensor placement, confirm no symptoms); explained by recent exertion -> ckd_low_exertion_explained nurse_task (exercise-precaution teaching). A prior danger low within ckd_low_dose_review.prior_low_days overrides both -> repeated_lows_dose_review provider_task. Unexplained -> ckd_low_dose_review provider_task.",
+    "compression_rx": "compression|pinned|pressed|sensor[- ](?:side|arm) lying|lying on (?:the |his |her )?sensor|(?:rolled|lay|lying|slept|sleeps?|sleeping)\\b[^.;]{0,20}?\\b(?:on|onto) (?:the |his |her )?(?:sensor|left|right)\\b[^.;]{0,60}\\bsensor",
+    "exertion_rx": "\\bhoe\\w*|\\bdig(?:ging)?\\b|\\bmow\\w*|\\brak(?:e|ed|ing)\\b|shovel\\w*|garden\\w*|yard ?work|\\bweed\\w*|brisk walk|long walk|\\bhik\\w*|exercis\\w*|\\bcycl(?:ed|ing)\\b|\\bswim\\w*|\\bdanc\\w*|workout|\\bgym\\b",
+    "route": "nurse_task"
+   },
+   "glucose_lookback": {
+    "_note": "A recovered, asymptomatic drug-related CKD danger low earlier than Day -1 but within lookback_h (PLACEHOLDER 72 h = Day -3..-2) -> recent_ckd_low_dose_review provider_task (same explanations apply).",
+    "lookback_h": 72,
+    "route": "provider_task"
+   },
+   "band_no_home_o2": {
+    "_note": "COPD reading inside a documented patient band, but the band (lower bound) or the night minimum sits at/below band_low_max with NO home oxygen on the med/device/problem list -> within_band_low_no_home_o2 provider_task (evaluate for home oxygen). With home oxygen the reading stays within_patient_band silent_log.",
+    "band_low_max": 88,
+    "night_min_below": 88,
+    "route": "provider_task"
+   },
+   "gap_contact": {
+    "_note": "A contact sentence may carry its 'looked fine / well' detail in the next sentence of the same note (e.g. 'We did a video call on Day -1 at 17:00. He looked fine.') An explained high-risk gap is SUPPRESSED with a nurse_task floor (Wayne: nurse_task SUPPRESSED, as HW8-006), so a model cannot drop it to silent_log.",
+    "next_sentence": true
    }
   }
  }

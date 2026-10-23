@@ -43,9 +43,9 @@ def test_ckd_cleared_low_on_sulfonylurea_is_provider_dose_review():
     assert "review the dose" in d["plain_reason"]
 def test_ckd_cleared_low_on_insulin_is_provider_dose_review():
     assert L.route(ev(meds=INS, **CKD_CLEARED), None)[0] == "provider_task"
-def test_ckd_low_with_documented_compression_keeps_v110_nurse_floor():
+def test_ckd_low_with_documented_compression_keeps_v110_nurse_floor():   # v1.11.1: now an explicit rule (ckd_low_compression_explained)
     k = copy.deepcopy(CKD_CLEARED); k["trend_last_7d"] = k["trend_last_7d"].replace("with no sensor flag", "while lying on the sensor arm")
-    d = ev(meds=INS, **k); assert d["reason"] == "cleared_by_repeat" and L.route(d, None)[0] == "nurse_task"
+    d = ev(meds=INS, **k); assert d["reason"] == "ckd_low_compression_explained" and L.route(d, None)[0] == "nurse_task"
 def test_no_ckd_single_compression_low_stays_silent():
     d = ev(pmh=["type 2 diabetes"], meds=INS, devices=["cgm", "glucometer"], trend_last_7d="Day -6 to -1: CGM nightly minimum 92-110 mg/dL, no lows. Day 0: CGM 51 mg/dL at 03:00; meter 99 mg/dL at 03:09, untreated.",
            caregiver_or_nurse_note="Son: asleep on her sensor side, comfortable.")
@@ -56,7 +56,7 @@ def test_no_ckd_repeated_lows_dose_review():
     assert d["reason"] == "repeated_lows_dose_review" and L.route(d, None)[0] == "provider_task"
 
 # c) patient-level baseline bands
-BAND = dict(pmh=["COPD GOLD 3"], devices=["watch", "fingertip_oximeter"], baseline_30d={"rest_hr": 82, "spo2_night_min": 83})
+BAND = dict(pmh=["COPD GOLD 3", "home oxygen 2 L/min"], devices=["watch", "fingertip_oximeter"], baseline_30d={"rest_hr": 82, "spo2_night_min": 83})
 def test_reading_inside_patient_rule_band_is_silent():
     d = ev(patient_bands={"spo2": [86, 89]}, trend_last_7d="Day -6 to -1: wrist SpO2 86-89% at rest. Day 0 11:00 wrist SpO2 87% at rest, RR 18.", caregiver_or_nurse_note="Husband: breathing as usual.", **BAND)
     assert d["reason"] == "within_patient_band" and L.route(d, None)[0] == "silent_log" and L.route(d, "nurse_task")[0] == "nurse_task"
