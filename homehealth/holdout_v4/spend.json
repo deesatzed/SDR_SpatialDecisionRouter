@@ -3,9 +3,11 @@
  "gen_cap_usd": 2.3,
  "generation_usd": 0.6303,
  "grading_usd": 1.0046,
- "jev_usd": 0.0,
- "total_usd": 1.635,
+ "jev_usd": 0.0088,
+ "total_usd": 1.6437,
  "calls": 26,
  "failed_calls": 9,
- "source": "usage.cost from OpenRouter responses (state.json); read-timeout calls reported $0 (hidden cost of timed-out calls, if any, is not visible here)"
+ "source": "usage.cost from OpenRouter responses (state.json); read-timeout calls reported $0 (hidden cost of timed-out calls, if any, is not visible here)",
+ "jev_calls": 201,
+ "jev_note": "prompt v1.10, base variant, 67 cases x 3 models (d1-ultra, pplx-decider-v1.2, drex-max), SPEND_CAP $0.30"
 }
