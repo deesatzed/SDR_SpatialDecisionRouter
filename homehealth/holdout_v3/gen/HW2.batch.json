@@ -1,0 +1,1069 @@
+{
+ "cases": [
+  {
+   "case_id": "HW2-001",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "HTN",
+    "CKD 3b",
+    "AFib"
+   ],
+   "function_baseline": "walks independently with cane",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -300
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -200
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 66,
+    "hrv_ms": 35,
+    "sleep_h": 7.2,
+    "steps": 3200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 78.5,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 64-68, night SpO2 min 92-94%, steps 3100-3300, weight 78.4-78.6 kg, no significant changes.",
+   "caregiver_or_nurse_note": "Neighbor text at 09:15 Day 0: \"He was out watering the plants and just crumpled onto the grass. His eyes rolled back and he didn't answer for maybe thirty seconds. He's sitting up now but seems confused about what happened.\"",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 132,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.2
+   },
+   "router_input": "75-79 M, lives alone, Fitzpatrick I-IV, pmh HTN, CKD 3b, AFib, walks independently with cane. Meds apixaban 5 mg BID, ramipril 5 mg daily, amlodipine 5 mg daily, no recent changes. Devices watch, ring, scale, bp_cuff. Baseline rest HR 66, HRV 35 ms, sleep 7.2 h, steps 3200, night SpO2 min 93%, weight 78.5 kg. Trends stable last 7 days. Today neighbor witnessed him collapse onto the grass with eyes rolling back, unresponsive ~30 s, now confused. No head strike. No device flags, 0 missing hours.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_SYNCOPE",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "syncope"
+   ],
+   "rationale": "Witnessed syncopal episode with loss of tone and unresponsiveness in a patient with AFib and CKD 3b. HT_SYNCOPE is an absolute trigger, paging now. Naive-model trap: A shallow model might downplay because vitals are stable prior, missing the emergent nature of a sudden loss of consciousness.",
+   "decisive_feature": "witnessed collapse with eyes rolling back and unresponsiveness"
+  },
+  {
+   "case_id": "HW2-002",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with adult child",
+   "pmh": [
+    "HTN",
+    "DM2",
+    "previous TIA"
+   ],
+   "function_baseline": "walks indoors with rollator, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -700
+    },
+    {
+     "name": "metformin",
+     "dose": "1000 mg BID",
+     "started_day": -600
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "glucometer",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 28,
+    "sleep_h": 6.5,
+    "steps": 2100,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.1,
+    "weight_kg": 68.2,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 70-74, steps 2000-2200, weight stable 68.0-68.3 kg. No flags.",
+   "caregiver_or_nurse_note": "Daughter call at 10:30 Day 0: \"Her mouth is pulling down at one corner and she keeps missing the button with her right hand. She tried to ask for a drink but called the kettle the telephone, and she seems confused.\" Last known well 45 minutes ago.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 189,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "80-84 F, Fitzpatrick V-VI, lives with adult child, pmh HTN, DM2, previous TIA, walks with rollator. Meds amlodipine 5 mg daily, metformin 1000 mg BID, no recent changes. Devices watch, glucometer, bp_cuff. Baseline rest HR 72, steps 2100, weight 68.2 kg, night SpO2 92%. Trends stable. Daughter reports acute onset of a lopsided mouth, right-hand clumsiness, wrong-word speech, and confusion, last known well 45 min ago.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FOCAL_NEURO",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "stroke"
+   ],
+   "rationale": "Acute focal neurological deficit with facial droop, right upper extremity weakness, and aphasia. HT_FOCAL_NEURO is absolute, requiring immediate evaluation. Naive-model trap: A model might consider the vitals normal and delay, missing the time-critical nature of a stroke.",
+   "decisive_feature": "new right-hand clumsiness with wrong-word speech and facial asymmetry"
+  },
+  {
+   "case_id": "HW2-003",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "AFib",
+    "HTN"
+   ],
+   "function_baseline": "independent, no aids",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "diltiazem",
+     "dose": "120 mg daily",
+     "started_day": -5
+    },
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -600
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "diltiazem",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "120 mg daily",
+     "day": -5
+    }
+   ],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 33,
+    "sleep_h": 7.0,
+    "steps": 4500,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 82.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 64-70, after diltiazem started Day -5 HR 58-62, but today Day 0 at 10:22 watch shows HR 42 bpm sustained 8 minutes, no motion flag. Steps, weight stable.",
+   "caregiver_or_nurse_note": "Spouse text Day 0 10:40: \"He felt the room tilt while sitting and had to grab the table. He said he got lightheaded. The watch read 42.\" No fall.",
+   "baseline_status": {
+    "phase": "relearning",
+    "monitoring_day": 35,
+    "learning_days_total": 4,
+    "last_condition_change": {
+     "type": "rate_control_med",
+     "day": -5
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.8
+   },
+   "router_input": "70-74 M, lives with spouse, pmh AFib, HTN, meds: diltiazem 120 mg daily started Day -5, apixaban 5 mg BID long-term, ramipril 5 mg. Devices watch, bp_cuff, scale. Baseline rest HR 68. After diltiazem, resting HR fell to 58-62. Today HR 42 bpm for several minutes, no motion flag, associated with lightheadedness/room-tilting while seated. Spouse confirms symptoms.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_BRADY_RATE_DRUG",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "patient_call",
+   "confirm_timeout_min": 10,
+   "suppression_reason": null,
+   "baseline_layer": "baseline_reset",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "arrhythmia",
+    "med_change"
+   ],
+   "rationale": "Symptomatic bradycardia (HR 42) with lightheadedness on a newly started rate-control medication. HT_BRADY_RATE_DRUG fires as CONFIRM_FIRST; the patient is still able to report symptoms, but needs immediate clinician call. Naive-model trap: A simplistic model might treat it as an expected bradycardia after diltiazem start and downgrade to nurse_task, overlooking the symptomatic nature requiring urgent evaluation.",
+   "decisive_feature": "symptomatic resting bradycardia 42 bpm after new diltiazem"
+  },
+  {
+   "case_id": "HW2-004",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "COPD stage 3 on home O2",
+    "HTN"
+   ],
+   "function_baseline": "walks in home, O2 at 2 L/min, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "tiotropium",
+     "dose": "18 mcg daily",
+     "started_day": -800
+    },
+    {
+     "name": "albuterol",
+     "dose": "PRN",
+     "started_day": -800
+    },
+    {
+     "name": "lisinopril",
+     "dose": "10 mg daily",
+     "started_day": -500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 82,
+    "hrv_ms": 22,
+    "sleep_h": 6.0,
+    "steps": 1600,
+    "spo2_night_min": 90,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 59.5,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 80-85, night SpO2 min 89-91%, steps 1500-1700, weight stable. Day 0 at 08:20 wrist SpO2 86% sitting for 10 min, no motion flag. RR 24, HR 96.",
+   "caregiver_or_nurse_note": "Aide message Day 0 08:35: \"She is breathing faster and says she feels short of breath. No fever. The watch showed 86%. I don't have the finger clip today.\"",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 112,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.0
+   },
+   "router_input": "85-89 F, lives alone, Fitzpatrick V-VI, pmh COPD on home O2, HTN. Meds tiotropium, albuterol PRN, lisinopril. Devices watch, bp_cuff, scale. No fingertip oximeter in home. Baseline rest HR 82, night SpO2 min 90%, steps 1600. Today resting wrist SpO2 86% (good waveform), HR 96, RR 24. Aide reports dyspnoea, no fingertip check.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_SPO2_LT88",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "patient_call",
+   "confirm_timeout_min": 15,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "respiratory",
+    "spo2_bias"
+   ],
+   "rationale": "Reliable wrist SpO2 86% below 88% in a COPD patient with dyspnoea, yet no fingertip confirmation. HT_SPO2_LT88 requires a confirm step; without confirmation now, urgent_page with patient_call in 15 min. Naive-model trap: A model may dismiss it as artifact because of dark skin and no fingertip, but the reliable signal and symptoms make it a high-priority CONFIRM_FIRST.",
+   "decisive_feature": "resting wrist SpO2 86% with dyspnoea and no fingertip oximeter available"
+  },
+  {
+   "case_id": "HW2-005",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "AFib",
+    "CKD 3a"
+   ],
+   "function_baseline": "walks with walker indoors",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "edoxaban",
+     "dose": "60 mg daily",
+     "started_day": -300
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -300
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 40,
+    "sleep_h": 6.8,
+    "steps": 1800,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 64.2,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 60-64, steps 1700-1900, weight stable. Day -1 watch off-wrist for shower 21:00-21:15, but reapplied. Day 0 02:14 watch logs impact while off-wrist (charging dock log shows watch on charger) and HR no data, then at 02:30 watch back on wrist HR 88. No steps for 15 min then normal.",
+   "caregiver_or_nurse_note": "Patient call at 08:10 Day 0: \"I took my watch off to charge last night and it must have fallen off the nightstand. I didn't fall or slip. I just got up to the loo and found it on the floor this morning.\" No injury.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 145,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 90,
+    "artifact_flags": [
+     "off-wrist 02:14-02:30 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.3
+   },
+   "router_input": "80-84 F, lives alone, pmh AFib, CKD 3a, on edoxaban and bisoprolol. Devices watch, scale. Baseline rest HR 62, steps 1800. Watch impact logged at 02:14 while off-wrist (charger dock log), later found on floor. Patient states she did not fall, it slipped from nightstand. No steps for 15 minutes but then normal. No injury, no pain.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "explained",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "fall",
+    "med_change"
+   ],
+   "rationale": "Watch impact off-wrist with charger dock evidence and patient denial of a fall. HT_FALL_ANTICOAG fires but is suppressed because it is explained (watch dropped). Nurse still contacts to verify no fall and check adherence. Naive-model trap: An over-eager model might escalate to urgent_page for every anticoagulated fall impact, ignoring the clear off-wrist evidence and patient statement.",
+   "decisive_feature": "off-wrist impact with dock log and patient denial of fall"
+  },
+  {
+   "case_id": "HW2-006",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "HFrEF EF 35%",
+    "insulin-dependent DM2",
+    "CKD 3b"
+   ],
+   "function_baseline": "walks with cane indoors",
+   "patient_goals": null,
+   "discharge": {
+    "day": -8,
+    "reason": "HF exacerbation"
+   },
+   "meds": [
+    {
+     "name": "insulin glargine",
+     "dose": "20 units bedtime",
+     "started_day": -200
+    },
+    {
+     "name": "empagliflozin",
+     "dose": "10 mg daily",
+     "started_day": -200
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -200
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale",
+    "cgm"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 30,
+    "sleep_h": 6.2,
+    "steps": 2400,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 85.5,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: stable, weight 85.3-85.7 kg. Starting Day -4 watch wear dropped, leaving gap of 50 hours (Day -5 18:00 to Day -3 20:00). Only scale weigh-ins during gap at Day -4 (85.4 kg) and Day -3 (85.6 kg). CGM data: mean glucose 138 mg/dL within gap, no lows. At Day -3 20:00 watch data resumed, rest HR 74, steps 2100 that day.",
+   "caregiver_or_nurse_note": "Adult child note Day -2: \"We did a video call with Dad on Day -1 at 17:00. He was sitting up, eating dinner, looked fine. He said he just forgot to wear the watch while the charger was lost.\" Also note from Day -1: \"Charger found under bed.\"",
+   "baseline_status": {
+    "phase": "relearning",
+    "monitoring_day": 12,
+    "learning_days_total": 4,
+    "last_condition_change": {
+     "type": "hospitalization",
+     "day": -8
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 52,
+    "artifact_flags": [
+     "lost charger Day -4 to -1"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 50
+   },
+   "router_input": "75-79 M, lives alone, pmh HFrEF EF 35%, insulin-dependent DM2, CKD 3b, discharged Day -8 for HF. Meds insulin glargine, empagliflozin, bisoprolol. Devices watch, scale, cgm. 50-hour watch gap from Day -5 18:00 to Day -3 20:00; scale weigh-ins during gap at 85.4 and 85.6 kg. Inside the gap, a video call with adult child on Day -1 at 17:00, patient well and eating. Charger found later. Hard trigger HT_GAP48_HIGHRISK fires.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_GAP48_HIGHRISK",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "explained",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "missing_data",
+    "hf"
+   ],
+   "rationale": "High-risk post-discharge patient with >48 h watch gap, but explained by a timed video contact inside the gap confirming his well-being. HT_GAP48_HIGHRISK suppressed; nurse follows up to ensure device adherence and safety. Naive-model trap: A model might miss the in-gap video call and escalate to urgent_page for an unexplained 48-hour gap in a high-risk insulin user.",
+   "decisive_feature": "50-hour device gap in high-risk patient explained by video call inside the gap"
+  },
+  {
+   "case_id": "HW2-007",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "mixed dementia",
+    "HTN",
+    "osteoarthritis"
+   ],
+   "function_baseline": "needs stand-by assist for transfers, orientating self",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "donepezil",
+     "dose": "10 mg daily",
+     "started_day": -500
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -600
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 74,
+    "hrv_ms": 28,
+    "sleep_h": 5.8,
+    "steps": 1400,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 55.2,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: all streams at baseline. Weight 55.0-55.4 kg, rest HR 72-76, steps 1300-1500, night SpO2 min 91-93%. No flags.",
+   "caregiver_or_nurse_note": "Spouse call Day 0 14:10: \"I can't do this anymore. She's the same, but I'm up four times a night and I'm so tired I can't think. Is there any way someone can come and sit with her for a few hours?\" No new patient symptoms.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "80-84 F, lives with spouse, Fitzpatrick V-VI, pmh mixed dementia, HTN, osteoarthritis. Meds donepezil, amlodipine. Devices watch, scale, bp_cuff. All device streams remain at baseline: weight 55.2 kg, rest HR 74, steps 1400. Spouse exhausted, asking for respite help; no change in patient's condition.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "caregiver"
+   ],
+   "rationale": "No clinical change; the patient is stable. The spouse's exhaustion is a caregiving need, not a clinical escalation. Nurse contacts within 24-72 hours to arrange respite. Naive-model trap: A naive model might interpret the caregiver's distress as a patient emergency, triggering an urgent page.",
+   "decisive_feature": "caregiver exhaustion without any change in patient vitals or symptoms"
+  },
+  {
+   "case_id": "HW2-008",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "HFpEF",
+    "paroxysmal AFib",
+    "HTN"
+   ],
+   "function_baseline": "walks outdoors daily, independent",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -120
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "furosemide",
+     "dose": "20 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "bisoprolol",
+     "change": "dose_increased",
+     "from_dose": "1.25 mg daily",
+     "to_dose": "2.5 mg daily",
+     "day": -7
+    }
+   ],
+   "devices": [
+    "watch",
+    "ring",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 38,
+    "sleep_h": 7.5,
+    "steps": 5200,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 88.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: after bisoprolol increase, watch rest HR dropped to 48-52, but ring rest HR remained 60-64. No symptoms. Day 0: watch HR 49, ring HR 62, both no motion flags. Steps 5000, weight stable.",
+   "caregiver_or_nurse_note": "Spouse note: \"He feels fine, no lightheadedness. The watch keeps beeping slow heart, but the ring shows 60-something. Which one is right?\"",
+   "baseline_status": {
+    "phase": "relearning",
+    "monitoring_day": 55,
+    "learning_days_total": 4,
+    "last_condition_change": {
+     "type": "rate_control_med",
+     "day": -7
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 97,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.3
+   },
+   "router_input": "75-79 M, lives with spouse, pmh HFpEF, paroxysmal AFib, HTN. Meds bisoprolol increased to 2.5 mg daily on Day -7, ramipril, furosemide. Devices watch, ring, scale, bp_cuff. Resting HR via watch is 49, but simultaneous ring HR is 62; no symptoms. The discrepancy needs provider review to determine which device is accurate and whether medication adjustment is needed.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task_with_recheck"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "arrhythmia",
+    "med_change",
+    "conflicting"
+   ],
+   "rationale": "Asymptomatic bradycardia with conflicting HR signals: watch shows 49 bpm, ring 62 bpm. No hard trigger because not symptomatic; provider needs to reconcile the device discordance and assess bisoprolol dosing. Naive-model trap: A naive model might trigger an alert for bradycardia based on the watch alone, ignoring the asymptomatic status and the concurrent ring HR.",
+   "decisive_feature": "asymptomatic bradycardia with conflicting watch and ring heart rates"
+  },
+  {
+   "case_id": "HW2-009",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "COPD",
+    "HTN",
+    "obesity"
+   ],
+   "function_baseline": "walks indoors with a stick, SOB on >1 flight of stairs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "indacaterol/glycopyrronium",
+     "dose": "110/50 mcg daily",
+     "started_day": -200
+    },
+    {
+     "name": "lisinopril",
+     "dose": "10 mg daily",
+     "started_day": -500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 78,
+    "hrv_ms": 26,
+    "sleep_h": 6.5,
+    "steps": 2800,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 92.5,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 76-80, steps 2700-2900, weight stable. Wrist SpO2 91-92% daily rests, ring SpO2 94-95% simultaneously. No fingertip oximeter. No dyspnoea at rest.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 98,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.7
+   },
+   "router_input": "70-74 F, Fitzpatrick V-VI, lives alone, pmh COPD, HTN, obesity. Meds LABA/LAMA, lisinopril. Devices watch, ring, scale. Wrist SpO2 91-92% at rest, ring SpO2 94-95% over several days. Stable HR, steps. No fingertip oximeter, no dyspnoea. Provider review needed to evaluate possible SpO2 bias from dark skin and determine actual oxygenation.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task_with_recheck"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "respiratory",
+    "spo2_bias",
+    "conflicting"
+   ],
+   "rationale": "Discordant SpO2 between wrist (91-92%) and ring (94-95%) in a patient with dark skin, without a fingertip check. No trigger fires because SpO2 >88% on both devices, but the inconsistency raises concerns about missed hypoxemia; provider should investigate with a validated peripherally obtained saturation. Naive-model trap: A shallow model might see both readings above 90% and log silently, ignoring the racial bias signal.",
+   "decisive_feature": "discordant SpO2 between watch and ring in dark skin with no fingertip verification"
+  },
+  {
+   "case_id": "HW2-010",
+   "pair_id": null,
+   "age_band": "65-69",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "HFmrEF EF 45%",
+    "HTN"
+   ],
+   "function_baseline": "walks outside daily, no aids",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "sacubitril/valsartan",
+     "dose": "24/26 mg BID",
+     "started_day": -180
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -180
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "fingertip_oximeter",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 44,
+    "sleep_h": 7.2,
+    "steps": 5800,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 92.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 60-64, steps 5500-6000, weight 91.8-92.2 kg. Day 0 at 06:15 watch SpO2 85% with motion flag (walking). At 06:17 after sitting, a clean fingertip SpO2 97%. No symptoms.",
+   "caregiver_or_nurse_note": "Spouse note: \"He got up and walked to the kitchen, the watch showed 85, but we put the finger clip on and it was 97. He feels absolutely fine.\"",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 210,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 98,
+    "artifact_flags": [
+     "motion during SpO2 sample Day 0 06:15"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.2
+   },
+   "router_input": "65-69 M, lives with spouse, pmh HFmrEF, HTN. Meds sacubitril/valsartan, bisoprolol. Devices watch, fingertip oximeter, scale. Motion-flagged watch SpO2 85% while walking, immediately followed by a clean seated fingertip SpO2 97%, asymptomatic. HT_SPO2_LT88 fires but is suppressed as unreliable reading; artifact cleared by a clean repeat.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_SPO2_LT88",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "unreliable_reading",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "noise",
+    "spo2_bias"
+   ],
+   "rationale": "Motion-flagged wrist SpO2 85% contradicted by a clean fingertip 97% with no symptoms, so the HT_SPO2_LT88 trigger is suppressed as an unreliable reading. Silent log is sufficient. Naive-model trap: An algorithm might ignore the motion flag and the clear normal fingertip, paging urgently for what is an artifact.",
+   "decisive_feature": "motion-flagged wrist SpO2 85% cleared by fingertip 97%"
+  },
+  {
+   "case_id": "HW2-011",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with paid caregiver overnight",
+   "pmh": [
+    "advanced dementia",
+    "HTN",
+    "osteoporosis"
+   ],
+   "function_baseline": "bed-bound, requires total assistance",
+   "patient_goals": "comfort-focused; no hospital transfers",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -900
+    },
+    {
+     "name": "morphine",
+     "dose": "5 mg PRN at night",
+     "started_day": -90
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "bed_sensor"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 22,
+    "sleep_h": 6.0,
+    "steps": 20,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.1,
+    "weight_kg": 48.5,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 66-70, night SpO2 min 92-94%, steps 10-30. Day 0 02:42 watch HR spikes to 175 bpm with motion flag, while simultaneous ring HR is 64 bpm, bed sensor shows no movement, caregiver reports patient asleep.",
+   "caregiver_or_nurse_note": "Overnight aide note: \"She slept through the night. The watch beeped at 2:42 with a high heart rate, but she was lying still and the ring on her other hand showed 64.\"",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 87,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [
+     "motion flagged Day 0 02:42"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0.5
+   },
+   "router_input": "80-84 F, Fitzpatrick V-VI, bed-bound with advanced dementia, comfort goals. Meds amlodipine, morphine PRN. Devices watch, ring, bed_sensor. Single watch HR spike to 175 bpm at 02:42 while motion-flagged; concurrent ring HR 64, bed sensor quiet, patient asleep. No artifacts on ring. No hard trigger fires.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "noise"
+   ],
+   "rationale": "Watch tachycardia artifact during sleep is contradicted by the concurrent ring HR and bed-sensor stillness, and is motion-flagged. No hard trigger (tachycardia alone does not trigger). Silent log. Naive-model trap: A model might alert for tachycardia and miss the concordant ring HR, generating a false alarm.",
+   "decisive_feature": "motion-flagged watch HR spike 175 while ring HR 64 and patient asleep"
+  }
+ ],
+ "tally": {
+  "n": 11,
+  "id_range": [
+   "HW2-001",
+   "HW2-011"
+  ],
+  "routes": {
+   "silent_log": 2,
+   "nurse_task": 3,
+   "provider_task": 2,
+   "urgent_page": 4
+  },
+  "difficulty": {
+   "easy": 0,
+   "medium": 1,
+   "hard": 5,
+   "adversarial": 5
+  },
+  "hard_plus_adversarial_pct": 91,
+  "category_primary": {
+   "syncope": 1,
+   "stroke": 1,
+   "arrhythmia": 2,
+   "respiratory": 2,
+   "fall": 1,
+   "missing_data": 1,
+   "caregiver": 1,
+   "noise": 2
+  },
+  "category_any": {
+   "syncope": 1,
+   "stroke": 1,
+   "arrhythmia": 2,
+   "respiratory": 2,
+   "fall": 1,
+   "missing_data": 1,
+   "caregiver": 1,
+   "noise": 2,
+   "spo2_bias": 2,
+   "med_change": 2,
+   "conflicting": 2
+  },
+  "hidden_hypoxemia_ids": [
+   "HW2-004",
+   "HW2-009"
+  ],
+  "subtle_deterioration_ids": [],
+  "pairs": {},
+  "hard_trigger_ids": {
+   "HT_SYNCOPE": [
+    "HW2-001"
+   ],
+   "HT_FOCAL_NEURO": [
+    "HW2-002"
+   ],
+   "HT_BRADY_RATE_DRUG": [
+    "HW2-003"
+   ],
+   "HT_SPO2_LT88": [
+    "HW2-004",
+    "HW2-010"
+   ],
+   "HT_FALL_ANTICOAG": [
+    "HW2-005"
+   ],
+   "HT_GAP48_HIGHRISK": [
+    "HW2-006"
+   ]
+  },
+  "trigger_tiers": {
+   "ABSOLUTE": [
+    "HW2-001",
+    "HW2-002"
+   ],
+   "CONFIRM_FIRST": [
+    "HW2-003",
+    "HW2-004"
+   ],
+   "SUPPRESSED": [
+    "HW2-005",
+    "HW2-006",
+    "HW2-010"
+   ],
+   "ARTIFACT": []
+  },
+  "baseline_layers": {
+   "learning_period": [],
+   "baseline_reset": [
+    "HW2-003",
+    "HW2-006",
+    "HW2-008"
+   ],
+   "drift_not_absorbed": [],
+   "hard_limit_artifact": [],
+   "hard_limit_danger": []
+  },
+  "fitzpatrick_v_vi_count": 4,
+  "minimums": {
+   "absolute triggers": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "confirm_first": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "brady": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "hard_plus_adversarial_70pct": {
+    "required": 70,
+    "actual": 91,
+    "met": true
+   },
+   "outside_module_30pct": {
+    "required": 30,
+    "actual": 45,
+    "met": true
+   }
+  },
+  "all_minimums_met": true,
+  "self_check_failures_fixed": 0
+ },
+ "meta": {
+  "batch": "HW2",
+  "model": "deepseek/deepseek-v4-pro",
+  "module": "deepseek",
+  "n_requested": 11,
+  "n_got": 11,
+  "split": false,
+  "id_fixes": 0
+ }
+}

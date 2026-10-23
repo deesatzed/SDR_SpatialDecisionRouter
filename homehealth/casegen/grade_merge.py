@@ -39,7 +39,8 @@ RULE_TIER = {"HT_SYNCOPE": "ABSOLUTE", "HT_FOCAL_NEURO": "ABSOLUTE", "HT_CHEST_P
              "HT_SPO2_LT88": "CONFIRM_FIRST", "HT_GAP48_HIGHRISK": "CONFIRM_FIRST", "HT_FALL_ANTICOAG": "CONFIRM_FIRST",
              "HT_VS_DANGER": "ABSOLUTE", "HT_VS_IMPLAUSIBLE": "ARTIFACT",   # v2.3 VS layers
              "HT_VS_BASELINE": "CONFIRM_FIRST",
-             "HT_BRADY_RATE_DRUG": "CONFIRM_FIRST"}   # v1.10: symptomatic bradycardia on a rate-slowing drug   # v1.5: engine baseline deviation (|z| >= z_confirm); used in secondary_triggers
+             "HT_BRADY_RATE_DRUG": "CONFIRM_FIRST",
+             "HT_FALL_PAIN": "ABSOLUTE", "HT_SPO2_REST_DYSPNEA": "CONFIRM_FIRST"}   # v1.10.2: pain after a fall (any anticoag status); candidate confirmed SpO2 <= 90 + rest dyspnea (HF/COPD)   # v1.10: symptomatic bradycardia on a rate-slowing drug   # v1.5: engine baseline deviation (|z| >= z_confirm); used in secondary_triggers
 CONFIRM_STEPS = {"fingertip_recheck", "patient_call", "watch_prompt", "caregiver_ping", "already_confirmed", "device_recheck+patient_call"}  # last: chest-pain rule with a quality-flagged vital
 ARTIFACT_STEPS = {"device_recheck", "fingertip_recheck", "fingerstick_recheck"}  # last: CGM pressure-low rule
 BASELINE_LAYERS = {"hard_limit_artifact", "hard_limit_danger", "learning_period", "baseline_reset", "drift_not_absorbed"}

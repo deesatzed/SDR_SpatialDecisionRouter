@@ -1,0 +1,61 @@
+{
+ "generated": 88,
+ "graded": 44,
+ "accepted_by_merge": 21,
+ "dedupe_removed": 0,
+ "accepted_final": 21,
+ "review_queue_disputed": 16,
+ "fix_list_excluded": 7,
+ "queue_reasons": {
+  "NOVELTY_REVIEW": 8,
+  "REJECT": 8
+ },
+ "routes": {
+  "urgent_page": 8,
+  "nurse_task": 5,
+  "provider_task": 4,
+  "silent_log": 4
+ },
+ "tiers": {
+  "ABSOLUTE": 4,
+  "CONFIRM_FIRST": 4
+ },
+ "by_batch_accepted": {
+  "HW1": 9,
+  "HW2": 1,
+  "HW7": 11
+ },
+ "by_batch_generated": {
+  "HW1": 11,
+  "HW2": 11,
+  "HW3": 11,
+  "HW4": 11,
+  "HW5": 11,
+  "HW6": 11,
+  "HW7": 11,
+  "HW8": 11
+ },
+ "complete_pairs": 1,
+ "hospice_goals": 0,
+ "learning_period": 0,
+ "categories": {
+  "med_change": 5,
+  "noise": 5,
+  "acs": 3,
+  "respiratory": 3,
+  "syncope": 2,
+  "recovery": 2,
+  "spo2_bias": 2,
+  "caregiver": 2,
+  "hf": 2,
+  "stroke": 1,
+  "arrhythmia": 1,
+  "renal": 1,
+  "fall": 1
+ },
+ "difficulty": {
+  "hard": 10,
+  "adversarial": 9,
+  "medium": 2
+ }
+}

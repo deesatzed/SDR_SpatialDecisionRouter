@@ -1,0 +1,280 @@
+{
+ "frozen_commit": "fb262af",
+ "smart_triggers": "v1.10.3",
+ "n_cases": 21,
+ "systems": {
+  "L1 + dual (c) [default]": {
+   "n": 21,
+   "decided": 3,
+   "accuracy": 1.0,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 0.0,
+   "false_page_ids": [],
+   "hitm_per_100": 85.7143,
+   "errors": [],
+   "errors_caught_by_hitm": 0,
+   "errors_not_caught": [],
+   "n_errors": 0
+  },
+  "L1 + d1-ultra": {
+   "n": 21,
+   "decided": 3,
+   "accuracy": 1.0,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 0.0,
+   "false_page_ids": [],
+   "hitm_per_100": 0.0,
+   "errors": [],
+   "errors_caught_by_hitm": 0,
+   "errors_not_caught": [],
+   "n_errors": 0
+  },
+  "L1 + pplx": {
+   "n": 21,
+   "decided": 3,
+   "accuracy": 1.0,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 0.0,
+   "false_page_ids": [],
+   "hitm_per_100": 0.0,
+   "errors": [],
+   "errors_caught_by_hitm": 0,
+   "errors_not_caught": [],
+   "n_errors": 0
+  },
+  "Layer 1 alone": {
+   "n": 21,
+   "decided": 3,
+   "accuracy": 1.0,
+   "critical_misses": 0,
+   "critical_ids": [],
+   "false_pages_per_100": 0.0,
+   "false_page_ids": [],
+   "hitm_per_100": 85.7143,
+   "errors": [],
+   "errors_caught_by_hitm": 0,
+   "errors_not_caught": [],
+   "n_errors": 0
+  }
+ },
+ "tier_agreement": {
+  "trigger_cases": 8,
+  "match": 3,
+  "rate": 0.375,
+  "false_paging_triggers_on_no_trigger_cases": [],
+  "mismatch": [
+   [
+    "HW1-001",
+    "ABSOLUTE",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW1-002",
+    "ABSOLUTE",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW1-003",
+    "ABSOLUTE",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW1-004",
+    "CONFIRM_FIRST",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW1-005",
+    "CONFIRM_FIRST",
+    null,
+    "no_trigger"
+   ]
+  ]
+ },
+ "l1": {
+  "HW1-001": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW1-002": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW1-003": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW1-004": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW1-005": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW1-006": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW1-009": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW1-010": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW1-011": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW2-004": {
+   "tier": "CONFIRM_FIRST",
+   "rule": "HT_SPO2_LT88",
+   "reason": "below_88_change_from_own_baseline",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW7-001": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW7-002": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW7-003": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW7-004": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW7-005": {
+   "tier": "ABSOLUTE",
+   "rule": "HT_FALL_ANTICOAG",
+   "reason": "fall_on_anticoagulant_confirmed",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW7-006": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW7-007": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW7-008": {
+   "tier": "CONFIRM_FIRST",
+   "rule": "HT_CHEST_PAIN_VITALS",
+   "reason": null,
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW7-009": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW7-010": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  },
+  "HW7-011": {
+   "tier": null,
+   "rule": null,
+   "reason": "no_trigger",
+   "hitm_required": false,
+   "default_route": null
+  }
+ },
+ "holdout_v1_prefix_60": {
+  "L1 + dual (c) [default]": {
+   "accuracy": 0.9167,
+   "critical_misses": 0,
+   "false_pages_per_100": 0.0,
+   "hitm_per_100": 18.3333,
+   "errors": 5,
+   "errors_in_hitm": 1
+  },
+  "L1 + d1-ultra": {
+   "accuracy": 0.9,
+   "critical_misses": 0,
+   "false_pages_per_100": 0.0,
+   "hitm_per_100": 0.0,
+   "errors": 6,
+   "errors_in_hitm": 0
+  },
+  "L1 + pplx": {
+   "accuracy": 0.8667,
+   "critical_misses": 1,
+   "false_pages_per_100": 0.0,
+   "hitm_per_100": 0.0,
+   "errors": 8,
+   "errors_in_hitm": 0
+  },
+  "layer1_agreement": {
+   "hard_trigger_cases": 22,
+   "tier_match": 16
+  }
+ }
+}

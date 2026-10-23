@@ -1,0 +1,1024 @@
+{
+ "cases": [
+  {
+   "case_id": "HW3-001",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "type 2 diabetes",
+    "hypertension",
+    "osteoarthritis"
+   ],
+   "function_baseline": "walks outdoors with a stick, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "metformin",
+     "dose": "500 mg BID",
+     "started_day": -900
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -600
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 66,
+    "hrv_ms": 38,
+    "sleep_h": 7.1,
+    "steps": 4200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 63.4,
+    "glucose_mean": 121,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: CGM daily mean 116-128 mg/dL, nightly minimum 84-96 mg/dL; watch resting HR 64-68 bpm; steps 3900-4500; scale weight 63.2-63.6 kg. Day 0: CGM 52 mg/dL at 13:40 while seated in a sauna session, with a CGM high-heat-exposure flag 13:35-14:10; watch HR 74 bpm at 13:40; glucometer 97 mg/dL at 14:05; CGM 104 mg/dL at 14:20; no symptoms reported.",
+   "caregiver_or_nurse_note": "Spouse: she felt well in the sauna, talking and laughing; spouse prompted the 14:05 fingerstick.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 58,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [
+     "CGM high-heat-exposure flag 13:35-14:10 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 70-74, female, Fitzpatrick I-IV, lives with spouse. PMH: type 2 diabetes, hypertension, osteoarthritis. Function: walks outdoors with a stick, independent ADLs. Meds: metformin 500 mg BID (since Day -900), ramipril 5 mg daily (since Day -600); no recent changes. Devices: CGM, glucometer, watch, scale. Baseline 30 days: CGM mean 121 mg/dL, rest HR 66 bpm, HRV 38 ms, sleep 7.1 h, steps 4200, night SpO2 minimum 93%, weight 63.4 kg. Baseline status: established, monitoring day 58, learning days total 10. Trend: Day -7 to -1 CGM daily mean 116-128 mg/dL, nightly minimum 84-96; watch resting HR 64-68; steps 3900-4500; scale 63.2-63.6 kg. Day 0: CGM 52 mg/dL at 13:40 while seated in a sauna session; CGM high-heat-exposure flag 13:35-14:10; watch HR 74 at 13:40; glucometer 97 mg/dL at 14:05; CGM 104 mg/dL at 14:20; no symptoms reported. Caregiver: spouse says she felt well, talking and laughing, and spouse prompted the 14:05 fingerstick. Data quality: wear time 95% over 7 days, longest gap 1 h, no missing hours in last 48 h.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "unreliable_reading",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "noise"
+   ],
+   "rationale": "The CGM read 52 mg/dL at 13:40, which fires the danger-level rule, but it sits inside a flagged high-heat sauna window, and a glucometer reading of 97 mg/dL 25 minutes later is a clean repeat with no symptoms. Check 1 (reliable reading) fails on the heat flag and is cleared by the fingerstick, so the trigger is SUPPRESSED unreliable_reading. Check 3 (explained) passes with the flagged window and check 4 passes because there is no hospice plan. She takes metformin and ramipril only, so no insulin or sulfonylurea makes a real low plausible. Naive-model trap: a shallow model pages on the 52 mg/dL value and ignores the same-hour clean fingerstick and the heat flag.",
+   "decisive_feature": "A 52 mg/dL CGM value inside a flagged high-heat window is cleared by a 97 mg/dL fingerstick 25 minutes later, with no symptoms and no insulin or sulfonylurea."
+  },
+  {
+   "case_id": "HW3-002",
+   "pair_id": null,
+   "age_band": "65-69",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "type 2 diabetes",
+    "hypertension",
+    "depression"
+   ],
+   "function_baseline": "independent ADLs, walks daily",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "metformin",
+     "dose": "1000 mg BID",
+     "started_day": -700
+    },
+    {
+     "name": "sertraline",
+     "dose": "50 mg daily",
+     "started_day": -300
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 32,
+    "sleep_h": 6.6,
+    "steps": 3600,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": 139,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: CGM daily mean 128-146 mg/dL, nightly minimum 94-108 mg/dL; watch resting HR 68-72 bpm; steps 3300-3900; night SpO2 minimum 91-93%. Day 0: bedside receiver displayed 53 mg/dL from 02:10 to 02:50 while the phone app read 108 mg/dL at 02:12 and 111 mg/dL at 02:31; receiver flagged a stalled relay 02:08-02:52; watch HR 67 bpm at 02:30; glucometer 101 mg/dL at 03:05; no symptoms reported.",
+   "caregiver_or_nurse_note": "Patient reports he woke at 03:05 out of habit and felt fine.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 83,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [
+     "receiver battery low flag 01:50 Day 0",
+     "receiver relay stalled 02:08-02:52 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 65-69, male, Fitzpatrick V-VI, lives alone. PMH: type 2 diabetes, hypertension, depression. Function: independent ADLs, walks daily. Meds: metformin 1000 mg BID (since Day -700), sertraline 50 mg daily (since Day -300); no recent changes. Devices: CGM, glucometer, watch. Baseline 30 days: CGM mean 139 mg/dL, rest HR 70 bpm, HRV 32 ms, sleep 6.6 h, steps 3600, night SpO2 minimum 92%. Baseline status: established, monitoring day 83, learning days total 10. Trend: Day -7 to -1 CGM daily mean 128-146 mg/dL, nightly minimum 94-108; watch resting HR 68-72; steps 3300-3900; night SpO2 minimum 91-93%. Day 0: bedside receiver displayed 53 mg/dL from 02:10 to 02:50 while the phone app read 108 mg/dL at 02:12 and 111 mg/dL at 02:31; receiver flagged a stalled relay 02:08-02:52; watch HR 67 at 02:30; glucometer 101 mg/dL at 03:05; no symptoms reported. Caregiver: patient reports he woke at 03:05 out of habit and felt fine. Data quality: wear time 93% over 7 days, longest gap 1 h, no missing hours in last 48 h; receiver battery low flag 01:50 Day 0.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "unreliable_reading",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "noise"
+   ],
+   "rationale": "The bedside receiver's 53 mg/dL display from 02:10 to 02:50 fires the danger-level rule, but the phone app read 108 mg/dL at 02:12 and 111 mg/dL at 02:31, and a glucometer reading of 101 mg/dL at 03:05 is a clean repeat within 60 minutes. Check 1 (reliable reading) fails because the receiver flagged a stalled relay and low battery, and the clean repeat clears it, so the trigger is SUPPRESSED unreliable_reading. Check 3 passes with the device flags and check 4 passes with no hospice plan. He takes metformin and sertraline only, with no insulin or sulfonylurea, and felt well on waking. Naive-model trap: a shallow model reads the 53 mg/dL display, ignores the stalled-relay flag and the concurrent 108 mg/dL app value, and pages.",
+   "decisive_feature": "Receiver display stuck on 53 mg/dL while the app reads 108 mg/dL, on a stalled-relay flag, cleared by a 101 mg/dL fingerstick within an hour, with no insulin or sulfonylurea."
+  },
+  {
+   "case_id": "HW3-003",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with adult child",
+   "pmh": [
+    "type 2 diabetes",
+    "osteoarthritis of the knee"
+   ],
+   "function_baseline": "walks indoors with a frame, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "sitagliptin",
+     "dose": "100 mg daily",
+     "started_day": -500
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -260
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 71,
+    "hrv_ms": 35,
+    "sleep_h": 6.9,
+    "steps": 4000,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 71.4,
+    "glucose_mean": 134,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: CGM daily mean 129-141 mg/dL, nightly minimum 98-106 mg/dL; watch resting HR 70-72 bpm; steps 3800-4200; scale 71.2-71.5 kg. Day 0: new compression shapewear worn from 08:00 with the abdominal CGM sensor under the waistband; CGM 51 mg/dL at 10:10 with a CGM pressed-sensor flag 10:00-10:30; watch HR 71 bpm at 10:10; garment loosened 10:30; glucometer 90 mg/dL at 10:40; CGM 118 mg/dL at 10:55; no symptoms reported.",
+   "caregiver_or_nurse_note": "Daughter: she put on the new shapewear this morning and says she felt fine all morning, with no shakiness or sweating.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 64,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [
+     "CGM pressed-sensor flag 10:00-10:30 Day 0",
+     "compression garment worn from 08:00 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 75-79, female, Fitzpatrick I-IV, lives with adult child. PMH: type 2 diabetes, osteoarthritis of the knee. Function: walks indoors with a frame, independent ADLs. Meds: sitagliptin 100 mg daily (since Day -500), amlodipine 5 mg daily (since Day -260); no recent changes. Devices: CGM, glucometer, watch, scale. Baseline 30 days: CGM mean 134 mg/dL, rest HR 71 bpm, HRV 35 ms, sleep 6.9 h, steps 4000, night SpO2 minimum 93%, weight 71.4 kg. Baseline status: established, monitoring day 64, learning days total 10. Trend: Day -7 to -1 CGM daily mean 129-141, nightly minimum 98-106; watch resting HR 70-72; steps 3800-4200; scale 71.2-71.5 kg. Day 0: compression shapewear worn from 08:00 with the abdominal CGM sensor under the waistband; CGM 51 mg/dL at 10:10 with a pressed-sensor flag 10:00-10:30; watch HR 71 at 10:10; garment loosened 10:30; glucometer 90 mg/dL at 10:40; CGM 118 mg/dL at 10:55; no symptoms reported. Caregiver: daughter says she felt fine all morning, with no shakiness or sweating. Data quality: wear time 92% over 7 days, longest gap 1 h, no missing hours in last 48 h.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "unreliable_reading",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "noise"
+   ],
+   "rationale": "The CGM read 51 mg/dL at 10:10 with a pressed-sensor flag under a new compression garment, which fires the danger-level rule. A glucometer reading of 90 mg/dL at 10:40, after the garment was loosened, is a clean repeat above 70 mg/dL within 60 minutes, so check 1 (reliable reading) fails and the trigger is SUPPRESSED unreliable_reading. Check 3 passes with the pressure flag, and check 4 passes with no hospice plan. She takes sitagliptin, which carries no hypoglycemia risk alone, and the CGM read 118 mg/dL 15 minutes after the clean repeat. Naive-model trap: a shallow model pages on the 51 mg/dL value and ignores the pressed-sensor flag and the 90 mg/dL fingerstick 30 minutes later.",
+   "decisive_feature": "A CGM 51 mg/dL value under a compression garment is followed by a 90 mg/dL fingerstick 30 minutes later, after loosening, with no symptoms."
+  },
+  {
+   "case_id": "HW3-004",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with paid caregiver",
+   "pmh": [
+    "hypertension",
+    "osteoporosis"
+   ],
+   "function_baseline": "walks short distances with a walker, needs help with bathing",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale",
+    "bp_cuff",
+    "thermometer"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 29,
+    "sleep_h": 7.4,
+    "steps": 2600,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 59.0,
+    "glucose_mean": null,
+    "sbp": 138,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -7 to -4: steady; watch resting HR 70-74 bpm; steps 2400-2800; scale 58.8-59.2 kg. Day -2 and Day -1: three loose stools a day on the aide log; watch resting HR 80 bpm on Day -2. Day 0: scale 58.2 kg (0.8 kg below baseline); watch resting HR 84 bpm; cuff 132/74 mmHg at 08:10; oral temperature 37.1 C at 08:15; steps 1100 by midday.",
+   "caregiver_or_nurse_note": "Paid aide: loose stools three times a day on Day -2 and Day -1, no blood, no vomiting. Fluid intake has fallen on the aide log. Day 0 she is alert and chatting.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 85-89, female, Fitzpatrick I-IV, lives with paid caregiver. PMH: hypertension, osteoporosis. Function: walks short distances with a walker, needs help with bathing. Meds: amlodipine 5 mg daily (since Day -500); no recent changes. Devices: watch, scale, BP cuff, thermometer. Baseline 30 days: rest HR 72 bpm, HRV 29 ms, sleep 7.4 h, steps 2600, night SpO2 minimum 93%, weight 59.0 kg, BP 138/78 mmHg. Baseline status: established, monitoring day 120, learning days total 10. Trend: Day -7 to -4 steady; watch resting HR 70-74; steps 2400-2800; scale 58.8-59.2 kg. Day -2 and Day -1: three loose stools a day on aide log; watch resting HR 80 on Day -2. Day 0: scale 58.2 kg; watch resting HR 84; cuff 132/74 mmHg at 08:10; oral temperature 37.1 C at 08:15; steps 1100 by midday. Caregiver: paid aide reports no blood, no vomiting, fluid intake reduced on the aide log; patient alert and chatting on Day 0. Data quality: wear time 96% over 7 days, longest gap 1 h, no missing hours in last 48 h.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "provider_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "dehydration"
+   ],
+   "rationale": "Two days of loose stools with reduced fluid intake have produced a 0.8 kg weight fall, and resting HR has risen from 72 to 84 bpm. Blood pressure is 132/74 mmHg, which is lower than baseline but not hypotensive, and the patient is alert, chatting and afebrile at 37.1 C, so no hard trigger applies. The picture fits mild volume loss from gastroenteritis that needs a next-day nurse call with fluid advice and a repeat weight and HR check. Naive-model trap: a shallow model reads the rising resting HR and falling weight as hemodynamic compromise and pages, when the stable mental state and modest changes support a nurse call within 24 hours.",
+   "decisive_feature": "Two days of loose stools with reduced fluids cause a 0.8 kg weight fall and HR 84 bpm, but BP stays at 132/74 mmHg and she remains alert, so this is a next-day nurse call."
+  },
+  {
+   "case_id": "HW3-005",
+   "pair_id": "HW3-P01",
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "CKD 3b",
+    "type 2 diabetes",
+    "hypertension"
+   ],
+   "function_baseline": "walks indoors and to the garden gate, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "glyburide",
+     "dose": "2.5 mg daily",
+     "started_day": -800
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -300
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 69,
+    "hrv_ms": 30,
+    "sleep_h": 6.9,
+    "steps": 3200,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": 142,
+    "sbp": 134,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -7 to -1: CGM daily mean 132-150 mg/dL, nightly minimum 88-104 mg/dL; watch resting HR 67-71 bpm; steps 2900-3400; cuff SBP 128-138 mmHg on three mornings. Day 0: CGM 49 mg/dL at 03:20 with no sensor flags; watch HR 66 bpm at 03:20; no symptoms reported at the time; glucometer 96 mg/dL at 03:40.",
+   "caregiver_or_nurse_note": "Spouse: he slept through the alarm, woke when prompted for the check and said he felt fine.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 47,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "CGM sensor change Day -4"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 80-84, male, Fitzpatrick V-VI, lives with spouse. PMH: CKD 3b, type 2 diabetes, hypertension. Meds: glyburide 2.5 mg daily (since Day -800), amlodipine 5 mg daily (since Day -300); no recent changes. Devices: CGM, glucometer, watch, BP cuff. Baseline 30 days: CGM mean 142 mg/dL, rest HR 69 bpm, HRV 30 ms, sleep 6.9 h, steps 3200, night SpO2 minimum 92%, BP 134/80 mmHg. Baseline status: established, monitoring day 47, learning days total 10. Trend: Day -7 to -1 CGM daily mean 132-150, nightly minimum 88-104; watch resting HR 67-71; steps 2900-3400; cuff SBP 128-138 on three mornings. Day 0: CGM 49 mg/dL at 03:20 with no sensor flags; watch HR 66 at 03:20; no symptoms reported at the time; glucometer 96 mg/dL at 03:40. Caregiver: spouse says he slept through the alarm, woke when prompted for the check and said he felt fine. Data quality: wear time 94% over 7 days, longest gap 1 h, no missing hours in last 48 h; CGM sensor change Day -4.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "unreliable_reading",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "hypoglycemia"
+   ],
+   "rationale": "The CGM read 49 mg/dL overnight, which fires the danger-level rule. A glucometer reading of 96 mg/dL at 03:40 is a clean repeat within 60 minutes, so check 1 (reliable reading) fails and the trigger is SUPPRESSED unreliable_reading. Check 3 finds no timed contact or explanation, but the clean repeat settles it, and check 4 passes with no hospice plan. Because he has CKD 3b and takes a sulfonylurea, the exception applies: the event cannot be silently logged and needs clinician review through a nurse task. Naive-model trap: a shallow model treats a cleared overnight low in an asymptomatic patient as silent_log and skips the sulfonylurea-with-CKD review.",
+   "decisive_feature": "Glyburide with CKD 3b keeps a 49 mg/dL overnight CGM value, cleared by a 96 mg/dL fingerstick 20 minutes later, out of silent logging."
+  },
+  {
+   "case_id": "HW3-006",
+   "pair_id": "HW3-P01",
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "CKD 3b",
+    "type 2 diabetes",
+    "hypertension"
+   ],
+   "function_baseline": "walks indoors and to the garden gate, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "glyburide",
+     "dose": "2.5 mg daily",
+     "started_day": -800
+    },
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -300
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 69,
+    "hrv_ms": 30,
+    "sleep_h": 6.9,
+    "steps": 3200,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": 142,
+    "sbp": 134,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -7 to -1: CGM daily mean 132-150 mg/dL, nightly minimum 88-104 mg/dL; watch resting HR 67-71 bpm; steps 2900-3400; cuff SBP 128-138 mmHg on three mornings. Day 0: CGM 49 mg/dL at 03:20 with no sensor flags; watch HR 66 bpm at 03:20; no symptoms reported at the time; glucometer 48 mg/dL at 03:40.",
+   "caregiver_or_nurse_note": "Spouse: he slept through the alarm, woke when prompted for the check and said he felt fine.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 47,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "CGM sensor change Day -4"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 80-84, male, Fitzpatrick V-VI, lives with spouse. PMH: CKD 3b, type 2 diabetes, hypertension. Meds: glyburide 2.5 mg daily (since Day -800), amlodipine 5 mg daily (since Day -300); no recent changes. Devices: CGM, glucometer, watch, BP cuff. Baseline 30 days: CGM mean 142 mg/dL, rest HR 69 bpm, HRV 30 ms, sleep 6.9 h, steps 3200, night SpO2 minimum 92%, BP 134/80 mmHg. Baseline status: established, monitoring day 47, learning days total 10. Trend: Day -7 to -1 CGM daily mean 132-150, nightly minimum 88-104; watch resting HR 67-71; steps 2900-3400; cuff SBP 128-138 on three mornings. Day 0: CGM 49 mg/dL at 03:20 with no sensor flags; watch HR 66 at 03:20; no symptoms reported at the time; glucometer 48 mg/dL at 03:40. Caregiver: spouse says he slept through the alarm, woke when prompted for the check and said he felt fine. Data quality: wear time 94% over 7 days, longest gap 1 h, no missing hours in last 48 h; CGM sensor change Day -4.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "hard_limit_danger",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "hypoglycemia"
+   ],
+   "rationale": "The CGM read 49 mg/dL overnight and a glucometer reading of 48 mg/dL at 03:40 confirms it on a reliable fingerstick, so check 1 (reliable reading) passes. Check 2 is not the deciding issue because the danger limit applies regardless of baseline, check 3 finds no explanation, and check 4 passes because there is no hospice plan. A confirmed danger-level low on a sulfonylurea with CKD 3b is ABSOLUTE and needs a clinician now, not after a call. Naive-model trap: a shallow model reasons by analogy to the cleared pair member, or reads the patient's lack of symptoms, and routes nurse_task or silent_log when the 48 mg/dL fingerstick requires an immediate page.",
+   "decisive_feature": "A 48 mg/dL fingerstick confirms the 49 mg/dL overnight CGM value on glyburide with CKD 3b, so the danger-level low is real and not cleared."
+  },
+  {
+   "case_id": "HW3-007",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "type 2 diabetes",
+    "CKD 4",
+    "hypertension"
+   ],
+   "function_baseline": "walks indoors, manages own medicines with a weekly organiser",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "insulin glargine",
+     "dose": "18 units at bedtime",
+     "started_day": -1200
+    },
+    {
+     "name": "ramipril",
+     "dose": "2.5 mg daily",
+     "started_day": -500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 31,
+    "sleep_h": 7.0,
+    "steps": 2800,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": 124,
+    "sbp": 146,
+    "dbp": 82
+   },
+   "trend_last_7d": "Day -7 to -3: CGM daily mean 118-132 mg/dL, nightly minimum 76-92 mg/dL; watch resting HR 70-74 bpm; steps 2600-3000; cuff SBP 140-150 mmHg. Day -2 at 02:10: CGM 52 mg/dL on a steady downward trend; watch HR 74 bpm at 02:10 with no motion flag; glucometer 84 mg/dL at 02:40; CGM 96 mg/dL at 03:05; no symptoms reported. Day -1 to 0: nightly minimum 80-90 mg/dL; watch HR 70-72; steps 2700-2900; cuff SBP 142-146 mmHg on Day 0.",
+   "caregiver_or_nurse_note": "Patient reports she slept through the night on Day -2 and felt well on waking.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 96,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 91,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 70-74, female, Fitzpatrick V-VI, lives alone. PMH: type 2 diabetes, CKD 4, hypertension. Function: walks indoors, manages own medicines with a weekly organiser. Meds: insulin glargine 18 units at bedtime (since Day -1200), ramipril 2.5 mg daily (since Day -500); no recent changes. Devices: CGM, glucometer, watch, BP cuff. Baseline 30 days: CGM mean 124 mg/dL, rest HR 72 bpm, HRV 31 ms, sleep 7.0 h, steps 2800, night SpO2 minimum 92%, BP 146/82 mmHg. Baseline status: established, monitoring day 96, learning days total 10. Trend: Day -7 to -3 CGM daily mean 118-132, nightly minimum 76-92; watch resting HR 70-74; steps 2600-3000; cuff SBP 140-150. Day -2 at 02:10: CGM 52 mg/dL on a steady downward trend; watch HR 74 with no motion flag; glucometer 84 mg/dL at 02:40; CGM 96 mg/dL at 03:05; no symptoms reported. Day -1 to 0: nightly minimum 80-90; watch HR 70-72; steps 2700-2900; cuff SBP 142-146 on Day 0. Caregiver: patient reports she slept through the night on Day -2 and felt well on waking. Data quality: wear time 91% over 7 days, longest gap 1 h, no missing hours in last 48 h.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "unreliable_reading",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "hypoglycemia"
+   ],
+   "rationale": "The CGM read 52 mg/dL at 02:10 on basal insulin, which fires the danger-level rule. A glucometer reading of 84 mg/dL at 02:40 is a clean repeat above 70 mg/dL within 60 minutes, so check 1 (reliable reading) fails and the trigger is SUPPRESSED unreliable_reading. Check 2 is not the issue because the event is a cleared sensor reading, check 3 finds no timed contact, and check 4 passes with no hospice plan. With CKD 4 on glargine, the exception applies: the event goes to a nurse task for insulin review, not silent_log. Naive-model trap: a shallow model logs it as silent_log because she was asymptomatic and the fingerstick normalised.",
+   "decisive_feature": "Basal glargine with CKD 4: a 52 mg/dL CGM low at 02:10 cleared by an 84 mg/dL fingerstick 30 minutes later still needs a nurse review, not silent logging."
+  },
+  {
+   "case_id": "HW3-008",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with paid caregiver",
+   "pmh": [
+    "type 2 diabetes",
+    "metastatic prostate cancer, hospice enrolled"
+   ],
+   "function_baseline": "bed-to-chair with help, sleeps in a recliner",
+   "patient_goals": "comfort-focused hospice plan at home; no hospital transfer",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "gliclazide",
+     "dose": "60 mg daily",
+     "started_day": -300
+    },
+    {
+     "name": "morphine oral solution",
+     "dose": "2.5 mg as needed for breathlessness",
+     "started_day": -9
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "morphine oral solution",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "2.5 mg as needed for breathlessness",
+     "day": -9
+    }
+   ],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 28,
+    "sleep_h": 6.1,
+    "steps": 900,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": 139,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -2: CGM daily mean 128-150 mg/dL, nightly minimum 90-110 mg/dL; watch resting HR 66-70 bpm; steps 700-1000; sleep 5.8-6.3 h. Day -1 bedtime CGM 92 mg/dL. Day 0 at 04:05: CGM 46 mg/dL falling about 3 mg/dL per minute; watch HR 104 bpm at 04:05; watch steps 0 at 04:00-04:10; glucometer 47 mg/dL at 04:12 confirms the low; no other data.",
+   "caregiver_or_nurse_note": "Paid carer: found him damp with sweat at 04:00 and answering only when his name is said. Juice given at 04:20 and taken after two prompts; back to sleep by 04:45. Quiet during the day on Day 0.",
+   "baseline_status": {
+    "phase": "relearning",
+    "monitoring_day": 14,
+    "learning_days_total": 6,
+    "last_condition_change": {
+     "type": "hospice_enrollment",
+     "day": -9
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2
+   },
+   "router_input": "Age band 80-84, male, Fitzpatrick I-IV, lives with paid caregiver. PMH: type 2 diabetes, metastatic prostate cancer with hospice enrolment. Goals: comfort-focused hospice plan at home, no hospital transfer. Function: bed-to-chair with help, sleeps in a recliner. Meds: gliclazide 60 mg daily (since Day -300); morphine oral solution 2.5 mg as needed for breathlessness, started Day -9. Devices: CGM, glucometer, watch. Baseline 30 days: CGM mean 139 mg/dL, rest HR 68 bpm, HRV 28 ms, sleep 6.1 h, steps 900, night SpO2 minimum 92%. Baseline status: relearning after hospice enrolment on Day -9, monitoring day 14, learning days total 6. Trend: Day -7 to -2 CGM daily mean 128-150, nightly minimum 90-110; watch resting HR 66-70; steps 700-1000; sleep 5.8-6.3 h. Day -1 bedtime CGM 92 mg/dL. Day 0 at 04:05: CGM 46 mg/dL falling about 3 mg/dL per minute; watch HR 104 at 04:05; watch steps 0 from 04:00 to 04:10; glucometer 47 mg/dL at 04:12 confirms. Caregiver: paid carer found him damp with sweat at 04:00, answering only when his name is said; juice at 04:20 taken after two prompts; back to sleep by 04:45. Data quality: wear time 92% over 7 days, longest gap 2 h, no missing hours in last 48 h.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "hard_limit_danger",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "hypoglycemia",
+    "goals_of_care"
+   ],
+   "rationale": "The CGM read 46 mg/dL with a 47 mg/dL glucometer confirmation, so check 1 (reliable reading) passes, and the danger rule applies regardless of baseline. Check 3 finds no explanation, and the symptoms (sweating, answering only when named, heart rate 104) make it real and symptomatic. Check 4 fails only for hospital-directed escalation: an urgent, treatable, goal-consistent comfort problem keeps its tier and goes to the hospice nurse now, with escalation_target hospice_nurse. Naive-model trap: a shallow model sees the hospice plan and suppresses to nurse_task or silent_log, ignoring the confirmed 47 mg/dL fingerstick and the symptoms.",
+   "decisive_feature": "Symptomatic gliclazide low, 46 mg/dL on CGM and 47 mg/dL confirmed by fingerstick with sweating and answering only when named, is a treatable comfort problem for the hospice nurse now."
+  },
+  {
+   "case_id": "HW3-009",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "AFib",
+    "recurrent cystitis",
+    "hypothyroidism"
+   ],
+   "function_baseline": "walks with a frame at home, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "warfarin",
+     "dose": "3 mg daily",
+     "started_day": -900
+    },
+    {
+     "name": "trimethoprim-sulfamethoxazole",
+     "dose": "160/800 mg BID",
+     "started_day": -4
+    },
+    {
+     "name": "levothyroxine",
+     "dose": "75 mcg daily",
+     "started_day": -700
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "trimethoprim-sulfamethoxazole",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "160/800 mg BID",
+     "day": -4
+    }
+   ],
+   "devices": [
+    "watch",
+    "scale",
+    "thermometer"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 36,
+    "sleep_h": 7.0,
+    "steps": 3100,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 66.1,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -5: steps 2900-3300; watch resting HR 68-71 bpm; scale 66.0-66.2 kg. Day -4 to 0: steps 2800-3200; watch resting HR 70-74; scale 66.0-66.3 kg; watch night SpO2 nadir 92-93%; oral temperature 36.9-37.1 C each morning. Day -1: new bruises on both forearms noted. No bleeding from gums, nose or urine reported Day -4 to 0.",
+   "caregiver_or_nurse_note": "Daughter: the bruises on both forearms were first seen on Day -1. visit: INR 3.9 on Day -1; visit: previous INR 2.6 on Day -11.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 133,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 75-79, female, Fitzpatrick V-VI, lives with spouse. PMH: AFib, recurrent cystitis, hypothyroidism. Function: walks with a frame at home, independent ADLs. Meds: warfarin 3 mg daily (since Day -900), trimethoprim-sulfamethoxazole 160/800 mg BID started Day -4, levothyroxine 75 mcg daily (since Day -700). Recent change: trimethoprim-sulfamethoxazole started Day -4. Devices: watch, scale, thermometer. Baseline 30 days: rest HR 70 bpm, HRV 36 ms, sleep 7.0 h, steps 3100, night SpO2 minimum 93%, weight 66.1 kg. Baseline status: established, monitoring day 133, learning days total 10. Trend: Day -7 to -5 steps 2900-3300, resting HR 68-71, scale 66.0-66.2 kg. Day -4 to 0 steps 2800-3200, resting HR 70-74, scale 66.0-66.3 kg, night SpO2 nadir 92-93%, oral temperature 36.9-37.1 C each morning. Day -1 new bruises on both forearms. No bleeding from gums, nose or urine reported Day -4 to 0. Caregiver: daughter says bruises first seen Day -1; visit: INR 3.9 on Day -1, previous visit INR 2.6 on Day -11. Data quality: wear time 95% over 7 days, longest gap 1 h, no missing hours in last 48 h.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "infection",
+    "med_change"
+   ],
+   "rationale": "Four days after trimethoprim-sulfamethoxazole was started on warfarin, the visit INR has risen from 2.6 to 3.9, and new forearm bruising has appeared without reported bleeding. Vitals are stable with no fall, no hypoxia and no fever, so no hard trigger applies. The interaction needs a same-business-day prescriber review of the warfarin dose and bleeding precautions rather than a page or a routine nurse call. Naive-model trap: a shallow model reads normal vitals and no reported bleeding and routes nurse_task, missing that the warfarin interaction has already pushed the INR into a range needing dose review.",
+   "decisive_feature": "INR 3.9 on Day -1, four days after trimethoprim-sulfamethoxazole started on warfarin, with new forearm bruising and no reported bleeding, needs same-day prescriber review."
+  },
+  {
+   "case_id": "HW3-010",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "AFib",
+    "osteoporosis",
+    "hypertension"
+   ],
+   "function_baseline": "walks indoors and outdoors with a stick, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "5 mg BID",
+     "started_day": -500
+    },
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 34,
+    "sleep_h": 7.2,
+    "steps": 3200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 61.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: resting HR 66-70 bpm; steps 2900-3400; scale 60.8-61.2 kg. Day 0: watch impact logged 17:42 while on-wrist; watch HR 118 bpm at 17:43; watch steps 0 from 17:42 to 17:58.",
+   "caregiver_or_nurse_note": "Spouse was in the kitchen doorway and reports she slipped on the wet back step and went down like a sack of potatoes; no head strike seen; says nothing hurts, but she is out of breath.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 72,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "watch impact logged 17:42 Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 80-84, female, Fitzpatrick I-IV, lives with spouse. PMH: AFib, osteoporosis, hypertension. Function: walks indoors and outdoors with a stick, independent ADLs. Meds: apixaban 5 mg BID (since Day -500), bisoprolol 2.5 mg daily (since Day -400); no recent changes. Devices: watch, scale. Baseline 30 days: rest HR 68 bpm, HRV 34 ms, sleep 7.2 h, steps 3200, night SpO2 minimum 93%, weight 61.0 kg. Baseline status: established, monitoring day 72, learning days total 10. Trend: Day -7 to -1 resting HR 66-70; steps 2900-3400; scale 60.8-61.2 kg. Day 0: watch impact logged 17:42 while on-wrist; watch HR 118 at 17:43; watch steps 0 from 17:42 to 17:58. Caregiver: spouse was in the kitchen doorway and reports she slipped on the wet back step and went down like a sack of potatoes; no head strike seen; says nothing hurts but she is out of breath. Data quality: wear time 94% over 7 days, longest gap under 1 h, no missing hours in last 48 h; watch impact logged 17:42 Day 0.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "fall"
+   ],
+   "rationale": "A fall is confirmed by a witness: the spouse saw the slip on the back step, and the watch logged an on-wrist impact at 17:42. She is on apixaban, so HT_FALL_ANTICOAG fires, and a witnessed fall cannot be cleared by reassurance, so check 3 (explained) fails and check 1 passes on an on-wrist device. The patient is not on a hospice plan, so check 4 passes and the trigger is ABSOLUTE with an immediate page. Naive-model trap: a shallow model reads 'nothing hurts' and the normal resting HR history and routes nurse_task, when an anticoagulated witnessed fall needs a clinician now.",
+   "decisive_feature": "A spouse-witnessed slip on the back step with an on-wrist watch impact at 17:42 while on apixaban is a confirmed fall, which the spouse's note that nothing hurts cannot clear."
+  },
+  {
+   "case_id": "HW3-011",
+   "pair_id": null,
+   "age_band": "60-64",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "type 2 diabetes",
+    "hypertension"
+   ],
+   "function_baseline": "independent ADLs, works part-time",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "metformin",
+     "dose": "1000 mg BID",
+     "started_day": -600
+    },
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 40,
+    "sleep_h": 7.0,
+    "steps": 4400,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 80.4,
+    "glucose_mean": 131,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -5: CGM daily mean 128-133 mg/dL. Day -4 to -1: CGM daily mean 139, 144, 148, then 151 mg/dL. Day 0: CGM daily mean 154 mg/dL. CGM nightly minimum 84-96 mg/dL throughout with no reading below 70 mg/dL. Scale 80.3-80.6 kg. Watch resting HR 70-72 bpm; steps 3600-4300; sleep 6.8-7.1 h.",
+   "caregiver_or_nurse_note": "Patient texted a daily photo of a large fizzy cola taken at bedtime from about Day -6; denies lows, thirst or blurred vision; no change to metformin or losartan.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 77,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 60-64, male, Fitzpatrick I-IV, lives alone. PMH: type 2 diabetes, hypertension. Function: independent ADLs, works part-time. Meds: metformin 1000 mg BID (since Day -600), losartan 50 mg daily (since Day -400); no recent changes. Devices: CGM, watch, scale. Baseline 30 days: CGM mean 131 mg/dL, rest HR 70 bpm, HRV 40 ms, sleep 7.0 h, steps 4400, night SpO2 minimum 93%, weight 80.4 kg. Baseline status: established, monitoring day 77, learning days total 10. Trend: Day -7 to -5 CGM daily mean 128-133 mg/dL; Day -4 to -1 CGM daily mean 139, 144, 148, then 151; Day 0 CGM daily mean 154 mg/dL. CGM nightly minimum 84-96 throughout with no reading below 70 mg/dL. Scale 80.3-80.6 kg. Watch resting HR 70-72; steps 3600-4300; sleep 6.8-7.1 h. Caregiver: patient texted a daily photo of a large fizzy cola taken at bedtime from about Day -6; denies lows, thirst or blurred vision; no change to metformin or losartan. Data quality: wear time 96% over 7 days, longest gap 1 h, no missing hours in last 48 h.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [
+    "provider_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "hyperglycemia"
+   ],
+   "rationale": "CGM daily mean has climbed from 128-133 to 154 mg/dL over about a week, lining up with a nightly sugary drink started around Day -6, while the minimum glucose never drops below 84 mg/dL and there is no medication change. No symptoms are reported, no value approaches the danger limit, and no hard trigger applies. The right action is a nurse call within 24 hours to review the drink, diet and a repeat fasting pattern, with the metformin dose reviewed only if the trend persists. Naive-model trap: a shallow model pages for hyperglycemia because the mean reads 154 mg/dL, or silent-logs it because he feels well, when the trend warrants a next-day nurse contact.",
+   "decisive_feature": "CGM daily mean climbing from 128 to 154 mg/dL over a week after a nightly sugary drink began Day -6, with nightly minimum never below 84 mg/dL and no medication change."
+  }
+ ],
+ "tally": {
+  "n": 11,
+  "id_range": [
+   "HW3-001",
+   "HW3-011"
+  ],
+  "routes": {
+   "silent_log": 3,
+   "nurse_task": 4,
+   "provider_task": 1,
+   "urgent_page": 3
+  },
+  "difficulty": {
+   "easy": 0,
+   "medium": 2,
+   "hard": 6,
+   "adversarial": 3
+  },
+  "hard_plus_adversarial_pct": 82,
+  "category_primary": {
+   "noise": 3,
+   "dehydration": 1,
+   "hypoglycemia": 4,
+   "infection": 1,
+   "fall": 1,
+   "hyperglycemia": 1
+  },
+  "category_any": {
+   "noise": 3,
+   "dehydration": 1,
+   "hypoglycemia": 4,
+   "infection": 1,
+   "fall": 1,
+   "hyperglycemia": 1,
+   "med_change": 1,
+   "goals_of_care": 1
+  },
+  "hidden_hypoxemia_ids": [],
+  "subtle_deterioration_ids": [],
+  "pairs": {
+   "HW3-P01": [
+    "HW3-005",
+    "HW3-006"
+   ]
+  },
+  "hard_trigger_ids": {
+   "HT_VS_DANGER": [
+    "HW3-001",
+    "HW3-002",
+    "HW3-003",
+    "HW3-005",
+    "HW3-006",
+    "HW3-007",
+    "HW3-008"
+   ],
+   "HT_FALL_ANTICOAG": [
+    "HW3-010"
+   ]
+  },
+  "trigger_tiers": {
+   "ABSOLUTE": [
+    "HW3-006",
+    "HW3-008",
+    "HW3-010"
+   ],
+   "CONFIRM_FIRST": [],
+   "SUPPRESSED": [
+    "HW3-001",
+    "HW3-002",
+    "HW3-003",
+    "HW3-005",
+    "HW3-007"
+   ],
+   "ARTIFACT": []
+  },
+  "baseline_layers": {
+   "learning_period": [],
+   "baseline_reset": [],
+   "drift_not_absorbed": [],
+   "hard_limit_artifact": [],
+   "hard_limit_danger": [
+    "HW3-006",
+    "HW3-008"
+   ]
+  },
+  "fitzpatrick_v_vi_count": 5,
+  "minimums": {
+   "cleared": {
+    "required": 3,
+    "actual": 3,
+    "met": true
+   },
+   "ckd_low": {
+    "required": 3,
+    "actual": 3,
+    "met": true
+   },
+   "true_symptomatic_low": {
+    "required": 1,
+    "actual": 1,
+    "met": true
+   },
+   "fingerstick_confirmed_low": {
+    "required": 1,
+    "actual": 2,
+    "met": true
+   }
+  },
+  "all_minimums_met": true,
+  "self_check_failures_fixed": 0
+ },
+ "meta": {
+  "batch": "HW3",
+  "model": "anthropic/claude-haiku-5.5",
+  "module": "haiku",
+  "n_requested": 11,
+  "n_got": 11,
+  "split": false,
+  "id_fixes": 0
+ }
+}

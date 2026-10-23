@@ -1,0 +1,12 @@
+{
+ "cap_total_usd": 3.0,
+ "gen_cap_usd": 2.4,
+ "generation_usd": 0.4104,
+ "grading_usd": 0.5978,
+ "jev_usd": 0.0,
+ "total_usd": 1.0082,
+ "calls": 16,
+ "failed_calls_http402": 6,
+ "stopped_by": "OpenRouter per-key spend limit ($14) reached at about $1.01 into this run (HTTP 402 'requires more credits, or fewer max_tokens'); not the $3 task cap. Grading of HW3+HW4 and HW5+HW6 and all Jev calls not run.",
+ "source": "usage.cost from OpenRouter responses (state.json)"
+}
