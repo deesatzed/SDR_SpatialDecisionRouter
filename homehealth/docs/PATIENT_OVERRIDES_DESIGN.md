@@ -93,3 +93,12 @@ and flags if the event looks like a carve-back. Prompt change = new prompt versi
 5. What happens when the family's wishes and the patient's differ, or the proxy changes?
 6. Should the plan be visible to the family in the app, and can they request a review?
 7. HV10-002: is "drowsy + grey + HR ~41 on digoxin" inside the plan, or should digoxin toxicity be a carve-back?
+
+## v1.11.0 partial implementation: patient-level SpO2 bands (2026-10-23)
+
+- Layer 1 now honours a **patient-level SpO2 band** when it is structured (`patient_bands`) or documented by a clinician (e.g. "COPD, target 85-87%"). A pmh-only mention ("COPD, baseline high 80s") is NOT a band; it keeps the v1.10 `at_patient_baseline` nurse check.
+- A reading **within** the band -> `within_patient_band`, SUPPRESSED, silent_log. Below the band's lower bound: normal SpO2 logic using the band floor instead of the population 88%.
+- **Hard floor that a band cannot override:** COPD confirmed below 85% (`copd_urgent_below`, placeholder) -> `below_patient_band_copd_lt85`, never suppressed.
+- The drug-low foundation rule (RULE_GOVERNANCE_DESIGN section 10) cannot be overridden by any patient plan, including hospice; hospice changes the receiver, not the page.
+- Conditional clinician rulings are recorded as overrides with a condition string and stay advisory (not enforced) until the condition is expressible as a tested rule.
+- Known conflict: holdout_v3 HW4-002 (accepted label nurse_task, 85% inside a documented 85-87% band) now routes silent under the band principle; needs a ruling on whether a reading at the band floor should still get a nurse check.

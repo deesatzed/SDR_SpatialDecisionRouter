@@ -1,0 +1,8 @@
+11:07:31 pre-send: 17 cases, PHI-blocked 0, label-leak hits 0
+11:07:42 pre-send: 17 cases, PHI-blocked 0, label-leak hits 0
+11:07:42 start: models ['liquid/d1-ultra', 'perplexity/pplx-decider-v1.2'], prompt v1.9, cap $0.02, spend so far $0.0000
+11:07:42 liquid/d1-ultra: 0 in checkpoint, 68 to run
+11:07:42 perplexity/pplx-decider-v1.2: 0 in checkpoint, 68 to run
+11:07:49 liquid/d1-ultra: done 68 rows, 0 without a pick, spend $0.0035
+11:07:52 perplexity/pplx-decider-v1.2: done 68 rows, 0 without a pick, spend $0.0037
+11:07:52 end: spend $0.0037

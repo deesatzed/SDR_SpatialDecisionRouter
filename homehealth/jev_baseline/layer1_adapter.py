@@ -15,7 +15,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import routes as RT  # noqa: E402  (SMART_TRIGGERS v1.9 route ids; legacy ids accepted on read)
 DAY = T.DAY
 FACT_FIELDS = ("age_band", "sex", "living", "pmh", "meds", "recent_med_changes", "devices", "discharge", "patient_goals", "function_baseline",
-               "baseline_30d", "baseline_status", "trend_last_7d", "caregiver_or_nurse_note", "data_quality", "skin_tone_note")
+               "baseline_30d", "baseline_status", "trend_last_7d", "caregiver_or_nurse_note", "data_quality", "skin_tone_note",
+               "patient_bands")   # v1.11.0: patient-level bands entered as a patient rule (e.g. {"spo2": [86, 88]})
 NEG = re.compile(r"(\bno\b|\bnot\b|\bwithout\b|\bdenies\b|\bdenied\b|\bnever\b|\bfree of\b|n't\b|\bnor\b|\bnone\b)[^.;:]*$", re.I)
 ANTICOAG = r"apixaban|rivaroxaban|edoxaban|dabigatran|warfarin|enoxaparin|dalteparin|heparin|fondaparinux|acenocoumarol"
 RATE_CONTROL = r"bisoprolol|metoprolol|atenolol|carvedilol|nebivolol|propranolol|diltiazem|verapamil|digoxin"
@@ -41,6 +42,18 @@ def activity(s):
     if re.search(r"\b(asleep|sleeping|woke|woken|overnight|night)\b", s, re.I): return "sleep"
     if re.search(r"\b(walk(ing)?|stairs|climb(ing)?|uphill|hill|carrying|exercis\w*|garden\w*|brisk|hoover\w*|exertion)\b", s, re.I) and not re.search(r"\b(seated|sitting|at rest|in (a|the) chair|lying)\b", s, re.I): return "active"
     return "rest"
+def clause_flagged(r):
+    """v1.11.0: artifact flag of the clause (split on ';') that holds this SpO2 value, so a clean repeat written after a flagged reading in the
+    same sentence still counts as clean (whatever the first reading's flag was)."""
+    segs = [x for x in re.split(r";", r[1]) if re.search(r"(?<!\d)%s\s*%%" % r[0], x)]
+    return any(flagged(x) for x in segs) if segs else r[2]
+def ts_fallback(s, m):
+    """v1.11.0: a reading whose time is > 40 chars before the value in the same clause, or written as '<value> at hh:mm'."""
+    after = re.match(r"[^.;\d]{0,12}?\bat (\d{1,2}):(\d{2})\b", s[m.end():])
+    if after: return int(after.group(1)) * 3600 + int(after.group(2)) * 60, False
+    clause = re.split(r";", s[:m.start()])[-1]
+    t = list(re.finditer(r"\b(\d{1,2}):(\d{2})\b", clause))
+    return ((int(t[-1].group(1)) * 3600 + int(t[-1].group(2)) * 60), False) if t else (None, False)
 DAYREF = re.compile(r"\bDays?\s+(-?\d+)(?:\s*(?:to|-|–|and|through)\s*(?:Day\s+)?(-?\d+))?", re.I)
 PATS = {"spo2": r"(?<![\d.])(?:(\d{2,3})\s*[-–]\s*)?(\d{2,3})\s*%(?!\s*of)",
         "hr": r"\bHR\s*(?:peak\s*|of\s*|at\s*onset\s*|was\s*|rose to\s*)?(\d{2,3})\b(?!\s*[-–]\s*\d)|\b(\d{2,3})\s*bpm\b|heart rate (?:of )?(\d{2,3})|\bpeak (\d{2,3})\b",
@@ -75,6 +88,7 @@ def readings(text, vital, default_day=None):
             here = [d for p_, d in refs if p_ <= m.start()]
             day = here[-1] if here else cur
             ts, sec = hhmmss(s[:m.end()][-40:]) if re.search(r"\d{1,2}:\d{2}", s[:m.end()]) else (None, False)
+            if ts is None: ts, sec = ts_fallback(s, m)   # v1.11.0: time earlier in the clause, or 'at hh:mm' just after the value
             dev = "fingertip" if re.search(r"fingertip|oximeter|finger probe", s[max(0, m.start() - 60):m.end()], re.I) else \
                   ("fingerstick" if re.search(r"finger-?stick|glucometer|\bmeter\b", s[max(0, m.start() - 40):m.end()], re.I) else "wearable")
             out.append((x, s, flagged(s), activity(s), ts, sec, dev, day, is_range))
@@ -97,6 +111,15 @@ def documented_spo2_baseline(c):
     for m in re.finditer(r"(?:usual|baseline|normally|habitual|typical|known|chronic(?:ally)?|lives at|runs at)[^.;%]{0,40}?(?:SpO2|sats?|saturation)?[^.;%\d]{0,20}(\d{2})(?:\s*[-–]\s*(\d{2}))?\s*%", txt, re.I):
         v = int(m.group(1)); vals.append(v) if 70 <= v <= 100 else None
     return min(vals) if vals else None
+def documented_spo2_band(c):
+    """v1.11.0: the documented usual/baseline resting SpO2 band (lo, hi) written in advance (pmh, note, pre-Day-0 trend, baseline_30d text)."""
+    pre, _ = split_day0(c.get("trend_last_7d") or "")
+    txt = " ; ".join([" ".join(c.get("pmh") or []), c.get("caregiver_or_nurse_note") or "", pre, json_text(c.get("baseline_30d"))])
+    bands = []
+    for m in re.finditer(r"(?:usual|baseline|normally|habitual|typical|known|chronic(?:ally)?|lives at|runs at)[^.;%]{0,40}?(?:SpO2|sats?|saturation)?[^.;%\d]{0,20}(\d{2})(?:\s*[-\u2013]\s*(\d{2}))?\s*%", txt, re.I):
+        lo = int(m.group(1)); hi = int(m.group(2) or m.group(1))
+        if 70 <= lo <= hi <= 100: bands.append((lo, hi))
+    return min(bands) if bands else None
 def json_text(x):
     if isinstance(x, dict): return " ".join(f"{k} {v}" for k, v in x.items() if isinstance(v, str))
     return ""
@@ -126,13 +149,99 @@ def impact_then_inactive(pre, day0, min_inactive):
         if not re.search(r"\bimpact\b", s, re.I) or re.search(r"off[- ]wrist|not (?:on|worn)|on (?:the )?charger|charging", s, re.I): continue
         i = txt.find(s); win = txt[i:i + len(s) + 200]; mins = []
         for mm in re.finditer(INACT_RX, win, re.I): mins.append(int(next(g for g in mm.groups() if g)))
-        for mm in re.finditer(r"(?:0|no|zero) steps from (\d{1,2}):(\d{2}) to (\d{1,2}):(\d{2})", win, re.I):
+        for mm in re.finditer(r"(?:0|no|zero) steps (?:from )?(\d{1,2}):(\d{2})\s*(?:to|-|\u2013)\s*(\d{1,2}):(\d{2})", win, re.I):   # v1.11.0: also '0 steps hh:mm-hh:mm'
             a, b_, c_, d_ = map(int, mm.groups()); mins.append((c_ * 60 + d_) - (a * 60 + b_))
         if mins and max(mins) >= min_inactive: return True
     return False
+def patient_spo2_band(c):
+    """v1.11.0: (band, is_patient_rule). A structured patient_bands.spo2 or a band documented in advance by a clinician (visit/clinic note) is a
+    patient-level rule; a band mentioned only in the problem list keeps the v1.10 at_patient_baseline behaviour (nurse_task)."""
+    pbs = (c.get("patient_bands") or {}).get("spo2")
+    if pbs: return (int(pbs[0]), int(pbs[1])), True
+    band = documented_spo2_band(c)
+    if not band: return None, False
+    pre, _ = split_day0(c.get("trend_last_7d") or ""); txt = (c.get("caregiver_or_nurse_note") or "") + " ; " + pre
+    clin = any(re.search(r"(?:visit|clinic|nurse|pulmonolog\w*|clinician|respiratory team)\b[^.;]{0,60}(?:note|documented|records?|recorded|set)|documented as|clinician-set", x, re.I)
+               and re.search(r"%", x) for x in sentences(txt))
+    return band, clin
+def prior_danger_low(c, gmin, days):
+    """v1.11.0: a danger-level glucose low documented in the days before Day 0 (pattern of lows)."""
+    pre, _ = split_day0(c.get("trend_last_7d") or "")
+    return any(r[7] is not None and -days <= r[7] < 0 and r[0] <= gmin for r in readings(pre, "glucose"))
+DEVS = {"watch": r"\bwatch\b|\bwrist\b", "ring": r"\bring\b", "fingertip": r"fingertip|finger (?:clip|probe)|\bclip\b|oximeter", "cuff": r"\bcuff\b", "patch": r"\bpatch\b"}
+def device_disagreement(c, ctx, dt):
+    """v1.11.0: persistent disagreement between two devices on the same vital (or rhythm). Returns {ticket, changes_care, detail} or None."""
+    for s in sentences((c.get("trend_last_7d") or "") + " " + (c.get("caregiver_or_nurse_note") or "")):
+        devs = {k for k, rx in DEVS.items() if re.search(rx, s, re.I)}
+        if len(devs) < 2 or not re.search(r"\bwhile\b|\bbut\b|whereas|\bvs\.?\b|versus|reads? (?:lower|higher)|disagree\w*|which one is right|simultaneously|at the same (?:time|moments?)", s, re.I): continue
+        if not re.search(dt["persist_rx"], s, re.I): continue
+        if re.search(r"\birregular\b", s, re.I) and re.search(r"(?<!ir)\bregular\b", s, re.I):
+            return {"ticket": "ecg_strip_request", "changes_care": False, "detail": "rhythm disagreement between devices"}
+        sp = [int(x) for a in re.findall(r"(\d{2,3})(?:\s*[-\u2013]\s*(\d{2,3}))?\s*%", s) for x in a if x and 70 <= int(x) <= 100]
+        if sp:
+            thr = dt["spo2_wrist_finger_variance_points"] if {"watch", "fingertip"} <= devs else dt["spo2_device_variance_points"]
+            if max(sp) - min(sp) > thr:
+                ref = "fingertip" in devs or re.search(r"fingertip|oximeter", " ".join(c.get("devices") or []), re.I)
+                return {"ticket": "device_maintenance" if ref else "supply_reference_oximeter_and_baseline", "changes_care": False, "detail": f"SpO2 devices differ by {max(sp) - min(sp)} points"}
+            continue
+        hr = [int(x) for m in re.finditer(r"(?:\bHR\b|heart rate|pulse|bpm)[^.;%\d]{0,25}(\d{2,3})(?:\s*[-\u2013]\s*(\d{2,3}))?", s, re.I) for x in m.groups() if x and 25 <= int(x) <= 220]
+        if len(hr) >= 2 and max(hr) - min(hr) >= dt["hr_disagree_bpm"]:
+            rate_drug = re.search(RATE_CONTROL, ctx["meds"], re.I)
+            changed = any(m.get("change") in ("started", "dose_increased") and re.search(RATE_CONTROL, m.get("name", ""), re.I) for m in (c.get("recent_med_changes") or [])) \
+                or bool(rate_drug and re.search(r"(?:" + RATE_CONTROL + r")[^.;]{0,15}(?:increase\w*|up-?titrat\w*|start\w*)|(?:increase\w*|up-?titrat\w*|start\w*)[^.;]{0,15}(?:" + RATE_CONTROL + ")",
+                                              (c.get("trend_last_7d") or "") + " " + (c.get("caregiver_or_nurse_note") or ""), re.I))
+            return {"ticket": "device_maintenance", "changes_care": bool(changed), "detail": f"HR devices differ by {max(hr) - min(hr)} bpm" + (" after a rate-drug change" if changed else "")}
+    return None
+PLAIN = {   # v1.11.0 plain reasons, keyed by rule:reason, then reason, then rule
+    "HT_DRUG_LOW": "confirmed low blood sugar with symptoms on {glu}; a drug-induced low is a foundation rule and is never suppressed{hosp}",
+    "ckd_low_dose_review": "low blood sugar on {glu} with kidney disease, recovered without symptoms; please review the dose (not a nurse visit)",
+    "repeated_lows_dose_review": "repeated low blood sugars on {glu}; please review the dose",
+    "below_patient_band_copd_lt85": "COPD oxygen level confirmed below 85% and below the patient's own band; this is not baseline",
+    "below_88_change_from_own_baseline": "oxygen level below 88% and below this patient's own usual level",
+    "at_patient_baseline": "low oxygen reading close to this patient's usual level; nurse to confirm the baseline is current",
+    "unreliable_reading": "abnormal reading that looks unreliable (device or fit); nurse to recheck",
+    "possible_fall_unverified": "possible fall on a blood thinner (impact or device signal) without a confirmed fall, pain or head strike; nurse to check",
+    "explained_caregiver_check": "possible fall on a blood thinner that a caregiver checked; nurse to confirm there was no fall",
+    "explained": "trigger explained by the caregiver note; nurse to confirm",
+    "device_disagreement": "two devices disagree on the same reading; device ticket filed, no clinical alert",
+    "device_disagreement_could_change_care": "devices disagree on heart rate after a rate-drug change; a manual pulse will tell us which is right (device ticket filed)",
+    "goals_of_care": "comfort-focused plan: same-shift hospice nurse rather than hospital escalation",
+    "HT_FALL_PAIN": "pain after a fall; possible injury needs urgent assessment",
+    "HT_FALL_ANTICOAG": "fall on a blood thinner; risk of internal bleeding",
+    "HT_SYNCOPE": "loss of consciousness (fainting or collapse)",
+    "HT_FOCAL_NEURO": "new one-sided weakness, facial droop or speech change; possible stroke",
+    "HT_CHEST_PAIN_VITALS": "chest pain with concerning features or vital signs",
+    "HT_GAP48_HIGHRISK": "high-risk patient with no data and no contact for 48 hours",
+    "HT_BRADY_RATE_DRUG": "slow heart rate with symptoms on a rate-slowing drug",
+    "HT_SPO2_REST_DYSPNEA": "confirmed low oxygen with breathlessness at rest in heart or lung disease",
+    "HT_VS_IMPLAUSIBLE": "reading is not physiologically possible (likely a device error); recheck the device",
+    "HT_CHEST_PAIN_ECG": "chest pain with an abnormal ECG",
+    "HT_VS_DANGER": "vital sign beyond the danger limit",
+    "HT_SEROTONERGIC_CONFUSION": "new confusion on a serotonergic drug combination",
+    "HT_SPO2_LT88": "oxygen level below 88%",
+}
+def plain_reason(l1, ctx):
+    """v1.11.0: one short sentence for the receiver saying why Layer 1 routed the alert this way (None if Layer 1 has no decision)."""
+    if not l1.get("tier"): return None
+    glu = ", ".join(sorted({m.group(0).lower() for m in re.finditer(GLUCOSE_LOWERING, ctx.get("meds") or "", re.I)})) or "a glucose-lowering drug"
+    rule, reason = l1.get("rule"), l1.get("reason")
+    t = PLAIN.get(f"{rule}:{reason}") or PLAIN.get(reason or "") or PLAIN.get(rule or "") or f"Layer 1 rule {rule} ({reason})"
+    r = t.format(glu=glu, hosp=" (page the hospice nurse)" if l1.get("escalation_target") == "hospice_nurse" else "")
+    if l1.get("hitm_required") and "dose" not in r: r += "; insulin/sulfonylurea with kidney disease, so a clinician reviews it"
+    return r
+def route_reason(l1, route_, owner, case=None):
+    """v1.11.0: plain_reason for any routed alert (nurse_task, provider_task, urgent_page). Layer 1-owned -> the Layer 1 reason;
+    Jev-owned -> a model-routed reason naming the context facts the receiver needs. silent_log -> None."""
+    if route_ in (None, "silent_log"): return None
+    if l1.get("plain_reason") and owner not in ("jev",): return l1["plain_reason"]
+    hr_ = (l1.get("context") or {}).get("high_risk") or []
+    facts = {"HF": "heart failure", "discharge_30d": "recently discharged", "home_O2": "on home oxygen", "dementia_alone": "dementia, lives alone",
+             "insulin_or_sulfonylurea": "on insulin/sulfonylurea", "anticoag_fall_history": "on a blood thinner with falls"}
+    ctxs = ", ".join(facts[h] for h in hr_ if h in facts)
+    return f"no Layer 1 trigger; the decision models routed this to {route_.replace('_', ' ')} on the overall picture" + (f" ({ctxs})" if ctxs else "")
 def _dec(rule, tier, reason=None, **kw): return {"rule": rule, "tier": tier, "reason": reason, **kw}
 RANK = {"ABSOLUTE": 5, "CONFIRM_FIRST": 4, "SUPPRESSED_goals": 3, "SUPPRESSED": 2, "LOG_ONLY": 2, "ARTIFACT": 1}
-def _rank(d): return RANK["SUPPRESSED_goals"] if d["tier"] == "SUPPRESSED" and d.get("reason") == "goals_of_care" else RANK.get(d["tier"], 0)
+def _rank(d): return (RANK["SUPPRESSED_goals"] if d["tier"] == "SUPPRESSED" and d.get("reason") == "goals_of_care" else RANK.get(d["tier"], 0)) + (0.5 if d.get("foundation") else 0)   # v1.11.0: a FOUNDATION rule wins ties
 
 def evaluate_case(case):
     c = facts_only(case); ctx = context(c); P = PARAMS
@@ -171,6 +280,16 @@ def evaluate_case(case):
                "fingerstick": {"value": min(fs), "minutes_apart": None} if fs else None}
         d = T.evaluate({"vital": "glucose", "value": x, "ts": ts0, "source": "cgm", "cgm": cgm, "symptoms": gl_sym}, b, P, {**ectx, "symptoms": gl_sym})
         if d["tier"] not in ("NORMAL", "WATCH"): cands.append({**d, "source": f"evaluate:glucose={x}"})
+    cgm_pressure = bool(sens) and cgm["pressure_documented"]
+    # ---- v1.11.0 FOUNDATION: confirmed + symptomatic danger-level low on insulin or a sulfonylurea -> urgent page, even in hospice, regardless of CKD
+    V11 = T.v110(P).get("v1110") or {}; dl = V11.get("drug_low_floor")
+    drug_lowering = bool(re.search(GLUCOSE_LOWERING, ctx["meds"], re.I))
+    if dl and drug_lowering:
+        meter_lo = [r for r in gl if r[6] == "fingerstick" and r[0] <= dl["glucose_confirm_max"]]
+        confirmed_low = bool(meter_lo) or len([r for r in gl if r[6] != "fingerstick" and r[0] <= gmin]) >= 2
+        if confirmed_low and find(dl["symptoms_rx"], now):
+            cands.append(_dec("HT_DRUG_LOW", "ABSOLUTE", "drug_induced_low_symptomatic", route=dl["route"], page=True, foundation=True,
+                              escalation_target="hospice_nurse" if ctx["goals"] == "comfort_only" else None))
     # ---- 1b. learning period (v1.8): a reading beyond the population defaults -> CONFIRM_FIRST (engine rule)
     if learning:
         for vital in ("spo2", "hr", "rr"):
@@ -252,11 +371,16 @@ def evaluate_case(case):
     if ctx["anticoag"] and not pain_after and (find(FALL, now) or imp_inact):
         confirmed = witnessed or any(find(r"\bfell\b|slipp?\w*|\bslip\b|sat down hard|found (?:him|her) on (?:the )?floor|on the (?:\w+ )?floor|tripped|went down|go down|had a fall|fallen", x)
                         and not re.search(r"\b(?:watch|band|device|phone|ring)\b[^.;]{0,40}\bfloor\b|\bfloor\b[^.;]{0,25}\b(?:watch|band|device)\b", x, re.I) for x in sentences(note))
+        hs = (V11.get("impact_inactivity_cap") or {}).get("head_strike_rx")
+        if hs and find(hs, now): confirmed = True   # v1.11.0: a head strike lifts the impact+inactivity cap
+        unanswered = find(r"did not answer|didn't answer|no answer|not answered|unanswered|did not respond|no response", now, neg=False) is not None
+        cap_ = V11.get("impact_inactivity_cap") or {}   # v1.11.0: long inactivity or lives alone with dementia keeps the v1.10.2 confirm-first path
+        cap_exempt = bool(cap_) and (impact_then_inactive(pre, day0, cap_.get("long_inactivity_min", 10 ** 6)) or (ctx["lives_alone"] and bool(re.search(r"dementia|cognitive impairment", ctx["pmh"], re.I))))
         cg_check = (not confirmed) and find(r"checked (?:on )?(?:him|her)|went to (?:check|see)|found (?:him|her) (?:walking|sitting|standing|in bed|well|fine)|(?:she|he) (?:was|is) (?:walking|fine|well|pain-?free)|pain-?free|(?:did not|didn't|denies having) fall\w*|no (?:sign of a )?fall|no injur\w*", note, neg=False)
         fA = (T.v110(P).get("fall_anticoag") or {}).get("confirmed_tier", "CONFIRM_FIRST")
         if not witnessed and not imp_inact and find(r"dropped (?:the |his |her )?(?:watch|band)|watch (?:fell|slid|dropped|clatter\w*|came off)|clatter\w*|caught (?:herself|himself)|stayed on (?:her|his) feet|near[- ]fall|knocked (?:the|her|his) (?:watch|wrist)", now, neg=False):
             cands.append(_dec("HT_FALL_ANTICOAG", "SUPPRESSED", "explained", route=None))
-        elif imp_inact and not confirmed:   # v1.10.2: on-wrist impact + inactivity on an anticoagulant, even if explained away
+        elif imp_inact and not confirmed and not unanswered and not cap_exempt:   # v1.10.2 / v1.11.0 cap at nurse_task: on-wrist impact + inactivity on an anticoagulant, even if explained away
             cands.append(_dec("HT_FALL_ANTICOAG", "SUPPRESSED", "possible_fall_unverified", route=None))
         elif cg_check and not find(r"\bfell\b|had a fall|fallen", note):   # v1.10: unwitnessed possible fall cleared by a caregiver check -> nurse confirms no fall
             cands.append(_dec("HT_FALL_ANTICOAG", "SUPPRESSED", "explained_caregiver_check", route=None, explained_by=cg_check.group(0)))
@@ -283,13 +407,19 @@ def evaluate_case(case):
             if own is None: own = base30.get("spo2_night_min")
             doc = documented_spo2_baseline(c)   # v1.10: a documented usual/baseline SpO2 (e.g. COPD 'usual resting SpO2 86-89%')
             if doc is not None: own = doc if own is None else min(own, doc)
+            band, band_rule = patient_spo2_band(c)   # v1.11.0: a documented band's lower bound replaces night minimums (below the band is not baseline)
+            if band: own = band[0]
+            pb = V11.get("patient_band") or {}
             if not rel or (tips and min(t[0] for t in tips) >= 92):
                 cands.append(_dec("HT_SPO2_LT88", "SUPPRESSED", "unreliable_reading", route=None))
+            elif band and band_rule and pb and min(r[0] for r in rel) >= band[0] and not distress:   # v1.11.0: inside a patient-level band -> rule does not fire
+                cands.append(_dec("HT_SPO2_LT88", "SUPPRESSED", "within_patient_band", route=None, default_route="silent_log", own_low=band[0], band=list(band)))
             elif own is not None and min(r[0] for r in rel) >= own:
                 cands.append(_dec("HT_SPO2_LT88", "SUPPRESSED", "at_patient_baseline", route=None, own_low=own))
             else:
                 conf = any(t[0] < thr for t in tips) and len(rel) >= 1 and any(r[6] == "fingertip" for r in rel)
-                d = _dec("HT_SPO2_LT88", "CONFIRM_FIRST", "below_88_change_from_own_baseline", route="urgent_page", confirm_step="already_confirmed" if conf else "fingertip_recheck", page=True if conf else "if_confirmed_or_timeout", own_low=own)
+                below85 = bool(band and pb and re.search(pb["copd_rx"], ctx["pmh"], re.I) and ctx["goals"] != "comfort_only" and min(r[0] for r in rel) < pb["copd_urgent_below"])
+                d = _dec("HT_SPO2_LT88", "CONFIRM_FIRST", "below_patient_band_copd_lt85" if below85 else "below_88_change_from_own_baseline", route="urgent_page", confirm_step="already_confirmed" if conf else "fingertip_recheck", page=True if conf else "if_confirmed_or_timeout", own_low=own)
                 basis = T.urgent_comfort_basis({"vital": "spo2", "value": min(r[0] for r in rel)}, None, P, {**ectx, "breathlessness": breath, "trigger_family": "respiratory"})
                 cands.append(T.apply_goals_of_care(d, P, ectx, basis))
     # ---- 6b. v1.10.2 candidate: confirmed SpO2 <= max at rest + rest dyspnea in HF/COPD (not comfort-only)
@@ -331,7 +461,7 @@ def evaluate_case(case):
         sp = [r for r in recs(c, "spo2") if not r[8] and r[4] is not None]
         lows = [r for r in sp if r[0] < P["confirm_first"]["spo2_population_threshold"]]
         for lo_ in lows:
-            rep = [r for r in sp if r[4] > lo_[4] and r[4] - lo_[4] <= cr["window_min"] * 60 and r[0] >= cr["spo2_clean_min"] and not r[2]
+            rep = [r for r in sp if r[4] > lo_[4] and r[4] - lo_[4] <= cr["window_min"] * 60 and r[0] >= cr["spo2_clean_min"] and not clause_flagged(r)
                    and (r[6] != lo_[6] or r[1] != lo_[1] or re.search(r"other (?:hand|finger)|contralateral|(?:left|right) (?:index|middle|hand|finger)|repeat|second", r[1], re.I))]
             if rep: cleared = True; break
         spo2_c = [d for d in cands if (str(d.get("source", "")).startswith("evaluate:spo2") or d.get("rule") == "HT_SPO2_LT88") and d.get("tier") != "ARTIFACT"]
@@ -343,19 +473,49 @@ def evaluate_case(case):
         for d in cands:
             if str(d.get("source", "")).startswith("evaluate:glucose") and d.get("tier") == "SUPPRESSED" and d.get("reason") == "unreliable_reading" and any(r[6] == "fingerstick" and r[0] >= cr.get("glucose_clean_min", 70) for r in gl):
                 d.update(reason="cleared_by_repeat", default_route="silent_log")
+    # ---- v1.11.0 BP cuff clean repeat: flagged / implausible / danger-level SBP + a normal repeat within the window, no symptoms -> silent_log
+    if cr and not symptomatic and cr.get("bp_window_min"):
+        bp = [r for r in recs(c, "sbp") if r[4] is not None]; hs_ = P["hard_limits"]["sbp"]
+        cuff_flag = " ".join(((c.get("data_quality") or {}).get("artifact_flags") or []))
+        bad = [r for r in bp if r[2] or re.search(r"deflat\w*|cuff (?:error|flag\w*)|kinked|loose cuff|arm moved|talking during", r[1] + " " + cuff_flag, re.I) and re.search(r"%s" % re.escape(str(r[0])), r[1])
+               or not (hs_["implausible_low"] <= r[0] <= hs_["implausible_high"]) or r[0] <= hs_["danger_low"] or r[0] >= hs_["danger_high"]]
+        if any(any(0 < r[4] - lo_[4] <= cr["bp_window_min"] * 60 and cr["sbp_clean_low"] <= r[0] <= cr["sbp_clean_high"] and not r[2] for r in bp) for lo_ in bad):
+            bp_c = [d for d in cands if str(d.get("source", "")).startswith("evaluate:sbp")]
+            if bp_c or bad:
+                cands = [d for d in cands if d not in bp_c] + [_dec("HT_VS_DANGER", "SUPPRESSED", "cleared_by_repeat", route=None, default_route="silent_log", source="evaluate:sbp_clean_repeat")]
     # ---- v1.10 insulin user with CKD and a danger-level low: always HITM, floor nurse_task
     ik = T.v110(P).get("insulin_ckd_low"); hitm_required = False
     danger_low = sens or [r for r in gl if r[0] <= gmin]   # CGM or meter at/below the danger limit
     if ik and danger_low and (re.search(ik["insulin_rx"], ctx["meds"], re.I) or (ik.get("sulfonylurea_rx") and re.search(ik["sulfonylurea_rx"], ctx["meds"], re.I))) and re.search(ik["ckd_rx"], ctx["pmh"], re.I):   # v1.10.1: + sulfonylureas
         hitm_required = True
+    # ---- v1.11.0 device disagreement / likely device fault (stable patient) -> silent_log + device ticket; could change care -> nurse_task + ticket
+    ticket = None; dt = V11.get("device_ticket")
+    if dt and not symptomatic and not any(d["tier"] in ("ABSOLUTE", "CONFIRM_FIRST") for d in cands):
+        dd = device_disagreement(c, ctx, dt)
+        if dd:
+            ticket = {"type": dd["ticket"], "interruptive": False, "detail": dd["detail"], "route_to": "device_maintenance_process_else_whoever_can_check_the_device"}
+            if dd["changes_care"]: cands.append(_dec("HT_DEVICE_DISAGREE", "SUPPRESSED", "device_disagreement_could_change_care", route=None, default_route="nurse_task"))
+            else: cands.append(_dec("HT_DEVICE_DISAGREE", "SUPPRESSED", "device_disagreement", route=None, default_route="silent_log"))
+    sc = V11.get("serotonergic_confusion")
+    if sc and sc.get("enabled") and re.search(sc["drugs_a_rx"], ctx["meds"], re.I) and re.search(sc["drugs_b_rx"], ctx["meds"], re.I) and find(sc["confusion_rx"], now):
+        if find(sc["current_rx"], now): cands.append(_dec("HT_SEROTONERGIC_CONFUSION", "CONFIRM_FIRST", "serotonergic_new_confusion_current", route="urgent_page", confirm_step="patient_call", page="if_confirmed_or_timeout", candidate=True))
+        else: cands.append(_dec("HT_SEROTONERGIC_CONFUSION", "SUPPRESSED", "serotonergic_confusion_at_baseline_now", route=None, default_route="provider_task", candidate=True))
     # ---- acute presentation flag (the router lets Jev's clinical read stand on a suppressed trigger when this is set)
     rr0 = [r[0] for r in recs(c, "rr") if not r[2] and not r[8]]; hr0 = [r[0] for r in recs(c, "hr") if not r[2] and r[3] != "active" and not r[8]]
     acute = bool((rr0 and max(rr0) >= 24) or distress or (hr0 and base30.get("rest_hr") and max(hr0) >= base30["rest_hr"] + 20 and find(r"(?:breathless|short of breath)(?![^.;]{0,25}(?:after|walking|climbing|on) (?:the )?(?:stairs|walk|exertion|hill))(?<!after the stairs)", now)))
-    if not cands: return {"tier": None, "rule": None, "reason": "no_trigger", "acute_presentation": acute, "hitm_required": hitm_required, "context": {k: ctx[k] for k in ("goals", "lives_alone", "high_risk")}, "candidates": []}
+    if not cands: return {"tier": None, "rule": None, "reason": "no_trigger", "acute_presentation": acute, "hitm_required": hitm_required, "context": {k: ctx[k] for k in ("goals", "lives_alone", "high_risk")}, "candidates": [], **({"device_ticket": ticket} if ticket else {})}
     best = max(cands, key=_rank)
-    keep = ("rule", "tier", "reason", "route", "confirm_step", "page", "escalation_target", "notify", "band", "raw_band", "modifiers", "inputs", "source", "goals_basis", "original_tier", "own_low", "explained_by", "confirm_result", "default_route")
+    keep = ("rule", "tier", "reason", "route", "confirm_step", "page", "escalation_target", "notify", "band", "raw_band", "modifiers", "inputs", "source", "goals_basis", "original_tier", "own_low", "explained_by", "confirm_result", "default_route", "foundation", "candidate")
     out = {k: v for k, v in best.items() if k in keep}
-    if hitm_required and out.get("tier") not in ("ABSOLUTE", "CONFIRM_FIRST"): out.update(default_route=ik["route"], hitm_reason="insulin_or_sulfonylurea_ckd_danger_low")
+    if hitm_required and out.get("tier") not in ("ABSOLUTE", "CONFIRM_FIRST"):
+        out.update(default_route=ik["route"], hitm_reason="insulin_or_sulfonylurea_ckd_danger_low")
+        kd = V11.get("ckd_low_dose_review")   # v1.11.0: cleared, asymptomatic, no documented compression -> prescriber dose review
+        if kd and out.get("reason") == "cleared_by_repeat" and str(out.get("source", "")).startswith("evaluate:glucose") and not symptomatic and not cgm_pressure:
+            out.update(reason="ckd_low_dose_review", default_route=kd["route"], hitm_floor=kd["route"])
+    elif drug_lowering and out.get("reason") == "cleared_by_repeat" and V11.get("ckd_low_dose_review") and prior_danger_low(c, gmin, V11["ckd_low_dose_review"]["prior_low_days"]):
+        out.update(reason="repeated_lows_dose_review", default_route=V11["ckd_low_dose_review"]["route"])   # v1.11.0: a pattern of lows -> dose review
+    if ticket: out["device_ticket"] = ticket
+    out["plain_reason"] = plain_reason({**out, "hitm_required": hitm_required}, ctx)
     return {**out, "acute_presentation": acute, "hitm_required": hitm_required, "context": {k: ctx[k] for k in ("goals", "lives_alone", "high_risk")},
             "candidates": [{"rule": d.get("rule"), "tier": d["tier"], "reason": d.get("reason")} for d in cands]}
 
@@ -379,7 +539,7 @@ def route(l1, jev_pick):
     if t in ("SUPPRESSED", "ARTIFACT"):
         # v1.10: derive the route per rule (no blanket provider_task fallback); a cleared artifact is silent; insulin+CKD lows floor nurse_task
         if l1.get("reason") == "cleared_by_repeat" and not l1.get("hitm_required") and not l1.get("acute_presentation"): return "silent_log", "layer1_cleared"
-        floor = "nurse_task" if l1.get("hitm_required") else T.route_floor(l1, PARAMS)
+        floor = (l1.get("hitm_floor") or "nurse_task") if l1.get("hitm_required") else T.route_floor(l1, PARAMS)
         if jev_pick is None:
             p = T.suppressed_default_route(l1, PARAMS)
             if floor and CAP[p] < CAP[floor]: p = floor
