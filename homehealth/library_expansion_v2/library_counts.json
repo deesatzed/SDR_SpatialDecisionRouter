@@ -14,10 +14,10 @@
   "ticket_disagree: author=device_maintenance grader=None": 5
  },
  "routes": {
-  "silent_log": 22,
+  "silent_log": 21,
   "urgent_page": 7,
   "provider_task": 6,
-  "nurse_task": 8
+  "nurse_task": 9
  },
  "tiers": {
   "SUPPRESSED": 4,
@@ -76,7 +76,10 @@
   "LX11-003"
  ],
  "tickets": {
-  "device_maintenance": 19,
-  "none": 24
- }
+  "device_maintenance": 18,
+  "none": 25
+ },
+ "wayne_rulings_2026_10_24": [
+  "LX10-002 -> nurse_task, no ticket"
+ ]
 }

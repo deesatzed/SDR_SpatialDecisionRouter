@@ -153,9 +153,9 @@
     "longest_gap_h": 1
    },
    "router_input": "Man 80-84, Fitzpatrick V-VI, lives with spouse. PMH: hypertension, mild knee osteoarthritis. Function: walks to the shops with a stick. Meds: ramipril 5 mg daily, started Day -900; no recent changes. Devices: watch, fingertip oximeter. Baseline 30-day: resting HR 70 bpm, HRV 28 ms, sleep 6.9 h, steps 3100, night SpO2 93%, skin temp dev 0.0 C. Baseline status: established, monitoring day 150. Trend: Day -7 to -3 watch wrist SpO2 94-96% at rest and 95-97% overnight, resting HR 68-72, RR 15-16, steps 2800-3300, wear 96-98%. Day -2 14:05 watch SpO2 95%; fingertip 91% at 14:08 after coming in from the cold garden. Day -1 watch 96%; fingertip 96% at 10:10 after hands warmed in water. Day 0 watch 95% at 09:30; fingertip 92% at 09:32 with dark nail varnish on two fingers; fingertip on a bare finger 09:40 reads 96%. Resting HR 69-71 Day -1 to 0, steps 2900-3200. Spouse: feels fine, no breathlessness, sitting in the sun; says the clip meter is fussy about cold fingers. Data: wear 95%, 0 missing hours in 48 h, longest gap 1 h, flags: cold hands Day -2, nail varnish Day 0.",
-   "expected_route": "silent_log",
+   "expected_route": "nurse_task",
    "acceptable_alternates": [
-    "nurse_task"
+    "silent_log"
    ],
    "hard_trigger": false,
    "hard_trigger_rule": null,
@@ -173,14 +173,15 @@
    ],
    "rationale": "The clip oximeter reads 3-4 points below the watch on two days, and both low fingertip readings coincide with cold hands or dark nail varnish. The same finger reads 96% when warmed and when bare, while the watch holds 95-96% with resting HR 68-72 and RR 15-16. He reports no breathlessness and his steps stay at baseline, so there is no acute physiology to act on. Naive-model trap: a shallow model sees a fingertip 91-92% in a dark-skinned man and sends a provider_task for hidden hypoxemia, although the low values track cold or varnish and the rest of the picture is quiet.",
    "decisive_feature": "Fingertip reads 91-92% only when hands are cold or nails are varnished, while the watch holds 95-96% and the patient is breathing comfortably.",
-   "expected_device_ticket": "device_maintenance",
+   "expected_device_ticket": null,
    "author_device_ticket_original": "supply_reference_oximeter_and_baseline",
    "src": "library_expansion_v2",
    "src_library": "library_expansion_v2",
    "grade": {
     "clinician_ruling": "silent_log + device_maintenance",
     "note": "Wayne ruling 2026-10-24: silent_log + device_maintenance ticket (not a separate oximeter-reference type)"
-   }
+   },
+   "wayne_ruling": "2026-10-24: Wayne accepted nurse_task as label (device-disagreement route); no device ticket - clinical route covers it (was silent_log + device_maintenance)."
   },
   {
    "case_id": "LX10-003",
