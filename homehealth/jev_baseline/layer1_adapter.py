@@ -193,6 +193,23 @@ def device_disagreement(c, ctx, dt):
             return {"ticket": "device_maintenance", "changes_care": bool(changed), "detail": f"HR devices differ by {max(hr) - min(hr)} bpm" + (" after a rate-drug change" if changed else "")}
     return None
 PLAIN = {   # v1.11.0 plain reasons, keyed by rule:reason, then reason, then rule
+    "hospice_distressing_breathlessness": "comfort-focused plan with distressing breathlessness; urgent hospice nurse visit (not hospital)",
+    "within_patient_band_home_o2": "oxygen level inside the patient's documented COPD band and home oxygen is prescribed; no action",
+    "flagged_reading_below_band_recheck": "low oxygen reading below the COPD band but every low reading carries a device flag; nurse to recheck",
+    "learning_spo2_85_88_no_recheck": "oxygen 85-87% during the learning period, no baseline or band and no recheck; prescriber review (below 85% pages)",
+    "fall_comfort_only_hospice_nurse": "possible fall on a blood thinner in a comfort-focused plan; hospice nurse to check",
+    "possible_fall_inr_high": "possible fall on warfarin with a high INR; prescriber review",
+    "unwitnessed_probable_fall_age85": "unwitnessed probable fall on a blood thinner at 85 or older; prescriber review even without pain or head strike",
+    "heavy_sit_on_anticoagulant": "sat down heavily (not a fall) on a blood thinner, no pain or head strike; nurse to check",
+    "explained_bump_on_anticoagulant": "explained bump on a blood thinner, no pain or head strike; nurse to check",
+    "angina_unstable_features": "angina with unstable features (longer, more often, at rest or with sweating)",
+    "angina_new_gtn_request": "angina episodes with a new request for GTN; prescriber review",
+    "angina_gtn_efficacy": "angina with a GTN spray that may be out of date or less effective; prescriber review",
+    "angina_after_antianginal_stop": "angina after an anti-anginal drug was stopped; prescriber review",
+    "stable_angina_unchanged": "stable angina at the usual pattern; nurse check (not silent)",
+    "gap_partly_explained_by_device_uploads": "high-risk patient with a watch data gap while other devices kept uploading and no human contact; nurse to check",
+    "bp_cleared_by_clean_repeat": "high or movement-flagged BP cleared by a clean repeat within 15 minutes; no action",
+    "within_patient_band": "oxygen level inside the patient's documented band; no action",
     "HT_DRUG_LOW": "confirmed low blood sugar with symptoms on {glu}; a drug-induced low is a foundation rule and is never suppressed{hosp}",
     "ckd_low_dose_review": "low blood sugar on {glu} with kidney disease, recovered without symptoms; please review the dose (not a nurse visit)",
     "ckd_low_compression_explained": "low blood sugar on {glu} with kidney disease, likely sensor compression, normal recheck; check sensor placement and confirm no symptoms",
@@ -209,6 +226,7 @@ PLAIN = {   # v1.11.0 plain reasons, keyed by rule:reason, then reason, then rul
     "explained": "trigger explained by the caregiver note; nurse to confirm",
     "device_disagreement": "two devices disagree on the same reading; device ticket filed, no clinical alert",
     "device_disagreement_could_change_care": "devices disagree on heart rate after a rate-drug change; a manual pulse will tell us which is right (device ticket filed)",
+    "device_disagreement_changes_care": "two devices disagree and the answer could change care; nurse to check which is right (device ticket filed)",
     "goals_of_care": "comfort-focused plan: same-shift hospice nurse rather than hospital escalation",
     "HT_FALL_PAIN": "pain after a fall; possible injury needs urgent assessment",
     "HT_FALL_ANTICOAG": "fall on a blood thinner; risk of internal bleeding",
@@ -247,7 +265,7 @@ def _dec(rule, tier, reason=None, **kw): return {"rule": rule, "tier": tier, "re
 RANK = {"ABSOLUTE": 5, "CONFIRM_FIRST": 4, "SUPPRESSED_goals": 3, "SUPPRESSED": 2, "LOG_ONLY": 2, "ARTIFACT": 1}
 def _rank(d): return (RANK["SUPPRESSED_goals"] if d["tier"] == "SUPPRESSED" and d.get("reason") == "goals_of_care" else RANK.get(d["tier"], 0)) + (0.5 if d.get("foundation") else 0)   # v1.11.0: a FOUNDATION rule wins ties
 
-def evaluate_case(case):
+def _evaluate_v1112(case):
     c = facts_only(case); ctx = context(c); P = PARAMS
     trend = c.get("trend_last_7d") or ""; note = c.get("caregiver_or_nurse_note") or ""
     flags = " ; ".join((c.get("data_quality") or {}).get("artifact_flags") or [])
@@ -549,6 +567,19 @@ def evaluate_case(case):
     return {**out, "acute_presentation": acute, "hitm_required": hitm_required, "context": {k: ctx[k] for k in ("goals", "lives_alone", "high_risk")},
             "candidates": [{"rule": d.get("rule"), "tier": d["tier"], "reason": d.get("reason")} for d in cands]}
 
+import layer1_v1120 as V12  # noqa: E402  (v1.12.0 generalized wording/matching; params layer1_v110.v1120)
+def evaluate_case(case):
+    """v1.11.2 decision, then the v1.12.0 generalized rules (no-op when layer1_v110.v1120.enabled is false)."""
+    out = _evaluate_v1112(case)
+    c = facts_only(case); ctx = context(c)
+    new = V12.apply(case, c, out, ctx, sys.modules[__name__], T, PARAMS)
+    if new is out: return out
+    if route(out, None)[0] == new.get("owned_route") and not (new.get("device_ticket") and not out.get("device_ticket")) and out.get("tier") and not (out.get("hitm_required") and new.get("owned_route") == "provider_task" and out.get("reason") != new.get("reason")):
+        return out   # v1.12.0 agrees with the v1.11.2 route: keep the v1.11.2 decision (reason, owner, HITM floor)
+    new = dict(new); new["v1112_decision"] = {k: out.get(k) for k in ("rule", "tier", "reason")}
+    new["plain_reason"] = plain_reason({**new, "hitm_required": new.get("hitm_required") and new.get("owned_route") != "nurse_task" and "dose" not in (new.get("reason") or "")}, ctx)
+    return new
+
 def _params():
     for p in (os.path.join(HERE, "..", "trigger_engine", "trigger_params.json"), "/workspace/jevfly_smoke/casegen/trigger_engine/trigger_params.json"):
         if os.path.exists(p): return T.load_params(p)
@@ -563,6 +594,11 @@ def route(l1, jev_pick):
     provider_task unless Layer 1 flags an acute presentation (below_band floor nurse_task); no trigger -> Jev."""
     jev_pick = RT.canon(jev_pick)   # v1.9: a stored v1.8 pick (wake_specialist / escalate_human) is mapped on read
     t = l1.get("tier")
+    if l1.get("owned_route") and l1.get("floor_only"):   # v1.12.0 floor (e.g. gap partly explained): at least the owned route, Jev may raise it
+        rk = {"silent_log": 0, "nurse_task": 1, "provider_task": 2, "urgent_page": 3}
+        return (jev_pick, "jev_v1120_floor") if jev_pick in rk and rk[jev_pick] > rk[l1["owned_route"]] else (l1["owned_route"], "jev_v1120_floor")
+    if l1.get("owned_route") and (l1["owned_route"] == "urgent_page" or not l1.get("acute_presentation")):   # v1.12.0: Layer 1 owns this route
+        return l1["owned_route"], "layer1_v1120"
     if t == "ABSOLUTE": return "urgent_page", "layer1"
     if t == "CONFIRM_FIRST": return "urgent_page", "layer1_confirm"
     if t == "SUPPRESSED" and l1.get("reason") == "goals_of_care": return "nurse_task", "layer1_goals"

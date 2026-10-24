@@ -1,0 +1,392 @@
+{
+ "params": "0.12.0-placeholder",
+ "key": "holdout_v3_ruled_key.json",
+ "n": 80,
+ "picks_dirs": [
+  "../holdout_v3/jev/parsed",
+  "../holdout_v3/jev_disputes/parsed",
+  "../holdout_v3/jev_v110/parsed"
+ ],
+ "missing_picks": {
+  "liquid/d1-ultra": [],
+  "perplexity/pplx-decider-v1.2": [],
+  "nace-ai/drex-max": [
+   "HW1-001",
+   "HW1-002",
+   "HW1-003",
+   "HW1-004",
+   "HW1-005",
+   "HW1-006",
+   "HW1-009",
+   "HW1-010",
+   "HW1-011",
+   "HW2-004",
+   "HW3-001",
+   "HW3-002",
+   "HW3-003",
+   "HW3-004",
+   "HW3-005",
+   "HW3-006",
+   "HW3-007",
+   "HW3-008",
+   "HW3-009",
+   "HW3-010",
+   "HW3-011",
+   "HW4-001",
+   "HW4-002",
+   "HW4-003",
+   "HW4-004",
+   "HW4-005",
+   "HW4-006",
+   "HW4-007",
+   "HW4-008",
+   "HW4-009",
+   "HW4-010",
+   "HW5-001",
+   "HW5-002",
+   "HW5-003",
+   "HW5-004",
+   "HW5-005",
+   "HW5-006",
+   "HW5-007",
+   "HW5-008",
+   "HW5-009",
+   "HW5-010",
+   "HW5-011",
+   "HW6-001",
+   "HW6-002",
+   "HW6-003",
+   "HW6-004",
+   "HW6-005",
+   "HW6-006",
+   "HW6-007",
+   "HW6-009",
+   "HW6-010",
+   "HW6-011",
+   "HW7-001",
+   "HW7-002",
+   "HW7-003",
+   "HW7-004",
+   "HW7-005",
+   "HW7-006",
+   "HW7-007",
+   "HW7-008",
+   "HW7-009",
+   "HW7-010",
+   "HW7-011",
+   "HW2-003",
+   "HW4-011",
+   "HW8-002",
+   "HW8-004",
+   "HW8-005",
+   "HW2-008",
+   "HW2-009",
+   "HW8-010",
+   "HW8-011",
+   "HW2-006",
+   "HW8-003",
+   "HW8-006",
+   "HW8-009",
+   "HW2-010",
+   "HW8-001",
+   "HW8-007",
+   "HW8-008"
+  ]
+ },
+ "systems": {
+  "L1 + dual(d1-ultra, pplx) [default]": {
+   "n": 80,
+   "decided": 80,
+   "accuracy": 0.9875,
+   "critical_misses": 1,
+   "critical_ids": [
+    "HW6-004"
+   ],
+   "false_pages_per_100": 0.0,
+   "false_page_ids": [],
+   "hitm_per_100": 11.25,
+   "errors": [
+    {
+     "case": "HW6-004",
+     "picked": "provider_task",
+     "label": "urgent_page",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "learning_spo2_85_88_no_recheck",
+     "hitm": false
+    }
+   ],
+   "n_errors": 1,
+   "errors_caught_by_hitm": 0
+  },
+  "L1 + dual(d1-ultra, drex-max) [challenger]": {
+   "n": 80,
+   "decided": 80,
+   "accuracy": 0.975,
+   "critical_misses": 1,
+   "critical_ids": [
+    "HW6-004"
+   ],
+   "false_pages_per_100": 0.0,
+   "false_page_ids": [],
+   "hitm_per_100": 45.0,
+   "errors": [
+    {
+     "case": "HW5-007",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": true
+    },
+    {
+     "case": "HW6-004",
+     "picked": "provider_task",
+     "label": "urgent_page",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "learning_spo2_85_88_no_recheck",
+     "hitm": false
+    }
+   ],
+   "n_errors": 2,
+   "errors_caught_by_hitm": 1
+  },
+  "L1 + d1-ultra": {
+   "n": 80,
+   "decided": 80,
+   "accuracy": 0.975,
+   "critical_misses": 1,
+   "critical_ids": [
+    "HW6-004"
+   ],
+   "false_pages_per_100": 0.0,
+   "false_page_ids": [],
+   "hitm_per_100": 3.75,
+   "errors": [
+    {
+     "case": "HW5-007",
+     "picked": "silent_log",
+     "label": "nurse_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW6-004",
+     "picked": "provider_task",
+     "label": "urgent_page",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "learning_spo2_85_88_no_recheck",
+     "hitm": false
+    }
+   ],
+   "n_errors": 2,
+   "errors_caught_by_hitm": 0
+  },
+  "L1 + pplx": {
+   "n": 80,
+   "decided": 80,
+   "accuracy": 0.9625,
+   "critical_misses": 2,
+   "critical_ids": [
+    "HW6-004",
+    "HW2-003"
+   ],
+   "false_pages_per_100": 0.0,
+   "false_page_ids": [],
+   "hitm_per_100": 3.75,
+   "errors": [
+    {
+     "case": "HW6-004",
+     "picked": "provider_task",
+     "label": "urgent_page",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "learning_spo2_85_88_no_recheck",
+     "hitm": false
+    },
+    {
+     "case": "HW2-003",
+     "picked": "provider_task",
+     "label": "urgent_page",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    },
+    {
+     "case": "HW8-010",
+     "picked": "nurse_task",
+     "label": "provider_task",
+     "l1": null,
+     "l1_reason": "no_trigger",
+     "hitm": false
+    }
+   ],
+   "n_errors": 3,
+   "errors_caught_by_hitm": 0
+  },
+  "L1 + drex-max": {
+   "n": 80,
+   "decided": 47,
+   "accuracy": 0.9787,
+   "critical_misses": 1,
+   "critical_ids": [
+    "HW6-004"
+   ],
+   "false_pages_per_100": 0.0,
+   "false_page_ids": [],
+   "hitm_per_100": 3.75,
+   "errors": [
+    {
+     "case": "HW6-004",
+     "picked": "provider_task",
+     "label": "urgent_page",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "learning_spo2_85_88_no_recheck",
+     "hitm": false
+    }
+   ],
+   "n_errors": 1,
+   "errors_caught_by_hitm": 0
+  },
+  "Layer 1 alone": {
+   "n": 80,
+   "decided": 47,
+   "accuracy": 0.9787,
+   "critical_misses": 1,
+   "critical_ids": [
+    "HW6-004"
+   ],
+   "false_pages_per_100": 0.0,
+   "false_page_ids": [],
+   "hitm_per_100": 45.0,
+   "errors": [
+    {
+     "case": "HW6-004",
+     "picked": "provider_task",
+     "label": "urgent_page",
+     "l1": "CONFIRM_FIRST",
+     "l1_reason": "learning_spo2_85_88_no_recheck",
+     "hitm": false
+    }
+   ],
+   "n_errors": 1,
+   "errors_caught_by_hitm": 0
+  }
+ },
+ "device_tickets": {
+  "expected": 4,
+  "hit": 4,
+  "any_ticket": 4,
+  "missed_ids": [],
+  "unexpected_ids": [
+   "HW5-009",
+   "HW6-010",
+   "HW7-001",
+   "HW7-006"
+  ]
+ },
+ "layer1_decided_ids": [
+  "HW1-003",
+  "HW2-004",
+  "HW3-001",
+  "HW3-002",
+  "HW3-003",
+  "HW3-005",
+  "HW3-006",
+  "HW3-007",
+  "HW3-008",
+  "HW3-010",
+  "HW4-001",
+  "HW4-002",
+  "HW4-003",
+  "HW4-004",
+  "HW4-006",
+  "HW4-007",
+  "HW4-008",
+  "HW5-001",
+  "HW5-002",
+  "HW5-003",
+  "HW5-004",
+  "HW5-005",
+  "HW5-006",
+  "HW5-009",
+  "HW6-001",
+  "HW6-002",
+  "HW6-003",
+  "HW6-004",
+  "HW6-010",
+  "HW7-001",
+  "HW7-005",
+  "HW7-006",
+  "HW7-007",
+  "HW7-008",
+  "HW8-002",
+  "HW8-004",
+  "HW8-005",
+  "HW2-008",
+  "HW2-009",
+  "HW8-011",
+  "HW2-006",
+  "HW8-003",
+  "HW8-006",
+  "HW8-009",
+  "HW8-001",
+  "HW8-007",
+  "HW8-008"
+ ],
+ "tier_agreement": {
+  "trigger_cases": 47,
+  "match": 39,
+  "rate": 0.8298,
+  "false_paging_triggers_on_no_trigger_cases": [],
+  "mismatch": [
+   [
+    "HW1-001",
+    "ABSOLUTE",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW1-002",
+    "ABSOLUTE",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW1-004",
+    "CONFIRM_FIRST",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW1-005",
+    "CONFIRM_FIRST",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW6-009",
+    "ARTIFACT",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW2-003",
+    "CONFIRM_FIRST",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW4-011",
+    "CONFIRM_FIRST",
+    null,
+    "no_trigger"
+   ],
+   [
+    "HW2-010",
+    "SUPPRESSED",
+    null,
+    "no_trigger"
+   ]
+  ]
+ }
+}

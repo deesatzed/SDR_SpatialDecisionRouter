@@ -108,3 +108,12 @@ and flags if the event looks like a carve-back. Prompt change = new prompt versi
 A COPD patient's band can sit at or near the urgent floor: band lower bound <= 88% or night minimum < 88% (both PLACEHOLDERS). If there is NO home oxygen on the med, device or problem list, a reading inside the band is `within_band_low_no_home_o2`, provider_task. The plain reason is "at her documented baseline but that baseline is low without oxygen; evaluate for home oxygen". With oxygen prescribed, a reading inside the band stays `within_patient_band`, silent_log. This resolves holdout_v3 HW4-002 (ruled provider_task).
 
 - Wayne 2026-10-23: repeated compression-explained CKD lows stay nurse_task by default; escalating them to a provider dose review is a patient-specific override, not a foundation rule.
+
+## v1.12.0 (2026-10-23)
+
+- **Band sources.** Patient SpO2 bands are now also read from `patient_goals` and from varied care-plan wording ("target", "accept", "happy if sats stay", "floor of"). Structured `patient_bands` still wins.
+- **Home oxygen is negation-aware.** "home oxygen not prescribed" and "no home O2" do not count as home O2.
+- **Band floors.** A band with its lower edge at or below 88% (PLACEHOLDER `band_low_max`) and no home O2 is a provider O2 evaluation. It is never silent and never urgent. A band with home O2 is silent inside the band.
+- **Device trust is a per-patient fact.** After a documented refit, a good-waveform fingertip reading is trusted over the wearable (silent plus a ticket), even if an O2 decision is pending.
+- **Comfort-only goals route possible falls and distress to the hospice nurse** (`escalation_target: hospice_nurse`).
+- **Still a patient-specific override, not a foundation rule:** escalating repeated compression-explained CKD lows to a provider.

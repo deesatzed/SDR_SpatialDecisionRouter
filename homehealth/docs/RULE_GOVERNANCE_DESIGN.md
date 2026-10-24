@@ -169,3 +169,37 @@ non-foundation thresholds to that person's documented baseline and wishes.
   - The provider dose review (`ckd_low_dose_review`) now applies only to unexplained lows, or to repeated lows that are unexplained or exertion-explained. Repeated lows explained by compression stay nurse_task; this is pending Wayne's confirmation (holdout_v1 HO3-004).
 - **72 h glucose-low lookback (placeholder).** A recovered, asymptomatic drug-related CKD low from Day -3 to Day -2 gives `recent_ckd_low_dose_review`, provider_task.
 - **Explained high-risk gap.** A gap can be explained by a contact whose "looked fine / well" detail sits in the next sentence. An explained gap is SUPPRESSED with a nurse_task floor and never pages.
+
+## v1.12.0: generalized wording and matching (2026-10-23, params 0.12.0-placeholder)
+
+Wayne's 2026-10-23 rulings are expressed as abstract patterns in `jev_baseline/layer1_v1120.py`. This module is a post-processor on the v1.11.2 decision, and it is switched by `layer1_v110.v1120.enabled`. It was built only from library_expansion_v1, the original library and hand-written vignettes (`test_layer1_v1120.py`). Every threshold is a PLACEHOLDER.
+
+The v1.12.0 decision is only replaced when its route differs from the v1.11.2 route. Hard triggers in NEVER_LOWER and foundation rules are never lowered.
+
+- **Device disagreement (any vital).** Device attribution uses the subject of each clause. Disagreement thresholds per vital are placeholders.
+  - A stable patient gets silent_log plus a ticket.
+  - If the disagreement could change care, the patient gets nurse_task plus a ticket. "Could change care" means a med change in the last 7 days, a pending decision, or a fingertip reading below 92%.
+  - After a refit, a trusted good-waveform fingertip reading is silent plus a ticket.
+  - The rule never fires with symptoms, an abnormal other vital, or an out-of-range reading. Glucose pairs must be in the same sentence.
+  - The ticket is ecg_strip_request for HR with AF, supply_reference_oximeter_and_baseline for SpO2, and device_maintenance otherwise.
+- **COPD band.** The band is recognized from varied wording (band, target, accept, "happy if sats stay", floor), including in patient_goals. Home O2 detection is negation-aware.
+  - Inside the band with home O2: silent.
+  - Band lower edge at or below 88% with no home O2: provider O2 evaluation, never urgent.
+  - Only device-flagged readings below the band: nurse recheck.
+- **Learning period, no band.** 85–87% with no fingertip recheck is provider_task, keeping the CONFIRM_FIRST tier. Below 85% is unchanged and pages.
+- **Anticoagulant falls with no head strike, pain or bruising.**
+  - Comfort-only: hospice nurse.
+  - Warfarin with INR ≥ 3.5: provider_task.
+  - Unwitnessed at age 85 or older: provider_task.
+  - Heavy sit: nurse_task.
+  - An explained bump with the patient OK: nurse_task.
+- **Stable angina.**
+  - Unchanged pattern, including usual GTN use: nurse_task.
+  - New GTN request, a weak or expired GTN, or an anti-anginal recently stopped: provider_task.
+  - Crescendo wording, a rest episode, sweating or nausea, or an episode of 15 minutes or more: urgent. Activity minutes are not counted as episode minutes.
+- **CKD drug low.** Exertion or compression wording is broadened, and the v1.11.1 regexes are also used. Negated "no pressure flag" is ignored. A food recheck does not change the explanation.
+- **High-risk gap partly explained by other device uploads.** This is a nurse_task floor (`floor_only`): Jev and the combiner may raise it, never lower it. It applies only if not every device was silent.
+- **Motion-flagged BP.** A clean repeat within 15 minutes is silent. A device_maintenance ticket is added if the cuff was re-seated.
+- **Hospice distress.** Comfort-only plus distress wording plus RR ≥ 26 or SpO2 < 88% (placeholders) is an urgent page to the hospice nurse.
+
+**Known conflicts (for Wayne).** The learning-period provider_task rule disagrees with two independently labelled cases, original library ST3-001 and holdout_v3 HW6-004; both expect urgent_page. On v3 this is a new critical miss. To disable the rule, set `v1120.learning_spo2_low` to 88.

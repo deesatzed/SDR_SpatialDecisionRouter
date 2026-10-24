@@ -1,5 +1,5 @@
 {
-  "version": "0.11.2-placeholder",
+  "version": "0.12.0-placeholder",
   "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
   "change_log": [
     {
@@ -481,6 +481,17 @@
       "new": "0.11.2-placeholder",
       "approved_by": "Wayne",
       "reason": "v1.11.2: Layer 1 owns device-disagreement routes (no acute signs); nurse_task floor for an explained fall on an anticoagulant. Stable-angina nurse_task owner (PLACEHOLDER gates; built from 5 practice vignettes incl. 4 crescendo/red-flag negatives). Jev prompt v1.10 adds a computed 7-day trend summary (PLACEHOLDER flat thresholds in jev_baseline/trend_summary.py)."
+    },
+    {
+      "ts": "2026-10-23T22:30:00-04:00",
+      "keys": [
+        "version",
+        "layer1_v110.v1120"
+      ],
+      "old": "0.11.2-placeholder",
+      "new": "0.12.0-placeholder",
+      "approved_by": "pending Wayne review (built on his 2026-10-23 rulings)",
+      "reason": "v1.12.0: generalized wording for device disagreement (any vital), COPD bands (varied wording, negation-aware home O2), learning-period SpO2 85-87% -> provider, anticoag falls (heavy sit / bump -> nurse, unwitnessed 85+ -> provider, hospice -> hospice nurse), stable angina (unchanged -> nurse, new GTN request -> provider, unstable -> urgent), CKD exertion lows (any wording), gap partly explained by device uploads -> nurse, movement-flagged BP clean repeat -> silent. PLACEHOLDER thresholds."
     }
   ],
   "hard_limits": {
@@ -1221,6 +1232,19 @@
         "enabled": true,
         "note": "PLACEHOLDER v1.11.2: Layer 1 owns nurse_task for chest pain band D with explicit unchanged/stable pattern, exertional onset relieved by rest/GTN, no red flags, no rest onset, no new/longer/more-frequent wording, no sweating/nausea, episode duration < 10 min (PLACEHOLDER)."
       }
+    },
+    "v1120": {
+      "_note": "SMART_TRIGGERS v1.12.0 (Wayne 2026-10-23 rulings as abstract patterns). Generalized wording/matching in jev_baseline/layer1_v1120.py. Built ONLY from library_expansion_v1, the original library and hand-written practice vignettes (jev_baseline/test_layer1_v1120.py); holdout_v3/v4 case text not read while designing. Every number is a PLACEHOLDER for the clinical owner.",
+      "enabled": true,
+      "band_low_max": 88,
+      "learning_spo2_low": 85,
+      "hospice_rr_urgent": 26,
+      "angina_urgent_minutes": 15,
+      "ckd_repeat_days": 7,
+      "unwitnessed_age_min": 85,
+      "inr_provider_min": 3.5,
+      "med_change_days": 7,
+      "spo2_trusted_low": 92
     }
   }
 }

@@ -1,0 +1,12 @@
+{
+  "cap_usd": 3.0,
+  "total_usd": 0.0012,
+  "runs": [
+    {
+      "what": "holdout_v4 jev_disputes (9 merge-dispute cases x 3 models, Jev prompt v1.10)",
+      "usd": 0.0012,
+      "dir": "holdout_v4/jev_disputes"
+    }
+  ],
+  "note": "v1.12.0 scoring reuses stored Jev picks (Jev output depends only on the case, not on Layer 1), so no model calls were made for v1.12.0. holdout_v3 has no drex-max picks; v3 challenger / drex-max rows are not valid."
+}
