@@ -6911,7 +6911,11 @@
    "author_route": "provider_task",
    "key_source": "clinician_ruling_2026-10-23",
    "clinician_note": "Watch vs ring HR disagree after bisoprolol increase; nurse manual pulse to settle, plus device-maintenance ticket for the wrong device",
-   "expected_device_ticket": "device_maintenance"
+   "ticket_relabel": {
+    "from": "device_maintenance",
+    "to": null,
+    "by": "Wayne 2026-10-24 device-ticket policy relabel"
+   }
   },
   {
    "case_id": "HW2-009",
@@ -6995,7 +6999,12 @@
    "author_route": "provider_task",
    "key_source": "clinician_ruling_2026-10-23",
    "clinician_note": "Stable COPD, wrist 91-92 vs ring 94-95 both acceptable; non-interruptive ticket to supply fingertip oximeter and document baseline band (skin-tone oximetry bias)",
-   "expected_device_ticket": "supply_reference_oximeter_and_baseline"
+   "expected_device_ticket": "device_maintenance",
+   "ticket_relabel": {
+    "from": "supply_reference_oximeter_and_baseline",
+    "to": "device_maintenance",
+    "by": "Wayne 2026-10-24 device-ticket policy relabel"
+   }
   },
   {
    "case_id": "HW8-010",
@@ -7880,13 +7889,16 @@
   "rulings": "review_queue.csv CLINICIAN_RULING (Wayne 2026-10-23)",
   "tickets": {
    "HW7-007": "device_maintenance",
-   "HW2-008": "device_maintenance",
-   "HW2-009": "supply_reference_oximeter_and_baseline",
+   "HW2-009": "device_maintenance",
    "HW8-011": "ecg_strip_request"
   },
   "conditional": {
    "HW6-011": "provider_task if currently at baseline; urgent_page if currently more confused than baseline"
   },
-  "n": 80
+  "n": 80,
+  "ticket_relabels_2026-10-24": {
+   "HW2-008": null,
+   "HW2-009": "device_maintenance"
+  }
  }
 }

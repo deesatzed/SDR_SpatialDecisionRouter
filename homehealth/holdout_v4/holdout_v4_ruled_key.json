@@ -4353,7 +4353,6 @@
    ],
    "rationale": "After the nebivolol start on Day -3 the watch reads 61-63 bpm while the ring and cuff pulse read 72-75 bpm, a gap that began with a watch band change on Day -2. Because the disagreement now bears on whether the new dose is working or too strong, a nurse should take a manual pulse, with a device maintenance ticket, rather than silent logging. Checks: no dizziness or palpitations are reported, cuff SBP 116 is near her 118 baseline, and the ring and cuff agree in the normal range, so no acute trigger is met. Naive-model trap: a shallow model reads the watch-only 61-63 bpm as drug-induced bradycardia and pages, when the ring and cuff agree on a normal-range rate.",
    "decisive_feature": "Watch resting HR 61-63 against ring 72-75 and cuff pulse 73 after a nebivolol start on Day -3, so the disagreement changes the titration decision.",
-   "expected_device_ticket": "device_maintenance",
    "src": "holdout_v4",
    "grade": {
     "score": 5,
@@ -4369,7 +4368,12 @@
     "jaccard_decisive": 0.051,
     "jaccard_text": 0.261
    },
-   "key_source": "author_label_accepted"
+   "key_source": "author_label_accepted",
+   "ticket_relabel": {
+    "from": "device_maintenance",
+    "to": null,
+    "by": "Wayne 2026-10-24 device-ticket policy relabel"
+   }
   },
   {
    "case_id": "HX4-011",
@@ -4867,7 +4871,6 @@
    ],
    "rationale": "Metoprolol succinate was doubled to 50 mg on Day -2, so a watch resting HR of 58 bpm is inside the range this change would be expected to produce, and the relearning window applies. The ring at 71 bpm and the seated cuff pulse at 70 bpm agree with her old baseline, so the watch alone disagrees, and that disagreement could change the dosing decision. No trigger fired and she has no symptoms, so nurse_task with a manual pulse check and a device_maintenance ticket fits. Naive-model trap: a shallow model reads 58 bpm as a bradycardia page, or silences the watch as a simple device fault and skips the nurse decision about the dose.",
    "decisive_feature": "Watch resting HR 58 bpm against ring 71 and cuff pulse 70 in the same morning window, two days after the metoprolol increase from 25 to 50 mg.",
-   "expected_device_ticket": "device_maintenance",
    "escalation_target": null,
    "route_basis": null,
    "secondary_triggers": [],
@@ -4886,7 +4889,12 @@
     "jaccard_decisive": 0.188,
     "jaccard_text": 0.284
    },
-   "key_source": "author_label_accepted"
+   "key_source": "author_label_accepted",
+   "ticket_relabel": {
+    "from": "device_maintenance",
+    "to": null,
+    "by": "Wayne 2026-10-24 device-ticket policy relabel"
+   }
   },
   {
    "case_id": "HX5-005",
@@ -7775,6 +7783,10 @@
    "HX5-007",
    "HX7-003"
   ],
-  "n": 76
+  "n": 76,
+  "ticket_relabels_2026-10-24": {
+   "HX4-010": null,
+   "HX5-004": null
+  }
  }
 }

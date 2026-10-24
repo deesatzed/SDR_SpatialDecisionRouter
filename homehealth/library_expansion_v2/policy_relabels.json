@@ -1,1 +1,47 @@
-[]
+[
+ {
+  "case_id": "LX2-006",
+  "library": "library_expansion_v1",
+  "route": "silent_log",
+  "ticket_from": "device_maintenance",
+  "ticket_to": null,
+  "policy": "POLICY 2 (human/external cause -> no ticket)",
+  "by": "Wayne 2026-10-24"
+ },
+ {
+  "case_id": "LX10-001",
+  "library": "library_expansion_v2",
+  "route": "silent_log",
+  "ticket_from": "device_maintenance",
+  "ticket_to": null,
+  "policy": "POLICY 2 (human/external cause -> no ticket)",
+  "by": "Wayne 2026-10-24"
+ },
+ {
+  "case_id": "LX10-011",
+  "library": "library_expansion_v2",
+  "route": "silent_log",
+  "ticket_from": "device_maintenance",
+  "ticket_to": null,
+  "policy": "POLICY 2 (human/external cause -> no ticket)",
+  "by": "Wayne 2026-10-24"
+ },
+ {
+  "case_id": "LX11-002",
+  "library": "library_expansion_v2",
+  "route": "silent_log",
+  "ticket_from": "device_maintenance",
+  "ticket_to": null,
+  "policy": "POLICY 2 (human/external cause -> no ticket)",
+  "by": "Wayne 2026-10-24"
+ },
+ {
+  "case_id": "LX11-003",
+  "library": "library_expansion_v2",
+  "route": "silent_log",
+  "ticket_from": "device_maintenance",
+  "ticket_to": null,
+  "policy": "POLICY 2 (human/external cause -> no ticket)",
+  "by": "Wayne 2026-10-24"
+ }
+]

@@ -1,0 +1,7 @@
+L1 + dual(d1-ultra, pplx) [default]          acc=1.0 (80/80) crit=0 [] fp/100=0.0 [] hitm/100=11.25 err=0
+L1 + dual(d1-ultra, drex-max) [challenger]   acc=0.9875 (80/80) crit=0 [] fp/100=0.0 [] hitm/100=45.0 err=1
+L1 + d1-ultra                                acc=0.9875 (80/80) crit=0 [] fp/100=0.0 [] hitm/100=3.75 err=1
+L1 + pplx                                    acc=0.975 (80/80) crit=1 ['HW2-003'] fp/100=0.0 [] hitm/100=3.75 err=2
+L1 + drex-max                                acc=1.0 (47/80) crit=0 [] fp/100=0.0 [] hitm/100=3.75 err=0
+Layer 1 alone                                acc=1.0 (47/80) crit=0 [] fp/100=0.0 [] hitm/100=45.0 err=0
+tickets {'expected': 3, 'hit': 3, 'any_ticket': 3, 'missed_ids': [], 'unexpected_ids': ['HW5-009', 'HW6-010', 'HW7-001', 'HW7-006']} missing {'liquid/d1-ultra': 0, 'perplexity/pplx-decider-v1.2': 0, 'nace-ai/drex-max': 80}

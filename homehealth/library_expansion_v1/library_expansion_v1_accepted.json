@@ -851,7 +851,6 @@
    ],
    "rationale": "A single 164/98 cuff reading is corrected to 129/81 eleven minutes later after the cuff was re-seated, against a usual systolic of 128-130 and no dizziness or chest symptoms. Watch HR stays 62-66 bpm and SpO2 95-97% through the same morning, so the spike is isolated to one cuff reading. The device check is worth noting, but no clinician action is needed. Naive-model trap: a shallow model sees 164/98 and books a same-day review or a page, ignoring the clean repeat inside 15 minutes. fires because the reliable repeat is far below the danger limit and no vital band is crossed.",
    "decisive_feature": "A single 164/98 cuff reading corrected by a seated repeat of 129/81 eleven minutes later, against a usual systolic of 128-130 and no symptoms.",
-   "expected_device_ticket": "device_maintenance",
    "src": "library_expansion_v1",
    "grade": {
     "score": 5,
@@ -866,6 +865,11 @@
     "case_id": "HX6-004",
     "jaccard_decisive": 0.25,
     "jaccard_text": 0.157
+   },
+   "ticket_relabel": {
+    "from": "device_maintenance",
+    "to": null,
+    "by": "Wayne 2026-10-24 device-ticket policy relabel"
    }
   },
   {

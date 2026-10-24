@@ -75,7 +75,6 @@
    ],
    "rationale": "The watch was refitted on a longer strap on Day -2, and night heart-rate readings then jump to 108-124 bpm only inside windows with motion flags while she sleeps. Daytime resting HR (64-68 bpm), steps (3900-4100) and her report of feeling well all sit on her 30-day baseline, so the sensor changed rather than the heart. The clean daytime physiology and the timed motion flags make this a stable patient with a device fault, which means a silent log and a device ticket to re-fit the strap. Naive-model trap: a shallow model reads HR 124 bpm at night in an older adult on amlodipine and sends a nurse_task or provider_task for possible arrhythmia, when the motion flags and the strap change explain the readings.",
    "decisive_feature": "Night HR readings of 108-124 bpm appear only in motion-flagged windows after the Day -2 strap change, while daytime resting HR, steps and wellbeing stay on baseline.",
-   "expected_device_ticket": "device_maintenance",
    "src": "library_expansion_v2",
    "grade": {
     "score": 5,
@@ -91,6 +90,11 @@
     "case_id": "HK1-005",
     "jaccard_decisive": 0.25,
     "jaccard_text": 0.198
+   },
+   "ticket_relabel": {
+    "from": "device_maintenance",
+    "to": null,
+    "by": "Wayne 2026-10-24 device-ticket policy relabel"
    }
   },
   {
@@ -1072,7 +1076,6 @@
    ],
    "rationale": "The 96/58 at 08:02 came from a too-large cuff wrapped loosely around a thin upper arm, and a correctly sized cuff on the bare arm gave 126/78 twelve minutes later, inside her usual 126-134 range. She reports no dizziness, her watch resting HR stays 68-70 bpm, and steps and sleep are at baseline. Naive-model trap: a shallow model sees a systolic of 96 on valsartan and sends a provider_task for hypotension or an orthostatic review, when a clean, correctly sized repeat with no symptoms closes the question. A cuff-size ticket keeps the wide cuff from being used again.",
    "decisive_feature": "A 96/58 cuff reading taken with a too-large cuff on a thin arm, then a correctly sized repeat at 126/78 twelve minutes later, with no dizziness.",
-   "expected_device_ticket": "device_maintenance",
    "src": "library_expansion_v2",
    "grade": {
     "score": 5,
@@ -1088,6 +1091,11 @@
     "case_id": "HK6-001",
     "jaccard_decisive": 0.029,
     "jaccard_text": 0.223
+   },
+   "ticket_relabel": {
+    "from": "device_maintenance",
+    "to": null,
+    "by": "Wayne 2026-10-24 device-ticket policy relabel"
    }
   },
   {
@@ -1264,7 +1272,6 @@
    ],
    "rationale": "The 12.0 kg value is physically impossible for this patient and is contradicted by the repeat at 68.6 kg two minutes later and by the 68.4-68.9 kg trend around it. The adult child explains that a bag was on the platform, and the watch rest HR, steps and night SpO2 stay within her usual range, so no physiological change is present. A ticket for scale placement and handling is filed because the cause sits with the device set-up. Naive-model trap: a shallow model reads a HFpEF patient on furosemide with a 12 kg value and pages or escalates for a fluid emergency, when the immediate clean repeat and the explained load show a device problem.",
    "decisive_feature": "Single 12.0 kg scale reading on Day -4 that the scale corrects to 68.6 kg two minutes later, explained by a bag on the platform.",
-   "expected_device_ticket": "device_maintenance",
    "escalation_target": null,
    "route_basis": null,
    "secondary_triggers": null,
@@ -1283,6 +1290,11 @@
     "case_id": "ST1-005",
     "jaccard_decisive": 0.03,
     "jaccard_text": 0.337
+   },
+   "ticket_relabel": {
+    "from": "device_maintenance",
+    "to": null,
+    "by": "Wayne 2026-10-24 device-ticket policy relabel"
    }
   },
   {
@@ -1360,7 +1372,6 @@
    ],
    "rationale": "Weight stepped up about 2.0 kg on the same afternoon the scale went onto the rug and has stayed flat for five days, while watch rest HR, steps and sleep show no change and the patient has no swelling. A real fluid gain would not start in one step with the scale move and leave every other stream flat. The placement problem is still present, so a device ticket for scale placement is filed. Naive-model trap: a shallow model sees a 2 kg rise and routes provider_task to review fluid retention or a heart problem, when the step change aligns exactly with the scale move and the physiology is stable.",
    "decisive_feature": "A 2.0 kg step up on the afternoon the scale was moved to a rug, held flat for five days with flat watch rest HR, steps and no swelling.",
-   "expected_device_ticket": "device_maintenance",
    "escalation_target": null,
    "route_basis": null,
    "secondary_triggers": null,
@@ -1379,6 +1390,11 @@
     "case_id": "HK6-005",
     "jaccard_decisive": 0.129,
     "jaccard_text": 0.368
+   },
+   "ticket_relabel": {
+    "from": "device_maintenance",
+    "to": null,
+    "by": "Wayne 2026-10-24 device-ticket policy relabel"
    }
   },
   {
