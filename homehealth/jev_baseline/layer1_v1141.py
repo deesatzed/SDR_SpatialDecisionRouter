@@ -26,13 +26,17 @@ WARMUP = r"warm[- ]?up"
 EXPIRY = r"sensor (?:expired|expiry|past (?:its|the) \d+)|expired sensor|past (?:its |the )?\d+-day (?:wear )?limit"
 
 SPO2_FLAG = r"(?:ring|watch)[^.;]{0,30}SpO2 \d{2}%[^.;]{0,40}(?:poor[- ]contact|motion|fit) flag"
+# v1.14.4 (Wayne 2026-10-24, from library LX10-004 / LX12-007 / LX12-008 and synthetic vignettes; holdout text NOT read): only a
+# poor-contact flag on a reading taken at rest counts as an internal sensor fault. Motion and fit flags are external/human (POLICY 2;
+# Wayne's motion-artifact = no ticket ruling), so they never earn this ticket.
+SPO2_CONTACT_REST = r"(?:ring|watch)[^.;]{0,40}(?:rest(?:ing)?\b[^.;]{0,20}SpO2 \d{2}%|SpO2 \d{2}%[^.;]{0,15}\bat rest)[^.;]{0,40}poor[- ]contact flag"
 FINGER_OK = r"fingertip[^.;]{0,30}(?:9[4-9]|100)%[^.;]{0,30}good waveform|fingertip oximeter (?:9[4-9]|100)%"
 def internal_extra(c, V, V14, out=None):
     txt = V14._all(c); clean = re.sub(V14.NEG, " ", txt, flags=re.I)
     if V.get("cgm_expiry", True):
         m = re.search(EXPIRY, clean, re.I)
         if m: return "cgm_expiry", m.group(0)
-    if V.get("spo2_flag_vs_fingertip", True) and out is not None and out.get("reason") == "cleared_by_repeat" and re.search(SPO2_FLAG, clean, re.I) and re.search(FINGER_OK, clean, re.I):
+    if V.get("spo2_flag_vs_fingertip", True) and out is not None and out.get("reason") == "cleared_by_repeat" and re.search(SPO2_CONTACT_REST if V.get("spo2_contact_rest_only", True) else SPO2_FLAG, clean, re.I) and re.search(FINGER_OK, clean, re.I):
         return "spo2_flag_vs_fingertip", "flagged wearable SpO2 cleared by a fingertip reading"
     if V.get("cuff_error") and re.search(CUFF_ERR, clean, re.I): return "cuff_error", re.search(CUFF_ERR, clean, re.I).group(0)
     if V.get("scale_internal") and not re.search(V14.SCALE_REAL, txt, re.I):

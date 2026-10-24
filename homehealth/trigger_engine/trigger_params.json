@@ -1,5 +1,5 @@
 {
-  "version": "0.14.3-placeholder",
+  "version": "0.14.4-placeholder",
   "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
   "change_log": [
     {
@@ -1316,12 +1316,14 @@
       "cuff_error": true,
       "scale_internal": true,
       "min_plausible_kg": 25.0,
-      "spo2_flag_vs_fingertip": false,
+      "spo2_flag_vs_fingertip": true,
       "cgm_expiry": true,
       "oximeter_as_maintenance": true,
       "human_cause_guard": true,
       "_note_v1142": "v1.14.2 (Wayne 2026-10-24): human_cause_guard withdraws cuff tickets cleared by re-seating/seated repeat (no error code) and scale tickets with a bag/object/person on the scale. Built from library LX2-006/LX11-002 + synthetic vignettes only; holdout text not read.",
-      "_note_v1143": "v1.14.3 (Wayne 2026-10-24): syncope synonym 'out cold' now word-bounded (\\bout cold\\b) so 'about cold fingers' no longer fires HT_SYNCOPE (library LX10-002 + synthetic vignettes; holdout text not read)."
+      "_note_v1143": "v1.14.3 (Wayne 2026-10-24): syncope synonym 'out cold' now word-bounded (\\bout cold\\b) so 'about cold fingers' no longer fires HT_SYNCOPE (library LX10-002 + synthetic vignettes; holdout text not read).",
+      "spo2_contact_rest_only": true,
+      "_note_v1144": "v1.14.4 (Wayne 2026-10-24): spo2_flag_vs_fingertip ON, narrowed to a poor-contact flag on a resting ring/watch SpO2 cleared by a good-waveform fingertip 94%+ while Layer 1 clears it as a repeat (motion/fit flags = human cause, no ticket). Built from library LX10-004/LX12-007/LX12-008 + synthetic vignettes; holdout text not read; blind-scored after design."
     }
   }
 }

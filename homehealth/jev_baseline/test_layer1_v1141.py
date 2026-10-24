@@ -15,7 +15,7 @@ def with_v(fn, **kw):
 
 def test_params_defaults():
     V = L.T.v110(L.PARAMS)["v1141"]
-    assert V["enabled"] and V["suppress_on_clinical_route"] and V["warmup_no_ticket"] and V["cuff_error"] and V["scale_internal"] and not V["spo2_flag_vs_fingertip"]
+    assert V["enabled"] and V["suppress_on_clinical_route"] and V["warmup_no_ticket"] and V["cuff_error"] and V["scale_internal"] and V["spo2_flag_vs_fingertip"] and V["spo2_contact_rest_only"]
     W = L.T.v110(L.PARAMS)["v1140"]; assert not (W["fit"] or W["cuff"] or W["scale"])
 def test_policy1_no_ticket_on_urgent_route_but_kept_for_audit():
     kw = dict(pmh=["type 2 diabetes"], meds=[{"name": "insulin glargine", "dose": "20 units", "started_day": -400}], devices=["cgm", "glucometer", "watch"], baseline_30d={"rest_hr": 72, "glucose_mean": 140})

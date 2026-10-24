@@ -9,7 +9,7 @@ LIB2 = os.path.join(HERE, "..", "library_expansion_v2", "library_expansion_v2_ac
 B = dict(pmh=["hypertension"], devices=["watch", "fingertip_oximeter"], baseline_30d={"rest_hr": 70, "steps": 3000, "spo2_night_min": 93})
 def syn(): return L.T.wording_rx(L.PARAMS, "syncope", r"(?!x)x")
 def test_params_version():
-    assert L.PARAMS["version"] == "0.14.3-placeholder"
+    assert L.PARAMS["version"] in ("0.14.3-placeholder", "0.14.4-placeholder")
     assert r"\bout cold\b" in L.T.v110(L.PARAMS)["wording"]["syncope"]
 def test_about_cold_is_not_syncope():
     for t in ("He says the clip meter is fussy about cold fingers.", "She worries about cold hands in winter.", "Reading taken without cold gloves; worried about cold weather."):
@@ -28,4 +28,4 @@ def test_lx10_002_no_false_fainting_page():
     c = next(c for c in json.load(open(LIB2))["cases"] if c["case_id"] == "LX10-002")
     d = L.evaluate_case(c)
     assert d.get("rule") != "HT_SYNCOPE" and L.route(d, None)[0] in (None, "silent_log", "nurse_task")
-    assert c["expected_route"] == "silent_log" and c["expected_device_ticket"] == "device_maintenance"
+    assert c["expected_route"] == "nurse_task" and not c.get("expected_device_ticket")   # Wayne relabel 2026-10-24 (045ac94)
