@@ -1,6 +1,352 @@
 {
  "cases": [
   {
+   "case_id": "LX1-003",
+   "pair_id": "LX1-P01",
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with adult child",
+   "pmh": [
+    "OA",
+    "HTN"
+   ],
+   "function_baseline": "walks indoors with walker, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -200
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 28,
+    "sleep_h": 6.5,
+    "steps": 3000,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 68.0,
+    "glucose_mean": null,
+    "sbp": 134,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -7: watch steps 3000, ring steps 2900; Day -6: 3100, 2950; Day -5: firmware 4.2 installed, watch steps 3500, ring 2900; Day -4: watch 4200, ring 2950; Day -3: watch 4800, ring 3000; Day -2: watch 5200, ring 3050; Day -1: watch 5500, ring 3100; Day 0: watch 5400, ring 3050. Rest HR 70\u201374, weight 68.0\u201368.2 kg, SBP 130\u2013136/76\u201380, all flat. Wear 94%, no other device-quality flags.",
+   "caregiver_or_nurse_note": "Home aide checklist note: 'Watch step count seems high this week, but she says she isn't walking any more than usual.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "firmware 4.2 installed Day -5"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2
+   },
+   "router_input": "75-79F, Fitzpatrick I-IV, with adult child, OA, HTN. Meds: amlodipine 5 mg. Devices: watch, ring, scale, bp_cuff. Baseline steps 3000 watch, 2900 ring. Trend: watch steps 3000\u21925400 after firmware 4.2 Day -5, ring steps 2900\u20133100. HR, weight, SBP stable. Aide notes watch count high, patient not walking more. device-quality issue: firmware update. Phase established.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "noise"
+   ],
+   "rationale": "Watch step count rise coincides with a firmware update, while the ring steps remain stable and the patient denies increased activity. This is a classic device device-quality issue, and no physiological change is present. Naive-model trap: A model might interpret the step increase as a real behaviour change and trigger a nurse review, but the corroborating ring data confirms it is noise.",
+   "decisive_feature": "Watch step count rise after firmware update, contradicted by stable ring steps, indicating device-quality issue, so silent_log.",
+   "expected_device_ticket": "device_maintenance",
+   "src": "library_expansion_v1",
+   "src_library": "library_expansion_v1",
+   "grade": {
+    "clinician_ruling": "silent_log",
+    "note": "Wayne ruling 2026-10-24: silent_log + device ticket (keep)",
+    "batch_id": [
+     "LX1+LX2"
+    ]
+   }
+  },
+  {
+   "case_id": "LX1-004",
+   "pair_id": "LX1-P01",
+   "age_band": "75-79",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with adult child",
+   "pmh": [
+    "OA",
+    "HTN"
+   ],
+   "function_baseline": "walks indoors with walker, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -200
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 28,
+    "sleep_h": 6.5,
+    "steps": 3000,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 68.0,
+    "glucose_mean": null,
+    "sbp": 134,
+    "dbp": 78
+   },
+   "trend_last_7d": "Day -7: watch steps 3000; Day -6: 3100; Day -5: 3400; Day -4: 3800; Day -3: 4200; Day -2: 4700; Day -1: 5200; Day 0: 5500. Rest HR 70\u201374, weight 68.0\u201368.2 kg, SBP 130\u2013136/76\u201380 all unchanged. Wear 95%, no firmware or other device flags.",
+   "caregiver_or_nurse_note": "Daughter: 'Mum has been walking the same as always, but her watch shows more steps. I don't know why.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "75-79F, Fitzpatrick I-IV, with adult child, OA, HTN. Meds: amlodipine 5 mg. Devices: watch, scale, bp_cuff (no ring). Baseline steps 3000. Trend: watch steps 3000\u21925500 over 7 days, no firmware change, HR and weight stable. No explanation. Phase established.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "noise"
+   ],
+   "rationale": "Unexplained monotonic increase in watch step count over 7 days without corroborating data. This could represent a device malfunction, a change in gait pattern, or an early behavioural change, and requires provider review to determine the cause. Naive-model trap: A model might dismiss it as device-quality issue because other vitals are stable, but without a second device or explanation, the unexplained drift warrants investigation.",
+   "decisive_feature": "Unexplained watch step increase over 7 days without corroboration, requiring provider review to rule out behavioural change or device error.",
+   "expected_device_ticket": "device_maintenance",
+   "author_route_original": "provider_task",
+   "src": "library_expansion_v1",
+   "src_library": "library_expansion_v1",
+   "grade": {
+    "clinician_ruling": "silent_log",
+    "note": "Wayne ruling 2026-10-24: silent_log + device ticket (keep; overrides author provider_task)",
+    "batch_id": [
+     "LX1+LX2"
+    ]
+   }
+  },
+  {
+   "case_id": "LX1-007",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "HFpEF",
+    "hypertension",
+    "CKD 3a"
+   ],
+   "function_baseline": "walks with a cane indoors, independent in ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "lisinopril",
+     "dose": "10 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 30,
+    "sleep_h": 7.0,
+    "steps": 3500,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 68.0,
+    "glucose_mean": null,
+    "sbp": 130,
+    "dbp": 75
+   },
+   "trend_last_7d": "Day -7: weight 68.0 kg, rest HR 70, steps 3500, RR 16, night SpO2 93%. Day -6: 68.2, 72, 3300, 16, 93. Day -5: 68.3, 73, 3100, 17, 92. Day -4: 68.5, 74, 2900, 17, 92. Day -3: 68.7, 76, 2700, 18, 91. Day -2: 69.0, 78, 2500, 19, 91. Day -1: 69.3, 80, 2300, 19, 90. Day 0: 69.8, 82, 2200, 20, 90. Watch wear 92-95%, ring wear 90-93%, no device-quality flags.",
+   "caregiver_or_nurse_note": "Daughter text (Day -1 18:30): \"Mum's ankles look puffy again and she says she's more tired than usual. She's still taking her water pill.\"",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 210,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.5
+   },
+   "router_input": "80-84F, lives alone, HFpEF, HTN, CKD 3a. Meds: furosemide 40 mg daily, lisinopril 10 mg daily, no recent changes. Devices: watch, ring, scale, bp cuff. Baseline: rest HR 70, HRV 30 ms, sleep 7 h, steps 3500, night SpO2 min 93%, weight 68.0 kg, SBP 130, DBP 75. Trend last 7 days: weight rose 68.0\u219269.8 kg, rest HR 70\u219282 bpm, steps 3500\u21922200, RR 16\u219220/min, night SpO2 93\u219290%. Daughter texted Day -1: puffy ankles, more tired. Wear >90%, no device-quality flags. No acute symptoms; fired.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "drift_not_absorbed",
+   "chest_pain_eval": null,
+   "subtle_deterioration": true,
+   "difficulty": "hard",
+   "category": [
+    "hf"
+   ],
+   "rationale": "Multi-stream drift over 7 days\u2014weight, HR, RR, steps, and night SpO2 all moving in the same direction\u2014signals possible gradual HF decompensation even without an acute trigger. The daughter's report of puffy ankles and fatigue corroborates the device trends. No single value crosses a hard limit, so a shallow model might log it as noise, but the coherent drift mandates provider review for medication adjustment. Naive-model trap: A naive model would see and route silent_log, missing the slow deterioration.",
+   "decisive_feature": "Coherent 7-day drift across weight (+1.8 kg), HR (+12 bpm), RR (+4/min), steps (-1300), and night SpO2 (-3%) with corroborating symptom report, no single acute trigger.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "src_library": "library_expansion_v1",
+   "grade": {
+    "clinician_ruling": "provider_task",
+    "note": "Wayne ruling 2026-10-24: provider_task (keep)",
+    "batch_id": [
+     "LX1+LX2"
+    ]
+   }
+  },
+  {
+   "case_id": "LX1-011",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "COPD GOLD 3",
+    "hypertension",
+    "osteoporosis"
+   ],
+   "function_baseline": "walks indoors with a rollator, on home oxygen 2 L/min at night",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "tiotropium",
+     "dose": "18 mcg daily",
+     "started_day": -400
+    },
+    {
+     "name": "albuterol",
+     "dose": "90 mcg PRN",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "fingertip_oximeter",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 80,
+    "hrv_ms": 22,
+    "sleep_h": 6.0,
+    "steps": 2500,
+    "spo2_night_min": 90,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 60.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7: rest HR 80, RR 18, night SpO2 90%, steps 2500, weight 60.0. Day -6: HR 82, RR 19, SpO2 90, steps 2400. Day -5: HR 84, RR 20, SpO2 89, steps 2300. Day -4: HR 86, RR 21, SpO2 89, steps 2200. Day -3: HR 88, RR 22, SpO2 88, steps 2100. Day -2: HR 90, RR 23, SpO2 87, steps 2000. Day -1: HR 92, RR 24, SpO2 86, steps 1800. Day 0: HR 94, RR 25, SpO2 85 (watch), steps 1600. Day 0 13:40: fingertip oximeter reading 79% on good waveform, repeat 79% at 13:45, patient breathless at rest.",
+   "caregiver_or_nurse_note": "Spouse call (Day 0 13:50): \"She's really struggling to breathe, even sitting still. The finger thing says 79. She's on her oxygen but it's not helping much.\"",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 400,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 91,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.0
+   },
+   "router_input": "80-84F, lives with spouse, COPD GOLD 3, on home O2 at night. Meds: tiotropium daily, albuterol PRN. Devices: watch, ring, fingertip oximeter, scale. Baseline: rest HR 80, night SpO2 90%, steps 2500, weight 60 kg. Trend last 7 days: gradual worsening\u2014HR 80\u219294, RR 18\u219225, night SpO2 90\u219285%, steps 2500\u21921600. Day 0: watch SpO2 85%, then fingertip oximeter 79% on good waveform, confirmed 79% at 13:45, with severe dyspnoea at rest. Spouse reports oxygen not helping. Reliable reading below danger limit (SpO2 \u226480%).",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "hard_limit_danger",
+   "chest_pain_eval": null,
+   "subtle_deterioration": true,
+   "difficulty": "hard",
+   "category": [
+    "respiratory"
+   ],
+   "rationale": "A reliable fingertip SpO2 of 79% is below the 80% danger threshold, triggering HT_VS_DANGER as ABSOLUTE regardless of baseline. The preceding 7-day drift across HR, RR, SpO2, and steps establishes a worsening trajectory, but the immediate danger value mandates an urgent page. The spouse's report of severe dyspnoea and ineffective oxygen confirms the acuity. Naive-model trap: A naive model might treat this as a gradual COPD exacerbation and route to provider review, missing the immediate danger indicated by SpO2 \u226480%.",
+   "decisive_feature": "Fingertip SpO2 79% on good waveform, below the 80% danger limit, with severe dyspnoea, making HT_VS_DANGER ABSOLUTE.",
+   "expected_device_ticket": null,
+   "src": "library_expansion_v1",
+   "src_library": "library_expansion_v1",
+   "grade": {
+    "clinician_ruling": "urgent_page",
+    "note": "Wayne ruling 2026-10-24: urgent_page (keep; HT_VS_DANGER ABSOLUTE)",
+    "batch_id": [
+     "LX1+LX2"
+    ]
+   }
+  },
+  {
    "case_id": "LX2-001",
    "pair_id": null,
    "age_band": "80-84",
@@ -6984,6 +7330,7 @@
   "src_library": "library_expansion_v1",
   "synthetic": true,
   "prompts": "GEN_LLM2_v2.3 + hard-slice / GRADER_LLM3_v1.3 + ADDENDUM_v1103 + ADDENDUM_v1112 (SMART_TRIGGERS v1.11.2, params 0.11.2-placeholder, seed 20261024); generators haiku-5.5 + deepseek-v4-pro",
-  "dedupe": "vs library_v2_smart (270) + holdout_v1/v2/v3/v4 (all generated) and earlier library_expansion_v1 accepted cases: decisive_feature Jaccard >= 0.5 or trend+note Jaccard >= 0.6, or story match (>= 3 shared rare 3-grams in the narrative note, same category) or a known repeated idiom"
+  "dedupe": "vs library_v2_smart (270) + holdout_v1/v2/v3/v4 (all generated) and earlier library_expansion_v1 accepted cases: decisive_feature Jaccard >= 0.5 or trend+note Jaccard >= 0.6, or story match (>= 3 shared rare 3-grams in the narrative note, same category) or a known repeated idiom",
+  "clinician_rulings": "Wayne ruling 2026-10-24: LX1-003/004/007/011 added from merge_disputes.csv; LX1-002 excluded (see excluded_by_ruling.json)"
  }
 }

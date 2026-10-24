@@ -1,4 +1,8 @@
 outcome_id,source,case_id,outcome_value,outcome_source,observed_offset_days,severity_if_wrong
+O-LIB-LX1-003,synthetic,LIB-LX1-003,silent_log,author_label,0,minor
+O-LIB-LX1-004,synthetic,LIB-LX1-004,silent_log,author_label,0,minor
+O-LIB-LX1-007,synthetic,LIB-LX1-007,provider_task,author_label,0,major
+O-LIB-LX1-011,synthetic,LIB-LX1-011,urgent_page,author_label,0,critical
 O-LIB-LX2-001,synthetic,LIB-LX2-001,silent_log,author_label,0,minor
 O-LIB-LX2-002,synthetic,LIB-LX2-002,silent_log,author_label,0,minor
 O-LIB-LX2-003,synthetic,LIB-LX2-003,nurse_task,author_label,0,minor

@@ -7,3 +7,4 @@ Pipeline = holdout_v4 (GEN_LLM2_v2.3 + hard slice, GRADER_LLM3_v1.3 / gemini-4-a
 2. Mechanical repair (no label/clinical fact changed; originals in gen/*.batch.orig.json): artifact -> "device-quality flag(s)/issue", added "scale" to devices when weight given, removed "no hard trigger". Regraded LX1+LX2, LX3+LX4, LX7 (round-1 grades in grade_round1/). 58 accepted; LX1 still 0 (grader content fixes, 1 dedupe, 5 disputes).
 3. Top-up LX8 (10 drift cases, stricter hygiene) -> 10 accepted. Final 68 accepted, 5 in merge_disputes.csv for Wayne, 8 on fix_list.csv, 7 dedupe removed.
 Author route = expected_route on every case. Spend: see spend.json.
+4. Wayne ruling 2026-10-24 on the 5 merge disputes (apply_rulings_lx1.py): LX1-003 and LX1-004 silent_log + device ticket (LX1-004 overrides author provider_task), LX1-007 provider_task, LX1-011 urgent_page (HT_VS_DANGER ABSOLUTE) added; LX1-002 dropped (excluded_by_ruling.json). Library now 72 accepted; 0 disputes open.
