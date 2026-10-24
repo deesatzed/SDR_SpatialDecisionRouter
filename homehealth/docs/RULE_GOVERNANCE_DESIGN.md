@@ -202,4 +202,4 @@ The v1.12.0 decision is only replaced when its route differs from the v1.11.2 ro
 - **Motion-flagged BP.** A clean repeat within 15 minutes is silent. A device_maintenance ticket is added if the cuff was re-seated.
 - **Hospice distress.** Comfort-only plus distress wording plus RR ≥ 26 or SpO2 < 88% (placeholders) is an urgent page to the hospice nurse.
 
-**Known conflicts (for Wayne).** The learning-period provider_task rule disagrees with two independently labelled cases, original library ST3-001 and holdout_v3 HW6-004; both expect urgent_page. On v3 this is a new critical miss. To disable the rule, set `v1120.learning_spo2_low` to 88.
+**Learning-period SpO2 rule: dropped (Wayne ruling 2026-10-24).** The v1.12.0 learning-period 85–87% no-recheck → provider_task rule conflicted with original library ST3-001 and holdout_v3 HW6-004 (both urgent_page) and caused a v3 critical miss. Wayne ruled to keep urgent. The rule is disabled by setting `v1120.learning_spo2_low` to 88 (empty range). Learning-period readings below 88% without a recheck page urgent again. Wayne's holdout_v4 label for HX7-003 (provider_task) is unchanged and now scores as an over-route.

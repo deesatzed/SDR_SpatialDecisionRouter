@@ -247,7 +247,8 @@ def apply(case, c, out, ctx, L, T, P):
         else:
             allsp = L.recs(c, "spo2")
             if allsp and min(r[0] for r in allsp) < band[0]: return own("nurse_task", "flagged_reading_below_band_recheck", "HT_SPO2_LT88", band=list(band))
-    # learning period, no band: 85-87 without a recheck -> provider_task; < 85 outside hospice stays urgent
+    # learning period, no band: DISABLED by default (learning_spo2_low=88, Wayne ruling 2026-10-24) -> 85-87 without a recheck stays urgent_page.
+    # Kept only as a param-gated hook; with the threshold at 88 the range below is empty.
     if learning and not band and (tier == "CONFIRM_FIRST" and str(out.get("source", "")).startswith("learning:spo2") or reason == "outside_population_default_learning") and not sym:
         if sp:
             lo_v = min(x[0] for x in sp); tips = [x for x in sp if x[1] == "fingertip"]

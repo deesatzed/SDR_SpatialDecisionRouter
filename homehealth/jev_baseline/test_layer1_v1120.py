@@ -36,10 +36,17 @@ def test_band_at_88_without_home_o2_is_provider_not_urgent():
     assert r(d) == "provider_task"
 
 # 3) learning period
-def test_learning_87_without_recheck_is_provider():
+def test_learning_87_without_recheck_is_urgent():
+    # Wayne ruling 2026-10-24: rule dropped; learning-period 85-87% with no recheck pages urgent (ST3-001-like synthetic vignette)
     d = ev(**{**COPD, "devices": ["ring"]}, baseline_status=LEARN, trend_last_7d="Ring rest SpO2 87-89% Day -2 to -1. Day 0 09:00 ring rest SpO2 87%, no motion flag.",
            caregiver_or_nurse_note="Wife: usual morning cough.")
-    assert r(d) == "provider_task"
+    assert r(d) == "urgent_page"
+def test_learning_85_without_recheck_is_urgent():
+    d = ev(**{**COPD, "devices": ["watch"]}, baseline_status={**LEARN, "monitoring_day": 4}, trend_last_7d="Day -3 to -1: watch rest SpO2 88-90%. Day 0 07:30 watch rest SpO2 85%, no motion flag.",
+           caregiver_or_nurse_note="Husband: she seems her usual self.")
+    assert r(d) == "urgent_page"
+def test_learning_spo2_param_is_disabled():
+    assert L.T.v110(L.PARAMS)["v1120"]["learning_spo2_low"] >= 88
 
 # 4) anticoagulant falls
 def test_heavy_sit_on_doac_no_pain_is_nurse():
