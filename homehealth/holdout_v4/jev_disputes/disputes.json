@@ -1,0 +1,780 @@
+{
+ "cases": [
+  {
+   "case_id": "HX7-003",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone",
+   "pmh": [
+    "COPD (no home O2)",
+    "ex-smoker"
+   ],
+   "function_baseline": "walks short distances indoors, SOB on hills",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "tiotropium",
+     "dose": "18 mcg daily",
+     "started_day": -30
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "ring"
+   ],
+   "baseline_30d": {
+    "rest_hr": null,
+    "hrv_ms": null,
+    "sleep_h": null,
+    "steps": null,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": null,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: ring wear 92%, rest HR 78-82, steps 1800-2100, RR 18-20. Day 0: ring resting SpO2 87% at 09:10, no motion flag; HR 80. No other readings.",
+   "caregiver_or_nurse_note": null,
+   "baseline_status": {
+    "phase": "learning",
+    "monitoring_day": 4,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2.0
+   },
+   "router_input": "70-74 M, lives alone, COPD, ex-smoker, no home O2. Med: tiotropium. Device: ring only (no fingertip oximeter). Learning phase, day 4 of 10. Baseline_30d all null. Trend: Day 0 ring resting SpO2 87% (no motion flag), HR 80, RR 19. No caregiver note. Wear 92%.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_SPO2_LT88",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "learning_period",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "respiratory"
+   ],
+   "rationale": "During the learning period with no own baseline, a resting SpO2 of 87% on a reliable ring reading triggers HT_SPO2_LT88. The patient lives alone and the watch prompt went unanswered, so the confirm step is failed and the tier escalates to already_confirmed, requiring an urgent page. Naive-model trap: a model might treat this as a routine low-sats alert and wait for a caregiver response, missing that no one is available to confirm.",
+   "decisive_feature": "Learning-period ring SpO2 87% with unanswered prompt in a lives-alone patient, failing the confirm step.",
+   "expected_device_ticket": null,
+   "author_route": "urgent_page",
+   "key_source": "clinician_ruling_merge_dispute_2026-10-23",
+   "clinician_note": "learning period, no band, 87% no recheck: provider review, not page (<85% is urgent)"
+  },
+  {
+   "case_id": "HX7-011",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "alone in sheltered flat",
+   "pmh": [
+    "COPD (home O2 2 L/min)",
+    "HFpEF",
+    "comfort-focused plan"
+   ],
+   "function_baseline": "chair-bound, oxygen-dependent",
+   "patient_goals": "hospice comfort only, treat distressing breathlessness at home, no hospital",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "morphine sulphate",
+     "dose": "2.5 mg every 4 h PRN",
+     "started_day": -30
+    },
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring"
+   ],
+   "baseline_30d": {
+    "rest_hr": 82,
+    "hrv_ms": 18,
+    "sleep_h": 6.0,
+    "steps": 50,
+    "spo2_night_min": 88,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 80-84, RR 22-24, SpO2 night min 87-89% on O2. Day 0: 03:00 ring SpO2 85% for 12 min, RR 28, HR 96. Patient used call button; sheltered-housing warden found her sitting up, breathless, speaking in short phrases. Warden gave PRN morphine and increased O2 to 4 L; SpO2 rose to 88%.",
+   "caregiver_or_nurse_note": "Warden (phone): 'She was struggling to catch her breath around 3 a.m., couldn\u2019t finish a sentence. I gave the morphine as ordered and turned up the oxygen. She\u2019s a bit easier now but still working hard.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 60,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 85,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 3.0
+   },
+   "router_input": "80-84 F, hospice comfort-only, COPD on home O2, HFpEF. Meds: morphine PRN, furosemide. Devices: watch, ring. Baseline SpO2 night min 88. Day 0 03:00: ring SpO2 85% for 12 min, RR 28, HR 96. Warden found her breathless, speaking in short phrases. Given morphine and O2 increased, SpO2 improved to 88%.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_SPO2_REST_DYSPNEA",
+   "trigger_tier": "CONFIRM_FIRST",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "respiratory",
+    "goals_of_care"
+   ],
+   "rationale": "The confirmed SpO2 85% with distressing breathlessness at rest meets HT_SPO2_REST_DYSPNEA. Although the patient is hospice comfort-only, this is an urgent treatable comfort problem; the trigger is not suppressed, but the escalation target is the hospice nurse for immediate symptom management. Naive-model trap: a model might suppress the alert due to goals_of_care and route to nurse_task, missing the need for urgent intervention.",
+   "decisive_feature": "Distressing breathlessness with SpO2 85% in a hospice patient, triggering urgent hospice nurse page as a treatable comfort crisis.",
+   "expected_device_ticket": null,
+   "escalation_target": "hospice_nurse",
+   "author_route": "urgent_page",
+   "key_source": "clinician_ruling_merge_dispute_2026-10-23",
+   "clinician_note": "confirmed author label (batch)"
+  },
+  {
+   "case_id": "HX8-004",
+   "pair_id": "HX8-P02",
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "CAD, stent 2019",
+    "HTN",
+    "hyperlipidemia"
+   ],
+   "function_baseline": "walks to shops, independent",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "81 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "20 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "metoprolol",
+     "dose": "25 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "GTN spray",
+     "dose": "prn",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 42,
+    "sleep_h": 7.0,
+    "steps": 2400,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 78.0,
+    "glucose_mean": null,
+    "sbp": 132,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -4: usual walk tightness, HR 90. Day -3: two episodes, one on walk, one while sitting watching TV after lunch, tightness lasted 15 min, used spray, eased slowly; HR during rest episode 98, BP 138/86. Day -2: three episodes, one at rest again with sweating, HR 102. Day -1: two episodes, one at night waking him. Day 0: morning tightness at rest, sweating, HR 104, BP 142/90; patient called daughter.",
+   "caregiver_or_nurse_note": "Daughter phoned: 'Dad says the chest tightness is happening more often, even when he's just sitting, and he got clammy. He's worried.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "80-84M, Fitzpatrick I-IV, lives alone. PMH CAD with stent, HTN, hyperlipidemia. Meds aspirin, atorvastatin, metoprolol 25 mg BID, GTN spray. Devices: watch, bp_cuff, scale. Baseline rest HR 64, SBP 132. Trend: Day -3 to 0 escalating chest tightness\u2014now at rest, lasting 15 min, with sweating. Day 0 rest HR 104, BP 142/90. Daughter called: more often, even sitting, clammy.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_CHEST_PAIN_VITALS",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": "already_confirmed",
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": {
+    "band": "A",
+    "raw_band": "C",
+    "modifiers": [
+     "red_flags: sweating",
+     "red_flags: persistent>=15min"
+    ],
+    "tier": "ABSOLUTE",
+    "timeout_min": null
+   },
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "acs"
+   ],
+   "rationale": "The patient's angina has escalated in frequency, now occurring at rest with diaphoresis and prolonged duration. HR 104 bpm (band C) plus two red flags raises the band to A, making this an ABSOLUTE trigger. The crescendo pattern and autonomic symptoms indicate unstable angina requiring immediate clinician evaluation. Naive-model trap: A shallow model might treat this as another stable angina episode and route to nurse, missing the crescendo pattern and rest pain that demand immediate clinician attention.",
+   "decisive_feature": "Crescendo angina with rest pain, sweating, and prolonged episodes converts stable pattern to an ABSOLUTE trigger.",
+   "expected_device_ticket": null,
+   "author_route": "urgent_page",
+   "key_source": "clinician_ruling_merge_dispute_2026-10-23",
+   "clinician_note": "confirmed author label (batch)"
+  },
+  {
+   "case_id": "HX7-001",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "HFrEF EF 35%",
+    "CKD 3a",
+    "HTN"
+   ],
+   "function_baseline": "walks with a stick indoors, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "bisoprolol",
+     "dose": "2.5 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "ramipril",
+     "dose": "5 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 66,
+    "hrv_ms": 34,
+    "sleep_h": 7.0,
+    "steps": 2200,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 78.2,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 76
+   },
+   "trend_last_7d": "Day -7: weight 78.2, rest HR 66, steps 2210, RR 16, SBP 128/76. Day -6: 78.4, 68, 2150, 16, 130/78. Day -5: 78.7, 69, 2080, 17, 129/77. Day -4: 79.0, 71, 1950, 17, 132/80. Day -3: 79.2, 72, 1820, 18, 131/79. Day -2: 79.5, 74, 1700, 18, 134/82. Day -1: 79.8, 75, 1580, 19, 133/81. Day 0: 80.1, 76, 1520, 19, 135/83. Watch wear 94%, ring wear 96%. No motion flags. Sleep 6.8\u21926.4 h.",
+   "caregiver_or_nurse_note": "Neighbour (text): 'He\u2019s been pottering about slower than usual, but says he\u2019s just tired. No breathlessness or ankle swelling that I\u2019ve seen.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.5
+   },
+   "router_input": "80-84 M, lives alone, HFrEF EF 35%, CKD 3a, HTN. Meds: bisoprolol 2.5 mg, ramipril 5 mg, furosemide 40 mg, all long-standing. Devices: watch, ring, scale, bp_cuff. Baseline_30d: rest_hr 66, weight 78.2 kg, steps 2200, SBP 128/76. Established phase, day 120. Trend last 7d: weight 78.2\u219280.1 kg, rest HR 66\u219276, steps 2210\u21921520, RR 16\u219219, SBP 128/76\u2192135/83. Sleep 6.8\u21926.4 h. No motion flags. Neighbour text: moving slower, no dyspnoea or oedema.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": true,
+   "difficulty": "hard",
+   "category": [
+    "hf"
+   ],
+   "rationale": "The 7-day drift in weight (+1.9 kg), rest HR (+10 bpm), steps (\u221231%) and RR (+3) with no acute symptoms or oedema report is a classic subtle deterioration that warrants same-day provider review to adjust diuretics and prevent hospitalisation. Naive-model trap: a shallow model might see no single alarming value and route silent_log, missing the cumulative multi-stream signal.",
+   "decisive_feature": "Monotonic 7-day drift in weight, rest HR, steps and respiratory rate without acute symptoms.",
+   "expected_device_ticket": null,
+   "author_route": "provider_task",
+   "key_source": "clinician_ruling_merge_dispute_2026-10-23",
+   "clinician_note": "confirmed author label (batch)"
+  },
+  {
+   "case_id": "HX7-004",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with paid caregiver",
+   "pmh": [
+    "metastatic prostate cancer",
+    "DVT 6 months ago",
+    "comfort-focused plan"
+   ],
+   "function_baseline": "bed-to-chair with assistance",
+   "patient_goals": "hospice comfort only, no hospital transfers",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "2.5 mg BID",
+     "started_day": -180
+    },
+    {
+     "name": "morphine SR",
+     "dose": "15 mg BID",
+     "started_day": -90
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring"
+   ],
+   "baseline_30d": {
+    "rest_hr": 78,
+    "hrv_ms": 22,
+    "sleep_h": 6.5,
+    "steps": 120,
+    "spo2_night_min": 91,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 76-80, steps 100-140. Day 0: watch impact at 10:15, HR 110 for 2 min then back to 78. No other changes.",
+   "caregiver_or_nurse_note": "Caregiver (voice note): 'He slid off the couch onto the carpet around 10:15. I was right there. He laughed it off, no bump on the head, moving all limbs fine. Says he\u2019s absolutely fine.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 90,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 90,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.0
+   },
+   "router_input": "85-89 M, hospice comfort-only plan, metastatic prostate cancer, DVT, on apixaban 2.5 mg BID and morphine. Lives with paid caregiver. Devices: watch, ring. Baseline rest_hr 78. Day 0 watch impact at 10:15, HR 110 briefly. Caregiver witnessed slip onto carpet, no injury, patient says fine.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_FALL_ANTICOAG",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "goals_of_care",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "fall",
+    "goals_of_care"
+   ],
+   "rationale": "The witnessed fall on apixaban fires HT_FALL_ANTICOAG, but the comfort-only plan suppresses hospital-directed escalation. The patient is uninjured and the event is low-risk, so the appropriate action is a same-shift hospice nurse contact to document and reassure. Naive-model trap: a model might ignore the goals-of-care override and page the emergency services.",
+   "decisive_feature": "Witnessed fall on apixaban under a hospice comfort-only plan, suppressing the ABSOLUTE trigger.",
+   "expected_device_ticket": null,
+   "author_route": "nurse_task",
+   "key_source": "clinician_ruling_merge_dispute_2026-10-23",
+   "clinician_note": "confirmed author label (batch)"
+  },
+  {
+   "case_id": "HX7-005",
+   "pair_id": null,
+   "age_band": "90-94",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with adult child",
+   "pmh": [
+    "advanced COPD",
+    "comfort-focused plan",
+    "OA"
+   ],
+   "function_baseline": "chair-bound, requires hoist",
+   "patient_goals": "hospice comfort only, treat distressing symptoms at home",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "morphine liquid",
+     "dose": "5 mg every 4 h PRN",
+     "started_day": -60
+    },
+    {
+     "name": "hyoscine butylbromide",
+     "dose": "20 mg SC PRN",
+     "started_day": -60
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 20,
+    "sleep_h": 5.5,
+    "steps": 0,
+    "spo2_night_min": 90,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 70-74, sleep 5-6 h, SpO2 night min 89-91%. Day 0: rest HR 80, sleep 4.2 h, SpO2 night min 89%. Steps 0 throughout.",
+   "caregiver_or_nurse_note": "Daughter (text): 'Mum\u2019s hip pain is really bad today, she\u2019s been moaning and can\u2019t find a comfortable spot. The morphine doesn\u2019t seem to hold her. She\u2019s not breathless, just hurting.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 70,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 88,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 3.0
+   },
+   "router_input": "90-94 F, hospice comfort-only, advanced COPD, OA, chair-bound. Meds: morphine liquid PRN, hyoscine. Devices: watch, ring. Baseline rest_hr 72, SpO2 night min 90. Trend: HR 80 today, sleep 4.2 h, SpO2 89% nadir. Daughter reports worsening hip pain, morphine not lasting. No breathlessness.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "caregiver",
+    "goals_of_care"
+   ],
+   "rationale": "No hard trigger fires; the increased pain and reduced sleep are distressing but not life-threatening. Under hospice goals, the correct action is a nurse contact to adjust the analgesic regimen, not an urgent page. Naive-model trap: a model might see the HR rise and SpO2 dip and escalate, overlooking the comfort-focused plan and the primary need for symptom management.",
+   "decisive_feature": "Escalating hip pain in a hospice patient with no acute respiratory or cardiac trigger, requiring nurse-led medication adjustment.",
+   "expected_device_ticket": null,
+   "author_route": "nurse_task",
+   "key_source": "clinician_ruling_merge_dispute_2026-10-23",
+   "clinician_note": "confirmed author label (batch)"
+  },
+  {
+   "case_id": "HX8-003",
+   "pair_id": "HX8-P02",
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "alone",
+   "pmh": [
+    "CAD, stent 2019",
+    "HTN",
+    "hyperlipidemia"
+   ],
+   "function_baseline": "walks to shops, independent",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "aspirin",
+     "dose": "81 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "atorvastatin",
+     "dose": "20 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "metoprolol",
+     "dose": "25 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "GTN spray",
+     "dose": "prn",
+     "started_day": -400
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "bp_cuff",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 42,
+    "sleep_h": 7.0,
+    "steps": 2400,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 78.0,
+    "glucose_mean": null,
+    "sbp": 132,
+    "dbp": 80
+   },
+   "trend_last_7d": "Day -7 to -3: steps 2200-2500, rest HR 62-66, BP 128-136/78-84. Day -2: walked to post box, chest tightness after 5 min, used 1 spray GTN, eased in 3 min; watch HR peaked 92. Day -1: similar episode on walk, HR 88, relieved. Day 0: morning walk tightness, HR 90, used spray, ok. No rest pain, no sweating. Weight 77.8-78.2 kg.",
+   "caregiver_or_nurse_note": "Patient's own log: 'Same as always, two or three times a week when I walk to the letterbox, spray fixes it quick. No trouble sitting or sleeping.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 200,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "80-84M, Fitzpatrick I-IV, lives alone. PMH CAD with stent 2019, HTN, hyperlipidemia. Meds aspirin 81 mg, atorvastatin 20 mg, metoprolol 25 mg BID, GTN spray prn. Devices: watch, bp_cuff, scale. Baseline rest HR 64, HRV 42 ms, steps 2400, weight 78 kg, SBP 132. Trend: stable steps 2200-2500, rest HR 62-66, BP 128-136/78-84. Day -2 to 0: exertional chest tightness on walking to post box, HR 88-92, relieved by 1 spray GTN in 3 min. No rest pain, no sweating. Patient log: same pattern as always, 2-3 times/week.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "acs"
+   ],
+   "rationale": "The patient reports his usual exertional angina, unchanged in frequency, duration, and relief. Vital signs during episodes remain consistent with his baseline. This is stable chronic angina, warranting routine nurse follow-up for medication adherence and symptom review, not an urgent page. Naive-model trap: Chest pain often triggers urgent escalation, but this patient's unchanged stable pattern over months indicates routine nurse follow-up for chronic angina management.",
+   "decisive_feature": "Stable exertional angina pattern with unchanged frequency, duration, and relief by GTN, no rest pain or autonomic symptoms.",
+   "expected_device_ticket": null,
+   "author_route": "nurse_task",
+   "key_source": "clinician_ruling_merge_dispute_2026-10-23",
+   "clinician_note": "confirmed author label (batch)"
+  },
+  {
+   "case_id": "HX8-005",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "AFib",
+    "dementia mild",
+    "HTN",
+    "CKD 3a"
+   ],
+   "function_baseline": "walks with stick, spouse assists with meds",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "apixaban",
+     "dose": "2.5 mg BID",
+     "started_day": -400
+    },
+    {
+     "name": "losartan",
+     "dose": "25 mg daily",
+     "started_day": -400
+    },
+    {
+     "name": "donepezil",
+     "dose": "5 mg daily",
+     "started_day": -200
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "apixaban",
+     "change": "missed",
+     "from_dose": null,
+     "to_dose": null,
+     "day": -3,
+     "days_missed": 2
+    }
+   ],
+   "devices": [
+    "watch",
+    "ring",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 30,
+    "sleep_h": 6.5,
+    "steps": 1800,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 62.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -1: rest HR 66-70, steps 1600-1900, weight 61.8-62.2 kg, night SpO2 92-94%. Day -3 and -2: apixaban not given. No falls, no new symptoms. Day 0: HR 68, steps 1750, weight 62.1 kg.",
+   "caregiver_or_nurse_note": "Spouse called nurse: 'I've been down with a bad cold and forgot to give her the blood thinner the last two days. I'm just so tired, can someone help me with her pills?'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 150,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 92,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1.0
+   },
+   "router_input": "85-89F, Fitzpatrick I-IV, lives with spouse. PMH AFib, mild dementia, HTN, CKD 3a. Meds apixaban 2.5 mg BID, losartan 25 mg, donepezil 5 mg. Apixaban missed Day -3 and -2. Devices: watch, ring, scale. Baseline rest HR 68, steps 1800, weight 62 kg. Trend: vitals stable, no falls. Spouse exhausted, forgot blood thinner, asks for pill help.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "med_change",
+    "caregiver"
+   ],
+   "rationale": "Two missed apixaban doses in a patient with AFib and dementia, due to caregiver exhaustion. Although no fall or clinical change occurred, the interruption of anticoagulation poses a stroke risk and the caregiver's capacity is compromised. A nurse should contact the family to arrange medication support, assess caregiver burden, and ensure doses are resumed safely. Naive-model trap: The absence of a fall or clinical change might lead to silent logging, but missed anticoagulant doses in a dementia patient with caregiver burnout require nurse intervention to prevent future harm.",
+   "decisive_feature": "Missed apixaban doses due to caregiver exhaustion, without any fall or clinical change, warranting nurse-led medication support.",
+   "expected_device_ticket": null,
+   "author_route": "nurse_task",
+   "key_source": "clinician_ruling_merge_dispute_2026-10-23",
+   "clinician_note": "confirmed author label (batch)"
+  },
+  {
+   "case_id": "HX7-010",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "recurrent UTIs",
+    "OA"
+   ],
+   "function_baseline": "walks with a stick",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "paracetamol",
+     "dose": "1 g TDS",
+     "started_day": -100
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "thermometer"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 32,
+    "sleep_h": 7.0,
+    "steps": 3000,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Day -7 to -4: rest HR 88-92, oral temp 38.0-38.2\u00b0C, steps 600-800, sleep 8.5 h. Day -3: HR 82, temp 37.5, steps 1200. Day -2: HR 74, temp 37.0, steps 1800. Day -1: HR 70, temp 36.8, steps 2400. Day 0: HR 68, temp 36.7, steps 2900, sleep 7.1 h. Ring SpO2 94-96% throughout.",
+   "caregiver_or_nurse_note": "Husband (text): 'She finished the antibiotics three days ago and is back to her old self, pottering in the garden again.'",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 80,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 88,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2.5
+   },
+   "router_input": "70-74 F, recurrent UTIs, OA. Med: paracetamol. Devices: watch, ring, thermometer. Baseline rest_hr 68, steps 3000. Trend: HR and temp elevated Day -7 to -4, then returned to baseline by Day -2. Steps and sleep recovered. Husband confirms she is back to normal after antibiotics.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "easy",
+   "category": [
+    "recovery"
+   ],
+   "rationale": "All streams have returned to baseline after a treated UTI, with no residual symptoms. This is a completed recovery, and no action is needed. Naive-model trap: a model might flag the earlier febrile period and trigger a follow-up, failing to recognise the full resolution.",
+   "decisive_feature": "Complete return of HR, temperature, steps and sleep to baseline after UTI treatment, with caregiver confirmation.",
+   "expected_device_ticket": null,
+   "author_route": "silent_log",
+   "key_source": "clinician_ruling_merge_dispute_2026-10-23",
+   "clinician_note": "confirmed author label (batch)"
+  }
+ ]
+}
