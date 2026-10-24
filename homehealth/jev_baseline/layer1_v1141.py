@@ -12,7 +12,12 @@ holdout_v3/holdout_v4 case text was NOT read while designing these rules.
             good-waveform fingertip -> ticket (LX12-007); oximeter disagreement tickets are device_maintenance, not a separate type.
   CGM warm-up: a reading during a sensor warm-up window is expected device behaviour, not a fault: no ticket (LX11-005 ruling).
   Internal sub-families (param-gated): cuff_error (cuff error code with no number), scale_internal (impossible weight with a normal repeat,
-            new scale installed / old retired with no clinic or visit weight agreeing)."""
+            new scale installed / old retired with no clinic or visit weight agreeing).
+  v1.14.2 (Wayne 2026-10-24, POLICY 2 tightening; built from library LX2-006 / LX11-002 and synthetic vignettes in test_layer1_v1142.py,
+            holdout text NOT read): human_cause_guard withdraws a cuff ticket when the cuff was re-seated / repositioned / pinched or a
+            seated-rest repeat cleared it (unless a cuff error code was shown), and withdraws a scale ticket when a bag / object / person / pet
+            was on the scale or the note says the patient was not on it (but a zero / near-zero reading keeps its ticket: extra weight cannot read 0 kg, LX11-001). Internal faults (error code, impossible weight with a normal repeat
+            and no human cause, new-scale offset) keep their ticket."""
 import re
 CLIN = ("nurse_task", "provider_task", "urgent_page")
 CUFF_ERR = r"\berror E\d\b|cuff (?:displayed |showed )?(?:error|err)\b|\bE\d (?:cuff )?error\b|E\d with no (?:number|reading)"
@@ -35,6 +40,18 @@ def internal_extra(c, V, V14, out=None):
         m = re.search(SCALE_NEW, clean, re.I)
         if m: return "scale_internal", m.group(0)
     return None
+CUFF_HUMAN = r"cuff (?:was )?re-?(?:seated|seating|positioned|positioning|applied|wrapped)|re-?seat\w* (?:the |her |his )?cuff|cuff pinched|pinched on the first|after [^.;]{0,30}seated rest|seated[^.;]{0,20}repeat|repeat[^.;]{0,40}seated"
+SCALE_HUMAN = r"(?:bag|box|basket|parcel|package|object|laundry|compost|groceries|shopping|suitcase|pet|dog|cat|child|grandchild|someone else|another person|(?:her|his) (?:husband|wife|son|daughter|spouse))[^.;]{0,40}on the (?:scale|platform)|on the scale (?:platform )?[^.;]{0,20}(?:bag|box|object|pet|dog|cat|child)|not the patient's weight|patient was not on the scale|(?:stood|stepped) on (?:her|his|the patient's) scale"
+def human_cause(tk, txt):
+    d = (tk.get("detail") or "").lower(); fam = None
+    if "cuff" in d or "bp" in d or "blood pressure" in d: fam = "cuff"
+    elif "scale" in d or "weight" in d: fam = "scale"
+    if fam == "cuff" and not re.search(CUFF_ERR, txt, re.I):
+        m = re.search(CUFF_HUMAN, txt, re.I); return m and m.group(0)
+    if fam == "scale":
+        if any(float(x) < 1.0 for x in re.findall(r"(\d{1,3}\.\d)\s*kg", txt)): return None   # a zero / near-zero reading is not explained by extra weight: internal fault (LX11-001)
+        m = re.search(SCALE_HUMAN, txt, re.I); return m and m.group(0)
+    return None
 def V14_P(V): return {"min_plausible_kg": V.get("min_plausible_kg", 25.0)}
 
 def apply(c, out, L, T, P, V14):
@@ -47,6 +64,9 @@ def apply(c, out, L, T, P, V14):
     if not tk:
         f = internal_extra(c, V, V14, out)
         if f: tk = out["device_ticket"] = {"type": "device_maintenance", "interruptive": False, "detail": f"device fault ({f[0]}: {f[1]})", "route_to": "device_maintenance_process_else_whoever_can_check_the_device", "rule": "v1141"}
+    if tk and V.get("human_cause_guard", True):   # v1.14.2
+        h = human_cause(tk, V14._all(c))
+        if h: out["device_ticket_suppressed"] = {**tk, "why": f"POLICY 2 (v1.14.2): human/external cause ({h}), no device ticket"}; out.pop("device_ticket"); tk = None
     if tk and tk.get("type") == "supply_reference_oximeter_and_baseline" and V.get("oximeter_as_maintenance", True):
         tk = out["device_ticket"] = {**tk, "type": "device_maintenance"}   # Wayne 2026-10-24: oximeter disagreement = the same device_maintenance ticket
     if tk and V.get("suppress_on_clinical_route", True):
