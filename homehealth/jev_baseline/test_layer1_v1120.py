@@ -91,4 +91,4 @@ def test_device_disagreement_with_symptoms_is_not_silenced():
     assert r(d) != "silent_log"
 def test_v1120_params_are_placeholders():
     V = L.T.v110(L.PARAMS)["v1120"]
-    assert L.PARAMS["version"] == "0.12.0-placeholder" and V["enabled"] and "PLACEHOLDER" in V["_note"]
+    assert L.PARAMS["version"].endswith("-placeholder") and V["enabled"] and "PLACEHOLDER" in V["_note"]

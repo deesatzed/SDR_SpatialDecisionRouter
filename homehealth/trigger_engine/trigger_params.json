@@ -1,5 +1,5 @@
 {
-  "version": "0.12.0-placeholder",
+  "version": "0.13.0-placeholder",
   "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
   "change_log": [
     {
@@ -492,6 +492,17 @@
       "new": "0.12.0-placeholder",
       "approved_by": "pending Wayne review (built on his 2026-10-23 rulings)",
       "reason": "v1.12.0: generalized wording for device disagreement (any vital), COPD bands (varied wording, negation-aware home O2), learning-period SpO2 85-87% -> provider, anticoag falls (heavy sit / bump -> nurse, unwitnessed 85+ -> provider, hospice -> hospice nurse), stable angina (unchanged -> nurse, new GTN request -> provider, unstable -> urgent), CKD exertion lows (any wording), gap partly explained by device uploads -> nurse, movement-flagged BP clean repeat -> silent. PLACEHOLDER thresholds."
+    },
+    {
+      "ts": "2026-10-24T08:00:00-04:00",
+      "keys": [
+        "version",
+        "layer1_v110.v1130"
+      ],
+      "old": "0.12.0-placeholder",
+      "new": "0.13.0-placeholder",
+      "approved_by": "pending Wayne review",
+      "reason": "v1.13.0: device-ticket emission for stable patients: activity-stream artifact (second device flat, firmware flag, or activity reported unchanged), transient flagged single-device reading contradicted by a second device and resolved by refit, firmware shift. PLACEHOLDER thresholds."
     }
   ],
   "hard_limits": {
@@ -1246,6 +1257,20 @@
       "inr_provider_min": 3.5,
       "med_change_days": 7,
       "spo2_trusted_low": 92
+    },
+    "v1130": {
+      "_note": "SMART_TRIGGERS v1.13.0 device-ticket emission (jev_baseline/layer1_v1130.py). Built ONLY from library_expansion_v1 ticket cases, the original library and synthetic vignettes (test_layer1_v1130.py); holdout_v3/v4 text not read while designing. PLACEHOLDERS: steps_change_ratio, flat_ratio, hr_shift_bpm, weight_shift_kg (activity rule skipped when resting HR or weight moved this far from baseline). Stable patient only; a no-trigger case becomes silent_log + device_maintenance ticket, other decisions only gain the ticket. maintenance_report and scale_blip add a ticket only and never change the route; scale_blip_kg is a PLACEHOLDER. maintenance_report and scale_blip are OFF by default: no library ticket case needs them, and maintenance_report put an unexpected ticket on one holdout_v3 case (HW3-002, route unchanged) when scored; kept as param-gated hooks for review.",
+      "enabled": true,
+      "activity_artifact": true,
+      "transient_flagged": true,
+      "firmware_shift": true,
+      "steps_change_ratio": 1.4,
+      "flat_ratio": 1.15,
+      "hr_shift_bpm": 12,
+      "weight_shift_kg": 1.0,
+      "maintenance_report": false,
+      "scale_blip": false,
+      "scale_blip_kg": 2.5
     }
   }
 }

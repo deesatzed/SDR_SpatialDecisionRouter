@@ -224,6 +224,7 @@ PLAIN = {   # v1.11.0 plain reasons, keyed by rule:reason, then reason, then rul
     "possible_fall_unverified": "possible fall on a blood thinner (impact or device signal) without a confirmed fall, pain or head strike; nurse to check",
     "explained_caregiver_check": "possible fall on a blood thinner that a caregiver checked; nurse to confirm there was no fall",
     "explained": "trigger explained by the caregiver note; nurse to confirm",
+    "device_artifact_stable_patient": "device reading looks like a device problem (second device, firmware flag or reported activity disagree) and the patient is stable; device ticket filed, no clinical alert",
     "device_disagreement": "two devices disagree on the same reading; device ticket filed, no clinical alert",
     "device_disagreement_could_change_care": "devices disagree on heart rate after a rate-drug change; a manual pulse will tell us which is right (device ticket filed)",
     "device_disagreement_changes_care": "two devices disagree and the answer could change care; nurse to check which is right (device ticket filed)",
@@ -567,13 +568,14 @@ def _evaluate_v1112(case):
     return {**out, "acute_presentation": acute, "hitm_required": hitm_required, "context": {k: ctx[k] for k in ("goals", "lives_alone", "high_risk")},
             "candidates": [{"rule": d.get("rule"), "tier": d["tier"], "reason": d.get("reason")} for d in cands]}
 
+import layer1_v1130 as V13  # noqa: E402  (v1.13.0 device-ticket emission; params layer1_v110.v1130)
 import layer1_v1120 as V12  # noqa: E402  (v1.12.0 generalized wording/matching; params layer1_v110.v1120)
 def evaluate_case(case):
     """v1.11.2 decision, then the v1.12.0 generalized rules (no-op when layer1_v110.v1120.enabled is false)."""
     out = _evaluate_v1112(case)
     c = facts_only(case); ctx = context(c)
     new = V12.apply(case, c, out, ctx, sys.modules[__name__], T, PARAMS)
-    if new is out: return out
+    if new is out: return V13.apply(case, c, out, ctx, sys.modules[__name__], T, PARAMS, V12)   # v1.13.0 device tickets (stable patient)
     if route(out, None)[0] == new.get("owned_route") and not (new.get("device_ticket") and not out.get("device_ticket")) and out.get("tier") and not (out.get("hitm_required") and new.get("owned_route") == "provider_task" and out.get("reason") != new.get("reason")):
         return out   # v1.12.0 agrees with the v1.11.2 route: keep the v1.11.2 decision (reason, owner, HITM floor)
     new = dict(new); new["v1112_decision"] = {k: out.get(k) for k in ("rule", "tier", "reason")}

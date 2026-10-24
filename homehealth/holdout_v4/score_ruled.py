@@ -6,6 +6,7 @@ import json, os, sys
 HO = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HO, "..", "jev_baseline"))
 import score_v110 as V, dual_jev as D, score_l1jev as SL, layer1_adapter as L  # noqa: E402
 KEY, OUT, DIRS = sys.argv[1], sys.argv[2], sys.argv[3:]
+if os.environ.get("V1130_OFF"): L.T.v110(L.PARAMS).setdefault("v1130", {})["enabled"] = False   # score without the v1.13.0 device tickets
 if os.environ.get("V1120_OFF"): L.T.v110(L.PARAMS).setdefault("v1120", {})["enabled"] = False   # score the v1.11.2 baseline
 M3 = ["liquid/d1-ultra", "perplexity/pplx-decider-v1.2", "nace-ai/drex-max"]
 cases = json.load(open(KEY))["cases"]
