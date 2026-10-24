@@ -1236,7 +1236,6 @@
    ],
    "rationale": "Watch wrist SpO2 of 88-89% at rest sits three points below the fingertip 91-92% on three separate afternoons, so the disagreement is real and the watch value is 0 to 1 point above the 88% line. She has no cough, no new breathlessness and a steady RR, so the borderline reading needs a manual check and a nurse decision on whether an oxygen review is needed, with the device ticket filed. Naive-model trap: a shallow model sees 88% on a Fitzpatrick V-VI wrist and pages for hypoxemia, or sees the fingertip 91% and silent-logs without the borderline decision the nurse must make. Hard trigger not fired: neither reliable reading is below 88%.",
    "decisive_feature": "Watch wrist 88-89% at rest against fingertip 91-92% on the same afternoons, sitting 0-1 point above the 88% line in a wheelchair user with no home oxygen.",
-   "expected_device_ticket": "supply_reference_oximeter_and_baseline",
    "src": "library_expansion_v1",
    "grade": {
     "score": 5,
@@ -1251,6 +1250,12 @@
     "case_id": "HW4-002",
     "jaccard_decisive": 0.028,
     "jaccard_text": 0.307
+   },
+   "ticket_relabel": {
+    "from": "supply_reference_oximeter_and_baseline",
+    "to": null,
+    "by": "Wayne 2026-10-24 open-item ruling",
+    "why": "nurse route covers it (POLICY 1)"
    }
   },
   {
@@ -7320,7 +7325,6 @@
    ],
    "rationale": "Two devices disagree by 12 to 13 bpm on the same mornings, with the watch at 57-59 bpm and the ring at 70-72 bpm, starting two days after verapamil SR was raised from 80 mg to 120 mg, so the disagreement sits exactly where a rate-slowing dose change would show. The cuff pulse of 60 bpm on Day 0 sides with the watch, but the ring reads higher, so the true resting rate is not settled by any one device. The patient reports feeling normal, cuff SBP is 126, and no rate below 45 bpm is recorded, so no hard trigger applies and no page is needed. The right route is a nurse task within 24 hours to take a manual pulse and a short rhythm check, with an ECG strip requested to settle which device is accurate before the rate drug is judged. Naive-model trap: a shallow model sees a device disagreement with no symptoms and files silent_log with a ticket, missing that after a rate-slowing dose change the disagreement changes the nurse's next decision.",
    "decisive_feature": "Watch resting HR 57-59 against ring 70-72 on the same mornings, starting two days after verapamil SR was raised from 80 to 120 mg.",
-   "expected_device_ticket": "ecg_strip_request",
    "src": "library_expansion_v1",
    "grade": {
     "score": 5,
@@ -7335,6 +7339,12 @@
     "case_id": "HX5-004",
     "jaccard_decisive": 0.312,
     "jaccard_text": 0.388
+   },
+   "ticket_relabel": {
+    "from": "ecg_strip_request",
+    "to": null,
+    "by": "Wayne 2026-10-24 open-item ruling",
+    "why": "nurse route covers it (POLICY 1)"
    }
   }
  ],

@@ -4,19 +4,25 @@
   "library": "library_expansion_v1",
   "route": "nurse_task",
   "ticket": "supply_reference_oximeter_and_baseline",
-  "question": "POLICY 1: non-maintenance ticket type on a clinical route (is this a clinical order rather than a device ticket?) - left unchanged; still open for Wayne (oximeter-reference on a clinical nurse route)"
+  "question": "POLICY 1: non-maintenance ticket type on a clinical route (is this a clinical order rather than a device ticket?) - left unchanged; still open for Wayne (oximeter-reference on a clinical nurse route)",
+  "status": "resolved",
+  "ruling": "Wayne 2026-10-24: keep nurse_task, DROP ticket (nurse route covers it). Done in relabel_20261024b.py."
  },
  {
   "case_id": "LX8-010",
   "library": "library_expansion_v1",
   "route": "nurse_task",
   "ticket": "ecg_strip_request",
-  "question": "POLICY 1: non-maintenance ticket type on a clinical route (is this a clinical order rather than a device ticket?) - left unchanged; still open for Wayne (clinical-order ticket, not device_maintenance under policy)"
+  "question": "POLICY 1: non-maintenance ticket type on a clinical route (is this a clinical order rather than a device ticket?) - left unchanged; still open for Wayne (clinical-order ticket, not device_maintenance under policy)",
+  "status": "resolved",
+  "ruling": "Wayne 2026-10-24: keep nurse_task, DROP ticket (nurse route covers it). Done in relabel_20261024b.py."
  },
  {
   "case_id": "LX10-002",
   "library": "library_expansion_v2",
   "route": "silent_log",
-  "question": "Layer 1 routes urgent_page via the fainting/syncope trigger vs silent_log label; not auto-changed, needs Wayne's ruling"
+  "question": "Layer 1 routes urgent_page via the fainting/syncope trigger vs silent_log label; not auto-changed, needs Wayne's ruling",
+  "status": "resolved",
+  "ruling": "Wayne 2026-10-24: keep silent_log + device_maintenance; fix Layer 1. Done in v1.14.3: syncope synonym 'out cold' word-bounded (matched 'about cold fingers'). Layer 1 now routes nurse_task (acceptable alternate) via HT_DEVICE_DISAGREE; ticket suppressed by POLICY 1."
  }
 ]

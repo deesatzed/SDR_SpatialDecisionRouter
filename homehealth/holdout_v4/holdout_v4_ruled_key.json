@@ -4659,7 +4659,6 @@
    ],
    "rationale": "Watch SpO2 85% sits below the 88% line, but the sample carries a motion flag from a walk to the window, so the reliability check fails. The fingertip repeat of 97% at 14:02 and watch 95% at 14:04 are clean, within minutes, with no symptoms, and his own usual range is 94-96%, so the low value is cleared. This is a suppressed unreliable_reading that logs as silent_log, with a reference-oximeter ticket for the wrist sensor. Naive-model trap: a shallow model reads 85% under 88% and pages urgently, ignoring the motion flag and the clean fingertip repeat in a V-VI wearer.",
    "decisive_feature": "Watch SpO2 85% on a motion-flagged walking sample, cleared by a 97% fingertip repeat at rest four minutes later with no symptoms.",
-   "expected_device_ticket": "supply_reference_oximeter_and_baseline",
    "escalation_target": null,
    "route_basis": null,
    "secondary_triggers": [],
@@ -4680,7 +4679,13 @@
    },
    "author_route": "silent_log",
    "key_source": "clinician_ruling_accepted_2026-10-23",
-   "clinician_note": "confirmed author label (batch)"
+   "clinician_note": "confirmed author label (batch)",
+   "ticket_relabel": {
+    "from": "supply_reference_oximeter_and_baseline",
+    "to": null,
+    "by": "Wayne 2026-10-24 open-item ruling",
+    "why": "motion artifact"
+   }
   },
   {
    "case_id": "HX5-003",
@@ -5589,7 +5594,6 @@
    ],
    "rationale": "The watch irregular-rhythm notification at 11:20 disagrees with its own ECG strip at 11:21, which was classified as sinus rhythm at 72 bpm, and the ring pulse was regular at 70 bpm across 11:20-11:30. There are no symptoms, no rate or pressure change, and no hard trigger fired, so the disagreement does not need an acute page. The right route is silent_log with an ecg_strip_request ticket so the device can be checked against a fresh strip. Naive-model trap: a shallow model treats the irregular-rhythm notification as possible atrial fibrillation and sends provider_task or urgent_page, when the strip and the ring both show regular rhythm.",
    "decisive_feature": "Watch irregular-rhythm notification at 11:20 contradicted by its own 11:21 ECG strip classified sinus at 72 bpm, with a regular ring pulse and no symptoms.",
-   "expected_device_ticket": "ecg_strip_request",
    "escalation_target": null,
    "route_basis": null,
    "secondary_triggers": [],
@@ -5608,7 +5612,13 @@
     "jaccard_decisive": 0.217,
     "jaccard_text": 0.244
    },
-   "key_source": "author_label_accepted"
+   "key_source": "author_label_accepted",
+   "ticket_relabel": {
+    "from": "ecg_strip_request",
+    "to": null,
+    "by": "Wayne 2026-10-24 open-item ruling",
+    "why": "ECG strip already recorded and cleared as sinus"
+   }
   },
   {
    "case_id": "HX6-001",
@@ -7786,7 +7796,9 @@
   "n": 76,
   "ticket_relabels_2026-10-24": {
    "HX4-010": null,
-   "HX5-004": null
+   "HX5-004": null,
+   "HX5-002": null,
+   "HX5-011": null
   }
  }
 }

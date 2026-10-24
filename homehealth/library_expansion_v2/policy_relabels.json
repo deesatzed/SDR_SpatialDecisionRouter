@@ -43,5 +43,41 @@
   "ticket_to": null,
   "policy": "POLICY 2 (human/external cause -> no ticket)",
   "by": "Wayne 2026-10-24"
+ },
+ {
+  "case_id": "LX2-010",
+  "library": "library_expansion_v1",
+  "route": "nurse_task",
+  "ticket_from": "supply_reference_oximeter_and_baseline",
+  "ticket_to": null,
+  "policy": "POLICY 1 (clinical route -> no ticket)",
+  "by": "Wayne 2026-10-24"
+ },
+ {
+  "case_id": "LX8-010",
+  "library": "library_expansion_v1",
+  "route": "nurse_task",
+  "ticket_from": "ecg_strip_request",
+  "ticket_to": null,
+  "policy": "POLICY 1 (clinical route -> no ticket)",
+  "by": "Wayne 2026-10-24"
+ },
+ {
+  "case_id": "HX5-002",
+  "library": "holdout_v4 (key only, text not read)",
+  "route": "silent_log",
+  "ticket_from": "supply_reference_oximeter_and_baseline",
+  "ticket_to": null,
+  "policy": "motion artifact",
+  "by": "Wayne 2026-10-24"
+ },
+ {
+  "case_id": "HX5-011",
+  "library": "holdout_v4 (key only, text not read)",
+  "route": "silent_log",
+  "ticket_from": "ecg_strip_request",
+  "ticket_to": null,
+  "policy": "ECG strip already cleared as sinus",
+  "by": "Wayne 2026-10-24"
  }
 ]
