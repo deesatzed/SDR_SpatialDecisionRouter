@@ -1,0 +1,59 @@
+{
+ "tickets": [
+  {
+   "case_id": "LX10-001",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "A loose replacement watch strap is causing nocturnal motion-flagged HR spikes while the patient is asymptomatic with stable daytime vitals."
+  },
+  {
+   "case_id": "LX10-002",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "Transient low fingertip SpO2 readings are caused by cold fingers and dark nail varnish, with normal readings on a warm bare finger and wrist watch."
+  },
+  {
+   "case_id": "LX10-003",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "The BP cuff generated an E2 error code when placed over a cardigan sleeve, followed by a clean repeat reading on the bare arm in a stable patient."
+  },
+  {
+   "case_id": "LX10-004",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "The ring SpO2 drop to 87% has a poor-contact flag and is contradicted by repeated 95% readings on the reference fingertip oximeter in an asymptomatic patient."
+  },
+  {
+   "case_id": "LX10-005",
+   "expected_device_ticket": null,
+   "reason": "Despite the ring poor-contact flag, the fingertip oximeter confirms severe hypoxemia at 85% on a good waveform, making this a real clinical change rather than a device fault."
+  },
+  {
+   "case_id": "LX10-006",
+   "expected_device_ticket": null,
+   "reason": "The elevated home BP readings following naproxen initiation are confirmed by a nurse's manual auscultatory check (174/96), representing a real clinical change."
+  },
+  {
+   "case_id": "LX10-007",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "A lifted CGM sensor patch caused a 4.7-hour data gap and requires device maintenance alongside urgent clinical management for glucometer-confirmed symptomatic hypoglycemia."
+  },
+  {
+   "case_id": "LX10-008",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "A loose replacement watch strap pin is causing nocturnal motion-flagged HR artifacts that require a device ticket on top of the clinical route for real fluid weight gain."
+  },
+  {
+   "case_id": "LX10-009",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "The watch strap caused a local weeping skin lesion and daily off-wrist wear gaps, requiring a device ticket in addition to clinical evaluation for suspected wrist infection and fever."
+  },
+  {
+   "case_id": "LX10-010",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "The watch and ring resting HR disagree by 12-15 bpm after a ring battery change and refitting onto the index finger alongside a metoprolol dose increase."
+  },
+  {
+   "case_id": "LX10-011",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "An erroneously low BP reading was caused by using a wide cuff loosely on a thin arm, with normal BP confirmed immediately using the correct small cuff."
+  }
+ ]
+}

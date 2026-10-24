@@ -1,0 +1,508 @@
+{
+ "batch_id": "LX12-p1",
+ "grader": "LLM3",
+ "verdicts": [
+  {
+   "case_id": "LX12-001",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "The watch shows a nightly SpO2 nadir of 89-90% starting after a phone re-pairing on Day -7, while the ring continues to read 93-95% at baseline on the same nights. With stable heart rate, steps, sleep, and no respiratory symptoms, this represents a pure device disagreement (>2 points) with no acute clinical sign, warranting silent_log and a device maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Matches v1.11.2 Rule C and v1.13 Rule 1: device disagreement on SpO2 (>2 points) with flat physiology and no symptoms routes to silent_log with a device_maintenance ticket.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX12-002",
+    "differences": [
+     "In LX12-001 the ring nightly SpO2 stays 93-95% and the patient sleeps fine without symptoms; in LX12-002 the ring concordantly drops to 89-91% and the patient sleeps propped up in an armchair for orthopnea/stuffiness."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX12-002",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.9,
+    "reasoning": "Both the watch and the ring show a concordant drop in nightly SpO2 nadir from a 93% baseline down to 89-91%, accompanied by new orthopnea-like behavior (sleeping propped in an armchair for two nights). Because SpO2 remains above 88% and resting HR and steps are unchanged, there is no hard trigger, making a routine nurse follow-up (nurse_task) appropriate with no device ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Concordant nocturnal SpO2 decline to 89-91% across two devices plus new positional sleeping symptoms confirms a true clinical change (v1.13 Rule 3 negative control: no device ticket) requiring nurse follow-up.",
+    "confidence": 0.9
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX12-001",
+    "differences": [
+     "In LX12-002 the ring confirms the nocturnal SpO2 drop (89-91%) and the patient sleeps propped in an armchair due to feeling stuffy flat, whereas in LX12-001 the ring remains at 93-95% with no symptoms."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX12-003",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "A sudden step-change of +2.0 kg coincides exactly with replacing the home scale on Day -4, and the weight remains flat at 74.1-74.3 kg thereafter. All wearable streams (HR, steps, sleep, SpO2) are completely stable and the patient has no new edema or dyspnea, indicating a scale calibration offset rather than fluid retention (silent_log with device_maintenance ticket)."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "An isolated step-shift in weight starting the day a new scale was installed, with flat values afterward and no symptoms or vital changes, is a classic device offset (silent_log + device_maintenance).",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX12-004",
+    "differences": [
+     "LX12-003 has no clinic scale confirmation of the new scale's 74.1-74.3 kg reading, whereas LX12-004 adds a Day -1 clinic scale reading of 74.0 kg confirming real weight gain."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX12-004",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.9,
+    "reasoning": "Although a new scale was installed on Day -4 showing ~2.0 kg higher weight, a clinic visit scale on Day -1 independently measured 74.0 kg, confirming a true ~1.8-2.0 kg weight gain over baseline in an HFpEF patient. Even without acute symptoms or vital changes, a confirmed ~2 kg gain in heart failure warrants same-day provider review for diuretic adjustment (provider_task) and no device ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "The clinic scale confirms the ~2 kg weight gain is real (v1.13 Rule 3 negative control: no device ticket), requiring same-day provider evaluation for HFpEF fluid retention.",
+    "confidence": 0.9
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX12-003",
+    "differences": [
+     "LX12-004 adds `visit: clinic scale Day -1 weight 74.0 kg` confirming the home scale weight rise is genuine, whereas LX12-003 lacks any clinic weight check."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX12-005",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "Watch optical resting HR reads 58-60 bpm since the watch was re-seated on Day -6, disagreeing by >10 bpm with the ring (71-73 bpm), while a watch ECG strip on Day -1 shows a regular rhythm at 72 bpm matching the ring. The patient is asymptomatic and not on a rate-slowing medication, so this is an optical sensor fit issue routing to silent_log with a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Matches v1.11.2 Rule C and v1.13 Rule 1: HR disagreement >10 bpm between watch PPG and ring/ECG strip with no symptoms or rate-control drug changes routes to silent_log with a device_maintenance ticket.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": true,
+    "ok": true,
+    "partner_id": "LX12-006",
+    "differences": [
+     "Partner LX12-006 is in the second slice of the sub-batch; per decisive_feature, LX12-005 has a Day -1 ECG strip at 72 bpm matching the ring and refuting the watch's 58-60 bpm PPG reading."
+    ]
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  }
+ ],
+ "batch_summary": {
+  "n_cases": 5,
+  "n_requested": 5,
+  "routes_actual": {
+   "silent_log": 3,
+   "nurse_task": 1,
+   "provider_task": 1,
+   "urgent_page": 0
+  },
+  "routes_requested": {
+   "silent_log": 4,
+   "nurse_task": 2,
+   "provider_task": 2,
+   "urgent_page": 2
+  },
+  "difficulty_actual": {
+   "easy": 0,
+   "medium": 0,
+   "hard": 3,
+   "adversarial": 2
+  },
+  "hard_plus_adversarial_pct": 100,
+  "minimums": {
+   "pairs": {
+    "required": 5,
+    "actual": 2,
+    "met": false
+   },
+   "negative_control": {
+    "required": 3,
+    "actual": 2,
+    "met": false
+   },
+   "ticket_on_clinical": {
+    "required": 2,
+    "actual": 0,
+    "met": false
+   }
+  },
+  "all_minimums_met": false,
+  "generator_tally_matches": false,
+  "tally_discrepancies": [
+   "Input batch is part 1 (5 cases: LX12-001 to LX12-005) of a 10-case sub-batch (LX12-001 to LX12-010); the generator tally reflects all 10 cases."
+  ],
+  "actions": {
+   "keep": 5,
+   "fix": 0,
+   "reject": 0
+  },
+  "route_disagreement_ids": [],
+  "hard_trigger_issue_ids": [],
+  "critical_miss_ids": [],
+  "drift_miss_ids": [],
+  "trigger_tier_issue_ids": [],
+  "duplicate_or_near_duplicate_ids": [],
+  "notes": "All five cases in this first-half slice (LX12-001 through LX12-005) are clinically sound, faithful to the schema and router_input rules, and cleanly test the v1.13 device-ticket vs negative-control rules."
+ }
+}

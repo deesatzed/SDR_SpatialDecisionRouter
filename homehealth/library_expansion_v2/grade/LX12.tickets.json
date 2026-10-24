@@ -1,0 +1,54 @@
+{
+ "tickets": [
+  {
+   "case_id": "LX12-001",
+   "expected_device_ticket": "supply_reference_oximeter_and_baseline",
+   "reason": "Watch and ring nightly SpO2 disagree (89-90% vs 93-95%) in an asymptomatic patient with flat physiology and no reference oximeter on hand."
+  },
+  {
+   "case_id": "LX12-002",
+   "expected_device_ticket": null,
+   "reason": "Both the watch and ring confirm the nightly SpO2 drop to 89-91% alongside new orthopnea, indicating a real clinical change rather than a device fault."
+  },
+  {
+   "case_id": "LX12-003",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "An abrupt 2 kg step-shift coincided exactly with installing a new scale while all other physiology and symptoms remained completely flat."
+  },
+  {
+   "case_id": "LX12-004",
+   "expected_device_ticket": null,
+   "reason": "A clinic scale confirmed the 74.0 kg weight, verifying that the weight increase is real and not a calibration offset on the new home scale."
+  },
+  {
+   "case_id": "LX12-005",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "Watch optical morning resting HR (58-60 bpm) disagrees with both the ring (71-73 bpm) and the simultaneous watch ECG strip (72 bpm) in an asymptomatic patient."
+  },
+  {
+   "case_id": "LX12-006",
+   "expected_device_ticket": null,
+   "reason": "Watch, ring, and watch ECG strip all agree on the lower morning resting heart rate (58-62 bpm), confirming a real physiological change."
+  },
+  {
+   "case_id": "LX12-007",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "Single low ring SpO2 reading (86%) occurred with a poor-contact flag from ring rotation and was refuted by a 95% fingertip oximeter reading in an asymptomatic patient."
+  },
+  {
+   "case_id": "LX12-008",
+   "expected_device_ticket": null,
+   "reason": "Two repeat fingertip oximeter readings with good waveforms confirmed the 86% SpO2 reading, establishing true hypoxemia rather than a sensor artifact."
+  },
+  {
+   "case_id": "LX12-009",
+   "expected_device_ticket": null,
+   "reason": "The prior watch sync gap was already re-synced and back-filled with clean data, and the current presentation is a real orthostatic blood pressure drop with dizziness."
+  },
+  {
+   "case_id": "LX12-010",
+   "expected_device_ticket": null,
+   "reason": "The earlier watch sync gap was already resolved and back-filled, and the case represents a true clinical syncopal episode with orthostatic hypotension."
+  }
+ ]
+}

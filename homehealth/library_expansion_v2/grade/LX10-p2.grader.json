@@ -1,0 +1,513 @@
+{
+ "batch_id": "LX10-p2",
+ "grader": "LLM3",
+ "verdicts": [
+  {
+   "case_id": "LX10-007",
+   "blind": {
+    "grader_route": "urgent_page",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "ABSOLUTE",
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": "hard_limit_danger",
+    "grader_chest_pain_band": null,
+    "confidence": 0.99,
+    "reasoning": "The patient on insulin glargine has a glucometer-confirmed danger-level hypoglycemia of 46 mg/dL (and CGM 49 mg/dL) with acute symptoms of clamminess, shakiness, and word-finding difficulty. Per SMART_TRIGGERS, symptomatic danger-level drug-induced hypoglycemia is an ABSOLUTE HT_VS_DANGER trigger requiring an immediate urgent_page, alongside a device_maintenance ticket for the lifted CGM patch."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "urgent_page",
+    "reasoning": "Exact agreement on urgent_page for symptomatic meter-confirmed severe hypoglycemia on insulin, with a concurrent device ticket for the lifted CGM sensor patch.",
+    "confidence": 0.99
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX10-008",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.9,
+    "reasoning": "This patient recently discharged for HF has a 1.3 kg weight gain over 5 days with worsening evening ankle edema, but no dyspnea at rest and stable daytime resting HR and BP. The nocturnal HR spikes to 112-120 bpm are confined to motion-flagged windows caused by a loose replacement watch strap. This warrants a routine nurse_task (or provider_task) for early fluid retention plus a device_maintenance ticket for the strap."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Agrees with nurse_task (provider_task as acceptable alternate) for subacute post-discharge weight gain and ankle edema without acute respiratory distress, with a device ticket for the loose watch strap.",
+    "confidence": 0.9
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX10-009",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.88,
+    "reasoning": "An immunosuppressed patient on methotrexate has developed a warm, weeping, malodorous skin lesion under the watch strap accompanied by low-grade fever (37.7-37.9 C) and resting heart rate elevation from 70 to 84 bpm. While the afternoon watch gaps are explained by removing the watch for the rash, the clinical picture indicates a localized bacterial skin infection requiring same-day clinical assessment (provider_task or nurse_task) and a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "acceptable_alternate",
+    "grader_route": "provider_task",
+    "reasoning": "My blind route of provider_task is listed in acceptable_alternates; nurse_task is also reasonable for initial wound inspection and triage.",
+    "confidence": 0.88
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX10-010",
+   "blind": {
+    "grader_route": "nurse_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "Two days after doubling metoprolol and refitting the ring onto the index finger, the watch reads resting HR 51-55 bpm while the ring reads 66-69 bpm. The patient is asymptomatic (no dizziness or falls, HR > 45 bpm). Per SMART_TRIGGERS v1.11.2 rule C, a device HR disagreement > 10 bpm after a rate-drug dose change is a 'could change care' variant that routes to nurse_task for a manual pulse check alongside a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "nurse_task",
+    "reasoning": "Exact agreement on nurse_task per SMART_TRIGGERS v1.11.2 rule C ('could change care' HR disagreement after rate-control medication adjustment).",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX10-011",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "A single low BP reading of 96/58 mmHg on Day -1 was caused by using a wide adult cuff loosely on a thin arm, and a repeat 12 minutes later with the properly sized small cuff read 126/78 mmHg (at baseline), with 127/79 mmHg on Day 0 and no symptoms. Per SMART_TRIGGERS v1.11.2 rule D and v1.13 rule 1, a wrong-cuff-size reading cleared by a clean repeat within 15 minutes in an asymptomatic patient routes to silent_log with a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Exact agreement on silent_log for a cuff-size artifact cleared within 12 minutes by a properly sized cuff repeat.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  }
+ ],
+ "batch_summary": {
+  "n_cases": 5,
+  "n_requested": 5,
+  "routes_actual": {
+   "silent_log": 1,
+   "nurse_task": 3,
+   "provider_task": 0,
+   "urgent_page": 1
+  },
+  "routes_requested": {
+   "silent_log": 5,
+   "nurse_task": 3,
+   "provider_task": 1,
+   "urgent_page": 2
+  },
+  "difficulty_actual": {
+   "easy": 0,
+   "medium": 1,
+   "hard": 3,
+   "adversarial": 1
+  },
+  "hard_plus_adversarial_pct": 80,
+  "minimums": {
+   "strap_fit": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "placement": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "bp_cuff": {
+    "required": 2,
+    "actual": 1,
+    "met": false
+   },
+   "spo2_disagree": {
+    "required": 2,
+    "actual": 0,
+    "met": false
+   },
+   "negative_control": {
+    "required": 2,
+    "actual": 0,
+    "met": false
+   },
+   "ticket_on_clinical": {
+    "required": 2,
+    "actual": 4,
+    "met": true
+   }
+  },
+  "all_minimums_met": false,
+  "generator_tally_matches": false,
+  "tally_discrepancies": [
+   "Input payload is part 2 of sub-batch LX10 (5 cases: LX10-007 to LX10-011), whereas generator_tally reports totals across all 11 cases of LX10 (LX10-001 to LX10-011)."
+  ],
+  "actions": {
+   "keep": 5,
+   "fix": 0,
+   "reject": 0
+  },
+  "route_disagreement_ids": [],
+  "hard_trigger_issue_ids": [],
+  "critical_miss_ids": [],
+  "drift_miss_ids": [],
+  "trigger_tier_issue_ids": [],
+  "duplicate_or_near_duplicate_ids": [],
+  "notes": "All 5 cases in LX10-p2 (LX10-007 through LX10-011) are clinically sound, faithful to the structured fields, and follow SMART_TRIGGERS v1.11.2 and v1.13 device-ticket rules. Tally differences reflect that this payload contains the second 5-case slice of the 11-case LX10 sub-batch."
+ }
+}

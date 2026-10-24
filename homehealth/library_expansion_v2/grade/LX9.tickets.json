@@ -1,0 +1,59 @@
+{
+ "tickets": [
+  {
+   "case_id": "LX9-001",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "An 11.3-hour watch upload gap with a 'sync failed' message occurred while the spouse confirmed the patient was well and physiology remained at baseline."
+  },
+  {
+   "case_id": "LX9-002",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "The watch had a 13.2-hour battery gap and is down to 9% battery on Day 0 with the charging cable still missing, while the patient is clinically stable."
+  },
+  {
+   "case_id": "LX9-003",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "A watch firmware update caused a persistent skin-temperature shift that disagrees with both the ring and oral thermometer in an asymptomatic patient."
+  },
+  {
+   "case_id": "LX9-004",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "A watch app update changed the HRV reporting measure and shifted values higher while all other vitals and clinical status remained unchanged."
+  },
+  {
+   "case_id": "LX9-005",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "Re-pairing the watch to a replacement phone caused duplicated minute records that artificially doubled daily step counts in a stable patient."
+  },
+  {
+   "case_id": "LX9-006",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "Re-pairing the ring to a new phone shifted its internal clock 5 hours ahead of the bed sensor and caregiver observations in a stable patient."
+  },
+  {
+   "case_id": "LX9-007",
+   "expected_device_ticket": null,
+   "reason": "The brief watch battery gap on Day -3 was already resolved when the charging lead was found on Day -2, and the current presentation is a real clinical heart failure exacerbation."
+  },
+  {
+   "case_id": "LX9-008",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "A CGM app update truncated exported readings above 200 mg/dL, creating an ongoing device fault on top of true hyperglycemia confirmed by fingerstick glucometer."
+  },
+  {
+   "case_id": "LX9-009",
+   "expected_device_ticket": null,
+   "reason": "The faulty charging cradle was already replaced on Day -2 with continuous, verified watch data over the last 48 hours."
+  },
+  {
+   "case_id": "LX9-010",
+   "expected_device_ticket": null,
+   "reason": "A prolonged 52-hour data gap in a patient with moderate dementia living alone without in-person verification is handled under high-risk gap rules rather than as a device ticket, and charging was subsequently restored."
+  },
+  {
+   "case_id": "LX9-011",
+   "expected_device_ticket": null,
+   "reason": "The watch upload issue was already resolved via manual re-pairing on Day 0, and the patient has a real acute febrile illness requiring clinical routing without a device ticket."
+  }
+ ]
+}

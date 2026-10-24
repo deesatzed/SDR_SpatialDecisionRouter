@@ -1,0 +1,852 @@
+{
+ "cases": [
+  {
+   "case_id": "LX11-001",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "hypertension",
+    "osteoarthritis of knees"
+   ],
+   "function_baseline": "walks indoors unaided, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "amlodipine",
+     "dose": "5 mg daily",
+     "started_day": -600
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 66,
+    "hrv_ms": 38,
+    "sleep_h": 7.1,
+    "steps": 3200,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 78.4,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 76
+   },
+   "trend_last_7d": "Watch rest HR 64-69 bpm, steps 2900-3600, night SpO2 minimum 93-95% on Day -7 to Day 0. Scale weigh-ins each morning: Day -7 78.5 kg, Day -6 78.3, Day -5 78.4, Day -4 78.2, Day -3 78.1, Day -2 07:04 reading 0.0 kg, Day -2 07:06 repeat 78.0 kg, Day -1 78.3 kg, Day 0 78.2 kg. Watch wear 96% of 7 days.",
+   "caregiver_or_nurse_note": "Spouse message Day -2 morning: grandson stood on the scale holding a school bag, the display read zero for one reading and then gave a normal number two minutes later. Spouse says he feels the same as usual.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 64,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [
+     "scale reading 0.0 kg Day -2 07:04",
+     "repeat scale reading 78.0 kg Day -2 07:06"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 75-79, male, Fitzpatrick I-IV, lives with spouse. History: hypertension, osteoarthritis of knees; walks indoors unaided, independent ADLs. Meds: amlodipine 5 mg daily, long-standing; no recent changes. Devices: watch, scale, bp_cuff. Baseline 30 days: rest HR 66, HRV 38 ms, sleep 7.1 h, steps 3200, night SpO2 minimum 94%, weight 78.4 kg, seated BP 128/76. Last 7 days: watch rest HR 64-69, steps 2900-3600, night SpO2 minimum 93-95%, wear 96%. Morning scale weights Day -7 78.5 kg, Day -6 78.3, Day -5 78.4, Day -4 78.2, Day -3 78.1, Day -1 78.3, Day 0 78.2. Day -2 07:04 scale displayed 0.0 kg; Day -2 07:06 repeat 78.0 kg. Spouse: grandson stood on the scale holding a school bag on Day -2 morning; patient says he feels the same as usual. Device flags: 0.0 kg reading Day -2 07:04; repeat 78.0 kg Day -2 07:06. Missing hours last 48: 0. Longest gap 1 h. Baseline established at monitoring day 64.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "noise"
+   ],
+   "rationale": "The only abnormal weight is one 0.0 kg reading at 07:04 on Day -2, and the repeat two minutes later is 78.0 kg, which sits on the 78.1-78.4 kg trend. Watch rest HR, steps and night SpO2 are flat across the same week, and the spouse describes a grandson standing on the scale with a bag, so this is a single impossible reading rather than physiology. The scale is still unexplained, so a device ticket is filed for maintenance. Naive-model trap: a shallow model sees a sudden weight drop to zero in an amlodipine patient and routes provider_task for a medication or fluid problem, when the clean repeat and flat physiology make it a device fault.",
+   "decisive_feature": "Single 0.0 kg scale reading on Day -2 that returns to 78.0 kg two minutes later, with stable watch streams and no symptoms.",
+   "expected_device_ticket": "device_maintenance",
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": null,
+   "src": "library_expansion_v2",
+   "grade": {
+    "score": 5,
+    "grader_route": "silent_log",
+    "grader_confidence": 0.98,
+    "batch_id": [
+     "LX11-p1",
+     "LX11-p2"
+    ]
+   }
+  },
+  {
+   "case_id": "LX11-002",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with adult child",
+   "pmh": [
+    "HFpEF",
+    "CKD 3a",
+    "osteoarthritis of hips"
+   ],
+   "function_baseline": "walks indoors with frame, needs help with bathing",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -700
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 72,
+    "hrv_ms": 30,
+    "sleep_h": 6.9,
+    "steps": 2100,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 68.6,
+    "glucose_mean": null,
+    "sbp": 130,
+    "dbp": 74
+   },
+   "trend_last_7d": "Morning scale weights Day -7 68.4 kg, Day -6 68.7, Day -5 68.5, Day -3 68.8, Day -2 68.6, Day -1 68.9, Day 0 68.7 kg. Day -4 16:20 scale reading 12.0 kg; Day -4 16:22 repeat 68.6 kg. Watch rest HR 70-74 bpm, steps 1900-2300, night SpO2 minimum 91-93%, wear 94%.",
+   "caregiver_or_nurse_note": "Adult child note Day -4: put a 12 kg bag of compost on the scale platform to check the bag weight, not the patient's weight; patient was not on the scale. Patient says she is fine and her breathing is the same.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 210,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 94,
+    "artifact_flags": [
+     "scale reading 12.0 kg Day -4 16:20",
+     "repeat scale reading 68.6 kg Day -4 16:22"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 80-84, female, Fitzpatrick V-VI, lives with adult child. History: HFpEF, CKD 3a, osteoarthritis of hips; walks indoors with frame, needs help with bathing. Meds: furosemide 40 mg daily, long-standing; no recent changes. Devices: watch, scale, bp_cuff. Baseline 30 days: rest HR 72, HRV 30 ms, sleep 6.9 h, steps 2100, night SpO2 minimum 92%, weight 68.6 kg, seated BP 130/74. Last 7 days: morning weights Day -7 68.4 kg, Day -6 68.7, Day -5 68.5, Day -3 68.8, Day -2 68.6, Day -1 68.9, Day 0 68.7. Day -4 16:20 scale displayed 12.0 kg; Day -4 16:22 repeat 68.6 kg. Watch rest HR 70-74, steps 1900-2300, night SpO2 minimum 91-93%, wear 94%. Adult child: a 12 kg bag of compost was placed on the scale on Day -4 to weigh the bag; patient not on the scale. Patient reports breathing unchanged. Device flags: 12.0 kg reading Day -4 16:20 with repeat 68.6 kg at 16:22. Missing hours last 48: 0. Longest gap 1 h.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "noise"
+   ],
+   "rationale": "The 12.0 kg value is physically impossible for this patient and is contradicted by the repeat at 68.6 kg two minutes later and by the 68.4-68.9 kg trend around it. The adult child explains that a bag was on the platform, and the watch rest HR, steps and night SpO2 stay within her usual range, so no physiological change is present. A ticket for scale placement and handling is filed because the cause sits with the device set-up. Naive-model trap: a shallow model reads a HFpEF patient on furosemide with a 12 kg value and pages or escalates for a fluid emergency, when the immediate clean repeat and the explained load show a device problem.",
+   "decisive_feature": "Single 12.0 kg scale reading on Day -4 that the scale corrects to 68.6 kg two minutes later, explained by a bag on the platform.",
+   "expected_device_ticket": "device_maintenance",
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": null,
+   "src": "library_expansion_v2",
+   "grade": {
+    "score": 5,
+    "grader_route": "silent_log",
+    "grader_confidence": 0.98,
+    "batch_id": [
+     "LX11-p1",
+     "LX11-p2"
+    ]
+   }
+  },
+  {
+   "case_id": "LX11-003",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "hypertension",
+    "hyperlipidaemia"
+   ],
+   "function_baseline": "walks outdoors daily, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "atorvastatin",
+     "dose": "20 mg nightly",
+     "started_day": -500
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 62,
+    "hrv_ms": 44,
+    "sleep_h": 7.0,
+    "steps": 4100,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 80.0,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Morning scale weights on the bathroom tile: Day -7 80.1 kg, Day -6 07:02 80.2 kg. Scale moved to a shag rug by the bedroom Day -6 afternoon; weights on the rug Day -5 82.0 kg, Day -4 82.1, Day -3 82.2, Day -2 82.1, Day -1 82.2, Day 0 82.1 kg. Watch rest HR 61-64 bpm, steps 3900-4300, sleep 6.8-7.2 h, wear 95%.",
+   "caregiver_or_nurse_note": "Spouse: the scale was moved to the rug by the bed on Day -6 afternoon for a tidier room and has not been moved back. Patient has no swelling, eats as usual, and says his clothes fit the same.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 95,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [
+     "scale moved to shag rug Day -6 afternoon",
+     "scale on rug through Day 0"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2
+   },
+   "router_input": "Age band 70-74, male, Fitzpatrick I-IV, lives with spouse. History: hypertension, hyperlipidaemia; walks outdoors daily, independent ADLs. Meds: atorvastatin 20 mg nightly, long-standing; no recent changes. Devices: watch, scale. Baseline 30 days: rest HR 62, HRV 44 ms, sleep 7.0 h, steps 4100, night SpO2 minimum 94%, weight 80.0 kg. Last 7 days: Day -7 weight 80.1 kg and Day -6 07:02 weight 80.2 kg on the bathroom tile; scale then moved to a shag rug by the bedroom on Day -6 afternoon; weights on the rug Day -5 82.0 kg, Day -4 82.1, Day -3 82.2, Day -2 82.1, Day -1 82.2, Day 0 82.1 kg. Watch rest HR 61-64, steps 3900-4300, sleep 6.8-7.2 h, wear 95%. Spouse: scale has stayed on the rug; no swelling, appetite unchanged, clothes fit the same. Device flags: scale moved to shag rug Day -6 afternoon; scale on rug through Day 0. Missing hours last 48: 0. Longest gap 2 h.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "noise"
+   ],
+   "rationale": "Weight stepped up about 2.0 kg on the same afternoon the scale went onto the rug and has stayed flat for five days, while watch rest HR, steps and sleep show no change and the patient has no swelling. A real fluid gain would not start in one step with the scale move and leave every other stream flat. The placement problem is still present, so a device ticket for scale placement is filed. Naive-model trap: a shallow model sees a 2 kg rise and routes provider_task to review fluid retention or a heart problem, when the step change aligns exactly with the scale move and the physiology is stable.",
+   "decisive_feature": "A 2.0 kg step up on the afternoon the scale was moved to a rug, held flat for five days with flat watch rest HR, steps and no swelling.",
+   "expected_device_ticket": "device_maintenance",
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": null,
+   "src": "library_expansion_v2",
+   "grade": {
+    "score": 5,
+    "grader_route": "silent_log",
+    "grader_confidence": 0.95,
+    "batch_id": [
+     "LX11-p1",
+     "LX11-p2"
+    ]
+   }
+  },
+  {
+   "case_id": "LX11-004",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with adult child",
+   "pmh": [
+    "HFrEF EF 35%",
+    "CKD 3a"
+   ],
+   "function_baseline": "transfers with one helper, sits in chair most of day",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "furosemide",
+     "dose": "40 mg daily",
+     "started_day": -500
+    },
+    {
+     "name": "sacubitril-valsartan",
+     "dose": "49/51 mg BID",
+     "started_day": -300
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "ring",
+    "scale",
+    "bp_cuff"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 34,
+    "sleep_h": 6.9,
+    "steps": 2400,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 61.2,
+    "glucose_mean": null,
+    "sbp": 128,
+    "dbp": 76
+   },
+   "trend_last_7d": "Morning scale weights on the same hard-tile floor: Day -7 61.3 kg, Day -6 61.4, Day -5 61.6, Day -4 61.9, Day -3 62.1, Day -2 62.6, Day -1 63.0, Day 0 63.5 kg. Ring rest HR 64 bpm Day -7 to -5, 66 Day -4, 67 Day -3, 68 Day -2 to 0. Seated BP 128-130 Day -7 to -4, 134 Day -2, 138 Day 0. Ring HRV 33 ms Day -7 to -4, 29 ms Day -1 and Day 0. Steps 2300 Day -7 falling to 1500 Day 0. Night SpO2 minimum 91-92%. Watch and ring wear 93%.",
+   "caregiver_or_nurse_note": "Adult child: she now needs two pillows at night, ankles look puffy by evening and her shoes are tight by mid-afternoon. She is less willing to walk to the kitchen and says her breath is fine when sitting.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 180,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 93,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 2
+   },
+   "router_input": "Age band 85-89, female, Fitzpatrick I-IV, lives with adult child. History: HFrEF EF 35%, CKD 3a; transfers with one helper, sits in chair most of day. Meds: furosemide 40 mg daily, long-standing; sacubitril-valsartan 49/51 mg BID, started Day -300; no recent changes. Devices: watch, ring, scale, bp_cuff. Baseline 30 days: rest HR 64, HRV 34 ms, sleep 6.9 h, steps 2400, night SpO2 minimum 92%, weight 61.2 kg, seated BP 128/76. Last 7 days: morning scale weights on the same hard-tile floor Day -7 61.3 kg, Day -6 61.4, Day -5 61.6, Day -4 61.9, Day -3 62.1, Day -2 62.6, Day -1 63.0, Day 0 63.5. Ring rest HR 64 Day -7 to -5, 66 Day -4, 67 Day -3, 68 Day -2 to 0. Seated BP 128-130 Day -7 to -4, 134 Day -2, 138 Day 0. Ring HRV 33 ms Day -7 to -4, 29 ms Day -1 and Day 0. Steps 2300 Day -7 to 1500 Day 0. Night SpO2 minimum 91-92%. Wear 93%. Adult child: two pillows at night, ankles puffy by evening, shoes tight by mid-afternoon; less walking. Device flags: none recorded. Missing hours last 48: 0. Longest gap 2 h.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "hf"
+   ],
+   "rationale": "Weight has risen 2.2 kg across six days on the same scale and floor, and the gain is matched by ring HRV falling to 29 ms, rest HR drifting to 68, seated BP rising to 138 and new orthopnoea and ankle swelling reported by the adult child. These streams are concordant and consistent with real congestion, so the scale is trusted and no ticket is filed. The six-day window is too short for drift-guard labelling, but it still needs a same-day diuretic review. Naive-model trap: a shallow model sees small per-stream moves and routes silent_log or a routine nurse call, when the sustained gain across several devices in a HFrEF patient needs prescriber review of the diuretic plan.",
+   "decisive_feature": "Sustained 2.2 kg weight rise on the same scale across six mornings, matched by rising ring rest HR, falling HRV and new pillows and ankle swelling.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": null,
+   "src": "library_expansion_v2",
+   "grade": {
+    "score": 5,
+    "grader_route": "provider_task",
+    "grader_confidence": 0.96,
+    "batch_id": [
+     "LX11-p1",
+     "LX11-p2"
+    ]
+   }
+  },
+  {
+   "case_id": "LX11-007",
+   "pair_id": null,
+   "age_band": "80-84",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "type 2 diabetes insulin-treated",
+    "CKD 3b",
+    "hypertension"
+   ],
+   "function_baseline": "walks with cane indoors, needs help with shoes",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "insulin glargine",
+     "dose": "14 units at bedtime",
+     "started_day": -900
+    },
+    {
+     "name": "lisinopril",
+     "dose": "10 mg daily",
+     "started_day": -700
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 33,
+    "sleep_h": 6.6,
+    "steps": 2000,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": 139,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "CGM nights Day -7 to -3 without values below 70 mg/dL. Day -2 02:50 CGM 58 mg/dL falling to 50 mg/dL by 03:05, holding 50-53 mg/dL until 03:30. Glucometer 96 mg/dL at 03:34 Day -2. Watch HR 62 bpm at 03:10 and 61 bpm at 03:34, no movement flagged. CGM nights Day -1 118-146 mg/dL; Day 0 daytime 120-170 mg/dL. Watch wear 96%.",
+   "caregiver_or_nurse_note": "Spouse Day -2 night log: found his arm under the pillow at 02:45 with the sensor pressed, moved it, he went back to sleep. At 03:34 finger test was 96, no sweating or confusion noted at that time.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 210,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [
+     "sensor-side pressure window Day -2 02:50-04:10",
+     "CGM 50-53 mg/dL run Day -2 03:05-03:30"
+    ],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 80-84, male, Fitzpatrick V-VI, lives with spouse. History: insulin-treated type 2 diabetes, CKD 3b, hypertension; walks with cane indoors, needs help with shoes. Meds: insulin glargine 14 units at bedtime, started Day -900; lisinopril 10 mg daily, started Day -700; no recent changes. Devices: cgm, glucometer, watch. Baseline 30 days: rest HR 64, HRV 33 ms, sleep 6.6 h, steps 2000, night SpO2 minimum 92%, CGM mean 139 mg/dL. Last 7 days: no nocturnal CGM values below 70 mg/dL Day -7 to Day -3. Day -2 02:50 CGM 58 mg/dL, 50 mg/dL by 03:05, 50-53 mg/dL to 03:30. Day -2 03:34 glucometer 96 mg/dL. Watch HR 62 at 03:10 and 61 at 03:34, no movement flagged. Day -1 nocturnal CGM 118-146; Day 0 daytime 120-170. Spouse: arm found under pillow with sensor pressed at 02:45 Day -2; no sweating or confusion at 03:34. Wear 96%. Device flags: sensor-side pressure window Day -2 02:50-04:10; CGM 50-53 mg/dL Day -2 03:05-03:30. Missing hours last 48: 0. Longest gap 1 h.",
+   "expected_route": "nurse_task",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "SUPPRESSED",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": "unreliable_reading",
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "noise"
+   ],
+   "rationale": "The CGM run to 50 mg/dL overlaps a logged pressure window with the sensor under the arm, so the reliability check fails, and a clean fingerstick of 96 mg/dL at 03:34 is above the danger limit within 60 minutes. Watch HR stays 61-62 without a motion flag, and the spouse reports no sweating or confusion. The insulin plus CKD 3b combination means this cannot be silently logged, so it goes to nurse review with a placement ticket. Naive-model trap: a shallow model treats any CGM value of 50 mg/dL on insulin as a true hypoglycaemia and pages urgently, when the pressure flag and the clean repeat show a compression reading that still needs clinician review.",
+   "decisive_feature": "CGM 50-53 mg/dL run during a logged sensor-side pressure window, followed by a 96 mg/dL fingerstick at 03:34 with no symptoms.",
+   "expected_device_ticket": "device_maintenance",
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": null,
+   "src": "library_expansion_v2",
+   "grade": {
+    "score": 5,
+    "grader_route": "nurse_task",
+    "grader_confidence": 0.95,
+    "batch_id": [
+     "LX11-p1",
+     "LX11-p2"
+    ]
+   }
+  },
+  {
+   "case_id": "LX11-008",
+   "pair_id": null,
+   "age_band": "70-74",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "lives alone",
+   "pmh": [
+    "type 2 diabetes insulin-treated",
+    "CKD 3b",
+    "hypertension"
+   ],
+   "function_baseline": "walks outdoors daily, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "insulin glargine",
+     "dose": "16 units at bedtime",
+     "started_day": -1000
+    },
+    {
+     "name": "lisinopril",
+     "dose": "10 mg daily",
+     "started_day": -700
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch"
+   ],
+   "baseline_30d": {
+    "rest_hr": 68,
+    "hrv_ms": 34,
+    "sleep_h": 7.2,
+    "steps": 3000,
+    "spo2_night_min": 93,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": 128,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "CGM nights Day -7 to -1 without values below 70 mg/dL. Day 0 CGM 03:05 61 mg/dL falling to 49 mg/dL by 03:12. Glucometer 47 mg/dL at 03:20 Day 0. Watch HR 108 bpm at 03:14 and 110 bpm at 03:20 with no movement; steps 0 from 02:55 to 03:40. Wear 97%.",
+   "caregiver_or_nurse_note": "Neighbour's check at 03:35 Day 0: patient sweating and only answering to her name when knocked; text received at 03:10 said she felt sweaty and could not think straight. Neighbour gave juice; patient is in bed and not yet back to usual speech.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 300,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 97,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 70-74, female, Fitzpatrick I-IV, lives alone. History: insulin-treated type 2 diabetes, CKD 3b, hypertension; walks outdoors daily, independent ADLs. Meds: insulin glargine 16 units at bedtime, started Day -1000; lisinopril 10 mg daily, started Day -700; no recent changes. Devices: cgm, glucometer, watch. Baseline 30 days: rest HR 68, HRV 34 ms, sleep 7.2 h, steps 3000, night SpO2 minimum 93%, CGM mean 128 mg/dL. Last 7 days: no nocturnal CGM values below 70 mg/dL Day -7 to Day -1. Day 0 03:05 CGM 61 mg/dL, 49 mg/dL by 03:12. Glucometer 47 mg/dL at 03:20. Watch HR 108 at 03:14 and 110 at 03:20, no movement; steps 0 from 02:55 to 03:40. Text sent 03:10 reports sweaty and not thinking straight. Neighbour at 03:35: sweating, answering only to her name when knocked; juice given. Wear 97%. Missing hours last 48: 0. Longest gap 0 h.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "hard_limit_danger",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "hypoglycemia"
+   ],
+   "rationale": "The meter confirms 47 mg/dL at 03:20 on a CGM run that fell from 61 to 49 mg/dL, so the reading is reliable with no pressure or warm-up flag, and the symptoms (sweating, confusion, answering only to name) make it a symptomatic danger-level low on insulin. This is an ABSOLUTE trigger regardless of her own baseline, and she is not under hospice or comfort goals, so the reliability and explanation checks are not needed to clear it. The patient lives alone, so a clinician page is required now. Naive-model trap: a model sees a CKD patient with a neighbour already treating the low and sends nurse_task for a routine check, when symptomatic hypoglycaemia on insulin needs an immediate page.",
+   "decisive_feature": "Meter-confirmed 47 mg/dL at 03:20 with sweating and only answering to her name, on basal insulin, in a patient who lives alone.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": null,
+   "src": "library_expansion_v2",
+   "grade": {
+    "score": 5,
+    "grader_route": "urgent_page",
+    "grader_confidence": 0.99,
+    "batch_id": [
+     "LX11-p1",
+     "LX11-p2"
+    ]
+   }
+  },
+  {
+   "case_id": "LX11-009",
+   "pair_id": null,
+   "age_band": "75-79",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick I-IV",
+   "living": "with spouse",
+   "pmh": [
+    "type 2 diabetes",
+    "CKD 3b",
+    "gout"
+   ],
+   "function_baseline": "walks to shops with stick, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "gliclazide",
+     "dose": "30 mg daily",
+     "started_day": -700
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": null,
+    "hrv_ms": null,
+    "sleep_h": null,
+    "steps": null,
+    "spo2_night_min": null,
+    "skin_temp_dev_c": null,
+    "weight_kg": 79.0,
+    "glucose_mean": 136,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "CGM nights Day -7 to -4 110-130 mg/dL. Day -3 02:40 CGM 53 mg/dL falling to 48 mg/dL by 02:55; glucometer 51 mg/dL at 02:58 Day -3. Juice 150 mL given 03:05 by spouse. CGM nights Day -2 92-104 mg/dL; Day -1 and Day 0 nocturnal values 96-118 mg/dL with no values below 70. Morning glucometer Day 0 118 mg/dL. Scale weights 79.0 kg Day -3, 79.1 kg Day 0.",
+   "caregiver_or_nurse_note": "Spouse: at Day -3 supper he ate a normal-sized meal, no walks or exertion that day; he was asleep and did not wake, no sweating or confusion was seen by the spouse, and he went back to sleep after juice.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 120,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": null,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 75-79, male, Fitzpatrick I-IV, lives with spouse. History: type 2 diabetes, CKD 3b, gout; walks to shops with stick, independent ADLs. Meds: gliclazide 30 mg daily, started Day -700; no recent changes. Devices: cgm, glucometer, scale. Baseline 30 days: CGM mean 136 mg/dL, weight 79.0 kg. Last 7 days: CGM nights Day -7 to Day -4 110-130 mg/dL. Day -3 02:40 CGM 53 mg/dL, 48 mg/dL by 02:55; glucometer 51 mg/dL at 02:58. Spouse gave 150 mL juice at 03:05; he slept on and did not wake. Day -2 nocturnal CGM 92-104 mg/dL; Day -1 and Day 0 nocturnal 96-118 mg/dL, no values below 70. Glucometer Day 0 morning 118 mg/dL. Scale 79.0 kg Day -3, 79.1 kg Day 0. Day -3 supper normal-sized, no exertion that day; no sweating or confusion seen. Missing hours last 48: 0. Longest gap 0 h.",
+   "expected_route": "provider_task",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "adversarial",
+   "category": [
+    "hypoglycemia"
+   ],
+   "rationale": "The Day -3 nocturnal low of 48-51 mg/dL is confirmed by a meter and was asymptomatic, with no compression or exertion explanation, on a sulfonylurea in CKD 3b. It has since recovered, with no values below 70 mg/dL on Days -2 to 0, so no current trigger is active. An unexplained recovered drug low needs a same-day dose review by the prescriber rather than silent logging. Naive-model trap: a model sees the nights back in range and silent_logs it as recovered, but a sulfonylurea low in CKD 3b without an explanation still needs a prescriber review of the dose.",
+   "decisive_feature": "Asymptomatic meter-confirmed 51 mg/dL low on Day -3 in a CKD 3b patient on gliclazide with no compression or exertion explanation, recovered since.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": null,
+   "src": "library_expansion_v2",
+   "grade": {
+    "score": 5,
+    "grader_route": "provider_task",
+    "grader_confidence": 0.95,
+    "batch_id": [
+     "LX11-p1",
+     "LX11-p2"
+    ]
+   }
+  },
+  {
+   "case_id": "LX11-010",
+   "pair_id": null,
+   "age_band": "85-89",
+   "sex": "F",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with adult child",
+   "pmh": [
+    "metastatic breast cancer",
+    "type 2 diabetes insulin-treated",
+    "frailty"
+   ],
+   "function_baseline": "bed-bound most of the day, transfers with two helpers",
+   "patient_goals": "Comfort-focused hospice plan; no hospital transfer; comfort-only POLST",
+   "discharge": null,
+   "meds": [
+    {
+     "name": "insulin glargine",
+     "dose": "12 units at bedtime",
+     "started_day": -400
+    },
+    {
+     "name": "morphine oral",
+     "dose": "5 mg as needed",
+     "started_day": -4
+    }
+   ],
+   "recent_med_changes": [
+    {
+     "name": "morphine oral",
+     "change": "started",
+     "from_dose": null,
+     "to_dose": "5 mg as needed",
+     "day": -4
+    }
+   ],
+   "devices": [
+    "cgm",
+    "glucometer",
+    "watch"
+   ],
+   "baseline_30d": {
+    "rest_hr": 70,
+    "hrv_ms": 30,
+    "sleep_h": 7.5,
+    "steps": 120,
+    "spo2_night_min": 92,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": null,
+    "glucose_mean": 132,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "CGM nights Day -7 to -5 without values below 70 mg/dL. Day -4 to Day -1 nocturnal values 96-132 mg/dL. Day 0 00:50 CGM 79 mg/dL, 02:15 CGM 61 mg/dL, 03:40 CGM 45 mg/dL; glucometer 46 mg/dL at 03:52 Day 0. Watch HR 112 bpm at 03:45, RR 22/min at 03:45; no movement flagged. Wear 96%.",
+   "caregiver_or_nurse_note": "Adult child at 03:50 Day 0: sweating heavily, mumbling, will not take sips, eyes half-open, answering only to her name. Hospice nurse notified of the comfort plan; no transfer to hospital requested in the plan.",
+   "baseline_status": {
+    "phase": "relearning",
+    "monitoring_day": 4,
+    "learning_days_total": 4,
+    "last_condition_change": {
+     "type": "hospice_enrollment",
+     "day": -4
+    }
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 96,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 0
+   },
+   "router_input": "Age band 85-89, female, Fitzpatrick V-VI, lives with adult child. History: metastatic breast cancer, insulin-treated type 2 diabetes, frailty; bed-bound most of the day, transfers with two helpers. Hospice comfort-focused plan, comfort-only POLST, no hospital transfer. Meds: insulin glargine 12 units at bedtime, started Day -400; morphine oral 5 mg as needed, started Day -4 (recent change). Devices: cgm, glucometer, watch. Baseline 30 days: rest HR 70, HRV 30 ms, sleep 7.5 h, night SpO2 minimum 92%, CGM mean 132 mg/dL. Hospice enrollment Day -4; baseline relearning, monitoring day 4 of 4. Last 7 days: CGM nights Day -7 to -5 without values below 70 mg/dL; Day -4 to Day -1 nocturnal 96-132 mg/dL. Day 0 00:50 CGM 79, 02:15 CGM 61, 03:40 CGM 45 mg/dL; glucometer 46 mg/dL at 03:52. Watch HR 112 and RR 22 at 03:45, no movement flagged. Adult child at 03:50: sweating heavily, mumbling, not taking sips, answering only to her name. Wear 96%. Missing hours last 48: 0. Longest gap 0 h.",
+   "expected_route": "urgent_page",
+   "acceptable_alternates": [],
+   "hard_trigger": true,
+   "hard_trigger_rule": "HT_VS_DANGER",
+   "trigger_tier": "ABSOLUTE",
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": "hard_limit_danger",
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "hard",
+   "category": [
+    "hypoglycemia",
+    "goals_of_care"
+   ],
+   "rationale": "A meter-confirmed 46 mg/dL with sweating, mumbling and answering only to name on basal insulin is a symptomatic danger-level low, which is ABSOLUTE regardless of baseline or relearning status. The hospice plan does not suppress it, because the low is an urgent, treatable comfort problem and only hospital-directed escalation is suppressed. The page therefore goes to the hospice nurse now. Naive-model trap: a model sees comfort-only goals and routes nurse_task or silent_log, when a symptomatic danger low must reach the hospice nurse urgently.",
+   "decisive_feature": "Meter-confirmed 46 mg/dL at 03:52 with sweating and answering only to name, in a hospice patient on bedtime glargine.",
+   "expected_device_ticket": null,
+   "escalation_target": "hospice_nurse",
+   "route_basis": null,
+   "secondary_triggers": null,
+   "src": "library_expansion_v2",
+   "grade": {
+    "score": 5,
+    "grader_route": "urgent_page",
+    "grader_confidence": 0.99,
+    "batch_id": [
+     "LX11-p1",
+     "LX11-p2"
+    ]
+   }
+  },
+  {
+   "case_id": "LX11-011",
+   "pair_id": null,
+   "age_band": "65-69",
+   "sex": "M",
+   "skin_tone_note": "Fitzpatrick V-VI",
+   "living": "with spouse",
+   "pmh": [
+    "hypertension"
+   ],
+   "function_baseline": "walks daily, independent ADLs",
+   "patient_goals": null,
+   "discharge": null,
+   "meds": [
+    {
+     "name": "losartan",
+     "dose": "50 mg daily",
+     "started_day": -350
+    }
+   ],
+   "recent_med_changes": [],
+   "devices": [
+    "watch",
+    "scale"
+   ],
+   "baseline_30d": {
+    "rest_hr": 64,
+    "hrv_ms": 42,
+    "sleep_h": 7.0,
+    "steps": 2800,
+    "spo2_night_min": 94,
+    "skin_temp_dev_c": 0.0,
+    "weight_kg": 66.4,
+    "glucose_mean": null,
+    "sbp": null,
+    "dbp": null
+   },
+   "trend_last_7d": "Watch rest HR Day -7 64 bpm, Day -6 96, Day -5 102, Day -4 98, Day -3 92, Day -2 84, Day -1 76, Day 0 70 bpm. Steps Day -7 2400, Day -5 300, Day -2 900, Day 0 2100. Scale weights Day -7 66.3 kg, Day -4 64.9 kg, Day -1 65.8 kg, Day 0 66.2 kg. Watch wear 95%.",
+   "caregiver_or_nurse_note": "Adult child: two vomiting episodes and watery stools on Day -6, oral rehydration packets taken since, toast kept down from Day -2, stools firm by Day -1; he says he feels much better.",
+   "baseline_status": {
+    "phase": "established",
+    "monitoring_day": 180,
+    "learning_days_total": 10,
+    "last_condition_change": null
+   },
+   "data_quality": {
+    "wear_time_pct_7d": 95,
+    "artifact_flags": [],
+    "missing_hours_last_48": 0,
+    "longest_gap_h": 1
+   },
+   "router_input": "Age band 65-69, male, Fitzpatrick V-VI, lives with spouse. History: hypertension; walks daily, independent ADLs. Meds: losartan 50 mg daily, started Day -350; no recent changes. Devices: watch, scale. Baseline 30 days: rest HR 64, HRV 42 ms, sleep 7.0 h, steps 2800, night SpO2 minimum 94%, weight 66.4 kg. Last 7 days: watch rest HR 64 at Day -7, 96 Day -6, 102 Day -5, 98 Day -4, 92 Day -3, 84 Day -2, 76 Day -1, 70 Day 0. Steps 2400 Day -7, 300 Day -5, 900 Day -2, 2100 Day 0. Scale 66.3 kg Day -7, 64.9 kg Day -4, 65.8 kg Day -1, 66.2 kg Day 0. Adult child: vomiting twice and watery stools on Day -6; oral rehydration since; toast kept down from Day -2; stools firm by Day -1; patient says he feels much better. Wear 95%. Device flags: none recorded. Missing hours last 48: 0. Longest gap 1 h.",
+   "expected_route": "silent_log",
+   "acceptable_alternates": [
+    "nurse_task"
+   ],
+   "hard_trigger": false,
+   "hard_trigger_rule": null,
+   "trigger_tier": null,
+   "confirm_step": null,
+   "confirm_timeout_min": null,
+   "suppression_reason": null,
+   "baseline_layer": null,
+   "chest_pain_eval": null,
+   "subtle_deterioration": false,
+   "difficulty": "medium",
+   "category": [
+    "recovery"
+   ],
+   "rationale": "A short gastrointestinal illness on Day -6 produced a rest HR peak of 102, a weight low of 64.9 kg and low steps, and each has returned to baseline range by Day 0 with weight at 66.2 kg and rest HR 70 falling toward 64. Intake is back to normal, stools are firm, and the patient reports feeling well, so the episode is resolved and no action is needed beyond logging. Naive-model trap: a shallow model sees the earlier HR spike and weight drop and routes provider_task for dehydration or a heart rhythm problem, when the physiology has recovered in step with symptom resolution.",
+   "decisive_feature": "Resting HR, steps and weight have returned to baseline range by Day 0 after a self-limited gastrointestinal illness, with firm stools and normal intake.",
+   "expected_device_ticket": null,
+   "escalation_target": null,
+   "route_basis": null,
+   "secondary_triggers": null,
+   "src": "library_expansion_v2",
+   "grade": {
+    "score": 5,
+    "grader_route": "silent_log",
+    "grader_confidence": 0.95,
+    "batch_id": [
+     "LX11-p1",
+     "LX11-p2"
+    ]
+   }
+  }
+ ],
+ "provenance": {
+  "batches": [
+   "gen/LX11.batch.json"
+  ],
+  "graders": [
+   "grade/LX11-p1.grader.json",
+   "grade/LX11-p2.grader.json"
+  ],
+  "grader_batch_ids": [
+   "LX11-p1",
+   "LX11-p2"
+  ],
+  "src": "library_expansion_v2",
+  "legacy": false
+ }
+}

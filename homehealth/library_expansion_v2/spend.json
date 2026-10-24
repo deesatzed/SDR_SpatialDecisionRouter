@@ -1,0 +1,11 @@
+{
+ "cap_usd": 1.5,
+ "generation_usd": 0.1631,
+ "grading_usd": 0.8861,
+ "ticket_grading_usd": 0.1077,
+ "total_usd": 1.1568,
+ "calls": 19,
+ "failed_calls": 3,
+ "note": "failed calls (timeouts) reported no cost; OpenRouter may still bill a timed-out request",
+ "source": "usage.cost from OpenRouter responses (state.json)"
+}

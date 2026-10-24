@@ -1,0 +1,47 @@
+{
+ "model": "google/gemini-4-argon",
+ "resolved_model": null,
+ "provider": null,
+ "error": "TimeoutError('The read operation timed out')",
+ "latency_s": 1610.8,
+ "finish_reason": null,
+ "native_finish_reason": null,
+ "content": "",
+ "has_reasoning": false,
+ "usage": {
+  "prompt_tokens": null,
+  "completion_tokens": null,
+  "reasoning_tokens": null,
+  "cost_usd": null
+ },
+ "raw_error": null,
+ "parse": "invalid",
+ "batches": [
+  "LX9",
+  "LX10"
+ ],
+ "case_ids": [
+  "LX9-001",
+  "LX9-002",
+  "LX9-003",
+  "LX9-004",
+  "LX9-005",
+  "LX9-006",
+  "LX9-007",
+  "LX9-008",
+  "LX9-009",
+  "LX9-010",
+  "LX9-011",
+  "LX10-001",
+  "LX10-002",
+  "LX10-003",
+  "LX10-004",
+  "LX10-005",
+  "LX10-006",
+  "LX10-007",
+  "LX10-008",
+  "LX10-009",
+  "LX10-010",
+  "LX10-011"
+ ]
+}

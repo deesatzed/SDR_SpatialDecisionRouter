@@ -1,0 +1,62 @@
+{
+ "generated": 43,
+ "graded": 43,
+ "accepted_by_merge": 31,
+ "dedupe_removed": 0,
+ "accepted_final": 31,
+ "review_queue_disputed": 12,
+ "fix_list_excluded": 0,
+ "queue_reasons": {
+  "NOVELTY_REVIEW": 1,
+  "ROUTE_DISAGREE": 2,
+  "ticket_disagree: author=supply_reference_oximeter_and_baseline grader=device_maintenance": 3,
+  "ticket_disagree: author=device_maintenance grader=supply_reference_oximeter_and_baseline": 1,
+  "ticket_disagree: author=device_maintenance grader=None": 5
+ },
+ "routes": {
+  "silent_log": 15,
+  "urgent_page": 5,
+  "provider_task": 6,
+  "nurse_task": 5
+ },
+ "tiers": {
+  "CONFIRM_FIRST": 2,
+  "ABSOLUTE": 3,
+  "SUPPRESSED": 1
+ },
+ "by_batch_accepted": {
+  "LX10": 9,
+  "LX11": 9,
+  "LX12": 6,
+  "LX9": 7
+ },
+ "by_batch_generated": {
+  "LX10": 11,
+  "LX11": 11,
+  "LX12": 10,
+  "LX9": 11
+ },
+ "complete_pairs": 2,
+ "hospice_goals": 1,
+ "learning_period": 0,
+ "categories": {
+  "noise": 14,
+  "missing_data": 6,
+  "hf": 4,
+  "hypoglycemia": 4,
+  "respiratory": 3,
+  "med_change": 2,
+  "arrhythmia": 2,
+  "spo2_bias": 2,
+  "infection": 1,
+  "goals_of_care": 1,
+  "recovery": 1,
+  "conflicting": 1,
+  "hyperglycemia": 1
+ },
+ "difficulty": {
+  "hard": 18,
+  "adversarial": 10,
+  "medium": 3
+ }
+}

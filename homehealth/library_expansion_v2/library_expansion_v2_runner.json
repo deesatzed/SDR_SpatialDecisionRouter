@@ -1,0 +1,786 @@
+[
+ {
+  "id": "LIB-LX10-001",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 88,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "hard",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 75-79 F, lives with spouse. Skin tone: Fitzpatrick I-IV. PMH: osteoarthritis of both hands, hypertension. Meds: amlodipine 5 mg daily (since Day -700). Devices: watch.",
+   "30-day baseline: rest_hr=66, hrv_ms=34, sleep_h=7.1, steps=4200, spo2_night_min=94, skin_temp_dev_c=0.1.",
+   "Last 7 days: Day -7 to -3: watch resting HR 64-70 bpm, night HR 52-60 bpm, steps 3900-4500, wear 97-99%. Day -2: spouse fitted a longer replacement watch strap and the watch sits loose on the wrist. Day -1: night HR 110-124 bpm between 02:10 and 03:30 with motion flags during sleep; daytime resting HR 64-68, steps 4100. Day 0: night HR 108-121 bpm between 01:50 and 03:05 with motion flags; daytime resting HR 66, steps 3900; no data gaps.",
+   "Wear time 7d: 97%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Spouse message: the watch turns round on her wrist at night since the new strap went on. She says she feels fine in the mornings and has been out to the shops."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX10-003",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 140,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "hard",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 70-74 F, lives with adult child in a multigenerational home. Skin tone: Fitzpatrick I-IV. PMH: hypertension, osteoporosis. Meds: candesartan 8 mg daily (since Day -300). Devices: bp_cuff, watch.",
+   "30-day baseline: rest_hr=72, hrv_ms=30, sleep_h=7.0, steps=3500, spo2_night_min=94, skin_temp_dev_c=0.1, sbp=128, dbp=79.",
+   "Last 7 days: Day -7 to -1: morning cuff readings 122-130/74-80 at 07:00-07:10, watch resting HR 68-74, steps 3300-3700, sleep 6.8-7.2 h. Day 0 07:02: cuff displayed error E2 with no reading after it was put on over a cardigan sleeve. Repeat at 07:09 with sleeve pushed up and cuff on bare upper arm, seated 5 minutes: 124/77. Watch resting HR 70 bpm 07:05-07:12; steps 60 between 07:00 and 07:15; no symptoms reported. Wear 95%.",
+   "Wear time 7d: 95%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Adult child: the machine beeped E2 and gave no number, so mum sat still with her sleeve pushed up and did it again. She felt fine."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX10-008",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "hf",
+  "expected": "nurse_task",
+  "acceptable": [
+   "provider_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "relearning",
+   "monitoring_day": 73,
+   "learning_days_total": 10,
+   "last_condition_change": {
+    "type": "diuretic_change",
+    "day": -19
+   }
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "hard",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 80-84 F, lives with spouse. Skin tone: Fitzpatrick I-IV. PMH: HFrEF EF 32%, AFib. Meds: furosemide 40 mg daily (since Day -19); sacubitril-valsartan 24/26 mg BID (since Day -400); apixaban 2.5 mg BID (since Day -400); bisoprolol 2.5 mg daily (since Day -400); furosemide: dose_increased (Day -19). Devices: watch, scale, bp_cuff.",
+   "30-day baseline: rest_hr=72, hrv_ms=26, sleep_h=6.6, steps=2600, spo2_night_min=92, skin_temp_dev_c=0.0, weight_kg=74.8, sbp=118, dbp=68.",
+   "Last 7 days: Day -7 to -5: scale 74.7-74.9 kg, watch resting HR 70-74, night HR 56-62, steps 2400-2700, sleep 6.4-6.8 h, cuff 116-120/66-70. Scale Day -4 75.3 kg, Day -3 75.6 kg, Day -2 75.9 kg, Day -1 76.0 kg, Day 0 76.1 kg (+1.3 kg from baseline). Daytime resting HR 70-74, steps 2300-2700. Watch strap replaced Day -3 with a longer pin; night HR 112-120 bpm Day -2 to Day 0 in motion-flagged windows. Cuff 118-124/68-72 Day -2 to Day 0. Wear 90%.",
+   "Wear time 7d: 90%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Spouse: ankles puffier by evening; breathing fine at rest and sleeps on two pillows as usual. The watch keeps turning round on her wrist at night since the new strap pin went in."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX10-009",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "infection",
+  "expected": "nurse_task",
+  "acceptable": [
+   "provider_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 180,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "hard",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 70-74 F, lives with spouse. Skin tone: Fitzpatrick V-VI. PMH: rheumatoid arthritis, hypertension. Meds: methotrexate 15 mg weekly (since Day -800); losartan 50 mg daily (since Day -500). Devices: watch, thermometer.",
+   "30-day baseline: rest_hr=70, hrv_ms=35, sleep_h=7.2, steps=3800, spo2_night_min=95, skin_temp_dev_c=0.0.",
+   "Last 7 days: Day -7 to -4: watch wear 91-95%, resting HR 68-72, steps 3500-4000, sleep 7.0-7.4 h; oral temperature 36.6-36.9 C on morning checks. Day -3: watch removed each afternoon for a red itchy patch under the strap; wear fell to 62-70% with daily off-wrist gaps 13:30-17:00 (3.5 h). Day -2: spouse reports the patch weeping and warm on the inner wrist, no red streaks. Day -1 evening oral 37.7 C and 37.9 C. Day 0 08:10 oral 37.8 C; watch resting HR 84 at 08:00-08:15; RR 16; steps 3200; wear 71%.",
+   "Wear time 7d: 71%, missing hours last 48: 7.",
+   "Caregiver/nurse note: Spouse: strap rubbed a sore on her wrist; she takes the watch off in the afternoon to let it breathe. The patch smells a bit and she says her hand feels hot."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX10-010",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "arrhythmia",
+  "expected": "nurse_task",
+  "acceptable": [
+   "provider_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "relearning",
+   "monitoring_day": 120,
+   "learning_days_total": 10,
+   "last_condition_change": {
+    "type": "rate_control_med",
+    "day": -2
+   }
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "hard",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 80-84 M, lives with spouse. Skin tone: Fitzpatrick I-IV. PMH: atrial fibrillation, hypertension. Meds: metoprolol succinate 100 mg daily (since Day -2); apixaban 5 mg BID (since Day -500); metoprolol succinate: dose_increased (Day -2). Devices: watch, ring.",
+   "30-day baseline: rest_hr=66, hrv_ms=28, sleep_h=7.0, steps=3400, spo2_night_min=93, skin_temp_dev_c=0.0.",
+   "Last 7 days: Day -7 to -3: watch and ring resting HR agree within 2 bpm at 64-68 bpm; steps 3200-3600, sleep 6.8-7.2 h, wear 96%. Day -2: metoprolol increased from 50 to 100 mg daily; ring battery changed and the ring refitted on the index finger by spouse. Day -2 to Day 0 morning readings: watch resting HR 51-55 bpm, ring resting HR 66-69 bpm, a 12-15 bpm difference each morning. Steps 3300-3500, sleep 6.9-7.1 h, wear 94%.",
+   "Wear time 7d: 94%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Spouse: ring has been on the index finger since the battery change. He is tired but walks to the post box as usual; no dizziness, no falls."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX10-011",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 240,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "medium",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 75-79 F, lives lives alone with weekly visits. Skin tone: Fitzpatrick V-VI. PMH: hypertension. Meds: valsartan 80 mg daily (since Day -250). Devices: bp_cuff, watch.",
+   "30-day baseline: rest_hr=70, hrv_ms=29, sleep_h=7.2, steps=3000, spo2_night_min=94, skin_temp_dev_c=0.0, sbp=130, dbp=80.",
+   "Last 7 days: Day -7 to -2: morning cuff 126-134/78-82 at 08:00-08:10, watch resting HR 68-72, steps 2800-3200, sleep 7.0-7.4 h. Day -1 08:02: cuff reads 96/58 using the wide adult cuff, wrapped loosely over a thin upper arm; repeat 08:14 with the correct small cuff on the bare arm reads 126/78. Day 0 08:05 cuff 127/79; watch resting HR 68-70 at 08:00-08:10; steps 40 by 08:15. Wear 94%.",
+   "Wear time 7d: 94%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Care visit note Day -1: the small cuff was in the wash so the wide one was used; she felt fine, no dizziness. Aide wrote: changed to the small cuff, got 126 over 78."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX11-001",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 64,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "hard",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 75-79 M, lives with spouse. Skin tone: Fitzpatrick I-IV. PMH: hypertension, osteoarthritis of knees. Meds: amlodipine 5 mg daily (since Day -600). Devices: watch, scale, bp_cuff.",
+   "30-day baseline: rest_hr=66, hrv_ms=38, sleep_h=7.1, steps=3200, spo2_night_min=94, skin_temp_dev_c=0.0, weight_kg=78.4, sbp=128, dbp=76.",
+   "Last 7 days: Watch rest HR 64-69 bpm, steps 2900-3600, night SpO2 minimum 93-95% on Day -7 to Day 0. Scale weigh-ins each morning: Day -7 78.5 kg, Day -6 78.3, Day -5 78.4, Day -4 78.2, Day -3 78.1, Day -2 07:04 reading 0.0 kg, Day -2 07:06 repeat 78.0 kg, Day -1 78.3 kg, Day 0 78.2 kg. Watch wear 96% of 7 days.",
+   "Wear time 7d: 96%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Spouse message Day -2 morning: grandson stood on the scale holding a school bag, the display read zero for one reading and then gave a normal number two minutes later. Spouse says he feels the same as usual."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX11-002",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 210,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "adversarial",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 80-84 F, lives with adult child. Skin tone: Fitzpatrick V-VI. PMH: HFpEF, CKD 3a, osteoarthritis of hips. Meds: furosemide 40 mg daily (since Day -700). Devices: watch, scale, bp_cuff.",
+   "30-day baseline: rest_hr=72, hrv_ms=30, sleep_h=6.9, steps=2100, spo2_night_min=92, skin_temp_dev_c=0.0, weight_kg=68.6, sbp=130, dbp=74.",
+   "Last 7 days: Morning scale weights Day -7 68.4 kg, Day -6 68.7, Day -5 68.5, Day -3 68.8, Day -2 68.6, Day -1 68.9, Day 0 68.7 kg. Day -4 16:20 scale reading 12.0 kg; Day -4 16:22 repeat 68.6 kg. Watch rest HR 70-74 bpm, steps 1900-2300, night SpO2 minimum 91-93%, wear 94%.",
+   "Wear time 7d: 94%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Adult child note Day -4: put a 12 kg bag of compost on the scale platform to check the bag weight, not the patient's weight; patient was not on the scale. Patient says she is fine and her breathing is the same."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX11-003",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 95,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "hard",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 70-74 M, lives with spouse. Skin tone: Fitzpatrick I-IV. PMH: hypertension, hyperlipidaemia. Meds: atorvastatin 20 mg nightly (since Day -500). Devices: watch, scale.",
+   "30-day baseline: rest_hr=62, hrv_ms=44, sleep_h=7.0, steps=4100, spo2_night_min=94, skin_temp_dev_c=0.0, weight_kg=80.0.",
+   "Last 7 days: Morning scale weights on the bathroom tile: Day -7 80.1 kg, Day -6 07:02 80.2 kg. Scale moved to a shag rug by the bedroom Day -6 afternoon; weights on the rug Day -5 82.0 kg, Day -4 82.1, Day -3 82.2, Day -2 82.1, Day -1 82.2, Day 0 82.1 kg. Watch rest HR 61-64 bpm, steps 3900-4300, sleep 6.8-7.2 h, wear 95%.",
+   "Wear time 7d: 95%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Spouse: the scale was moved to the rug by the bed on Day -6 afternoon for a tidier room and has not been moved back. Patient has no swelling, eats as usual, and says his clothes fit the same."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX11-007",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "nurse_task",
+  "acceptable": [],
+  "hard_trigger": true,
+  "hard_trigger_rule": "HT_VS_DANGER",
+  "trigger_tier": "SUPPRESSED",
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": "unreliable_reading",
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 210,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "adversarial",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 80-84 M, lives with spouse. Skin tone: Fitzpatrick V-VI. PMH: type 2 diabetes insulin-treated, CKD 3b, hypertension. Meds: insulin glargine 14 units at bedtime (since Day -900); lisinopril 10 mg daily (since Day -700). Devices: cgm, glucometer, watch.",
+   "30-day baseline: rest_hr=64, hrv_ms=33, sleep_h=6.6, steps=2000, spo2_night_min=92, skin_temp_dev_c=0.0, glucose_mean=139.",
+   "Last 7 days: CGM nights Day -7 to -3 without values below 70 mg/dL. Day -2 02:50 CGM 58 mg/dL falling to 50 mg/dL by 03:05, holding 50-53 mg/dL until 03:30. Glucometer 96 mg/dL at 03:34 Day -2. Watch HR 62 bpm at 03:10 and 61 bpm at 03:34, no movement flagged. CGM nights Day -1 118-146 mg/dL; Day 0 daytime 120-170 mg/dL. Watch wear 96%.",
+   "Wear time 7d: 96%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Spouse Day -2 night log: found his arm under the pillow at 02:45 with the sensor pressed, moved it, he went back to sleep. At 03:34 finger test was 96, no sweating or confusion noted at that time."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX11-011",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "recovery",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 180,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "medium",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 65-69 M, lives with spouse. Skin tone: Fitzpatrick V-VI. PMH: hypertension. Meds: losartan 50 mg daily (since Day -350). Devices: watch, scale.",
+   "30-day baseline: rest_hr=64, hrv_ms=42, sleep_h=7.0, steps=2800, spo2_night_min=94, skin_temp_dev_c=0.0, weight_kg=66.4.",
+   "Last 7 days: Watch rest HR Day -7 64 bpm, Day -6 96, Day -5 102, Day -4 98, Day -3 92, Day -2 84, Day -1 76, Day 0 70 bpm. Steps Day -7 2400, Day -5 300, Day -2 900, Day 0 2100. Scale weights Day -7 66.3 kg, Day -4 64.9 kg, Day -1 65.8 kg, Day 0 66.2 kg. Watch wear 95%.",
+   "Wear time 7d: 95%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Adult child: two vomiting episodes and watery stools on Day -6, oral rehydration packets taken since, toast kept down from Day -2, stools firm by Day -1; he says he feels much better."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX12-002",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "respiratory",
+  "expected": "nurse_task",
+  "acceptable": [
+   "provider_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 88,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "hard",
+  "pair_id": "LIB-LX12-P01",
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 75-79 F, lives with adult child. Skin tone: Fitzpatrick V-VI. PMH: hypertension, knee osteoarthritis. Meds: amlodipine 5 mg daily (since Day -600). Devices: watch, ring, bp_cuff.",
+   "30-day baseline: rest_hr=66, hrv_ms=34, sleep_h=7.0, steps=3200, spo2_night_min=93, skin_temp_dev_c=0.0, sbp=134, dbp=80.",
+   "Last 7 days: Day -6 to 0: watch nightly SpO2 nadir 89-90%; ring nightly SpO2 nadir 89-91% on the same nights; rest HR 64-68 bpm on both devices; steps 3000-3400; sleep 6.8-7.1 h. Watch re-paired to a new phone Day -7.",
+   "Wear time 7d: 94%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Adult child: she has been sleeping propped in the armchair for the last two nights because she says lying flat feels stuffy. Says she has no breathlessness at rest."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX12-003",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "provider_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 140,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "adversarial",
+  "pair_id": "LIB-LX12-P02",
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 80-84 M, lives with spouse. Skin tone: Fitzpatrick I-IV. PMH: HFpEF, hypertension. Meds: furosemide 20 mg daily (since Day -400); lisinopril 10 mg daily (since Day -700). Devices: watch, scale.",
+   "30-day baseline: rest_hr=70, hrv_ms=28, sleep_h=6.9, steps=2700, spo2_night_min=92, skin_temp_dev_c=0.0, weight_kg=72.2.",
+   "Last 7 days: Old scale retired and new scale installed Day -4, paired to phone. Scale weights 72.0-72.3 kg Day -10 to -5 (old scale); 74.1-74.3 kg Day -4 to 0 (new scale). Watch rest HR 68-71 bpm, steps 2600-2900, night SpO2 min 91-93%, sleep 6.8-7.0 h, all flat from Day -4 to 0.",
+   "Wear time 7d: 93%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Spouse: ankles look the same as always, no extra breathlessness, sleeping on two pillows as usual."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX12-005",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "provider_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 120,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "hard",
+  "pair_id": "LIB-LX12-P03",
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 65-69 F, lives alone. Skin tone: Fitzpatrick V-VI. PMH: hypothyroidism, knee osteoarthritis. Meds: levothyroxine 75 mcg daily (since Day -900). Devices: watch, ring.",
+   "30-day baseline: rest_hr=70, hrv_ms=36, sleep_h=7.2, steps=4200, spo2_night_min=94, skin_temp_dev_c=0.0.",
+   "Last 7 days: Day -6 to 0: watch morning resting HR 58-60 bpm while ring morning resting HR 71-73 bpm on the same mornings. Watch ECG strip Day -1 08:10: regular rhythm, 72 bpm on the strip. Steps 4000-4500 and sleep 7.0-7.4 h on both devices.",
+   "Wear time 7d: 92%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Lives alone; says she feels fine, no dizziness, walking the same round the block."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX9-001",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 118,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "hard",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 70-74 F, lives with spouse. Skin tone: Fitzpatrick I-IV. PMH: hypertension, osteoarthritis. Meds: amlodipine 5 mg daily (since Day -700); paracetamol 1 g as needed (since Day -300). Devices: watch, bp_cuff.",
+   "30-day baseline: rest_hr=68, hrv_ms=34, sleep_h=7.1, steps=3800, spo2_night_min=93, skin_temp_dev_c=0.0, sbp=132, dbp=80.",
+   "Last 7 days: Day -7 to -3 rest HR 66-70 bpm, steps 3400-4100, sleep 6.8-7.3 h, wear 95%. Day -2 22:05 watch upload stopped with app message 'sync failed'; data resumed Day -1 09:20 (11.3 h gap). Day -1 after resume: rest HR 67, steps 3100, sleep 6.9 h. Day 0: rest HR 68, steps 3900, sleep 7.2 h, wear 95%. Seated BP Day -1 130/78 (bp_cuff).",
+   "Wear time 7d: 90%, missing hours last 48: 11.3.",
+   "Caregiver/nurse note: Spouse text Day -1 08:40: 'app says sync failed, phone was on sleep mode. She made porridge and walked to the post box before nine, she is fine.'"
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX9-002",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 96,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "hard",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 75-79 F, lives with paid caregiver. Skin tone: Fitzpatrick V-VI. PMH: hypertension, hypothyroidism. Meds: levothyroxine 75 mcg daily (since Day -900); amlodipine 5 mg daily (since Day -500). Devices: watch, bp_cuff.",
+   "30-day baseline: rest_hr=72, hrv_ms=29, sleep_h=6.5, steps=2200, spo2_night_min=92, skin_temp_dev_c=0.0, sbp=138, dbp=82.",
+   "Last 7 days: Day -7 to -4 rest HR 70-72 bpm, steps 2000-2400, wear 94%. Day -3 23:10 watch battery flat after all-day GPS tracking; watch left on bedside table; no data until Day -2 12:20 (13.2 h gap). Day -2 after resume: rest HR 73, steps 1900 (part day), sleep 6.3 h. Day -1: rest HR 72, steps 2100, sleep 6.6 h, wear 88%. Day 0: rest HR 71, steps 2250, sleep 6.4 h; battery 9% at check, charging cable not yet found.",
+   "Wear time 7d: 88%, missing hours last 48: 0.3.",
+   "Caregiver/nurse note: Paid caregiver log Day -2 08:00 (inside gap): she was up in her chair, tea made, says she is fine; watch charger cable not yet found."
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX9-003",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 74,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "adversarial",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 85-89 M, lives with adult child. Skin tone: Fitzpatrick I-IV. PMH: hypertension, prostate enlargement. Meds: ramipril 5 mg daily (since Day -300); paracetamol 1 g as needed (since Day -200). Devices: watch, ring, thermometer.",
+   "30-day baseline: rest_hr=62, hrv_ms=36, sleep_h=7.0, steps=2600, spo2_night_min=92, skin_temp_dev_c=0.0.",
+   "Last 7 days: Day -7 to -5 watch skin-temperature deviation -0.1 to +0.1 C nightly; ring -0.1 to +0.2 C. Watch firmware update installed Day -4 19:30. Day -4 to 0 watch skin-temperature deviation +0.7 to +0.9 C each night, steady; ring over the same nights -0.1 to +0.2 C. Morning oral thermometer Day -4 to 0: 36.6-36.9 C. Watch rest HR 60-64 bpm, ring 61-63 bpm; steps 2400-2800 and sleep 6.8-7.2 h on both devices; watch wear 94%.",
+   "Wear time 7d: 94%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Adult child message Day -3 18:40: 'the watch says he is running warm, but he is on the sofa in a cardigan and says he feels fine. The ring says no change, so which one is right?'"
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX9-004",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 52,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "hard",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 65-69 F, lives with paid caregiver. Skin tone: Fitzpatrick I-IV. PMH: hypothyroidism, knee replacement two years ago. Meds: levothyroxine 88 mcg daily (since Day -1000); vitamin D3 1000 IU daily (since Day -200). Devices: watch, bp_cuff.",
+   "30-day baseline: rest_hr=70, hrv_ms=33, sleep_h=6.9, steps=3400, spo2_night_min=94, skin_temp_dev_c=0.0, sbp=126, dbp=76.",
+   "Last 7 days: Day -7 to -4 HRV 31-35 ms, rest HR 69-71 bpm, sleep 6.8-7.0 h, steps 3200-3600. Watch app update installed Day -3 07:50, after which the watch reports HRV on a different measure. Day -3 to 0 HRV 44-48 ms each morning; rest HR 69-71, sleep 6.7-7.0 h, steps 3200-3700 and night SpO2 minimum 93-94% unchanged. Seated BP Day -1 127/77, Day 0 125/75 (bp_cuff). Wear 96%.",
+   "Wear time 7d: 96%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Care home log Day -3 09:00: 'watch app updated overnight, HRV now shows far higher, staff asked to check the watch.'"
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX9-005",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "noise",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 210,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "adversarial",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 90-94 F, lives alone. Skin tone: Fitzpatrick V-VI. PMH: hypertension, hearing loss. Meds: bisoprolol 2.5 mg daily (since Day -600); amlodipine 5 mg daily (since Day -400). Devices: watch, bp_cuff.",
+   "30-day baseline: rest_hr=64, hrv_ms=30, sleep_h=7.4, steps=4100, spo2_night_min=93, skin_temp_dev_c=0.0, sbp=136, dbp=78.",
+   "Last 7 days: Day -7 to -4 steps 3800-4300, rest HR 62-65 bpm, sleep 7.2-7.6 h, wear 94%. Phone replaced Day -3 and watch re-paired; the export shows every stored record from Day -3 onward duplicated at the same minute stamp. Displayed daily steps Day -3 8400, Day -2 8200, Day -1 8000, Day 0 8100. Rest HR 62-65 bpm and sleep 7.2-7.6 h unchanged. Seated BP Day -1 134/76, Day 0 138/80 (bp_cuff).",
+   "Wear time 7d: 94%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Daughter's phone call Day -1 19:10: 'the app says she has done eight thousand steps. She is pottering same as always, that can't be right.'"
+  ],
+  "key_line": 2,
+  "days": null
+ },
+ {
+  "id": "LIB-LX9-009",
+  "src": "LIB",
+  "llm": "library_expansion_v2",
+  "prompt": "v2.3",
+  "kind": "missing_data",
+  "expected": "silent_log",
+  "acceptable": [
+   "nurse_task"
+  ],
+  "hard_trigger": false,
+  "hard_trigger_rule": null,
+  "trigger_tier": null,
+  "confirm_step": null,
+  "confirm_timeout_min": null,
+  "suppression_reason": null,
+  "baseline_layer": null,
+  "baseline_status": {
+   "phase": "established",
+   "monitoring_day": 150,
+   "learning_days_total": 10,
+   "last_condition_change": null
+  },
+  "escalation_target": null,
+  "route_basis": null,
+  "clinician_override": null,
+  "secondary_triggers": null,
+  "difficulty": "medium",
+  "pair_id": null,
+  "lines": [
+   "SYNTHETIC FIXTURE. Age 85-89 M, lives with spouse. Skin tone: Fitzpatrick I-IV. PMH: hypertension, gout. Meds: allopurinol 100 mg daily (since Day -800); amlodipine 5 mg daily (since Day -500). Devices: watch, bp_cuff.",
+   "30-day baseline: rest_hr=65, hrv_ms=36, sleep_h=7.0, steps=2800, spo2_night_min=93, skin_temp_dev_c=0.0, sbp=130, dbp=76.",
+   "Last 7 days: Day -7 to -5 wear 93-95%, rest HR 64-66 bpm. The watch charging cradle failed from Day -5; watch battery flat Day -4 19:05 to Day -2 08:40 (37.6 h, no sync). Cradle replaced Day -2 09:00; continuous data since with wear 94%. Day -1 rest HR 66, steps 2600, sleep 6.8 h; Day 0 rest HR 65, steps 2900, sleep 7.1 h. Seated BP Day -1 128/74 (bp_cuff).",
+   "Wear time 7d: 78%, missing hours last 48: 0.",
+   "Caregiver/nurse note: Spouse text Day -4 20:20: 'watch dead again, the old cradle is not charging it.' Spouse Day -2 09:15: 'new cradle fitted, watch lit up and is syncing again.'"
+  ],
+  "key_line": 2,
+  "days": null
+ }
+]

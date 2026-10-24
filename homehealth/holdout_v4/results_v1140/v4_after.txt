@@ -1,0 +1,7 @@
+L1 + dual(d1-ultra, pplx) [default]          acc=0.8684 (76/76) crit=0 [] fp/100=5.2632 ['HX2-003', 'HX2-004', 'HX7-003', 'HX7-005'] hitm/100=7.8947 err=10
+L1 + dual(d1-ultra, drex-max) [challenger]   acc=0.8684 (76/76) crit=0 [] fp/100=5.2632 ['HX2-003', 'HX2-004', 'HX7-003', 'HX7-005'] hitm/100=5.2632 err=10
+L1 + d1-ultra                                acc=0.8684 (76/76) crit=0 [] fp/100=5.2632 ['HX2-003', 'HX2-004', 'HX7-003', 'HX7-005'] hitm/100=2.6316 err=10
+L1 + pplx                                    acc=0.8816 (76/76) crit=0 [] fp/100=3.9474 ['HX2-004', 'HX7-003', 'HX7-005'] hitm/100=2.6316 err=9
+L1 + drex-max                                acc=0.8816 (76/76) crit=0 [] fp/100=3.9474 ['HX2-003', 'HX2-004', 'HX7-003'] hitm/100=2.6316 err=9
+Layer 1 alone                                acc=0.8889 (45/76) crit=2 ['HX6-006', 'HX6-009'] fp/100=1.3158 ['HX7-003'] hitm/100=43.4211 err=5
+tickets {'expected': 9, 'hit': 4, 'any_ticket': 4, 'missed_ids': ['HX1-009', 'HX2-011', 'HX5-002', 'HX5-003', 'HX5-011'], 'unexpected_ids': ['HX7-002']} missing {'liquid/d1-ultra': 0, 'perplexity/pplx-decider-v1.2': 0, 'nace-ai/drex-max': 0}

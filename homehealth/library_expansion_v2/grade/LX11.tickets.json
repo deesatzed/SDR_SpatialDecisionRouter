@@ -1,0 +1,59 @@
+{
+ "tickets": [
+  {
+   "case_id": "LX11-001",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "Single impossible 0.0 kg scale reading caused by a household member with immediate normal repeat and a stable patient."
+  },
+  {
+   "case_id": "LX11-002",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "Single non-patient 12.0 kg scale reading from a bag of compost with normal repeat weight and stable physiology."
+  },
+  {
+   "case_id": "LX11-003",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "Apparent weight jump is a placement artifact from moving the scale onto a shag rug while the patient remains asymptomatic."
+  },
+  {
+   "case_id": "LX11-004",
+   "expected_device_ticket": null,
+   "reason": "Weight gain is a real clinical decompensation on a hard-tile floor accompanied by orthopnea, edema, and rising heart rate."
+  },
+  {
+   "case_id": "LX11-005",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "False low CGM reading during the sensor warm-up window is contradicted by a normal glucometer check in an asymptomatic patient."
+  },
+  {
+   "case_id": "LX11-006",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "Upward glucose drift is caused by an expired CGM sensor worn past its 14-day limit, contradicted by stable fasting glucometer readings."
+  },
+  {
+   "case_id": "LX11-007",
+   "expected_device_ticket": "device_maintenance",
+   "reason": "Nocturnal CGM low is a pressure-induced compression artifact from sleeping on the sensor, refuted by a normal simultaneous glucometer reading."
+  },
+  {
+   "case_id": "LX11-008",
+   "expected_device_ticket": null,
+   "reason": "Nocturnal hypoglycemia is confirmed as a real clinical event by both the glucometer (47 mg/dL) and acute adrenergic/neuroglycopenic symptoms."
+  },
+  {
+   "case_id": "LX11-009",
+   "expected_device_ticket": null,
+   "reason": "The nocturnal low glucose reading was confirmed as real by a simultaneous fingerstick glucometer check of 51 mg/dL."
+  },
+  {
+   "case_id": "LX11-010",
+   "expected_device_ticket": null,
+   "reason": "Severe hypoglycemia is confirmed as real by a concordant glucometer reading of 46 mg/dL, tachycardia, and acute symptoms."
+  },
+  {
+   "case_id": "LX11-011",
+   "expected_device_ticket": null,
+   "reason": "Heart rate and weight changes reflect a real, resolving acute gastrointestinal illness rather than a device fault."
+  }
+ ]
+}

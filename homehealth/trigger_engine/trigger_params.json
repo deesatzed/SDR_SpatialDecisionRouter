@@ -1,5 +1,5 @@
 {
-  "version": "0.13.0-placeholder",
+  "version": "0.14.0-placeholder",
   "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
   "change_log": [
     {
@@ -503,6 +503,17 @@
       "new": "0.13.0-placeholder",
       "approved_by": "pending Wayne review",
       "reason": "v1.13.0: device-ticket emission for stable patients: activity-stream artifact (second device flat, firmware flag, or activity reported unchanged), transient flagged single-device reading contradicted by a second device and resolved by refit, firmware shift. PLACEHOLDER thresholds."
+    },
+    {
+      "ts": "2026-10-24T10:30:00-04:00",
+      "keys": [
+        "version",
+        "layer1_v110.v1140"
+      ],
+      "old": "0.13.0-placeholder",
+      "new": "0.14.0-placeholder",
+      "approved_by": "pending Wayne review",
+      "reason": "v1.14.0: device ticket (ticket only, route never changed) for named device faults: sync/upload failure, battery/charger failure (not if already replaced with continuous data), BP cuff error/sleeve/wrong size, strap/patch fit, scale glitches (impossible weight with normal repeat, someone else or an object on the scale, scale on a rug, new scale offset unless a clinic scale agrees), app/firmware update that changes a measure, duplicated or time-shifted records, CGM warm-up/expiry/compression. Guard: withdraw a v1.13 firmware-shift ticket with no stream change or new positional-breathing words. Built from library_expansion_v2 only. PLACEHOLDER thresholds. scale/fit/cuff families OFF after blind holdout_v4 scoring showed one unexpected ticket each (routes unchanged)."
     }
   ],
   "hard_limits": {
@@ -1271,6 +1282,20 @@
       "maintenance_report": false,
       "scale_blip": false,
       "scale_blip_kg": 2.5
+    },
+    "v1140": {
+      "_note": "SMART_TRIGGERS v1.14.0 named device-fault tickets (jev_baseline/layer1_v1140.py). Built ONLY from library_expansion_v1/v2 library cases and synthetic vignettes (test_layer1_v1140.py); holdout_v3/v4 text not read. TICKET ONLY: never changes the route. Family switches below; min_plausible_kg is a PLACEHOLDER. scale, fit and cuff families are OFF: when scored blind after design they each put one unexpected ticket on holdout_v4 (HX4-006 scale, HX5-006 fit, HX6-004 cuff; routes unchanged). Switched off per the no-tuning-on-holdouts rule; kept as param-gated hooks for review.",
+      "enabled": true,
+      "firmware_shift_guard": true,
+      "sync": true,
+      "battery": true,
+      "cuff": false,
+      "fit": false,
+      "scale": false,
+      "update": true,
+      "dup": true,
+      "cgm": true,
+      "min_plausible_kg": 25.0
     }
   }
 }

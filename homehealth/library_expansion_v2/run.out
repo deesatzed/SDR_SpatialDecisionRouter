@@ -1,0 +1,42 @@
+08:06:41 LIBRARY_EXPANSION_V2 START cap $1.50 spend $0.000 seed 20261025
+08:12:42 CALL gen LX9 try1 anthropic/claude-haiku-5.5 err=None finish=stop lat=360.8s cost=0.0499 total=$0.050
+08:12:42 GEN LX9 ok n=11 split=False id_fixes=0
+08:32:18 CALL gen LX10 try1 anthropic/claude-haiku-5.5 err=TimeoutError('The read operation timed out') finish=None lat=1176.2s cost=0.0000 total=$0.050
+08:32:18 GEN LX10 bad result: err=TimeoutError('The read operation timed out') parse=invalid n=0
+08:37:50 CALL gen LX10 try2 anthropic/claude-haiku-5.5 err=None finish=stop lat=332.0s cost=0.0475 total=$0.097
+08:37:50 GEN LX10 ok n=11 split=False id_fixes=0
+09:04:41 CALL grade LX9+LX10 try1 google/gemini-4-argon err=TimeoutError('The read operation timed out') finish=None lat=1610.8s cost=0.0000 total=$0.097
+09:04:41 GRADE LX9+LX10 bad output parse=invalid verdicts=0
+09:30:56 CALL grade LX9+LX10 try2 google/gemini-4-argon err=TimeoutError('The read operation timed out') finish=None lat=1574.6s cost=0.0000 total=$0.097
+09:30:56 GRADE LX9+LX10 bad output parse=invalid verdicts=0
+09:36:04 LX2b START cap $1.50 spend $0.097
+09:36:48 CALL grade LX10-p2 try1 google/gemini-4-argon err=None finish=stop lat=44.5s cost=0.1028 total=$0.200
+09:36:48 GRADE LX10-p2: ok
+09:36:51 CALL grade LX9-p2 try1 google/gemini-4-argon err=None finish=stop lat=47.7s cost=0.1037 total=$0.304
+09:36:51 GRADE LX9-p2: ok
+09:36:53 CALL grade LX10-p1 try1 google/gemini-4-argon err=None finish=stop lat=49.9s cost=0.1102 total=$0.414
+09:36:53 GRADE LX10-p1: ok
+09:36:55 CALL grade LX9-p1 try1 google/gemini-4-argon err=None finish=stop lat=51.4s cost=0.1096 total=$0.524
+09:36:55 GRADE LX9-p1: ok
+09:39:23 CALL gen LX11 try1 anthropic/claude-haiku-5.5 err=None finish=stop lat=199.1s cost=0.0294 total=$0.553
+09:39:23 GEN LX11 ok n=11 split=False id_fixes=0
+09:40:06 CALL grade LX11-p2 try1 google/gemini-4-argon err=None finish=stop lat=43.8s cost=0.1017 total=$0.655
+09:40:06 GRADE LX11-p2: ok
+09:40:19 CALL gen LX12 try1 anthropic/claude-haiku-5.5 err=None finish=stop lat=255.7s cost=0.0362 total=$0.691
+09:40:19 GEN LX12 ok n=10 split=False id_fixes=0
+09:40:30 CALL grade LX11-p1 try1 google/gemini-4-argon err=None finish=stop lat=67.1s cost=0.1238 total=$0.815
+09:40:30 GRADE LX11-p1: ok
+09:41:21 CALL grade LX12-p1 try1 google/gemini-4-argon err=None finish=stop lat=61.7s cost=0.1151 total=$0.930
+09:41:21 GRADE LX12-p1: ok
+09:41:26 CALL grade LX12-p2 try1 google/gemini-4-argon err=None finish=stop lat=66.4s cost=0.1192 total=$1.049
+09:41:26 GRADE LX12-p2: ok
+09:41:26 LX2b END spend=$1.049
+09:56:18 CALL ticketgrade LX11 try1 google/gemini-4-argon err=None finish=stop lat=16.4s cost=0.0246 total=$1.074
+09:56:18 TICKETGRADE LX11: ok
+09:56:19 CALL ticketgrade LX12 try1 google/gemini-4-argon err=None finish=stop lat=16.9s cost=0.0225 total=$1.096
+09:56:19 TICKETGRADE LX12: ok
+09:56:24 CALL ticketgrade LX9 try1 google/gemini-4-argon err=None finish=stop lat=22.3s cost=0.0281 total=$1.124
+09:56:24 TICKETGRADE LX9: ok
+09:56:26 CALL ticketgrade LX10 try1 google/gemini-4-argon err=None finish=stop lat=24.7s cost=0.0325 total=$1.157
+09:56:26 TICKETGRADE LX10: ok
+09:56:26 TICKETGRADE END spend=$1.157

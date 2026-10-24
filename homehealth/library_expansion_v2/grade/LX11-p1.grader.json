@@ -1,0 +1,601 @@
+{
+ "batch_id": "LX11-p1",
+ "grader": "LLM3",
+ "verdicts": [
+  {
+   "case_id": "LX11-001",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "Single impossible 0.0 kg scale reading caused by a grandson standing on the scale, immediately followed by a normal 78.0 kg reading two minutes later. All watch streams and symptoms are stable at baseline. Under v1.13 device-ticket rules, this is a silent_log with a device maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Matches expected_route silent_log and expected_device_ticket device_maintenance.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX11-002",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "A single 12.0 kg scale reading explained by weighing a bag of compost, followed two minutes later by a normal 68.6 kg reading. Patient has stable vitals and no symptoms. Per v1.13 rules, this routes to silent_log with a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Matches expected_route silent_log.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX11-003",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.95,
+    "reasoning": "A 2.0 kg step-change in weight coincides with moving the scale onto a shag rug on Day -6, after which weight remains flat at 82.0-82.2 kg. All other physiological streams are stable and the patient is asymptomatic. Per v1.13 rules for scale placement issues with stable physiology, route is silent_log with a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Matches expected_route silent_log.",
+    "confidence": 0.95
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[noise] The 2.1 kg rise occurred only while the scale sat on the bedroom rug and disappeared",
+    "overlap_note": "Prior case had the scale moved back off the rug so the weight rise disappeared; here the scale remains on the rug through Day 0 requiring a device ticket."
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX11-004",
+   "blind": {
+    "grader_route": "provider_task",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.96,
+    "reasoning": "Patient with HFrEF shows a steady 2.3 kg weight gain over 7 days on a hard-tile floor, accompanied by rising resting HR, falling HRV, rising BP, decreasing steps, new two-pillow orthopnoea, and ankle oedema. This represents subacute HF decompensation without acute resting dyspnoea or vital sign danger thresholds, warranting same-day provider review for diuretic adjustment."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "provider_task",
+    "reasoning": "Matches expected_route provider_task.",
+    "confidence": 0.96
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": "[hf] Sustained 2.1 kg rise measured on the hard tile across five consecutive mornings, with no change",
+    "overlap_note": "Sufficiently distinct with full multi-stream concordance and clinical symptoms (orthopnoea, oedema)."
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  },
+  {
+   "case_id": "LX11-005",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": "HT_VS_DANGER",
+    "grader_trigger_tier": "SUPPRESSED",
+    "grader_suppression_reason": "unreliable_reading",
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.98,
+    "reasoning": "A CGM reading of 51 mg/dL occurs during the 2-hour warm-up window of a newly applied sensor and is cleared 6 minutes later by a normal fingerstick of 118 mg/dL. The patient is on metformin only and is completely asymptomatic. HT_VS_DANGER is suppressed as an unreliable reading, routing to silent_log with a device_maintenance ticket."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "agree",
+    "grader_route": "silent_log",
+    "reasoning": "Matches expected_route silent_log.",
+    "confidence": 0.98
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": true,
+    "ok": true,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": false,
+    "closest_do_not_repeat": "[noise] A 51 mg/dL CGM reading 70 minutes after a new sensor was applied, cleared by a",
+    "overlap_note": "Near-duplicate of a do_not_repeat case: 51 mg/dL CGM reading 70 minutes after new sensor application cleared by fingerstick."
+   },
+   "score": 0,
+   "action": "reject",
+   "fix_instructions": [
+    "Replace case: decisive feature is a near-duplicate of do_not_repeat entry '[noise] A 51 mg/dL CGM reading 70 minutes after a new sensor was applied, cleared by a'."
+   ]
+  },
+  {
+   "case_id": "LX11-006",
+   "blind": {
+    "grader_route": "silent_log",
+    "grader_hard_trigger_rule": null,
+    "grader_trigger_tier": null,
+    "grader_suppression_reason": null,
+    "grader_baseline_layer": null,
+    "grader_chest_pain_band": null,
+    "confidence": 0.85,
+    "reasoning": "CGM daily mean drifts up to 155 mg/dL as the sensor passes its 14-day expiry limit, while morning fasting glucometer checks remain at baseline (121-128 mg/dL) and watch vitals are flat. Under v1.13 rule 1, CGM expiry readings with a stable patient and normal reference meter checks route to silent_log with a device_maintenance ticket (though nurse_task to assist with sensor replacement is also clinically reasonable)."
+   },
+   "schema_ok": true,
+   "schema_issues": [],
+   "physiologic_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "device_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "med_timeline_consistency": {
+    "ok": true,
+    "issues": []
+   },
+   "router_input_faithful": {
+    "ok": true,
+    "issues": []
+   },
+   "route_leak": {
+    "ok": true,
+    "words_found": []
+   },
+   "phi_or_names": {
+    "ok": true,
+    "found": []
+   },
+   "category_correct": {
+    "ok": true,
+    "suggested": []
+   },
+   "expected_route_agree": {
+    "verdict": "disagree",
+    "grader_route": "silent_log",
+    "reasoning": "Under SMART_TRIGGERS v1.13 rule 1, CGM warm-up or expiry readings with a stable patient route to silent_log with expected_device_ticket filled. However, nurse_task to guide the patient to remove the expired sensor is clinically defensible.",
+    "confidence": 0.85
+   },
+   "hard_trigger_correct": {
+    "ok": true,
+    "suggested_rule": null,
+    "issue": null
+   },
+   "baseline_layer_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested": null,
+    "drift_miss": false,
+    "issue": null
+   },
+   "trigger_tier_correct": {
+    "applicable": false,
+    "ok": null,
+    "suggested_tier": null,
+    "suggested_confirm_step": null,
+    "critical_miss": false,
+    "issue": null
+   },
+   "pair_validity": {
+    "applicable": false,
+    "ok": null,
+    "partner_id": null,
+    "differences": []
+   },
+   "difficulty_fair": {
+    "ok": true,
+    "suggested": null
+   },
+   "novelty": {
+    "ok": true,
+    "closest_do_not_repeat": null,
+    "overlap_note": null
+   },
+   "score": 5,
+   "action": "keep",
+   "fix_instructions": []
+  }
+ ],
+ "batch_summary": {
+  "n_cases": 6,
+  "n_requested": 6,
+  "routes_actual": {
+   "silent_log": 4,
+   "nurse_task": 1,
+   "provider_task": 1,
+   "urgent_page": 0
+  },
+  "routes_requested": {
+   "silent_log": 5,
+   "nurse_task": 2,
+   "provider_task": 2,
+   "urgent_page": 2
+  },
+  "difficulty_actual": {
+   "easy": 0,
+   "medium": 0,
+   "hard": 4,
+   "adversarial": 2
+  },
+  "hard_plus_adversarial_pct": 100,
+  "minimums": {
+   "scale_glitch": {
+    "required": 3,
+    "actual": 3,
+    "met": true
+   },
+   "sustained_real_gain": {
+    "required": 1,
+    "actual": 1,
+    "met": true
+   },
+   "cgm_warmup_or_expiry": {
+    "required": 2,
+    "actual": 2,
+    "met": true
+   },
+   "cgm_compression": {
+    "required": 1,
+    "actual": 0,
+    "met": false
+   },
+   "cgm_true_low": {
+    "required": 2,
+    "actual": 0,
+    "met": false
+   }
+  },
+  "all_minimums_met": false,
+  "generator_tally_matches": false,
+  "tally_discrepancies": [
+   "Batch is part 1 (6 cases: LX11-001 to LX11-006) of an 11-case sub-batch LX11; generator tally reflects all 11 cases rather than the 6 cases present in this payload."
+  ],
+  "actions": {
+   "keep": 5,
+   "fix": 0,
+   "reject": 1
+  },
+  "route_disagreement_ids": [
+   "LX11-006"
+  ],
+  "hard_trigger_issue_ids": [],
+  "critical_miss_ids": [],
+  "drift_miss_ids": [],
+  "trigger_tier_issue_ids": [],
+  "duplicate_or_near_duplicate_ids": [
+   "LX11-005"
+  ],
+  "notes": "This payload contains the first 6 cases (LX11-001 to LX11-006) of the 11-case LX11 sub-batch. LX11-005 is rejected as a near-duplicate of an existing do_not_repeat case (51 mg/dL CGM reading ~70 minutes after sensor application cleared by fingerstick). LX11-006 has a minor route disagreement between silent_log (v1.13 device-ticket rule for CGM expiry) and nurse_task, kept for human review."
+ }
+}

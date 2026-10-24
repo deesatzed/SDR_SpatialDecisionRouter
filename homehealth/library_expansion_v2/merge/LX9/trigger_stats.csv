@@ -1,0 +1,2 @@
+rule,fired,ABSOLUTE,CONFIRM_FIRST,SUPPRESSED,ARTIFACT,actionable_escalation_rate,critical_miss,flag
+HT_GAP48_HIGHRISK,1,0,1,0,0,1.0,0,
