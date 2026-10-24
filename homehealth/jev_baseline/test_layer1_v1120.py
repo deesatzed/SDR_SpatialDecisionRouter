@@ -16,6 +16,18 @@ def test_stable_hr_disagreement_is_silent_plus_ticket():
     d = ev(devices=["watch", "ring"], trend_last_7d="Day -6 to 0: ring resting HR 64-68 bpm. Day -6 to 0: watch resting HR 78-82 bpm. Steps 2500-3000.",
            caregiver_or_nurse_note="Daughter: she feels her usual self; wonders which gadget is right.")
     assert r(d) == "silent_log" and d["device_ticket"]["type"] == "device_maintenance"
+
+def _pre_v1141(fn):
+    """pre-v1.14.1 ticket behaviour (ticket on a clinical route / oximeter-reference type); v1.14.1 changes it per Wayne 2026-10-24, see test_layer1_v1141.py."""
+    import functools
+    @functools.wraps(fn)
+    def w(*a, **k):
+        V = L.T.v110(L.PARAMS).setdefault("v1141", {}); old = V.get("enabled"); V["enabled"] = False
+        try: return fn(*a, **k)
+        finally: V["enabled"] = old
+    return w
+
+@_pre_v1141
 def test_spo2_disagreement_with_pending_o2_decision_is_nurse_plus_ticket():
     d = ev(**COPD, trend_last_7d="Day -4 to 0: watch SpO2 at rest 87-88%. Day -4 to 0: fingertip oximeter at rest 91-92%, good waveform.",
            caregiver_or_nurse_note="Husband: the clinic is deciding about home oxygen next week. She feels her usual self.")

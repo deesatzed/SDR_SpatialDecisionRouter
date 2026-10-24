@@ -9,6 +9,18 @@ AC = [{"name": "apixaban", "dose": "5 mg BID"}]
 def test_device_disagreement_silent_ticket_not_raised_by_jev():
     d = ev(devices=["watch", "ring"], trend_last_7d="Day -5 to 0: the watch rest HR reads 51-55 but the ring rest HR remained 66-69 every day; she feels well.")
     assert d["rule"] == "HT_DEVICE_DISAGREE" and D.dual_route(d, "provider_task", "urgent_page", "cautious_max_hitm")[0] == "silent_log"
+
+def _pre_v1141(fn):
+    """pre-v1.14.1 ticket behaviour (ticket on a clinical route / oximeter-reference type); v1.14.1 changes it per Wayne 2026-10-24, see test_layer1_v1141.py."""
+    import functools
+    @functools.wraps(fn)
+    def w(*a, **k):
+        V = L.T.v110(L.PARAMS).setdefault("v1141", {}); old = V.get("enabled"); V["enabled"] = False
+        try: return fn(*a, **k)
+        finally: V["enabled"] = old
+    return w
+
+@_pre_v1141
 def test_device_disagreement_could_change_care_stays_nurse_with_jev():
     d = ev(meds=[{"name": "bisoprolol", "dose": "5 mg daily"}], devices=["watch", "ring"], recent_med_changes=[{"name": "bisoprolol", "change": "dose_increased", "day": -6}],
            trend_last_7d="Day -5 to 0: since the bisoprolol increase the watch rest HR reads 46-49 but the ring rest HR remained 60-63; no light-headedness.")

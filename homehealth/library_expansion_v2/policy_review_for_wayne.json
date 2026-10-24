@@ -1,0 +1,51 @@
+[
+ {
+  "case_id": "LX2-006",
+  "library": "library_expansion_v1",
+  "route": "silent_log",
+  "ticket": "device_maintenance",
+  "question": "POLICY 2: cause looks external/human (single cuff reading corrected by a seated repeat (technique?)); keep ticket or drop? - left unchanged"
+ },
+ {
+  "case_id": "LX2-010",
+  "library": "library_expansion_v1",
+  "route": "nurse_task",
+  "ticket": "supply_reference_oximeter_and_baseline",
+  "question": "POLICY 1: non-maintenance ticket type on a clinical route (is this a clinical order rather than a device ticket?) - left unchanged"
+ },
+ {
+  "case_id": "LX8-010",
+  "library": "library_expansion_v1",
+  "route": "nurse_task",
+  "ticket": "ecg_strip_request",
+  "question": "POLICY 1: non-maintenance ticket type on a clinical route (is this a clinical order rather than a device ticket?) - left unchanged"
+ },
+ {
+  "case_id": "LX10-001",
+  "library": "library_expansion_v2",
+  "route": "silent_log",
+  "ticket": "device_maintenance",
+  "question": "POLICY 2: cause looks external/human (loose replacement strap (fit)); keep ticket or drop? - left unchanged"
+ },
+ {
+  "case_id": "LX10-011",
+  "library": "library_expansion_v2",
+  "route": "silent_log",
+  "ticket": "device_maintenance",
+  "question": "POLICY 2: cause looks external/human (too-large cuff on a thin arm); keep ticket or drop? - left unchanged"
+ },
+ {
+  "case_id": "LX11-002",
+  "library": "library_expansion_v2",
+  "route": "silent_log",
+  "ticket": "device_maintenance",
+  "question": "POLICY 2: cause looks external/human (bag on the scale platform); keep ticket or drop? - left unchanged"
+ },
+ {
+  "case_id": "LX11-003",
+  "library": "library_expansion_v2",
+  "route": "silent_log",
+  "ticket": "device_maintenance",
+  "question": "POLICY 2: cause looks external/human (scale moved onto a rug); keep ticket or drop? - left unchanged"
+ }
+]

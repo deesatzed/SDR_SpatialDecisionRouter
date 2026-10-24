@@ -110,6 +110,18 @@ def test_bp_low_without_repeat_still_fires():
     assert L.route(d, None)[0] == "urgent_page"
 
 # f) device tickets
+
+def _pre_v1141(fn):
+    """pre-v1.14.1 ticket behaviour (ticket on a clinical route / oximeter-reference type); v1.14.1 changes it per Wayne 2026-10-24, see test_layer1_v1141.py."""
+    import functools
+    @functools.wraps(fn)
+    def w(*a, **k):
+        V = L.T.v110(L.PARAMS).setdefault("v1141", {}); old = V.get("enabled"); V["enabled"] = False
+        try: return fn(*a, **k)
+        finally: V["enabled"] = old
+    return w
+
+@_pre_v1141
 def test_spo2_device_disagreement_no_reference_oximeter_ticket():
     d = ev(pmh=["COPD"], devices=["watch", "ring"], trend_last_7d="Day -6 to 0: wrist SpO2 90-91% at rest every morning while the ring reads 94-95% at the same moments. No breathlessness at rest.")
     assert L.route(d, None)[0] == "silent_log" and d["device_ticket"]["type"] == "supply_reference_oximeter_and_baseline" and not d["device_ticket"]["interruptive"]
@@ -123,6 +135,7 @@ def test_rhythm_disagreement_ecg_strip_ticket():
     d = ev(pmh=["paroxysmal atrial fibrillation"], meds=[{"name": "edoxaban", "dose": "60 mg daily"}], devices=["watch", "ring"],
            trend_last_7d="Day -4 to 0: the watch flagged an irregular rhythm 3 times while the ring reads a regular 66 bpm throughout; no palpitations.")
     assert L.route(d, None)[0] == "silent_log" and d["device_ticket"]["type"] == "ecg_strip_request"
+@_pre_v1141
 def test_hr_disagreement_after_rate_drug_increase_is_nurse_plus_ticket():
     d = ev(meds=[{"name": "metoprolol", "dose": "50 mg BID"}], devices=["watch", "ring"], recent_med_changes=[{"name": "metoprolol", "change": "dose_increased", "day": -8}],
            trend_last_7d="Day -6 to 0: since the metoprolol increase the watch rest HR reads 47-50 but the ring rest HR remained 61-65; no dizziness.")

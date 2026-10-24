@@ -1,0 +1,1462 @@
+{
+ "summary": {
+  "v1": {
+   "n": 72,
+   "tickets_expected": 10,
+   "tickets_hit": 7,
+   "false_tickets": [],
+   "missed_tickets": [
+    "LX2-002",
+    "LX2-010",
+    "LX8-010"
+   ],
+   "l1_decided": 55,
+   "l1_route_errors": [
+    "LX6-004"
+   ]
+  },
+  "v2": {
+   "n": 43,
+   "tickets_expected": 19,
+   "tickets_hit": 8,
+   "false_tickets": [
+    "LX11-005"
+   ],
+   "missed_tickets": [
+    "LX10-001",
+    "LX10-002",
+    "LX10-003",
+    "LX10-004",
+    "LX10-011",
+    "LX11-001",
+    "LX11-002",
+    "LX11-003",
+    "LX11-006",
+    "LX12-003",
+    "LX12-007"
+   ],
+   "l1_decided": 19,
+   "l1_route_errors": [
+    "LX10-002"
+   ]
+  },
+  "all": {
+   "n": 115,
+   "tickets_expected": 29,
+   "tickets_hit": 15,
+   "false_tickets": [
+    "LX11-005"
+   ],
+   "missed_tickets": [
+    "LX2-002",
+    "LX2-010",
+    "LX8-010",
+    "LX10-001",
+    "LX10-002",
+    "LX10-003",
+    "LX10-004",
+    "LX10-011",
+    "LX11-001",
+    "LX11-002",
+    "LX11-003",
+    "LX11-006",
+    "LX12-003",
+    "LX12-007"
+   ],
+   "l1_decided": 74,
+   "l1_route_errors": [
+    "LX6-004",
+    "LX10-002"
+   ]
+  }
+ },
+ "rows": [
+  {
+   "set": "v1",
+   "case_id": "LX1-003",
+   "expected": "silent_log",
+   "alts": [],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "watch steps 3000->5400 while ring steps stay flat"
+  },
+  {
+   "set": "v1",
+   "case_id": "LX1-004",
+   "expected": "silent_log",
+   "alts": [],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "watch steps 3000->5500 after a firmware/update flag"
+  },
+  {
+   "set": "v1",
+   "case_id": "LX1-007",
+   "expected": "provider_task",
+   "alts": [],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX1-011",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX2-001",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "hrv differs by 11 between watch and ring"
+  },
+  {
+   "set": "v1",
+   "case_id": "LX2-002",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "supply_reference_oximeter_and_baseline",
+   "detail": "spo2 differs by 3 between watch and fingertip"
+  },
+  {
+   "set": "v1",
+   "case_id": "LX2-003",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": "hr differs by 9 between ring and watch (caregiver asks which to trust)"
+  },
+  {
+   "set": "v1",
+   "case_id": "LX2-004",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": "glucose differs by 20 between device and device"
+  },
+  {
+   "set": "v1",
+   "case_id": "LX2-006",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "BP cuff re-seated before a clean repeat"
+  },
+  {
+   "set": "v1",
+   "case_id": "LX2-007",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "glucose differs by 20 between cgm and glucometer (caregiver asks which to trust)"
+  },
+  {
+   "set": "v1",
+   "case_id": "LX2-008",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX2-009",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "skin_temp differs by 0.6 between ring and watch"
+  },
+  {
+   "set": "v1",
+   "case_id": "LX2-010",
+   "expected": "nurse_task",
+   "alts": [
+    "silent_log",
+    "provider_task"
+   ],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": "supply_reference_oximeter_and_baseline",
+   "ticket": null,
+   "detail": "spo2 differs by 4 between watch and fingertip"
+  },
+  {
+   "set": "v1",
+   "case_id": "LX2-011",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task",
+    "silent_log"
+   ],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": "sleep differs by 1.4 between watch and ring (caregiver asks which to trust)"
+  },
+  {
+   "set": "v1",
+   "case_id": "LX2-012",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1_confirm",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX3-001",
+   "expected": "nurse_task",
+   "alts": [],
+   "l1_route": "nurse_task",
+   "owner": "layer1_default",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX3-004",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX3-005",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1_confirm",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX3-006",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX3-007",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1_confirm",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX3-008",
+   "expected": "nurse_task",
+   "alts": [],
+   "l1_route": "nurse_task",
+   "owner": "layer1_default",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX3-009",
+   "expected": "provider_task",
+   "alts": [],
+   "l1_route": "provider_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX3-010",
+   "expected": "nurse_task",
+   "alts": [],
+   "l1_route": "nurse_task",
+   "owner": "layer1_default",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX4-001",
+   "expected": "nurse_task",
+   "alts": [],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX4-003",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX4-005",
+   "expected": "nurse_task",
+   "alts": [],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX4-006",
+   "expected": "nurse_task",
+   "alts": [],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX4-007",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX4-008",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX4-009",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "provider_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX4-010",
+   "expected": "provider_task",
+   "alts": [],
+   "l1_route": "provider_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX4-011",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX5-001",
+   "expected": "silent_log",
+   "alts": [],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX5-002",
+   "expected": "silent_log",
+   "alts": [],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX5-003",
+   "expected": "provider_task",
+   "alts": [],
+   "l1_route": "provider_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX5-004",
+   "expected": "provider_task",
+   "alts": [],
+   "l1_route": "provider_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX5-005",
+   "expected": "nurse_task",
+   "alts": [],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX5-006",
+   "expected": "silent_log",
+   "alts": [],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX5-007",
+   "expected": "nurse_task",
+   "alts": [],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX5-008",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "provider_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX5-009",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1_confirm",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX5-010",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1_confirm",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX5-011",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX6-001",
+   "expected": "provider_task",
+   "alts": [],
+   "l1_route": "provider_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX6-002",
+   "expected": "nurse_task",
+   "alts": [],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX6-003",
+   "expected": "nurse_task",
+   "alts": [],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX6-004",
+   "expected": "provider_task",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX6-005",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX6-006",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX6-007",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "provider_task",
+   "owner": "layer1_default",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX6-008",
+   "expected": "nurse_task",
+   "alts": [],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX6-009",
+   "expected": "silent_log",
+   "alts": [],
+   "l1_route": "silent_log",
+   "owner": "layer1_cleared",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX6-010",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX6-011",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX7-001",
+   "expected": "silent_log",
+   "alts": [],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX7-002",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX7-003",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "single-device reading flagged and contradicted by a second device; resolved after a fit adjustment"
+  },
+  {
+   "set": "v1",
+   "case_id": "LX7-005",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": "nurse_task",
+   "owner": "layer1_default",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX7-006",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "provider_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX7-007",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": "nurse_task",
+   "owner": "layer1_stable_angina",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX7-009",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX7-010",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX8-001",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX8-002",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX8-003",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX8-004",
+   "expected": "urgent_page",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX8-005",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX8-006",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX8-007",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX8-008",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX8-009",
+   "expected": "provider_task",
+   "alts": [
+    "urgent_page"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v1",
+   "case_id": "LX8-010",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": "ecg_strip_request",
+   "ticket": null,
+   "detail": "hr differs by 13 between watch and ring (caregiver asks which to trust)"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX10-001",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": "device_maintenance",
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX10-002",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": "device_maintenance",
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX10-003",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": "device_maintenance",
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX10-004",
+   "expected": "silent_log",
+   "alts": [],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "supply_reference_oximeter_and_baseline",
+   "detail": "spo2 differs by 3 between ring and fingertip"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX10-005",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1_confirm",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX10-006",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX10-007",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX10-008",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX10-009",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX10-010",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": "hr differs by 11 between watch and ring"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX10-011",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": "device_maintenance",
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX11-001",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": "device_maintenance",
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX11-002",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": "device_maintenance",
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX11-003",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": "device_maintenance",
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX11-004",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX11-005",
+   "expected": "silent_log",
+   "alts": [],
+   "l1_route": "silent_log",
+   "owner": "layer1_cleared",
+   "exp_ticket": null,
+   "ticket": "device_maintenance",
+   "detail": "device fault (cgm: warm-up)"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX11-006",
+   "expected": "silent_log",
+   "alts": [],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": "device_maintenance",
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX11-007",
+   "expected": "nurse_task",
+   "alts": [],
+   "l1_route": "nurse_task",
+   "owner": "layer1_v1120",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX11-008",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX11-009",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "provider_task",
+   "owner": "layer1_default",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX11-010",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX11-011",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX12-001",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "spo2 differs by 3 between watch and ring"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX12-002",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX12-003",
+   "expected": "silent_log",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": "device_maintenance",
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX12-004",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX12-005",
+   "expected": "silent_log",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": "silent_log",
+   "owner": "layer1_device_ticket",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "HR devices differ by 15 bpm"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX12-006",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX12-007",
+   "expected": "silent_log",
+   "alts": [],
+   "l1_route": "silent_log",
+   "owner": "layer1_cleared",
+   "exp_ticket": "device_maintenance",
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX12-008",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1_confirm",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX12-009",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX12-010",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX9-001",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "device fault (sync: upload stopped)"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX9-002",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "device fault (battery: battery flat)"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX9-003",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "skin_temp differs by 0.5 between watch and ring (caregiver asks which to trust)"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX9-004",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "stream change after a firmware/update/re-pair flag with otherwise flat physiology"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX9-005",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": "silent_log",
+   "owner": "layer1_v1120",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "steps steps 3800->8100 after a firmware/update flag"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX9-006",
+   "expected": "silent_log",
+   "alts": [],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": "device_maintenance",
+   "ticket": "device_maintenance",
+   "detail": "device fault (dup: clock runs 5 hours ahead)"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX9-007",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": "device fault (battery: battery flat)"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX9-008",
+   "expected": "provider_task",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": "device fault (update: app updated Day -3 08:40 CGM export)"
+  },
+  {
+   "set": "v2",
+   "case_id": "LX9-009",
+   "expected": "silent_log",
+   "alts": [
+    "nurse_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX9-010",
+   "expected": "urgent_page",
+   "alts": [],
+   "l1_route": "urgent_page",
+   "owner": "layer1_confirm",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": null
+  },
+  {
+   "set": "v2",
+   "case_id": "LX9-011",
+   "expected": "nurse_task",
+   "alts": [
+    "provider_task"
+   ],
+   "l1_route": null,
+   "owner": "jev",
+   "exp_ticket": null,
+   "ticket": null,
+   "detail": "device fault (sync: stopped watch uploads)"
+  }
+ ]
+}

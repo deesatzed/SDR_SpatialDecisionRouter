@@ -1,11 +1,13 @@
 """Score the CURRENT Layer 1 (layer1_adapter params) + stored Jev picks against a ruled key (SYNTHETIC). No API calls.
 Usage: python3 score_ruled.py <key.json> <out.json> <picks_dir> [picks_dir ...]
 Systems: default L1 + dual(d1-ultra, pplx) cautious_max_hitm; challenger L1 + dual(d1-ultra, drex-max); single L1 + d1-ultra, L1 + pplx, L1 + drex-max; Layer 1 alone (decided cases).
-Device tickets come from Layer 1 (type match vs expected_device_ticket; any_device_ticket_ok cases accept any ticket type)."""
+Device tickets come from Layer 1, gated by the final default-stack route under v1.14.1 POLICY 1 (type match vs expected_device_ticket; any_device_ticket_ok cases accept any ticket type)."""
 import json, os, sys
 HO = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HO, "..", "jev_baseline"))
 import score_v110 as V, dual_jev as D, score_l1jev as SL, layer1_adapter as L  # noqa: E402
 KEY, OUT, DIRS = sys.argv[1], sys.argv[2], sys.argv[3:]
+if os.environ.get("V1141_OFF"): L.T.v110(L.PARAMS).setdefault("v1141", {})["enabled"] = False   # score without the v1.14.1 ticket policy
+if os.environ.get("V1141_EXTRA_OFF"): L.T.v110(L.PARAMS).setdefault("v1141", {}).update(cuff_error=False, scale_internal=False)   # v1.14.1 without the internal cuff/scale sub-families
 if os.environ.get("V1140_OFF"): L.T.v110(L.PARAMS).setdefault("v1140", {})["enabled"] = False   # score without the v1.14.0 named device-fault tickets
 if os.environ.get("V1130_OFF"): L.T.v110(L.PARAMS).setdefault("v1130", {})["enabled"] = False   # score without the v1.13.0 device tickets
 if os.environ.get("V1120_OFF"): L.T.v110(L.PARAMS).setdefault("v1120", {})["enabled"] = False   # score the v1.11.2 baseline
@@ -21,17 +23,26 @@ base = V.run(cases, {"liquid/d1-ultra": P[M3[0]], "perplexity/pplx-decider-v1.2"
 chal = V.run(cases, {"liquid/d1-ultra": P[M3[0]], "perplexity/pplx-decider-v1.2": P[M3[2]]})
 sysm = {"L1 + dual(d1-ultra, pplx) [default]": pick(base, V.SYS[0]), "L1 + dual(d1-ultra, drex-max) [challenger]": pick(chal, V.SYS[0]),
         "L1 + d1-ultra": pick(base, V.SYS[1]), "L1 + pplx": pick(base, V.SYS[2]), "L1 + drex-max": pick(chal, V.SYS[2]), "Layer 1 alone": pick(base, V.SYS[3])}
-l1 = {c["case_id"]: L.evaluate_case(c) for c in cases}
+l1raw = {c["case_id"]: L.evaluate_case(c) for c in cases}
+FR = {c["case_id"]: D.dual_route(l1raw[c["case_id"]], P[M3[0]].get("LIB-" + c["case_id"]), P[M3[1]].get("LIB-" + c["case_id"]), "cautious_max_hitm")[0] for c in cases}
+def _tk(d, i):   # POLICY 1 (v1.14.1): a conditional ticket is dropped when the final default-stack route is clinical
+    if (L.T.v110(L.PARAMS).get("v1141") or {}).get("enabled"): return L.V141.final_ticket(d, FR[i])
+    return d.get("device_ticket")
+l1 = {i: {**d, "device_ticket": _tk(d, i)} for i, d in l1raw.items()}
 tk = [c for c in cases if c.get("expected_device_ticket")]
 def hit(c):
     t = (l1[c["case_id"]].get("device_ticket") or {}).get("type")
-    return bool(t) and (t == c["expected_device_ticket"] or c.get("any_device_ticket_ok"))
+    return bool(t) and bool(t == c["expected_device_ticket"] or c.get("any_device_ticket_ok"))
 tk_ids = {c["case_id"] for c in tk}
 out = {"params": L.PARAMS.get("version"), "key": os.path.basename(KEY), "n": len(cases), "picks_dirs": [os.path.relpath(d, HO) for d in DIRS],
        "missing_picks": {m: [c["case_id"] for c in cases if "LIB-" + c["case_id"] not in P[m]] for m in M3}, "systems": sysm,
        "device_tickets": {"expected": len(tk), "hit": sum(hit(c) for c in tk), "any_ticket": sum(1 for c in tk if l1[c["case_id"]].get("device_ticket")),
                           "missed_ids": [c["case_id"] for c in tk if not hit(c)], "unexpected_ids": [i for i, d in l1.items() if d.get("device_ticket") and i not in tk_ids]},
        "layer1_decided_ids": [i for i, d in l1.items() if L.route(d, None)[0] is not None], "tier_agreement": {k: v for k, v in base["tier_agreement"].items()}}
+IDS = os.environ.get("PER_ID", "").split(",")
+out["per_id"] = {i: {"expected_route": next(c["expected_route"] for c in cases if c["case_id"] == i), "final_route": FR[i], "l1_route": L.route(l1raw[i], None)[0],
+                     "expected_ticket": next(c.get("expected_device_ticket") for c in cases if c["case_id"] == i), "ticket": (l1[i].get("device_ticket") or {}).get("type"),
+                     "ticket_rule": (l1raw[i].get("device_ticket") or l1raw[i].get("device_ticket_suppressed") or {}).get("detail"), "suppressed": (l1raw[i].get("device_ticket_suppressed") or {}).get("why")} for i in IDS if i in FR}
 os.makedirs(os.path.dirname(os.path.abspath(OUT)), exist_ok=True); json.dump(out, open(OUT, "w"), indent=1)
 for s, m in sysm.items():
     print(f'{s:44s} acc={m["accuracy"]} ({m["decided"]}/{m["n"]}) crit={m["critical_misses"]} {m["critical_ids"]} fp/100={m["false_pages_per_100"]} {m["false_page_ids"]} hitm/100={m["hitm_per_100"]} err={m["n_errors"]}')

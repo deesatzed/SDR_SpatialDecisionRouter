@@ -3,7 +3,7 @@
  "graded": 43,
  "accepted_by_merge": 31,
  "dedupe_removed": 0,
- "accepted_final": 31,
+ "accepted_final": 43,
  "review_queue_disputed": 12,
  "fix_list_excluded": 0,
  "queue_reasons": {
@@ -14,21 +14,21 @@
   "ticket_disagree: author=device_maintenance grader=None": 5
  },
  "routes": {
-  "silent_log": 15,
-  "urgent_page": 5,
+  "silent_log": 22,
+  "urgent_page": 7,
   "provider_task": 6,
-  "nurse_task": 5
+  "nurse_task": 8
  },
  "tiers": {
-  "CONFIRM_FIRST": 2,
-  "ABSOLUTE": 3,
-  "SUPPRESSED": 1
+  "SUPPRESSED": 4,
+  "CONFIRM_FIRST": 3,
+  "ABSOLUTE": 4
  },
  "by_batch_accepted": {
-  "LX10": 9,
-  "LX11": 9,
-  "LX12": 6,
-  "LX9": 7
+  "LX10": 11,
+  "LX11": 11,
+  "LX12": 10,
+  "LX9": 11
  },
  "by_batch_generated": {
   "LX10": 11,
@@ -40,23 +40,43 @@
  "hospice_goals": 1,
  "learning_period": 0,
  "categories": {
-  "noise": 14,
-  "missing_data": 6,
-  "hf": 4,
+  "noise": 21,
+  "missing_data": 8,
+  "spo2_bias": 6,
+  "hf": 5,
   "hypoglycemia": 4,
   "respiratory": 3,
   "med_change": 2,
+  "infection": 2,
   "arrhythmia": 2,
-  "spo2_bias": 2,
-  "infection": 1,
+  "conflicting": 2,
+  "dementia": 2,
   "goals_of_care": 1,
   "recovery": 1,
-  "conflicting": 1,
+  "dehydration": 1,
+  "syncope": 1,
   "hyperglycemia": 1
  },
  "difficulty": {
-  "hard": 18,
-  "adversarial": 10,
-  "medium": 3
+  "hard": 22,
+  "adversarial": 17,
+  "medium": 4
+ },
+ "clinician_added_from_disputes": 12,
+ "clinician_excluded": [],
+ "review_queue_disputed_open": 0,
+ "policy_relabels": [],
+ "policy_review_for_wayne": [
+  "LX2-006",
+  "LX2-010",
+  "LX8-010",
+  "LX10-001",
+  "LX10-011",
+  "LX11-002",
+  "LX11-003"
+ ],
+ "tickets": {
+  "device_maintenance": 19,
+  "none": 24
  }
 }

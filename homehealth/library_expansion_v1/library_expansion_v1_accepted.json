@@ -526,7 +526,7 @@
    ],
    "rationale": "Four paired checks put the wrist at 91-92% and the fingertip at 95-96% within minutes, so the wrist reads low and the fingertip is the reference. RR, HR and steps are steady, he has no symptoms, and the same pattern repeats on every check, which makes this a device trust question rather than hypoxemia. The reference oximeter and baseline supply request keeps the offset visible for future trends. Naive-model trap: a shallow model reads 91% on a Fitzpatrick V-VI man and sends a provider review for hypoxemia, ignoring the same-minute fingertip values. fires because the reliable fingertip readings sit at 95-96%, well above 88%.",
    "decisive_feature": "Wrist readings of 91-92% against same-minute fingertip values of 95-96% on four paired checks, with RR 15-16 and no symptoms.",
-   "expected_device_ticket": "supply_reference_oximeter_and_baseline",
+   "expected_device_ticket": "device_maintenance",
    "src": "library_expansion_v1",
    "grade": {
     "score": 5,
@@ -541,7 +541,9 @@
     "case_id": "HX4-006",
     "jaccard_decisive": 0.057,
     "jaccard_text": 0.315
-   }
+   },
+   "author_device_ticket_original": "supply_reference_oximeter_and_baseline",
+   "policy_relabel": "Wayne ruling 2026-10-24: oximeter disagreement on silent_log = device_maintenance ticket (LX10-002/004, LX12-001/007 ruling)"
   },
   {
    "case_id": "LX2-003",
@@ -642,7 +644,7 @@
    ],
    "rationale": "Watch HR 60-63 bpm and ring HR 72-75 bpm on the same mornings after carvedilol started Day -3 is an 11-13 bpm disagreement that could change the beta-blocker picture. She has no dizziness, weight and BP are steady, and both devices are worn above 90%, so the nurse needs a manual pulse count before deciding which reading to trust and whether the dose is working. The device ticket records the watch re-pair. Naive-model trap: a shallow model sees a heart rate near 60 on a new beta-blocker in heart failure and pages urgently, when the asymptomatic gap needs a manual check and a nurse-level review. fires because no reliable reading is below 50 bpm and she reports no symptoms.",
    "decisive_feature": "Watch HR 60-63 bpm against ring HR 72-75 bpm on the same mornings after carvedilol started Day -3, with both devices worn above 90% and no symptoms.",
-   "expected_device_ticket": "device_maintenance",
+   "expected_device_ticket": null,
    "src": "library_expansion_v1",
    "grade": {
     "score": 5,
@@ -657,7 +659,9 @@
     "case_id": "HX4-003",
     "jaccard_decisive": 0.3,
     "jaccard_text": 0.13
-   }
+   },
+   "author_device_ticket_original": "device_maintenance",
+   "policy_relabel": "Wayne ruling 2026-10-24: POLICY 1 (clinical route, no device ticket; clinician files one)"
   },
   {
    "case_id": "LX2-004",
@@ -749,7 +753,7 @@
    ],
    "rationale": "CGM daily means of 139-146 mg/dL run 20-25 mg/dL above the morning fingerstick values, and the glargine dose rose from 16 to 18 units on Day -6, so the spouse's question is an insulin decision built on two disagreeing devices. There are no lows and no symptoms, so this is not a page, but the nurse should check the meter against the sensor before the dose is changed. Naive-model trap: a shallow model accepts the CGM as true and pages urgently for rising means, or silently files the mismatch as a sensor quirk while the insulin dose is being titrated. fires because no glucose is below 70 mg/dL.",
    "decisive_feature": "CGM means of 139-146 mg/dL running 20-25 mg/dL above the morning glucometer values after the Day -6 glargine increase, with no lows or symptoms.",
-   "expected_device_ticket": "device_maintenance",
+   "expected_device_ticket": null,
    "src": "library_expansion_v1",
    "grade": {
     "score": 5,
@@ -764,7 +768,9 @@
     "case_id": "EL1-010",
     "jaccard_decisive": 0.083,
     "jaccard_text": 0.223
-   }
+   },
+   "author_device_ticket_original": "device_maintenance",
+   "policy_relabel": "Wayne ruling 2026-10-24: POLICY 1 (clinical route, no device ticket; clinician files one)"
   },
   {
    "case_id": "LX2-006",
@@ -1331,7 +1337,7 @@
    ],
    "rationale": "Watch sleep of 5.2-5.6 h runs 1.4-2.2 h behind the ring on the same nights since melatonin started Day -5, and the bed sensor and daytime behaviour show no change. The question is which sleep figure to trust when judging whether the melatonin is helping, and the nurse can check the dose and the watch fit within 24 hours. Naive-model trap: a shallow model reads the watch's 5.4 h as new sleep deprivation and sends a provider review for a sedative change, when the gap between devices is the uncertain part. fires because no vital sign is out of range.",
    "decisive_feature": "Watch sleep 1.4-2.2 h shorter than the ring on the same nights since melatonin started Day -5, so the dose review depends on which device is right.",
-   "expected_device_ticket": "device_maintenance",
+   "expected_device_ticket": null,
    "src": "library_expansion_v1",
    "grade": {
     "score": 5,
@@ -1346,7 +1352,9 @@
     "case_id": "HW4-005",
     "jaccard_decisive": 0.226,
     "jaccard_text": 0.287
-   }
+   },
+   "author_device_ticket_original": "device_maintenance",
+   "policy_relabel": "Wayne ruling 2026-10-24: POLICY 1 (clinical route, no device ticket; clinician files one)"
   },
   {
    "case_id": "LX2-012",
@@ -7331,6 +7339,7 @@
   "synthetic": true,
   "prompts": "GEN_LLM2_v2.3 + hard-slice / GRADER_LLM3_v1.3 + ADDENDUM_v1103 + ADDENDUM_v1112 (SMART_TRIGGERS v1.11.2, params 0.11.2-placeholder, seed 20261024); generators haiku-5.5 + deepseek-v4-pro",
   "dedupe": "vs library_v2_smart (270) + holdout_v1/v2/v3/v4 (all generated) and earlier library_expansion_v1 accepted cases: decisive_feature Jaccard >= 0.5 or trend+note Jaccard >= 0.6, or story match (>= 3 shared rare 3-grams in the narrative note, same category) or a known repeated idiom",
-  "clinician_rulings": "Wayne ruling 2026-10-24: LX1-003/004/007/011 added from merge_disputes.csv; LX1-002 excluded (see excluded_by_ruling.json)"
+  "clinician_rulings": "Wayne ruling 2026-10-24: LX1-003/004/007/011 added from merge_disputes.csv; LX1-002 excluded (see excluded_by_ruling.json)",
+  "policy_relabels": "Wayne ruling 2026-10-24: POLICY 1 relabels (clinical route -> no device ticket) listed in ../library_expansion_v2/policy_relabels.json"
  }
 }

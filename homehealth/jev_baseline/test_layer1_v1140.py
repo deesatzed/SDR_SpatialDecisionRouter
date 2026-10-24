@@ -41,6 +41,18 @@ def _test_scale_moved_to_rug_offset_ticket_vetoed_by_clinic_scale():
     t = "Scale moved to a bedroom rug Day -5; weights 70.0 kg before, 71.8-72.0 kg on the rug since. Rest HR 68-70, steps flat."
     assert tk(ev(**B, trend_last_7d=t)) == "device_maintenance"
     assert not tk(ev(**B, trend_last_7d=t + " Clinic scale Day -1 71.9 kg."))
+
+def _pre_v1141(fn):
+    """pre-v1.14.1 ticket behaviour (ticket on a clinical route / oximeter-reference type); v1.14.1 changes it per Wayne 2026-10-24, see test_layer1_v1141.py."""
+    import functools
+    @functools.wraps(fn)
+    def w(*a, **k):
+        V = L.T.v110(L.PARAMS).setdefault("v1141", {}); old = V.get("enabled"); V["enabled"] = False
+        try: return fn(*a, **k)
+        finally: V["enabled"] = old
+    return w
+
+@_pre_v1141
 def test_ticket_sits_on_top_of_clinical_route(): fam_on(lambda: _test_ticket_sits_on_top_of_clinical_route(), 'fit')
 def _test_ticket_sits_on_top_of_clinical_route():
     t = "Day -7 to -1 rest HR 64-68. Day 0 03:10 CGM 48 mg/dL; patch edge lifted at one corner; glucometer 45 mg/dL at 03:15."

@@ -568,13 +568,15 @@ def _evaluate_v1112(case):
     return {**out, "acute_presentation": acute, "hitm_required": hitm_required, "context": {k: ctx[k] for k in ("goals", "lives_alone", "high_risk")},
             "candidates": [{"rule": d.get("rule"), "tier": d["tier"], "reason": d.get("reason")} for d in cands]}
 
+import layer1_v1141 as V141  # noqa: E402  (v1.14.1 ticket policy: no ticket on clinical routes, internal faults only)
 import layer1_v1140 as V14  # noqa: E402  (v1.14.0 named device-fault tickets, ticket only; params layer1_v110.v1140)
 import layer1_v1130 as V13  # noqa: E402  (v1.13.0 device-ticket emission; params layer1_v110.v1130)
 import layer1_v1120 as V12  # noqa: E402  (v1.12.0 generalized wording/matching; params layer1_v110.v1120)
 def evaluate_case(case):
     """v1.13.0 decision, then the v1.14.0 named device-fault tickets (ticket only; no-op when layer1_v110.v1140.enabled is false)."""
     out = _evaluate_v1112(case); c = facts_only(case); ctx = context(c)
-    return V14.apply(case, c, _evaluate_v1130(case), out, ctx, sys.modules[__name__], T, PARAMS, V13)
+    o14 = V14.apply(case, c, _evaluate_v1130(case), out, ctx, sys.modules[__name__], T, PARAMS, V13)
+    return V141.apply(c, o14, sys.modules[__name__], T, PARAMS, V14)   # v1.14.1 ticket policy (Wayne 2026-10-24; no-op when layer1_v110.v1141.enabled is false)
 def _evaluate_v1130(case):
     """v1.11.2 decision, then the v1.12.0 generalized rules (no-op when layer1_v110.v1120.enabled is false)."""
     out = _evaluate_v1112(case)

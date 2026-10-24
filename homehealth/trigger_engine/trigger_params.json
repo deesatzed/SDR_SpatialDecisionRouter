@@ -1,5 +1,5 @@
 {
-  "version": "0.14.0-placeholder",
+  "version": "0.14.1-placeholder",
   "status": "PLACEHOLDER. Every number in this file is a placeholder for the clinical owner. The engine never writes this file; only a human can change it, via apply_param_change(approved_by=...), which appends to change_log.",
   "change_log": [
     {
@@ -514,6 +514,17 @@
       "new": "0.14.0-placeholder",
       "approved_by": "pending Wayne review",
       "reason": "v1.14.0: device ticket (ticket only, route never changed) for named device faults: sync/upload failure, battery/charger failure (not if already replaced with continuous data), BP cuff error/sleeve/wrong size, strap/patch fit, scale glitches (impossible weight with normal repeat, someone else or an object on the scale, scale on a rug, new scale offset unless a clinic scale agrees), app/firmware update that changes a measure, duplicated or time-shifted records, CGM warm-up/expiry/compression. Guard: withdraw a v1.13 firmware-shift ticket with no stream change or new positional-breathing words. Built from library_expansion_v2 only. PLACEHOLDER thresholds. scale/fit/cuff families OFF after blind holdout_v4 scoring showed one unexpected ticket each (routes unchanged)."
+    },
+    {
+      "ts": "2026-10-24T14:30:00-04:00",
+      "keys": [
+        "version",
+        "layer1_v110.v1141"
+      ],
+      "old": "0.14.0-placeholder",
+      "new": "0.14.1-placeholder",
+      "approved_by": "Wayne 2026-10-24 (policies); thresholds PLACEHOLDER",
+      "reason": "v1.14.1: no device ticket on clinical routes (POLICY 1); tickets limited to internal device faults (POLICY 2); CGM warm-up single artifact no ticket; cuff_error/scale_internal sub-families (see _note for final on/off after blind scoring)."
     }
   ],
   "hard_limits": {
@@ -1296,6 +1307,18 @@
       "dup": true,
       "cgm": true,
       "min_plausible_kg": 25.0
+    },
+    "v1141": {
+      "_note": "SMART_TRIGGERS v1.14.1 device-ticket policy (jev_baseline/layer1_v1141.py), Wayne rulings 2026-10-24. POLICY 1: no device ticket when the route is nurse/provider/urgent (clinician files one); Jev-routed tickets are conditional on a final silent_log. POLICY 2: tickets only for internal device faults; human-cause families (fit, cuff sleeve/size, scale object/rug) stay OFF. CGM warm-up readings: no ticket. cuff_error / scale_internal are internal-fault sub-families, decided from library logic then blind-scored. min_plausible_kg PLACEHOLDER. Blind-scored after design: cuff_error and scale_internal put no wrong ticket on holdout_v3/v4 (the one raw scale_internal ticket, HX4-006, is on a provider_task route and is dropped by POLICY 1), so both are ON. spo2_flag_vs_fingertip (from LX12-007) put one unexpected ticket on holdout_v3 (HW8-007), so it is OFF (no tuning on holdouts). fit and the human-cause cuff/scale parts stay OFF under POLICY 2.",
+      "enabled": true,
+      "suppress_on_clinical_route": true,
+      "warmup_no_ticket": true,
+      "cuff_error": true,
+      "scale_internal": true,
+      "min_plausible_kg": 25.0,
+      "spo2_flag_vs_fingertip": false,
+      "cgm_expiry": true,
+      "oximeter_as_maintenance": true
     }
   }
 }
