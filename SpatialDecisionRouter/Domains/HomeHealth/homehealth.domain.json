@@ -40,10 +40,10 @@
       "costWeight": 0.62,
       "shortLabel": "route",
       "previews": {
-        "silent_log": "Silent log: record only, no human task",
-        "nurse_task": "Nurse queue: contact within about 24 h",
-        "provider_task": "Provider queue: same-business-day review, not a page",
-        "urgent_page": "Urgent page: page someone now",
+        "silent_log": "Log only. No on-call person. The Overseer is not the recipient.",
+        "nurse_task": "Nurse task to the Night nurse, or the On-call hospice nurse when goals say hospice. Not to the Overseer.",
+        "provider_task": "Provider task to the On-call HH MD. Not a page, and not to the Overseer.",
+        "urgent_page": "Urgent page to the On-call HH MD. The Overseer is not paged.",
         "*": "{dest}: receives {answer}"
       }
     }
@@ -52,7 +52,7 @@
     "Layer 1 alone decides the route. The headset does not call a cloud model.",
     "Routes, lowest to highest: silent_log, nurse_task, provider_task, urgent_page.",
     "A device_maintenance ticket is shown when Layer 1 files one. Clinical routes do not keep a ticket.",
-    "Pass accepts the Layer 1 route. Modify picks another route. urgent_page alerts the Urgent page node."
+    "The reviewer is the Overseer, a physician. Pass sends the route to the on-call recipient, not to the Overseer. Change route picks another route. urgent_page alerts the On-call HH MD node."
   ],
   "capacity": {"minutesPerSecond": 1},
   "review": {
@@ -64,12 +64,13 @@
   },
   "detailSections": ["Vignette", "Layer 1"],
   "glossary": {
-    "home health": "Synthetic home-monitoring case. Layer 1 proposes a route for you to pass or change.",
-    "urgent page": "Layer 1 route urgent_page: page someone now. Signing it alerts the Urgent page node.",
+    "home health": "Synthetic home-monitoring case. The Overseer (a physician) passes or changes Layer 1's route. The route goes to the on-call, not to the Overseer.",
+    "urgent page": "Layer 1 route urgent_page: pass a page to the On-call HH MD. The Overseer is not paged.",
+    "recipient": "Synthetic on-call person who receives this route. Night nurse, On-call hospice nurse, or On-call HH MD. Log only when no person is tasked.",
     "device ticket": "Optional device_maintenance ticket from Layer 1. Not a clinical page. Clinical routes do not keep one.",
     "bridge offline": "The localhost Layer 1 bridge is not running. The card shows the bundled snapshot from the same engine.",
     "Layer 1": "Deterministic smart-trigger engine (v1.14.4, params 0.14.4-placeholder). Live badge means the bridge recomputed this case. Bundled means the snapshot shipped in the app.",
-    "route": "silent_log logs only. nurse_task is nurse contact. provider_task is same-day clinician review, not a page. urgent_page pages now.",
+    "route": "silent_log is log only. nurse_task goes to the Night nurse, or the On-call hospice nurse when goals say hospice. provider_task and urgent_page go to the On-call HH MD. None of them go to the Overseer.",
     "plain reason": "Short reason text from Layer 1 for this decision.",
     "Vignette": "Fact text copied from the synthetic case library. Not a real chart.",
     "Layer 1 decision": "Route, owner, rule, and device ticket from Layer 1.",

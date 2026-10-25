@@ -586,6 +586,8 @@ struct UpNextStrip: View {
                             if ticket != "none" {
                                 Text("Device ticket").font(.title3.bold()).foregroundStyle(.orange)
                             }
+                            let who = HomeHealthSeat.recipientChip(route: h.proposal, fields: engine.items[h.itemId]?.fields ?? [:])
+                            Text("to \(who)").font(.title3).foregroundStyle(.secondary).lineLimit(1)
                         }
                     }
                     .padding(.vertical, 10)
@@ -703,7 +705,28 @@ struct OptionRing: View {
         let h = engine.handoffs.first { $0.id == engine.ringFor }
         let opts = h.map { engine.registry.mainOptions($0.link) } ?? []
         let trials = h.map { engine.registry.trialOptions($0.link) } ?? []
-        VStack(spacing: 10) {
+        let fields = h.flatMap { engine.items[$0.itemId]?.fields } ?? [:]
+        let home = engine.config.id == "home_health"
+        return VStack(spacing: 10) {
+            if home, let h {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Change route").font(.title.bold())
+                    Text("Sends to the on-call. You stay the Overseer.").font(.title3).foregroundStyle(.secondary)
+                    ForEach(opts, id: \.self) { o in
+                        Button { engine.select(h.id, o) } label: {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(HomeHealthRoute.title(o)).font(.title2.bold())
+                                Text(HomeHealthSeat.recipientChip(route: o, fields: fields)).font(.title3)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .tint(o == h.proposal ? .gray : .blue)
+                    }
+                    Button("Cancel") { engine.ringFor = nil }.tint(.gray)
+                }
+                .padding(8)
+                .sdrWidth(520)
+            } else {
             ZStack {
                 Circle().stroke(.white.opacity(0.4), lineWidth: 2).frame(width: 280, height: 280)
                 Text(h?.link.question ?? "").font(.headline)
@@ -729,6 +752,7 @@ struct OptionRing: View {
                 Text("trial categories are logged but never change routing or fire alerts until promoted").font(.caption2).foregroundStyle(.secondary)
             } else {
                 Button("New…") { adding = true }.tint(.purple).font(.headline)
+            }
             }
         }.padding(12).sdrPanel()
     }
@@ -819,7 +843,7 @@ struct BoardView: View {
                 HStack(alignment: .center, spacing: 14) {
                     Button { engine.focusStatusOpen.toggle() } label: {
                         HStack(spacing: 8) {
-                            Text(open ? "Status" : "Home health").font(.title.bold())
+                            Text(open ? "Status" : "Overseer").font(.title.bold())
                             Text(open ? "Hide" : "Show").font(.title2).foregroundStyle(.secondary)
                         }
                     }
@@ -834,6 +858,7 @@ struct BoardView: View {
                     Spacer()
                     Button("Close") { Task { await dismissImmersiveSpace() } }.font(.title2.bold())
                 }
+                Text(HomeHealthSeat.framing).font(.title3).foregroundStyle(.secondary).lineLimit(1)
                 HStack(alignment: .top, spacing: 28) {
                     bigStat("Reviewed", reviewed)
                     bigStat("Alerts", "\(s.alertsFired)", hot: s.alertsFired > 0)

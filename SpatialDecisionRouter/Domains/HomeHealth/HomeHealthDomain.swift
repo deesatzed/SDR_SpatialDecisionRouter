@@ -128,11 +128,12 @@ import SwiftUI
 
     func downstreamPreview(item: DomainItem, link: LinkSpec, answer: String) -> String? {
         guard link.id == "route" else { return nil }
+        let who = HomeHealthSeat.recipient(route: answer, fields: item.fields)
         let meaning = [
-            "silent_log": "Silent log keeps a record and opens no human task",
-            "nurse_task": "Nurse queue: contact within about 24 h (same-shift hospice nurse when goals say so)",
-            "provider_task": "Provider queue: same-business-day review, not a page",
-            "urgent_page": "Urgent page: page someone now",
+            "silent_log": "Record a log only. No on-call person is tasked. The Overseer is not the recipient.",
+            "nurse_task": "Pass a nurse task to \(who ?? "Night nurse"). Not to the Overseer.",
+            "provider_task": "Pass a provider task to \(who ?? "On-call HH MD"). Not a page, and not to the Overseer.",
+            "urgent_page": "Pass an urgent page to \(who ?? "On-call HH MD"). The Overseer is not paged.",
         ]
         var text = meaning[answer] ?? answer
         let ticket = item.fields["ticket_type"] ?? "none"
@@ -273,6 +274,10 @@ import SwiftUI
             "decision_source": live == true ? "live" : "bundled",
             "engine_version": engineVersion,
             "params_version": paramsVersion,
+            "review_role": "overseer",
+            "recipient": HomeHealthSeat.recipient(route: route, fields: [
+                "goals": v.goals, "route": route,
+            ]) ?? "log only",
         ]
         let shown = route.isEmpty ? "no Layer 1 route" : route
         let ticketBit = ticket == "none" ? "no device ticket" : "ticket \(ticket)"
@@ -323,6 +328,48 @@ enum HomeHealthRoute {
         }
         if id == "silent_log", !ticket.isEmpty, ticket != "none" { return base + " File a device ticket." }
         return base
+    }
+}
+
+/// Display names for who receives a route. The Overseer is the physician reviewing it.
+/// These labels do not change Layer 1's route or where the engine flies a Pass.
+enum HomeHealthSeat {
+    static let framing = "Overseeing · routes to on-call"
+
+    static func recipient(route: String, fields: [String: String]) -> String? {
+        switch route {
+        case "nurse_task":
+            let goals = (fields["goals"] ?? "").lowercased()
+            if goals.contains("hospice") || goals.contains("comfort-focused") { return "On-call hospice nurse" }
+            return "Night nurse"
+        case "provider_task", "urgent_page":
+            return "On-call HH MD"
+        default:
+            return nil
+        }
+    }
+
+    static func recipientChip(route: String, fields: [String: String]) -> String {
+        recipient(route: route, fields: fields) ?? "Log only"
+    }
+
+    /// Button title. Names the other person so Pass does not read as sending the case to the Overseer.
+    static func passTitle(route: String, fields: [String: String]) -> String {
+        switch route {
+        case "urgent_page": return "Pass page to On-call MD"
+        case "provider_task": return "Pass to On-call MD"
+        case "nurse_task":
+            let goals = (fields["goals"] ?? "").lowercased()
+            if goals.contains("hospice") || goals.contains("comfort-focused") { return "Pass to hospice nurse" }
+            return "Pass to Night nurse"
+        default:
+            return "Record log"
+        }
+    }
+
+    /// Same split the engine already uses: urgent_page flies to the page node, other routes to the desk.
+    static func deskId(for route: String) -> String {
+        route == "urgent_page" ? "urgent" : "routes"
     }
 }
 
@@ -461,6 +508,12 @@ enum HomeHealthBrief {
             || (s.neuro && rule.localizedCaseInsensitiveContains("focal"))
             || (s.chest && (rule.localizedCaseInsensitiveContains("chest") || reason.localizedCaseInsensitiveContains("angina")))
         if !body.isEmpty { add(matched ? 100 : 78, "Rule on this case", body) }
+        let routeId = f["route"] ?? ""
+        if let who = HomeHealthSeat.recipient(route: routeId, fields: f) {
+            add(97, "Who receives it", "\(who). The Overseer reviews the route and does not receive it.")
+        } else {
+            add(97, "Who receives it", "Log only. No on-call person is tasked.")
+        }
         if s.homeGas, let q = quote(f, ["gold", "cannula", "commode", "litre", "liter"]) { add(96, "Oxygen setup", q) }
         if oxygenLead, let usual = usualOxygen(f) { add(92, "Their usual oxygen", usual) }
         let ticket = f["ticket_type"] ?? ""
@@ -644,6 +697,18 @@ struct HomeHealthNowFace: View {
         let shown = engine.homeShownLevel
         let pinned = engine.homePinnedLevel
         VStack(alignment: .leading, spacing: 16) {
+            HStack(alignment: .center, spacing: 10) {
+                Text(HomeHealthSeat.framing).font(.title3.bold()).lineLimit(1)
+                Spacer(minLength: 8)
+                Text("Physician").font(.headline.bold()).foregroundStyle(.black)
+                    .padding(.horizontal, 10).padding(.vertical, 4)
+                    .background(.white.opacity(0.85), in: Capsule())
+            }
+            HStack(spacing: 8) {
+                roleSlot("Overseer", selected: true, later: false)
+                roleSlot("Bedside", selected: false, later: true)
+                roleSlot("Nurse HITM", selected: false, later: true)
+            }
             HStack(alignment: .center, spacing: 12) {
                 Text("NOW").font(.title3.bold()).padding(.horizontal, 12).padding(.vertical, 5)
                     .background(.blue, in: Capsule())
@@ -658,16 +723,22 @@ struct HomeHealthNowFace: View {
                         .gloss(NowCard.badgeKey(badge))
                 }
             }
+            Text(HomeHealthSeat.recipientChip(route: route, fields: item.fields))
+                .font(.title2.bold()).lineLimit(1)
+                .foregroundStyle(.black)
+                .padding(.horizontal, 14).padding(.vertical, 6)
+                .background(route == "silent_log" ? Color.gray.opacity(0.55) : Color.white.opacity(0.9), in: Capsule())
+                .gloss("recipient")
             Text(hook).font(.title).lineLimit(3)
             if !ticket.isEmpty, ticket != "none" {
                 Text("Device ticket").font(.title3.bold()).foregroundStyle(.black)
                     .padding(.horizontal, 12).padding(.vertical, 5)
                     .background(.orange, in: Capsule()).gloss("device ticket")
             }
-            ActionRow {
-                Button(handoff.trigger != nil ? "Acknowledge ✓" : (handoff.link.id == engine.config.review.escalationLink ? "Sign off ✓" : "Pass ✓")) { engine.pass(handoff.id) }.tint(.green)
+            FlowRow(spacing: 12) {
+                Button(handoff.trigger != nil ? "Acknowledge ✓" : (handoff.link.id == engine.config.review.escalationLink ? "Sign off ✓" : HomeHealthSeat.passTitle(route: route, fields: item.fields))) { engine.pass(handoff.id) }.tint(.green)
                 if handoff.link.answerType == .binary { Button("Flip") { engine.flip(handoff.id) }.tint(.orange) }
-                else if handoff.trigger == nil { Button("Modify…") { engine.openRing(handoff.id) }.tint(.blue) }
+                else if handoff.trigger == nil { Button("Change route…") { engine.openRing(handoff.id) }.tint(.blue) }
                 if handoff.trigger == nil, handoff.link.id == engine.config.review.escalationLink {
                     Button("Escalate") { engine.escalate(handoff.id) }.tint(.red)
                 }
@@ -680,7 +751,7 @@ struct HomeHealthNowFace: View {
                 }
                 if shown > 0 { Button("Collapse") { engine.homeCollapse() }.tint(.gray) }
             }
-            .font(.title.bold())
+            .font(.title2.bold())
             HStack(spacing: 8) {
                 ForEach(0..<levels.count, id: \.self) { i in
                     Button { engine.homeJump(i) } label: {
@@ -693,7 +764,7 @@ struct HomeHealthNowFace: View {
                     .accessibilityLabel(i < shown ? "Collapse to \(levels[i])" : (i == shown ? levels[i] : "Cascade to \(levels[i])"))
                 }
             }
-            Text(shown == 0 ? "Look to cascade. Expand pins the next layer." : "Collapse peels one layer. Awareness keeps Pass and Modify.")
+            Text(shown == 0 ? "Look to cascade. Expand pins the next layer. Logged for later training." : "Collapse peels one layer. The route controls stay here. You are not the recipient.")
                 .font(.title3).foregroundStyle(.secondary).lineLimit(2)
         }
         .sdrWidth(860).padding(28).sdrPanel()
@@ -711,6 +782,19 @@ struct HomeHealthNowFace: View {
             if inside { engine.homeHoverBegan() } else { engine.homeHoverEnded() }
         }
         #endif
+    }
+    private func roleSlot(_ title: String, selected: Bool, later: Bool) -> some View {
+        Button {} label: {
+            Text(later ? "\(title) · Later" : title)
+                .font(.headline.bold())
+                .padding(.horizontal, 12).padding(.vertical, 6)
+                .foregroundStyle(selected ? Color.black : Color.secondary)
+                .background(selected ? Color.white.opacity(0.9) : Color.white.opacity(0.08), in: Capsule())
+                .overlay(Capsule().stroke(Color.white.opacity(selected ? 0 : 0.25), lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+        .disabled(later)
+        .accessibilityLabel(later ? "\(title), later" : title)
     }
     private func shortBadge(_ b: String) -> String {
         if b.hasPrefix("L1 live") { return "L1 live" }
