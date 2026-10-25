@@ -148,7 +148,8 @@ struct CrossroadsView: View {
         let h = engine.nowHandoff
         let dest = h.map { engine.highlightedDest($0) } ?? ""
         let moving = engine.handoffs.map { engine.phase[$0.id] == .outgoing ? "1" : "0" }.joined()
-        return "\(engine.config.id)|\(engine.focusStatusOpen)|\(engine.focusQueueOpen)|\(engine.detailOpen)|\(engine.homeShownLevel)|\(h?.id ?? "")|\(h?.proposal ?? "")|\(dest)|\(engine.stats.alertsFired)|\(engine.stats.corrections)|\(engine.packVersion)|\(moving)"
+        let load = engine.config.agents.map { "\($0.id):\(engine.queueCount($0.id)):\(engine.inbox[$0.id] ?? 0)" }.joined(separator: ",")
+        return "\(engine.config.id)|\(engine.focusStatusOpen)|\(engine.focusQueueOpen)|\(engine.detailOpen)|\(engine.homeShownLevel)|\(h?.id ?? "")|\(h?.proposal ?? "")|\(dest)|\(engine.stats.alertsFired)|\(engine.stats.corrections)|\(engine.packVersion)|\(moving)|\(load)|\(engine.homeSphereOpen ?? "")"
     }
 
     private func highlightedDests() -> Set<String> {
@@ -162,8 +163,24 @@ struct CrossroadsView: View {
 
     private func nodeRestScale(_ id: String) -> Float {
         guard engine.config.id == "home_health", let a = engine.agent(id) else { return 1 }
-        if a.tier == 0 { return 1.55 }
-        return highlightedDests().contains(id) ? 1.45 : 0.58
+        if a.tier == 0 {
+            let n = Float(max(engine.queueCount(id), 1))
+            return min(1.85, 1.2 + 0.08 * (n - 1))
+        }
+        let received = Float(engine.inbox[id] ?? 0)
+        if highlightedDests().contains(id) {
+            let route = engine.nowHandoff?.proposal ?? ""
+            let base: Float
+            switch route {
+            case "urgent_page": base = 1.75
+            case "provider_task": base = 1.42
+            case "nurse_task": base = 1.28
+            case "silent_log": base = 1.05
+            default: base = 1.25
+            }
+            return min(2.0, base + 0.04 * received)
+        }
+        return min(0.85, 0.48 + 0.05 * received)
     }
 
     private func moveAtt(_ e: Entity, _ p: SIMD3<Float>, _ sc: Float) {
@@ -254,37 +271,76 @@ struct AgentCard: View {
         #endif
     }
     #if os(visionOS)
+    @State private var looking = false
     private var lit: Bool {
         guard agent.tier != 0 else { return false }
         if let h = engine.nowHandoff, engine.highlightedDest(h) == agent.id { return true }
         return engine.handoffs.contains { engine.phase[$0.id] == .outgoing && (engine.destFor[$0.id] ?? $0.link.dest) == agent.id }
     }
-    /// Far layer. Input (tier 0) carries the current why. Outputs stay quiet until Pass would send the case there.
+    /// Work object. Size is set on the sphere. The label names the queue or the on-call person, plus who is waiting.
     private var homeNode: some View {
-        let why = engine.nowHandoff.map { HomeHealthBrief.hook(engine.items[$0.itemId]?.fields ?? [:]) } ?? ""
+        let open = looking || engine.homeSphereOpen == agent.id
+        let sent = engine.inbox[agent.id] ?? 0
+        let nowFields = engine.nowHandoff.flatMap { engine.items[$0.itemId]?.fields } ?? [:]
+        let nowRoute = engine.nowHandoff?.proposal ?? ""
+        let title: String = {
+            if agent.tier == 0 { return "Overseer queue" }
+            if lit { return HomeHealthSeat.recipientChip(route: nowRoute, fields: nowFields) }
+            return agent.name
+        }()
+        let lines = waitLines
         return VStack(alignment: .leading, spacing: 6) {
-            Text(agent.name).font(.title.bold()).lineLimit(1)
+            Text(title).font(.title.bold()).lineLimit(2).frame(maxWidth: 340, alignment: .leading)
             if agent.tier == 0 {
-                if !why.isEmpty {
-                    Text(why).font(.title3).lineLimit(2).frame(maxWidth: 320, alignment: .leading)
-                } else if let role = agent.role {
-                    Text(role).font(.title3).foregroundStyle(.secondary).lineLimit(2).frame(maxWidth: 280, alignment: .leading)
-                }
-                if queued > 0 {
-                    Text("\(queued) waiting").font(.title2.bold().monospacedDigit())
+                Text("\(queued) waiting").font(.title2.bold().monospacedDigit())
+                if let h = engine.nowHandoff {
+                    let why = HomeHealthBrief.hook(engine.items[h.itemId]?.fields ?? [:])
+                    if !why.isEmpty { Text(why).font(.title3).lineLimit(2).frame(maxWidth: 340, alignment: .leading) }
                 }
             } else {
-                Text(lit ? "Pass sends here" : (agent.role ?? "output"))
+                Text(lit ? "Pass sends here · not to you" : (sent == 0 ? "none sent yet" : "\(sent) sent"))
                     .font(.title3)
                     .foregroundStyle(lit ? Color.primary : Color.secondary)
                     .lineLimit(2)
-                    .frame(maxWidth: 260, alignment: .leading)
+                    .frame(maxWidth: 300, alignment: .leading)
+            }
+            if let first = lines.first {
+                Text(first).font(.title3).lineLimit(2).frame(maxWidth: 340, alignment: .leading)
+            }
+            if open {
+                ForEach(Array(lines.dropFirst().enumerated()), id: \.offset) { _, line in
+                    Text(line).font(.title3).foregroundStyle(.secondary).lineLimit(2).frame(maxWidth: 340, alignment: .leading)
+                }
+            }
+            if lines.count > 1 {
+                Button(open ? "Hide list" : "Show list") { engine.homeSphereToggle(agent.id) }
+                    .font(.title3.bold())
+                    .tint(.teal)
             }
         }
         .padding(16)
         .sdrPanel()
         .overlay(RoundedRectangle(cornerRadius: 18).stroke(lit ? Color.white.opacity(0.9) : Color.clear, lineWidth: 3))
-        .opacity(agent.tier == 0 || lit ? 1 : 0.82)
+        .opacity(agent.tier == 0 || lit ? 1 : 0.9)
+        .onContinuousHover { phase in
+            switch phase {
+            case .ended: looking = false
+            default: looking = true
+            }
+        }
+    }
+    private var waitLines: [String] {
+        if agent.tier == 0 {
+            return engine.waiting.prefix(4).map { h in
+                let fields = engine.items[h.itemId]?.fields ?? [:]
+                return "\(h.itemId) · \(HomeHealthRoute.title(h.proposal)) · \(HomeHealthSeat.recipientChip(route: h.proposal, fields: fields))"
+            }
+        }
+        return engine.decisions
+            .filter { $0.domain == "home_health" && HomeHealthSeat.deskId(for: $0.effectiveAnswer) == agent.id }
+            .suffix(4)
+            .reversed()
+            .map { d in "\(d.itemId) · \(HomeHealthSeat.recipientChip(route: d.effectiveAnswer, fields: d.context))" }
     }
     #endif
     private var classic: some View {
@@ -640,21 +696,36 @@ struct UpNextStrip: View {
 struct SidePanel: View {
     @Environment(RouterEngine.self) private var engine
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 1)) { _ in
-            ScrollView(.vertical) { Group {
-                if engine.config.id == "home_health", engine.homeShownLevel > 0, let h = engine.nowHandoff, let item = engine.items[h.itemId] {
-                    HomeHealthDossier(item: item, level: engine.homeShownLevel)
-                } else if engine.spotCheckOpen { spot }
-                else if let h = engine.nowHandoff {
-                    if engine.sideTab == "reliability" && !engine.reliability(h).isEmpty { ReliabilityPanel(h: h) }
-                    else if engine.sideTab == "ask" && !engine.reliability(h).isEmpty { AskNextPanel(h: h) }
-                    else { detail(h) }
-                } else { Text("—") }
-            }.frame(maxWidth: .infinity, alignment: .leading) }
-            .sdrWidth(engine.config.id == "home_health" ? 720 : 560)
-            .sdrMaxHeight(engine.config.id == "home_health" ? 760 : 640)
-            .padding(16).sdrPanel()
+        if engine.config.id == "home_health", engine.homeShownLevel > 0, let h = engine.nowHandoff, let item = engine.items[h.itemId] {
+            homeCascade(item)
+        } else {
+            TimelineView(.periodic(from: .now, by: 1)) { _ in
+                ScrollView(.vertical) { Group {
+                    if engine.spotCheckOpen { spot }
+                    else if let h = engine.nowHandoff {
+                        if engine.sideTab == "reliability" && !engine.reliability(h).isEmpty { ReliabilityPanel(h: h) }
+                        else if engine.sideTab == "ask" && !engine.reliability(h).isEmpty { AskNextPanel(h: h) }
+                        else { detail(h) }
+                    } else { Text("—") }
+                }.frame(maxWidth: .infinity, alignment: .leading) }
+                .sdrWidth(560)
+                .sdrMaxHeight(640)
+                .padding(16).sdrPanel()
+            }
         }
+    }
+    /// Bounded viewport. The old max-height plus fixedSize let the panel grow with the chart, so there was nothing to scroll.
+    @ViewBuilder func homeCascade(_ item: DomainItem) -> some View {
+        let dossier = HomeHealthDossier(item: item, level: engine.homeShownLevel)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        #if os(visionOS)
+        ScrollView(.vertical) { dossier }
+            .frame(width: 720, height: 680)
+            .padding(16)
+            .sdrPanel()
+        #else
+        dossier.padding(16).sdrPanel()
+        #endif
     }
     func detail(_ h: Handoff) -> some View {
         VStack(alignment: .leading, spacing: 6) {

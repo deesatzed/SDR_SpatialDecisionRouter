@@ -22,9 +22,9 @@
     "trim": [0.42, 0.76, 0.60]
   },
   "agents": [
-    {"id": "layer1", "name": "Layer 1", "role": "smart-trigger route", "tier": 0},
-    {"id": "routes", "name": "Route desk", "role": "silent, nurse, or provider", "tier": 1},
-    {"id": "urgent", "name": "Urgent page", "role": "page now", "tier": 1}
+    {"id": "layer1", "name": "Overseer queue", "role": "cases waiting on the physician", "tier": 0},
+    {"id": "routes", "name": "On-call desk", "role": "nurse, provider, or log", "tier": 1},
+    {"id": "urgent", "name": "On-call HH MD", "role": "page destination, not you", "tier": 1}
   ],
   "links": [
     {

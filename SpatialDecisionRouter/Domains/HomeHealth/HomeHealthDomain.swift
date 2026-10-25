@@ -681,6 +681,117 @@ enum HomeHealthBrief {
         }
         return nil
     }
+
+    /// Compressed identity for the awareness face. Facts already on the vignette.
+    static func patientChip(_ f: [String: String]) -> String {
+        var parts: [String] = []
+        let age = [f["age_band"] ?? "", f["sex"] ?? ""].filter { !$0.isEmpty }.joined(separator: " ")
+        if !age.isEmpty { parts.append(age) }
+        let problems = problemItems(f["pmh"] ?? "")
+        if !problems.isEmpty { parts.append(problems.prefix(2).joined(separator: ", ")) }
+        let meds = keyMedNames(f)
+        if !meds.isEmpty { parts.append(meds.prefix(2).joined(separator: ", ")) }
+        var tail = livingShort(f)
+        if let o2 = oxygenShort(f) { tail = tail.isEmpty ? o2 : "\(tail), \(o2)" }
+        if !tail.isEmpty { parts.append(tail) }
+        return parts.joined(separator: " · ")
+    }
+
+    struct ChartBlock: Identifiable {
+        let id: String
+        let title: String
+        let summary: String
+        let body: String
+        let score: Int
+    }
+
+    /// Chart sections, highest score first for this situation. Summaries stay visible; one section opens at a time.
+    static func chart(_ f: [String: String]) -> [ChartBlock] {
+        let s = signals(f)
+        let oxygenLead = s.oxygen && !s.fall && !s.neuro && !s.chest
+        var blocks: [ChartBlock] = []
+        let problems = problemItems(f["pmh"] ?? "")
+        let pmh = tidy(f["pmh"] ?? "")
+        if !pmh.isEmpty && pmh != "not recorded" {
+            let summary = problems.prefix(2).joined(separator: ", ")
+            blocks.append(ChartBlock(id: "pmh", title: "PMH", summary: summary.isEmpty ? pmh : summary, body: pmh, score: (s.bleed || s.neuro || s.chest) ? 70 : 44))
+        }
+        let meds = tidy(f["meds"] ?? "")
+        if !meds.isEmpty && meds != "none" {
+            let names = keyMedNames(f)
+            let summary = names.isEmpty ? meds : names.joined(separator: ", ")
+            let body = meds.replacingOccurrences(of: "; ", with: "\n")
+            blocks.append(ChartBlock(id: "meds", title: "Meds", summary: summary, body: body, score: (s.bleed || s.chest) ? 86 : 48))
+        }
+        let active = activeProblems(f, s, oxygenLead: oxygenLead)
+        if active.isEmpty {
+            blocks.append(ChartBlock(id: "active", title: "Active problems", summary: "None tied to this situation", body: problems.isEmpty ? "No problem list on this case." : "Nothing in the problem list is the reason for this route. The list is under PMH.", score: 24))
+        } else {
+            blocks.append(ChartBlock(id: "active", title: "Active problems", summary: active.joined(separator: ", "), body: active.joined(separator: "\n"), score: 94))
+        }
+        let discharge = tidy(f["discharge"] ?? "")
+        if discharge.isEmpty || discharge == "none" || discharge == "not recorded" {
+            blocks.append(ChartBlock(id: "hosp", title: "Recent hospitalizations", summary: "None recorded", body: "The library discharge field is none.", score: 18))
+        } else {
+            blocks.append(ChartBlock(id: "hosp", title: "Recent hospitalizations", summary: discharge, body: discharge, score: 72))
+        }
+        let base = tidy(f["baseline"] ?? "")
+        let status = tidy(f["baseline_status"] ?? "")
+        if !base.isEmpty && base != "not recorded" {
+            var summary = oxygenShort(f) ?? String(base.prefix(72))
+            if !status.isEmpty && status != "not recorded" && status != "none" { summary += " · \(status)" }
+            var body = base
+            if !status.isEmpty && status != "not recorded" && status != "none" { body += "\n\(status)" }
+            blocks.append(ChartBlock(id: "baseline", title: "Baselines / bands", summary: summary, body: body, score: oxygenLead ? 90 : (s.oxygen ? 55 : 36)))
+        }
+        let goals = tidy(f["goals"] ?? "")
+        if !goals.isEmpty && goals != "not recorded" {
+            let summary = goals.count > 90 ? String(goals.prefix(87)) + "…" : goals
+            blocks.append(ChartBlock(id: "goals", title: "Goals of care", summary: summary, body: goals, score: s.goalsHold ? 88 : 32))
+        }
+        return blocks.sorted { $0.score == $1.score ? $0.title < $1.title : $0.score > $1.score }
+    }
+
+    private static func problemItems(_ pmh: String) -> [String] {
+        pmh.split(separator: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty && $0 != "not recorded" }
+    }
+    private static func medName(_ line: String) -> String {
+        var name: [String] = []
+        for part in line.split(separator: " ") {
+            if part.first?.isNumber == true { break }
+            name.append(String(part))
+        }
+        return name.joined(separator: " ")
+    }
+    private static func keyMedNames(_ f: [String: String]) -> [String] {
+        let s = signals(f)
+        if !s.anticoag.isEmpty { return s.anticoag.map(medName) }
+        if !s.directedMeds.isEmpty { return s.directedMeds.map(medName) }
+        return medLines(f["meds"] ?? "").prefix(2).map(medName)
+    }
+    private static func livingShort(_ f: [String: String]) -> String {
+        let living = (f["living"] ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        if living.isEmpty || living == "not recorded" { return "" }
+        if living == "alone" { return "lives alone" }
+        return living
+    }
+    private static func oxygenShort(_ f: [String: String]) -> String? {
+        let base = f["baseline"] ?? ""
+        guard let r = base.range(of: "spo2_night_min ") else { return nil }
+        let num = base[r.upperBound...].prefix { $0.isNumber || $0 == "." }
+        guard !num.isEmpty else { return nil }
+        return "night SpO₂ \(num)"
+    }
+    private static func activeProblems(_ f: [String: String], _ s: Signals, oxygenLead: Bool) -> [String] {
+        problemItems(f["pmh"] ?? "").filter { item in
+            let l = item.lowercased()
+            if (s.fall || s.bleed) && (l.contains("afib") || l.contains("fibril")) { return true }
+            if s.neuro && (l.contains("stroke") || l.contains("tia")) { return true }
+            if s.chest && (l.contains("angina") || l.contains("cad") || l.contains("stent") || l.contains("coronary")) { return true }
+            if oxygenLead && (l.contains("copd") || l.contains("gold") || l.contains("emphysema")) { return true }
+            return false
+        }
+    }
 }
 
 /// L0 awareness. Pass and Modify stay here while story, rules, and the chart cascade beside the card.
@@ -729,6 +840,10 @@ struct HomeHealthNowFace: View {
                 .padding(.horizontal, 14).padding(.vertical, 6)
                 .background(route == "silent_log" ? Color.gray.opacity(0.55) : Color.white.opacity(0.9), in: Capsule())
                 .gloss("recipient")
+            let chip = HomeHealthBrief.patientChip(item.fields)
+            if !chip.isEmpty {
+                Text(chip).font(.title3).foregroundStyle(.secondary).lineLimit(2).fixedSize(horizontal: false, vertical: true)
+            }
             Text(hook).font(.title).lineLimit(3)
             if !ticket.isEmpty, ticket != "none" {
                 Text("Device ticket").font(.title3.bold()).foregroundStyle(.black)
@@ -835,9 +950,15 @@ struct HomeHealthDossier: View {
                         Button("More for this case") { engine.homeMore() }.font(.title2.bold()).tint(.teal)
                     }
                 }
+                if level >= 1 {
+                    Divider()
+                    HomeHealthChart(item: item)
+                }
                 if level >= 3 {
                     Divider()
-                    ForEach(Array(HomeHealthBrief.deep(item.fields).enumerated()), id: \.offset) { _, row in
+                    let covered: Set<String> = ["Medicines", "Problems", "Goals", "Baseline", "Who"]
+                    let extra = HomeHealthBrief.deep(item.fields).filter { !covered.contains($0.0) }
+                    ForEach(Array(extra.enumerated()), id: \.offset) { _, row in
                         VStack(alignment: .leading, spacing: 4) {
                             Text(row.0).font(.title3.bold()).foregroundStyle(.secondary)
                             Text(row.1).font(.title3).fixedSize(horizontal: false, vertical: true)
@@ -846,5 +967,37 @@ struct HomeHealthDossier: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+/// Summary-first chart. One section open at a time, ordered for this situation.
+struct HomeHealthChart: View {
+    @Environment(RouterEngine.self) private var engine
+    let item: DomainItem
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Chart").font(.title2.bold())
+            ForEach(HomeHealthBrief.chart(item.fields)) { section in
+                let open = engine.homeChartOpen == section.id
+                Button { engine.homeChartToggle(section.id) } label: {
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack {
+                            Text(section.title).font(.title3.bold())
+                            Spacer()
+                            Text(open ? "Hide" : "Show").font(.title3).foregroundStyle(.secondary)
+                        }
+                        Text(section.summary).font(.title3).foregroundStyle(.secondary).lineLimit(open ? 4 : 2)
+                        if open {
+                            Text(section.body).font(.title3).fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                    .padding(12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(open ? Color.white.opacity(0.08) : Color.clear, in: RoundedRectangle(cornerRadius: 12))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(open ? "Collapse \(section.title)" : "Expand \(section.title)")
+            }
+        }
     }
 }

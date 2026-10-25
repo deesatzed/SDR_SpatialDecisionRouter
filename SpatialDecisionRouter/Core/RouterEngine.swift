@@ -243,6 +243,8 @@ struct Handoff: Identifiable, Hashable {
         lastDelivered = [:]; ringFor = nil; spawnTimer = 99; sessionStart = Date(); packVersion += 1
         focusStatusOpen = false; focusQueueOpen = false
         homePinnedLevel = 0; homeHoverLevel = 0; homeHoverStarted = nil; homeHoverSuppress = false
+        homeChartOpen = nil
+        homeSphereOpen = nil
     }
     func nextDomain() {
         let all = DomainCatalog.all
@@ -392,6 +394,7 @@ struct Handoff: Identifiable, Hashable {
         sectionAcc = [:]; sectionsSeen = []; detailAcc = 0; detailUsed = detailOpen
         openSections = [:]; detailOpenedAt = detailOpen ? Date() : nil
         homePinnedLevel = 0; homeHoverLevel = 0; homeHoverStarted = nil; homeHoverSuppress = false
+        homeChartOpen = nil
     }
     func detailSections(_ h: Handoff) -> [DetailSection] {
         guard let item = items[h.itemId] else { return [] }
@@ -695,6 +698,21 @@ struct Handoff: Identifiable, Hashable {
     var homeHoverStarted: Date?
     var homeHoverSuppress = false
     var homeShownLevel: Int { homeHoverSuppress ? homePinnedLevel : max(homePinnedLevel, homeHoverLevel) }
+    /// Which sphere's waiting or sent list is pinned open.
+    var homeSphereOpen: String?
+    func homeSphereToggle(_ id: String) { homeSphereOpen = homeSphereOpen == id ? nil : id }
+    /// Chart section open in the cascade. One at a time. Nil keeps every section on its summary.
+    var homeChartOpen: String?
+    func homeChartToggle(_ name: String) {
+        if homeChartOpen == name {
+            if openSections[name] != nil { toggleSection(name) }
+            homeChartOpen = nil
+            return
+        }
+        if let prev = homeChartOpen, openSections[prev] != nil { toggleSection(prev) }
+        homeChartOpen = name
+        if openSections[name] == nil { toggleSection(name) }
+    }
     func homeHoverBegan() {
         if homeHoverStarted == nil { homeHoverStarted = Date() }
     }
