@@ -245,6 +245,9 @@ struct Handoff: Identifiable, Hashable {
         homePinnedLevel = 0; homeHoverLevel = 0; homeHoverStarted = nil; homeHoverSuppress = false
         homeChartOpen = nil
         homeSphereOpen = nil
+        homeReviewRole = HomeHealthRole.overseer.rawValue
+        (domain as? HomeHealthDomain)?.reviewRole = .overseer
+        (domain as? HomeHealthDomain)?.pendingReviewAction = nil
     }
     func nextDomain() {
         let all = DomainCatalog.all
@@ -537,7 +540,7 @@ struct Handoff: Identifiable, Hashable {
         let d = RoutingDecision(
             domain: config.id, siteId: siteId, registryVersion: registry.version, itemId: item.id, linkId: h.link.id,
             sourceAgent: h.link.source, destAgent: h.link.dest, question: h.link.question,
-            displayLine: item.displayLine, context: item.fields, history: item.historyLine, capacity: h.capacity,
+            displayLine: item.displayLine, context: domain.ledgerFields(item: item), history: item.historyLine, capacity: h.capacity,
             upstream: h.upstream, proposedAnswer: h.proposal, proposedConfidence: h.confidence,
             answerType: h.link.answerType, options: registry.mainOptions(h.link), trialOptions: registry.trialOptions(h.link),
             routedAnswer: ans, effectiveAnswer: eff, routedIsTrial: trial, newCategoryCreated: isNew,
@@ -698,6 +701,18 @@ struct Handoff: Identifiable, Hashable {
     var homeHoverStarted: Date?
     var homeHoverSuppress = false
     var homeShownLevel: Int { homeHoverSuppress ? homePinnedLevel : max(homePinnedLevel, homeHoverLevel) }
+    /// Home-health review seat. One of overseer, bedside, nurse. Overseer is the default.
+    var homeReviewRole = HomeHealthRole.overseer.rawValue
+    var homeRole: HomeHealthRole { HomeHealthRole(rawValue: homeReviewRole) ?? .overseer }
+    /// Switch the seat. One role at a time. Does not change Layer 1's proposal.
+    func homeSetRole(_ raw: String) {
+        guard let role = HomeHealthRole(rawValue: raw) else { return }
+        homeReviewRole = role.rawValue
+        if role != .overseer { ringFor = nil }
+        guard let seat = domain as? HomeHealthDomain else { return }
+        seat.reviewRole = role
+        seat.pendingReviewAction = nil
+    }
     /// Which sphere's waiting or sent list is pinned open.
     var homeSphereOpen: String?
     func homeSphereToggle(_ id: String) { homeSphereOpen = homeSphereOpen == id ? nil : id }

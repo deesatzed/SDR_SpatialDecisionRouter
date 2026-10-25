@@ -145,9 +145,15 @@ Current areas: **personal finance** and **ED triage** (a few synthetic cards eac
 
 ![Symbiosis card](img/manual/sym_01_card_ai_collapsed.jpg)
 
-### 4.5 Home health (Overseer)
+### 4.5 Home health (Overseer, Bedside, Nurse HITM)
 
-**Home health** on the start screen is the **Overseer** role. The Overseer is a physician. You review synthetic home-monitoring cases. You do not receive the nurse task, the provider task, or the page. **Bedside** and **Nurse HITM** are on the card marked **Later**. They are not modes yet. One role is active at a time.
+**Home health** opens on the **Overseer** role. Three chips sit on the card: **Overseer**, **Bedside**, and **Nurse HITM**. One is active at a time. Tap a chip to switch. The case stays. The route chip from Layer 1 stays. Opening Home health again starts you on Overseer.
+
+Every case is synthetic. The people named on the card are role labels, not staff at a named health system.
+
+#### Overseer
+
+The Overseer is a physician and the regional router. The headline reads **Overseeing · routes to on-call**. You review the case. You do not receive the nurse task, the provider task, or the page.
 
 Layer 1 proposes one route. The card names the synthetic person who would receive it:
 
@@ -158,7 +164,37 @@ Layer 1 proposes one route. The card names the synthetic person who would receiv
 | **provider_task** | On-call HH MD | Passes a same-day review to that physician. Not a page. |
 | **urgent_page** | On-call HH MD | Passes a page to that physician. You are not paged. |
 
-The button reads **Log only** or **Pass to …**. **Log only** means no page and no handoff: the decision is acknowledged and logged, and nobody is tasked. **Pass to …** names the on-call person. **Change route…** lists the same recipients. The decision is stored for later training. This build does not train anything from it.
+The button reads **Log only** or **Pass to …**. **Log only** means no page and no handoff: the decision is acknowledged and logged, and nobody is tasked. **Pass to …** names the on-call person. **Change route…** lists the same recipients. Pass never pages you. The decision is stored for later training, with `review_role` set to `overseer`. This build does not train anything from it.
+
+#### Bedside
+
+**Bedside** is the covering clinician for this patient, not the regional router. The headline reads **Bedside · covering clinician**. You do not get **Pass to on-call HH MD**.
+
+| Button | What it does |
+|---|---|
+| **Acknowledge & continue** | You keep caring for this patient. No page and no handoff. |
+| **Request nurse visit** | Asks the Night nurse for a visit or a check. Hospice or comfort-focused goals ask the On-call hospice nurse. |
+| **Document plan** | The plan stays with you. It is not a pass to the On-call HH MD. |
+| **Page on-call** | Pages the On-call HH MD. You are not paged. |
+
+The green button is the one that fits the route on the card. The decision is stored with `review_role` `bedside`.
+
+#### Nurse HITM
+
+**Nurse HITM** uses nursing verbs. The headline reads **Nurse HITM**.
+
+| Button | What it does |
+|---|---|
+| **Schedule visit** | You schedule or confirm your own visit. |
+| **Call patient** | You call the patient or caregiver. That label is a role, not a name or a number. |
+| **Device check** | You check the device or a resting oximetry reading. No page. |
+| **Escalate to on-call MD** | Escalates to the On-call HH MD. You are not that physician. |
+| **Escalate to on-call nurse** | Escalates to the Night nurse, or the On-call hospice nurse when goals say hospice. This is not your own visit. |
+| **Log only** | No visit, no call, and no page. |
+
+The green button is the one that fits the route. A silent log with a device ticket suggests **Device check**. A silent log without one suggests **Log only**. The decision is stored with `review_role` `nurse`.
+
+The rest of this section is what you see on every role. **Patient details**, **Why now**, and **Trends** keep the same words.
 
 Some cases also show a **device ticket** (`device_maintenance`) when Layer 1 files one. A clinical route does not keep a ticket.
 
@@ -168,7 +204,7 @@ The card opens on **awareness**: who you are, who receives the route, a short pa
 
 The first card, **PX-COPD-01**, is a synthetic pattern example (not a library case). **Why now** names today’s dips: SpO2 84% sitting up and 85% at the commode, then back in band. The night SpO₂ on the patient chip is his baseline, not that alert. **This week** is the repeating pattern. Open **Patient details** and **Show** on **Trends** for the recent alerts, the SpO2 and heart-rate bars (orange means outside this patient’s band), and a note that this positional pattern is logged rather than paged. A longer line compares today with a rise in alerts about three months ago, before a pneumonia admission.
 
-The far spheres are the queues, drawn as solid objects. **Overseer queue · N waiting** grows as the queue grows and glows while cases are waiting. **On-call desk · N sent** and **On-call HH MD · N sent** are where a Pass goes. The one that would receive this case grows, a page largest, glows, and adds a line **This pass ·** the synthetic recipient. **Show list**, or a look, shows who is waiting or who was already sent. Pass still flies to that sphere. You are not the recipient.
+Three small beacons mark the queue and the two places a Pass can go. The words sit on the line between the card and each beacon, not on the beacon itself. The queue line names the next waiting case and one line of why it is waiting. A destination line says **This pass ·** who would receive it when that beacon is lit, and otherwise the last case sent there. A red, orange, or teal pip marks the lit target. Pass still flies to that beacon. You are not the recipient. Bedside titles on those lines are **Covering list**, **Care tasks**, and **On-call MD**. Nurse HITM titles are **Nurse list**, **Visits and calls**, and **On-call MD**. Switching back to Overseer restores **Overseer queue**, **On-call desk**, and **On-call HH MD**. The patient chip, Trends, and Rules stay on the card when you expand it.
 
 In the expanded dossier, orange is why-now, an alert, or a vital outside this patient’s band. Cyan is baseline or the band. Sage is an action already taken or a log-only note. Other chart text stays white.
 

@@ -44,6 +44,7 @@ extension DomainModule {
     func reasons(item: DomainItem, link: LinkSpec, proposal: String, upstream: [String: String]) -> [ReasonChip] { [] }
     func urgency(item: DomainItem, link: LinkSpec, proposal: String) -> Double { 0 }
     func downstreamPreview(item: DomainItem, link: LinkSpec, answer: String) -> String? { nil }
+    func ledgerFields(item: DomainItem) -> [String: String] { item.fields }
     func detail(item: DomainItem, section: String) -> [(String, String)]? { nil }
 }
 

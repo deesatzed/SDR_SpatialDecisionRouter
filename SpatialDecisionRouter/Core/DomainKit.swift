@@ -124,6 +124,8 @@ struct EngineStats {
     func reasons(item: DomainItem, link: LinkSpec, proposal: String, upstream: [String: String]) -> [ReasonChip]
     func urgency(item: DomainItem, link: LinkSpec, proposal: String) -> Double
     func downstreamPreview(item: DomainItem, link: LinkSpec, answer: String) -> String?
+    /// Context copied into the decision ledger. Default is the item snapshot.
+    func ledgerFields(item: DomainItem) -> [String: String]
     func detail(item: DomainItem, section: String) -> [(String, String)]?
     // reliability layer (defaults in ReliabilityKit.swift)
     /// hard escalation trigger: bypasses reliability analysis, fires escalation immediately
