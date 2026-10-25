@@ -1,0 +1,573 @@
+{
+ "synthetic": true,
+ "engine": "homehealth-layer1",
+ "engine_version": "v1.14.4",
+ "params_version": "0.14.4-placeholder",
+ "note": "SYNTHETIC review pack for the visionOS home-health domain. Narrative fields are copied from the case library. layer1 is the bundled snapshot from homehealth Layer 1 (v1.14.4, params 0.14.4-placeholder) with no cloud model. Regenerate with: python3 homehealth/sdr_bridge/export_vignettes.py",
+ "cases": [
+  {
+   "case_id": "ST1-002",
+   "source": "homehealth/library/library_v2_smart_accepted.json",
+   "library_label": "silent_log",
+   "age_band": "75-79",
+   "sex": "M",
+   "living": "with spouse",
+   "pmh": "HFrEF EF 35%, CKD 3a, hypertension",
+   "meds": "sacubitril-valsartan 97/103 mg BID; metoprolol succinate 50 mg daily; furosemide 40 mg daily; spironolactone 25 mg daily",
+   "devices": "watch, fingertip_oximeter, scale, bp_cuff",
+   "goals": "wants hospital care if needed, prefers to stay at home",
+   "function": "walks indoors with rollator, independent with bathing supervision",
+   "baseline": "rest_hr 66, hrv_ms 34, sleep_h 6.5, steps 3100, spo2_night_min 93, skin_temp_dev_c 0.0, weight_kg 84.0, sbp 118, dbp 72",
+   "baseline_status": "not recorded",
+   "discharge": "none",
+   "trend": "Day -6 to -1: wrist resting SpO2 93-95%, resting HR 64-68 bpm, steps 2800-3300 per day, sleep 6.2-6.8 h, watch worn 95-97% of hours. Day -1 scale weight 84.3 kg. Day 0 10:20 watch wrist SpO2 86% at rest with motion-during-sample flag, watch HR 82 bpm. Day 0 10:24 fingertip oximeter SpO2 95%, good waveform; 10:26 repeat 95%, good waveform. Day 0 10:30 cuff 124/76 mmHg.",
+   "note": "Spouse says he is sitting in the kitchen, breathing normally, no cough, no chest tightness.",
+   "artifact_flags": "motion during SpO2 sample Day 0 10:20",
+   "facts": {
+    "age_band": "75-79",
+    "sex": "M",
+    "living": "with spouse",
+    "pmh": [
+     "HFrEF EF 35%",
+     "CKD 3a",
+     "hypertension"
+    ],
+    "meds": [
+     {
+      "name": "sacubitril-valsartan",
+      "dose": "97/103 mg BID",
+      "started_day": -300
+     },
+     {
+      "name": "metoprolol succinate",
+      "dose": "50 mg daily",
+      "started_day": -300
+     },
+     {
+      "name": "furosemide",
+      "dose": "40 mg daily",
+      "started_day": -200
+     },
+     {
+      "name": "spironolactone",
+      "dose": "25 mg daily",
+      "started_day": -200
+     }
+    ],
+    "recent_med_changes": [],
+    "devices": [
+     "watch",
+     "fingertip_oximeter",
+     "scale",
+     "bp_cuff"
+    ],
+    "discharge": null,
+    "patient_goals": "wants hospital care if needed, prefers to stay at home",
+    "function_baseline": "walks indoors with rollator, independent with bathing supervision",
+    "baseline_30d": {
+     "rest_hr": 66,
+     "hrv_ms": 34,
+     "sleep_h": 6.5,
+     "steps": 3100,
+     "spo2_night_min": 93,
+     "skin_temp_dev_c": 0.0,
+     "weight_kg": 84.0,
+     "glucose_mean": null,
+     "sbp": 118,
+     "dbp": 72
+    },
+    "baseline_status": null,
+    "trend_last_7d": "Day -6 to -1: wrist resting SpO2 93-95%, resting HR 64-68 bpm, steps 2800-3300 per day, sleep 6.2-6.8 h, watch worn 95-97% of hours. Day -1 scale weight 84.3 kg. Day 0 10:20 watch wrist SpO2 86% at rest with motion-during-sample flag, watch HR 82 bpm. Day 0 10:24 fingertip oximeter SpO2 95%, good waveform; 10:26 repeat 95%, good waveform. Day 0 10:30 cuff 124/76 mmHg.",
+    "caregiver_or_nurse_note": "Spouse says he is sitting in the kitchen, breathing normally, no cough, no chest tightness.",
+    "data_quality": {
+     "wear_time_pct_7d": 96,
+     "artifact_flags": [
+      "motion during SpO2 sample Day 0 10:20"
+     ],
+     "missing_hours_last_48": 0,
+     "longest_gap_h": 1
+    },
+    "skin_tone_note": "Fitzpatrick V-VI",
+    "patient_bands": null
+   },
+   "layer1": {
+    "route": "silent_log",
+    "owner": "layer1_cleared",
+    "tier": "SUPPRESSED",
+    "rule": "HT_SPO2_LT88",
+    "reason": "cleared_by_repeat",
+    "plain_reason": "oxygen level below 88%",
+    "route_definition": "Log only; no human action needed",
+    "escalation_target": null,
+    "ticket": null,
+    "ticket_note": null
+   }
+  },
+  {
+   "case_id": "LX12-007",
+   "source": "homehealth/library_expansion_v2/library_expansion_v2_accepted.json",
+   "library_label": "silent_log",
+   "age_band": "80-84",
+   "sex": "M",
+   "living": "with adult child",
+   "pmh": "hypertension, prediabetes",
+   "meds": "lisinopril 10 mg daily",
+   "devices": "ring, fingertip_oximeter",
+   "goals": "not recorded",
+   "function": "walks indoors unaided, independent ADLs",
+   "baseline": "rest_hr 72, hrv_ms 30, sleep_h 6.9, steps 2600, spo2_night_min 94, skin_temp_dev_c 0.0",
+   "baseline_status": "established, monitoring day 95",
+   "discharge": "none",
+   "trend": "Day -6 to -1: ring daytime rest SpO2 93-95%, ring night SpO2 nadir 92-94%, ring rest HR 70-74 bpm, RR 15-16/min, steps 2400-2800. Day 0 14:05: ring SpO2 86% at rest with a poor-contact flag (ring rolled toward palm side). Day 0 14:12: fingertip oximeter 95% on a good waveform.",
+   "note": "Adult child: he was sitting in the chair reading and says he feels normal, no breathlessness.",
+   "artifact_flags": "ring poor-contact flag Day 0 14:05",
+   "facts": {
+    "age_band": "80-84",
+    "sex": "M",
+    "living": "with adult child",
+    "pmh": [
+     "hypertension",
+     "prediabetes"
+    ],
+    "meds": [
+     {
+      "name": "lisinopril",
+      "dose": "10 mg daily",
+      "started_day": -500
+     }
+    ],
+    "recent_med_changes": [],
+    "devices": [
+     "ring",
+     "fingertip_oximeter"
+    ],
+    "discharge": null,
+    "patient_goals": null,
+    "function_baseline": "walks indoors unaided, independent ADLs",
+    "baseline_30d": {
+     "rest_hr": 72,
+     "hrv_ms": 30,
+     "sleep_h": 6.9,
+     "steps": 2600,
+     "spo2_night_min": 94,
+     "skin_temp_dev_c": 0.0,
+     "weight_kg": null,
+     "glucose_mean": null,
+     "sbp": null,
+     "dbp": null
+    },
+    "baseline_status": {
+     "phase": "established",
+     "monitoring_day": 95,
+     "learning_days_total": 10,
+     "last_condition_change": null
+    },
+    "trend_last_7d": "Day -6 to -1: ring daytime rest SpO2 93-95%, ring night SpO2 nadir 92-94%, ring rest HR 70-74 bpm, RR 15-16/min, steps 2400-2800. Day 0 14:05: ring SpO2 86% at rest with a poor-contact flag (ring rolled toward palm side). Day 0 14:12: fingertip oximeter 95% on a good waveform.",
+    "caregiver_or_nurse_note": "Adult child: he was sitting in the chair reading and says he feels normal, no breathlessness.",
+    "data_quality": {
+     "wear_time_pct_7d": 97,
+     "artifact_flags": [
+      "ring poor-contact flag Day 0 14:05"
+     ],
+     "missing_hours_last_48": 0,
+     "longest_gap_h": 0
+    },
+    "skin_tone_note": "Fitzpatrick V-VI",
+    "patient_bands": null
+   },
+   "layer1": {
+    "route": "silent_log",
+    "owner": "layer1_cleared",
+    "tier": "SUPPRESSED",
+    "rule": "HT_SPO2_LT88",
+    "reason": "cleared_by_repeat",
+    "plain_reason": "oxygen level below 88%",
+    "route_definition": "Log only; no human action needed",
+    "escalation_target": null,
+    "ticket": {
+     "type": "device_maintenance",
+     "detail": "device fault (spo2_flag_vs_fingertip: flagged wearable SpO2 cleared by a fingertip reading)",
+     "rule": "v1141"
+    },
+    "ticket_note": null
+   }
+  },
+  {
+   "case_id": "LX12-008",
+   "source": "homehealth/library_expansion_v2/library_expansion_v2_accepted.json",
+   "library_label": "urgent_page",
+   "age_band": "80-84",
+   "sex": "M",
+   "living": "with adult child",
+   "pmh": "hypertension, prediabetes",
+   "meds": "lisinopril 10 mg daily",
+   "devices": "ring, fingertip_oximeter",
+   "goals": "not recorded",
+   "function": "walks indoors unaided, independent ADLs",
+   "baseline": "rest_hr 72, hrv_ms 30, sleep_h 6.9, steps 2600, spo2_night_min 94, skin_temp_dev_c 0.0",
+   "baseline_status": "established, monitoring day 95",
+   "discharge": "none",
+   "trend": "Day -6 to -1: ring daytime rest SpO2 93-95%, ring night SpO2 nadir 92-94%, ring rest HR 70-74 bpm, RR 15-16/min, steps 2400-2800. Day 0 14:05: ring SpO2 86% at rest with a poor-contact flag (ring rolled toward palm side). Day 0 14:12: fingertip oximeter 86% on a good waveform. Day 0 14:14: fingertip oximeter 86% on a good waveform.",
+   "note": "Adult child: he was sitting in the chair reading and says he feels normal, no breathlessness.",
+   "artifact_flags": "ring poor-contact flag Day 0 14:05",
+   "facts": {
+    "age_band": "80-84",
+    "sex": "M",
+    "living": "with adult child",
+    "pmh": [
+     "hypertension",
+     "prediabetes"
+    ],
+    "meds": [
+     {
+      "name": "lisinopril",
+      "dose": "10 mg daily",
+      "started_day": -500
+     }
+    ],
+    "recent_med_changes": [],
+    "devices": [
+     "ring",
+     "fingertip_oximeter"
+    ],
+    "discharge": null,
+    "patient_goals": null,
+    "function_baseline": "walks indoors unaided, independent ADLs",
+    "baseline_30d": {
+     "rest_hr": 72,
+     "hrv_ms": 30,
+     "sleep_h": 6.9,
+     "steps": 2600,
+     "spo2_night_min": 94,
+     "skin_temp_dev_c": 0.0,
+     "weight_kg": null,
+     "glucose_mean": null,
+     "sbp": null,
+     "dbp": null
+    },
+    "baseline_status": {
+     "phase": "established",
+     "monitoring_day": 95,
+     "learning_days_total": 10,
+     "last_condition_change": null
+    },
+    "trend_last_7d": "Day -6 to -1: ring daytime rest SpO2 93-95%, ring night SpO2 nadir 92-94%, ring rest HR 70-74 bpm, RR 15-16/min, steps 2400-2800. Day 0 14:05: ring SpO2 86% at rest with a poor-contact flag (ring rolled toward palm side). Day 0 14:12: fingertip oximeter 86% on a good waveform. Day 0 14:14: fingertip oximeter 86% on a good waveform.",
+    "caregiver_or_nurse_note": "Adult child: he was sitting in the chair reading and says he feels normal, no breathlessness.",
+    "data_quality": {
+     "wear_time_pct_7d": 97,
+     "artifact_flags": [
+      "ring poor-contact flag Day 0 14:05"
+     ],
+     "missing_hours_last_48": 0,
+     "longest_gap_h": 0
+    },
+    "skin_tone_note": "Fitzpatrick V-VI",
+    "patient_bands": null
+   },
+   "layer1": {
+    "route": "urgent_page",
+    "owner": "layer1_confirm",
+    "tier": "CONFIRM_FIRST",
+    "rule": "HT_SPO2_LT88",
+    "reason": "below_88_change_from_own_baseline",
+    "plain_reason": "oxygen level below 88% and below this patient's own usual level",
+    "route_definition": "Page someone now (a clinician; for an urgent comfort problem under hospice goals, the hospice nurse)",
+    "escalation_target": null,
+    "ticket": null,
+    "ticket_note": null
+   }
+  },
+  {
+   "case_id": "NV6-001",
+   "source": "homehealth/library/library_v2_smart_accepted.json",
+   "library_label": "nurse_task",
+   "age_band": "85-89",
+   "sex": "F",
+   "living": "alone",
+   "pmh": "HFrEF EF 35%, AFib",
+   "meds": "apixaban 5 mg BID; furosemide 20 mg daily; morphine sulfate 5 mg every 4 hours as needed",
+   "devices": "watch, ring, scale, bed_sensor",
+   "goals": "comfort-focused, enrolled in home hospice, prefers to remain at home",
+   "function": "walks indoors with walker, independent ADLs",
+   "baseline": "rest_hr 72, hrv_ms 30, sleep_h 6.4, steps 1400, spo2_night_min 91, skin_temp_dev_c 0.0, weight_kg 68.0",
+   "baseline_status": "not recorded",
+   "discharge": "none",
+   "trend": "Day -7 to -3: weight 67.8-68.2 kg, rest HR 70-76 bpm, steps 1300-1600, night SpO2 min 90-92% (watch). Day -2: band replaced, no data 22:00-06:00. Day -1: 07:00 bed-sensor impact, then steps 0, HR 96-104 bpm, watch on wrist. Day 0: HR 94-100 bpm, steps 0-200, weight 68.0 kg.",
+   "note": "Aide found the patient on the floor beside the bed at 07:15 Day -1. No loss of consciousness. Small scalp bump, no bleeding. Patient resting in a chair, comfortable. Hospice aide present.",
+   "artifact_flags": "bed-sensor impact 07:00 Day -1; band replaced Day -2",
+   "facts": {
+    "age_band": "85-89",
+    "sex": "F",
+    "living": "alone",
+    "pmh": [
+     "HFrEF EF 35%",
+     "AFib"
+    ],
+    "meds": [
+     {
+      "name": "apixaban",
+      "dose": "5 mg BID",
+      "started_day": -400
+     },
+     {
+      "name": "furosemide",
+      "dose": "20 mg daily",
+      "started_day": -400
+     },
+     {
+      "name": "morphine sulfate",
+      "dose": "5 mg every 4 hours as needed",
+      "started_day": -25
+     }
+    ],
+    "recent_med_changes": [],
+    "devices": [
+     "watch",
+     "ring",
+     "scale",
+     "bed_sensor"
+    ],
+    "discharge": null,
+    "patient_goals": "comfort-focused, enrolled in home hospice, prefers to remain at home",
+    "function_baseline": "walks indoors with walker, independent ADLs",
+    "baseline_30d": {
+     "rest_hr": 72,
+     "hrv_ms": 30,
+     "sleep_h": 6.4,
+     "steps": 1400,
+     "spo2_night_min": 91,
+     "skin_temp_dev_c": 0.0,
+     "weight_kg": 68.0,
+     "glucose_mean": null,
+     "sbp": null,
+     "dbp": null
+    },
+    "baseline_status": null,
+    "trend_last_7d": "Day -7 to -3: weight 67.8-68.2 kg, rest HR 70-76 bpm, steps 1300-1600, night SpO2 min 90-92% (watch). Day -2: band replaced, no data 22:00-06:00. Day -1: 07:00 bed-sensor impact, then steps 0, HR 96-104 bpm, watch on wrist. Day 0: HR 94-100 bpm, steps 0-200, weight 68.0 kg.",
+    "caregiver_or_nurse_note": "Aide found the patient on the floor beside the bed at 07:15 Day -1. No loss of consciousness. Small scalp bump, no bleeding. Patient resting in a chair, comfortable. Hospice aide present.",
+    "data_quality": {
+     "wear_time_pct_7d": 85,
+     "artifact_flags": [
+      "bed-sensor impact 07:00 Day -1",
+      "band replaced Day -2"
+     ],
+     "missing_hours_last_48": 0,
+     "longest_gap_h": 1
+    },
+    "skin_tone_note": "Fitzpatrick I-IV",
+    "patient_bands": null
+   },
+   "layer1": {
+    "route": "nurse_task",
+    "owner": "layer1_goals",
+    "tier": "SUPPRESSED",
+    "rule": "HT_FALL_ANTICOAG",
+    "reason": "goals_of_care",
+    "plain_reason": "comfort-focused plan: same-shift hospice nurse rather than hospital escalation",
+    "route_definition": "Nurse contact within about 24 h (or a same-shift hospice nurse contact under hospice/comfort goals)",
+    "escalation_target": null,
+    "ticket": null,
+    "ticket_note": null
+   }
+  },
+  {
+   "case_id": "LX4-009",
+   "source": "homehealth/library_expansion_v1/library_expansion_v1_accepted.json",
+   "library_label": "provider_task",
+   "age_band": "75-79",
+   "sex": "F",
+   "living": "with paid caregiver",
+   "pmh": "CAD with stent, stable exertional angina, type 2 diabetes",
+   "meds": "aspirin 75 mg daily; atorvastatin 40 mg nightly; ramipril 5 mg daily; metformin 500 mg BID; glyceryl trinitrate spray 400 mcg as needed",
+   "devices": "watch, bp_cuff, scale",
+   "goals": "not recorded",
+   "function": "walks with a stick, independent with prompting for medicines",
+   "baseline": "rest_hr 70, hrv_ms 29, sleep_h 7.0, steps 3000, spo2_night_min 94, skin_temp_dev_c 0.0, weight_kg 72.5, sbp 136, dbp 80",
+   "baseline_status": "established, monitoring day 103",
+   "discharge": "none",
+   "trend": "Day -7 to -1 steps 2700-3200, rest HR 68-72. Day -5 and Day -2: tightness on the stairs to the bus shelter, about 4 min, eased by resting and one spray; watch HR at onset 72 and 74. Day 0: no tightness. Wear 93%.",
+   "note": "Pharmacist note Day 0: spray bottle dispensed 40 days ago is past its labelled date. Patient reports less sting than before, and needs two sprays on some days.",
+   "artifact_flags": "none",
+   "facts": {
+    "age_band": "75-79",
+    "sex": "F",
+    "living": "with paid caregiver",
+    "pmh": [
+     "CAD with stent",
+     "stable exertional angina",
+     "type 2 diabetes"
+    ],
+    "meds": [
+     {
+      "name": "aspirin",
+      "dose": "75 mg daily",
+      "started_day": -800
+     },
+     {
+      "name": "atorvastatin",
+      "dose": "40 mg nightly",
+      "started_day": -800
+     },
+     {
+      "name": "ramipril",
+      "dose": "5 mg daily",
+      "started_day": -800
+     },
+     {
+      "name": "metformin",
+      "dose": "500 mg BID",
+      "started_day": -800
+     },
+     {
+      "name": "glyceryl trinitrate spray",
+      "dose": "400 mcg as needed",
+      "started_day": -40
+     }
+    ],
+    "recent_med_changes": [
+     {
+      "name": "glyceryl trinitrate",
+      "change": "switched",
+      "from_dose": "400 mcg sublingual tablets as needed",
+      "to_dose": "400 mcg spray as needed",
+      "day": -40
+     }
+    ],
+    "devices": [
+     "watch",
+     "bp_cuff",
+     "scale"
+    ],
+    "discharge": null,
+    "patient_goals": null,
+    "function_baseline": "walks with a stick, independent with prompting for medicines",
+    "baseline_30d": {
+     "rest_hr": 70,
+     "hrv_ms": 29,
+     "sleep_h": 7.0,
+     "steps": 3000,
+     "spo2_night_min": 94,
+     "skin_temp_dev_c": 0.0,
+     "weight_kg": 72.5,
+     "glucose_mean": null,
+     "sbp": 136,
+     "dbp": 80
+    },
+    "baseline_status": {
+     "phase": "established",
+     "monitoring_day": 103,
+     "learning_days_total": 10,
+     "last_condition_change": null
+    },
+    "trend_last_7d": "Day -7 to -1 steps 2700-3200, rest HR 68-72. Day -5 and Day -2: tightness on the stairs to the bus shelter, about 4 min, eased by resting and one spray; watch HR at onset 72 and 74. Day 0: no tightness. Wear 93%.",
+    "caregiver_or_nurse_note": "Pharmacist note Day 0: spray bottle dispensed 40 days ago is past its labelled date. Patient reports less sting than before, and needs two sprays on some days.",
+    "data_quality": {
+     "wear_time_pct_7d": 93,
+     "artifact_flags": [],
+     "missing_hours_last_48": 0,
+     "longest_gap_h": 0
+    },
+    "skin_tone_note": "Fitzpatrick I-IV",
+    "patient_bands": null
+   },
+   "layer1": {
+    "route": "provider_task",
+    "owner": "layer1_v1120",
+    "tier": "SUPPRESSED",
+    "rule": "HT_CHEST_PAIN_VITALS",
+    "reason": "angina_gtn_efficacy",
+    "plain_reason": "angina with a GTN spray that may be out of date or less effective; prescriber review",
+    "route_definition": "Review by the clinician responsible for that condition or medication on the same business day; not a page",
+    "escalation_target": null,
+    "ticket": null,
+    "ticket_note": null
+   }
+  },
+  {
+   "case_id": "HK6-007",
+   "source": "homehealth/library/library_v2_smart_accepted.json",
+   "library_label": "urgent_page",
+   "age_band": "75-79",
+   "sex": "M",
+   "living": "with spouse",
+   "pmh": "ischemic stroke 3 years ago, AFib, hypertension",
+   "meds": "apixaban 5 mg BID; amlodipine 5 mg daily",
+   "devices": "watch, scale",
+   "goals": "not recorded",
+   "function": "walks indoors with stick, independent ADLs",
+   "baseline": "rest_hr 72, hrv_ms 36, sleep_h 6.7, steps 2400, spo2_night_min 92, skin_temp_dev_c 0.0, weight_kg 79.8",
+   "baseline_status": "not recorded",
+   "discharge": "none",
+   "trend": "Days -6 to -1: steps 2200-2600, resting HR 68-74 bpm, sleep 6.4-7.0 h, scale weight 79.7-79.9 kg. Day 0: watch on-wrist; last step event 06:40. Watch HR 84 bpm at 08:40 with steps 0 since 06:40.",
+   "note": "Spouse found him at 08:30 Day 0. His right arm has just gone weak and his speech is slurred. He was last seen normal at 06:40 when he got up for the toilet.",
+   "artifact_flags": "watch on-wrist Day 0 06:40-08:40",
+   "facts": {
+    "age_band": "75-79",
+    "sex": "M",
+    "living": "with spouse",
+    "pmh": [
+     "ischemic stroke 3 years ago",
+     "AFib",
+     "hypertension"
+    ],
+    "meds": [
+     {
+      "name": "apixaban",
+      "dose": "5 mg BID",
+      "started_day": -700
+     },
+     {
+      "name": "amlodipine",
+      "dose": "5 mg daily",
+      "started_day": -400
+     }
+    ],
+    "recent_med_changes": [],
+    "devices": [
+     "watch",
+     "scale"
+    ],
+    "discharge": null,
+    "patient_goals": null,
+    "function_baseline": "walks indoors with stick, independent ADLs",
+    "baseline_30d": {
+     "rest_hr": 72,
+     "hrv_ms": 36,
+     "sleep_h": 6.7,
+     "steps": 2400,
+     "spo2_night_min": 92,
+     "skin_temp_dev_c": 0.0,
+     "weight_kg": 79.8,
+     "glucose_mean": null,
+     "sbp": null,
+     "dbp": null
+    },
+    "baseline_status": null,
+    "trend_last_7d": "Days -6 to -1: steps 2200-2600, resting HR 68-74 bpm, sleep 6.4-7.0 h, scale weight 79.7-79.9 kg. Day 0: watch on-wrist; last step event 06:40. Watch HR 84 bpm at 08:40 with steps 0 since 06:40.",
+    "caregiver_or_nurse_note": "Spouse found him at 08:30 Day 0. His right arm has just gone weak and his speech is slurred. He was last seen normal at 06:40 when he got up for the toilet.",
+    "data_quality": {
+     "wear_time_pct_7d": 90,
+     "artifact_flags": [
+      "watch on-wrist Day 0 06:40-08:40"
+     ],
+     "missing_hours_last_48": 0,
+     "longest_gap_h": 0
+    },
+    "skin_tone_note": "Fitzpatrick V-VI",
+    "patient_bands": null
+   },
+   "layer1": {
+    "route": "urgent_page",
+    "owner": "layer1",
+    "tier": "ABSOLUTE",
+    "rule": "HT_FOCAL_NEURO",
+    "reason": "new_focal_deficit",
+    "plain_reason": "new one-sided weakness, facial droop or speech change; possible stroke",
+    "route_definition": "Page someone now (a clinician; for an urgent comfort problem under hospice goals, the hospice nurse)",
+    "escalation_target": null,
+    "ticket": null,
+    "ticket_note": null
+   }
+  }
+ ]
+}

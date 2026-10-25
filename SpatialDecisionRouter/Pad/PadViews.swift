@@ -40,6 +40,7 @@ struct PadRootView: View {
                         Button("Demo (auto-play)") { tap("demoAuto") }
                         Button("WERIAM Principal demo") { tap("weriamDemo") }
                         Button("Symbiosis demo") { tap("symbiosisDemo") }
+                        Button("Home health") { tap("homeHealth") }
                         Button("Manifesto") { engine.showManifesto = true }
                         Button("Promotion") { engine.showPromotion = true }
                         Button("Lineage") { engine.showLineage = true }
@@ -88,7 +89,7 @@ struct PadRootView: View {
     }
 
     @ViewBuilder private func review(wide: Bool) -> some View {
-        let side = engine.spotCheckOpen || (engine.detailOpen && engine.nowHandoff != nil)
+        let side = engine.spotCheckOpen || (engine.detailOpen && engine.nowHandoff != nil) || (engine.config.id == "home_health" && engine.homeShownLevel > 0)
         if engine.domain.gameHUD() != nil { GameHUDStrip(); RevealBanner() }
         if wide && side {
             HStack(alignment: .top, spacing: 16) {
@@ -110,6 +111,7 @@ struct PadRootView: View {
         case "demoAuto": engine.startDemo(auto: true)
         case "weriamDemo": DomainCatalog.demoId = "weriam_principal"; engine.startDemo(auto: false)
         case "symbiosisDemo": DomainCatalog.demoId = "symbiosis"; engine.startDemo(auto: false)
+        case "homeHealth": DemoState.on = false; engine.start(HomeHealthDomain())
         default: if DemoState.on { DemoState.on = false; engine.start(AIDocReviewDomain()) }
         }
         tab = "review"; showStart = false
@@ -134,12 +136,13 @@ struct PadStartView: View {
                     Button { go("demoAuto") } label: { Text("Demo (auto-play)").frame(minWidth: 160) }.tint(.orange)
                     Button { go("weriamDemo") } label: { Text("WERIAM Principal").frame(minWidth: 170) }.tint(.purple)
                     Button { go("symbiosisDemo") } label: { Text("Symbiosis").frame(minWidth: 140) }.tint(.orange)
+                    Button { go("homeHealth") } label: { Text("Home health").frame(minWidth: 150) }.tint(.teal)
                 }.font(.title2.bold()).buttonStyle(.bordered).controlSize(.extraLarge)
-                Text("Demo: 6 scripted SYNTHETIC encounters · BN badge needs the risk_engine sidecar on this Mac (else fallback badge)")
+                Text("Demo: 6 scripted SYNTHETIC encounters · BN badge needs the risk sidecar. Home health uses Layer 1 (bridge on :8767, or the bundled snapshot).")
                     .font(.callout).foregroundStyle(.secondary).multilineTextAlignment(.center)
                 Text("Not for clinical use").font(.caption.bold()).foregroundStyle(.red.opacity(0.8))
             }
-            .padding(48).frame(maxWidth: 820).sdrPanel().padding(30)
+            .padding(48).frame(maxWidth: 1040).sdrPanel().padding(30)
         }
         .preferredColorScheme(.dark)
     }

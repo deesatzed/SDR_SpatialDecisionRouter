@@ -145,6 +145,42 @@ Current areas: **personal finance** and **ED triage** (a few synthetic cards eac
 
 ![Symbiosis card](img/manual/sym_01_card_ai_collapsed.jpg)
 
+### 4.5 Home health (Overseer)
+
+**Home health** on the start screen is the **Overseer** role. The Overseer is a physician. You review synthetic home-monitoring cases. You do not receive the nurse task, the provider task, or the page. **Bedside** and **Nurse HITM** are on the card marked **Later**. They are not modes yet. One role is active at a time.
+
+Layer 1 proposes one route. The card names the synthetic person who would receive it:
+
+| Route | Recipient | What Pass does |
+|---|---|---|
+| **silent_log** | Log only | Records the log. No person is tasked. |
+| **nurse_task** | Night nurse, or On-call hospice nurse when the goals say hospice | Passes a nurse task to that nurse. |
+| **provider_task** | On-call HH MD | Passes a same-day review to that physician. Not a page. |
+| **urgent_page** | On-call HH MD | Passes a page to that physician. You are not paged. |
+
+The button reads **Log only** or **Pass to …**. **Log only** means no page and no handoff: the decision is acknowledged and logged, and nobody is tasked. **Pass to …** names the on-call person. **Change route…** lists the same recipients. The decision is stored for later training. This build does not train anything from it.
+
+Some cases also show a **device ticket** (`device_maintenance`) when Layer 1 files one. A clinical route does not keep a ticket.
+
+The card opens on **awareness**: who you are, who receives the route, a short patient chip (age band, main conditions, main medicines, living situation, night oxygen minimum when the library has one), and one clinical line. A fall on a blood thinner leads with the fall and that drug. A low oxygen reading leads with the reading. The route buttons stay on this face.
+
+**Expand** cascades the next layer into the space beside the card: **Patient details**, then **Rules** for this situation, then **More for this case**. Under patient details, the chart is summaries you can open one at a time: problems, medicines, active problems, hospitalizations, baselines, goals. **Collapse** peels one layer. **Awareness** jumps back to the face. The side panel scrolls when More is taller than the panel. Looking at the card for about half a second opens patient details, and for about a second and a half opens the rules; looking away returns to the pinned layer. The simulator often misses that look, so use Expand. The status strip and the queue stay quiet until you tap Show.
+
+The first card, **PX-COPD-01**, is a synthetic pattern example (not a library case). **Why now** names today’s dips: SpO2 84% sitting up and 85% at the commode, then back in band. The night SpO₂ on the patient chip is his baseline, not that alert. **This week** is the repeating pattern. Open **Patient details** and **Show** on **Trends** for the recent alerts, the SpO2 and heart-rate bars (orange means outside this patient’s band), and a note that this positional pattern is logged rather than paged. A longer line compares today with a rise in alerts about three months ago, before a pneumonia admission.
+
+The far spheres are the queues, drawn as solid objects. **Overseer queue · N waiting** grows as the queue grows and glows while cases are waiting. **On-call desk · N sent** and **On-call HH MD · N sent** are where a Pass goes. The one that would receive this case grows, a page largest, glows, and adds a line **This pass ·** the synthetic recipient. **Show list**, or a look, shows who is waiting or who was already sent. Pass still flies to that sphere. You are not the recipient.
+
+In the expanded dossier, orange is why-now, an alert, or a vital outside this patient’s band. Cyan is baseline or the band. Sage is an action already taken or a log-only note. Other chart text stays white.
+
+Mouse, gaze, and scale in the visionOS Simulator: [VISIONOS_SIM_CONTROLS.md](VISIONOS_SIM_CONTROLS.md). Buttons here are look, then click.
+
+The badge on the card tells you where the decision came from:
+
+- **L1 live** — the Layer 1 bridge on this Mac recomputed the case.
+- **L1 bundled · bridge offline** — the bridge is not running. You still see the route from the snapshot shipped with the app. Nothing is sent to a cloud model.
+
+Every case is synthetic, copied from the case library. **More for this case** has the trend, the note, the rule, and the library's own label (Layer 1 does not read that label). ED triage is unchanged; use **Next Domain** or the other start buttons to leave home health.
+
 ---
 
 ## 5. Dials — how much the AI does on its own
@@ -258,6 +294,8 @@ sets, dial history, sharpness checks, promotion records and lineage files. The e
 
 **WERIAM cards say "bridge offline · seeded card · not sent".** The WERIAM connection isn't running; you're seeing a saved sample, and nothing you do is sent.
 
+**Home health says "L1 bundled · bridge offline".** The Layer 1 bridge isn't running. The route on the card is the bundled snapshot. Start the bridge and open Home health again for a live recompute. See [HOME_HEALTH.md](HOME_HEALTH.md).
+
 **The dials never move.** They need at least 5 outcome-checked decisions in that area first. Ratings alone don't count.
 
 **I tapped Approve once but nothing was promoted.** The test result was out of date (the champion changed) or didn't pass. Run the critic again.
@@ -318,11 +356,19 @@ tools/symbiosis_demo.sh --auto --fresh-ledger --export # Symbiosis demo (iPad), 
 tools/symbiosis_demo.sh --vision --auto                # same on Vision Pro
 tools/weriam_demo.sh --fresh --auto                    # WERIAM bridge + iPad demo
 risk_engine/run_sidecar.sh                             # optional risk calculator (127.0.0.1:8765)
+homehealth/sdr_bridge/run_bridge.sh                    # optional Layer 1 bridge (127.0.0.1:8767)
+tools/homehealth_vision.sh                             # Vision Pro simulator, home-health review
+```
+
+Home health can also be opened from the start screen (**Home health**) or with `-domain home_health`. Do not combine that with `-demo`. `-noHomeHealthBridge` forces the bundled snapshot. Full steps: [HOME_HEALTH.md](HOME_HEALTH.md).
+
+```bash
+python3 -m pytest -q homehealth/sdr_bridge/test_sdr_bridge.py
 python3 tools/import_cases.py data/templates/case_import_template.xlsx --validate-only
 python3 tools/unified_export.py decision_ledger.jsonl -o out/ --strict
 ```
 
-Useful launch options: `-demo`, `-demoAuto`, `-symbiosisDemo`, `-weriamDemo`, `-noBridge`, `-noSidecar`, `-forceTrigger`,
+Useful launch options: `-demo`, `-demoAuto`, `-symbiosisDemo`, `-weriamDemo`, `-domain home_health`, `-noHomeHealthBridge`, `-noBridge`, `-noSidecar`, `-forceTrigger`,
 `-freshLedger` (wipe the device ledger — demos), `-testLedger` (use a fresh throwaway ledger; the device ledger is untouched — UI tests),
 `-ledgerPath <dir>` (use `<dir>/decision_ledger.jsonl`), `-importItems <dir>`, `-importCSV <file>`, `-sharpRate`, `-sharpEvery`, `-sharpDetail`.
 

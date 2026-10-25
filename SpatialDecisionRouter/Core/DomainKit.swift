@@ -170,6 +170,7 @@ enum DomainCatalog {
     @MainActor static let all: [() -> DomainModule] = [
         { AIDocReviewDomain() },   // default
         { EDTriageDomain() },
+        { HomeHealthDomain() },
         { WERIAMPrincipalDomain() },
         { SymbiosisDomain() },
     ]
@@ -188,6 +189,7 @@ extension DomainCatalog {
         case "weriam_principal": WERIAMPrincipalDomain()
         case "symbiosis": SymbiosisDomain()
         case "ed_triage": EDTriageDomain()
+        case "home_health": HomeHealthDomain()
         default: AIDocReviewDomain()
         }
     }

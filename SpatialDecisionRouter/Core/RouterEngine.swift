@@ -241,6 +241,10 @@ struct Handoff: Identifiable, Hashable {
         routed = [:]; effective = [:]; delivered = [:]; itemStatus = [:]; decisions = []; alertsFired = 0; deliveries = 0
         inbox = Dictionary(uniqueKeysWithValues: d.config.agents.map { ($0.id, 0) })
         lastDelivered = [:]; ringFor = nil; spawnTimer = 99; sessionStart = Date(); packVersion += 1
+        focusStatusOpen = false; focusQueueOpen = false
+        homePinnedLevel = 0; homeHoverLevel = 0; homeHoverStarted = nil; homeHoverSuppress = false
+        homeChartOpen = nil
+        homeSphereOpen = nil
     }
     func nextDomain() {
         let all = DomainCatalog.all
@@ -251,6 +255,14 @@ struct Handoff: Identifiable, Hashable {
     // MARK: geometry
     func agent(_ id: String) -> AgentSpec? { config.agents.first { $0.id == id } }
     func agentIndex(_ id: String) -> Int { config.agents.firstIndex { $0.id == id } ?? 0 }
+    /// Destination a Pass of the current proposal would light. Display only; `route` is unchanged.
+    func highlightedDest(_ h: Handoff) -> String {
+        if let d = destFor[h.id] { return d }
+        if h.trigger == nil, h.link.firesAlert, !h.link.alertNegative.contains(h.proposal), let ad = h.link.alertDest {
+            return ad
+        }
+        return h.link.dest
+    }
     func agentPosition(_ id: String) -> SIMD3<Float> {
         let ag = agent(id); let tier = ag?.tier ?? 0
         let peers = config.agents.filter { $0.tier == tier }
@@ -318,6 +330,7 @@ struct Handoff: Identifiable, Hashable {
 
     // MARK: simulation
     func tick(_ dt0: Float) {
+        homeHoverTick()
         let dt = dt0 * speedup
         domain.advance(minutes: Double(dt) * domain.minutesPerSecond)
         spawnTimer += dt
@@ -380,6 +393,8 @@ struct Handoff: Identifiable, Hashable {
     private func resetDetailTelemetry() {
         sectionAcc = [:]; sectionsSeen = []; detailAcc = 0; detailUsed = detailOpen
         openSections = [:]; detailOpenedAt = detailOpen ? Date() : nil
+        homePinnedLevel = 0; homeHoverLevel = 0; homeHoverStarted = nil; homeHoverSuppress = false
+        homeChartOpen = nil
     }
     func detailSections(_ h: Handoff) -> [DetailSection] {
         guard let item = items[h.itemId] else { return [] }
@@ -674,6 +689,73 @@ struct Handoff: Identifiable, Hashable {
 
     // MARK: demo
     var boardLarge = UserDefaults.standard.bool(forKey: "boardLarge") { didSet { UserDefaults.standard.set(boardLarge, forKey: "boardLarge") } }
+    /// Home-health focus tunnel. False keeps the status strip and queue pulled back until tapped.
+    var focusStatusOpen = false
+    var focusQueueOpen = false
+    /// Home-health cascade. 0 awareness, 1 story, 2 rules, 3 chart. Hover can preview 1–2 without pinning.
+    var homePinnedLevel = 0
+    var homeHoverLevel = 0
+    var homeHoverStarted: Date?
+    var homeHoverSuppress = false
+    var homeShownLevel: Int { homeHoverSuppress ? homePinnedLevel : max(homePinnedLevel, homeHoverLevel) }
+    /// Which sphere's waiting or sent list is pinned open.
+    var homeSphereOpen: String?
+    func homeSphereToggle(_ id: String) { homeSphereOpen = homeSphereOpen == id ? nil : id }
+    /// Chart section open in the cascade. One at a time. Nil keeps every section on its summary.
+    var homeChartOpen: String?
+    func homeChartToggle(_ name: String) {
+        if homeChartOpen == name {
+            if openSections[name] != nil { toggleSection(name) }
+            homeChartOpen = nil
+            return
+        }
+        if let prev = homeChartOpen, openSections[prev] != nil { toggleSection(prev) }
+        homeChartOpen = name
+        if openSections[name] == nil { toggleSection(name) }
+    }
+    func homeHoverBegan() {
+        if homeHoverStarted == nil { homeHoverStarted = Date() }
+    }
+    func homeHoverEnded() {
+        homeHoverStarted = nil
+        homeHoverLevel = 0
+        homeHoverSuppress = false
+    }
+    func homeHoverTick() {
+        guard let t = homeHoverStarted, !homeHoverSuppress else { return }
+        let dt = Date().timeIntervalSince(t)
+        let next = dt >= 1.5 ? 2 : (dt >= 0.4 ? 1 : 0)
+        if next != homeHoverLevel { homeHoverLevel = next }
+    }
+    /// Pin the preview, or open the next layer. Stops at rules; the chart is explicit.
+    func homeCascade() {
+        let shown = homeShownLevel
+        if shown > homePinnedLevel { homePinnedLevel = min(2, shown) }
+        else if homePinnedLevel < 2 { homePinnedLevel += 1 }
+        homeHoverLevel = 0
+        homeHoverSuppress = true
+    }
+    func homeMore() {
+        homePinnedLevel = 3
+        homeHoverLevel = 0
+        homeHoverSuppress = true
+    }
+    /// Peel one layer toward the awareness face. Pass and Modify are untouched.
+    func homeCollapse() {
+        if homeHoverLevel > homePinnedLevel {
+            homeHoverLevel = 0
+            homeHoverSuppress = true
+            return
+        }
+        homePinnedLevel = max(0, homePinnedLevel - 1)
+        homeHoverLevel = 0
+        homeHoverSuppress = true
+    }
+    func homeJump(_ level: Int) {
+        homePinnedLevel = min(3, max(0, level))
+        homeHoverLevel = 0
+        homeHoverSuppress = true
+    }
     var demoRunning = false
     var demoStep = ""
     /// Reset demo: fresh deterministic sequence (seeded), optional auto-play.
@@ -732,7 +814,7 @@ struct Handoff: Identifiable, Hashable {
     func testDocReview(_ k: Int, _ h: Handoff) async {
         if h.trigger != nil { try? await Task.sleep(for: .seconds(3)); return }   // let the red banner be seen, then ack via pass
         let rel = reliability(h)
-        guard let low = rel.filter({ $0.ifWrong != nil }).max(by: { ($0.ifWrong!.riskHi) < ($1.ifWrong!.riskHi) }) else { return }
+        guard rel.contains(where: { $0.ifWrong != nil }) else { return }
         if k % 4 == 1 || k == 6 {
             sideTab = "reliability"; if !detailOpen { toggleDetail() }
             try? await Task.sleep(for: .seconds(k == 6 ? 12 : 1.5))

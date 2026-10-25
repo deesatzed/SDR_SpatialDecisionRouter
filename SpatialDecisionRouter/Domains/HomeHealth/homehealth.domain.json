@@ -1,0 +1,109 @@
+{
+  "id": "home_health",
+  "title": "Home Health — Smart Triggers",
+  "synthetic": true,
+  "defaultSite": "home-A",
+  "terminology": {
+    "itemNoun": "case",
+    "itemNounPlural": "cases",
+    "boardTitle": "Home-health review",
+    "syntheticBanner": "SYNTHETIC library cases — not real patients. Layer 1 params are placeholders.",
+    "completedLabel": "Reviewed",
+    "historyLabel": "Note",
+    "capacityLabel": "Layer 1"
+  },
+  "theme": {
+    "skyTop": [0.16, 0.26, 0.32],
+    "skyHorizon": [0.30, 0.46, 0.42],
+    "skyBottom": [0.10, 0.14, 0.16],
+    "floor": [0.15, 0.13, 0.11],
+    "grid": [0.32, 0.55, 0.46],
+    "panel": [0.09, 0.13, 0.15],
+    "trim": [0.42, 0.76, 0.60]
+  },
+  "agents": [
+    {"id": "layer1", "name": "Overseer queue", "role": "cases waiting on the physician", "tier": 0},
+    {"id": "routes", "name": "On-call desk", "role": "nurse, provider, or log", "tier": 1},
+    {"id": "urgent", "name": "On-call HH MD", "role": "page destination, not you", "tier": 1}
+  ],
+  "links": [
+    {
+      "id": "route",
+      "source": "layer1",
+      "dest": "routes",
+      "question": "Route",
+      "answerType": "category",
+      "options": ["silent_log", "nurse_task", "provider_task", "urgent_page"],
+      "firesAlert": true,
+      "alertNegative": ["silent_log", "nurse_task", "provider_task"],
+      "alertDest": "urgent",
+      "costWeight": 0.62,
+      "shortLabel": "route",
+      "previews": {
+        "silent_log": "Log only. No on-call person. The Overseer is not the recipient.",
+        "nurse_task": "Nurse task to the Night nurse, or the On-call hospice nurse when goals say hospice. Not to the Overseer.",
+        "provider_task": "Provider task to the On-call HH MD. Not a page, and not to the Overseer.",
+        "urgent_page": "Urgent page to the On-call HH MD. The Overseer is not paged.",
+        "*": "{dest}: receives {answer}"
+      }
+    }
+  ],
+  "rulesTable": [
+    "Layer 1 alone decides the route. The headset does not call a cloud model.",
+    "Routes, lowest to highest: silent_log, nurse_task, provider_task, urgent_page.",
+    "A device_maintenance ticket is shown when Layer 1 files one. Clinical routes do not keep a ticket.",
+    "The reviewer is the Overseer, a physician. Pass sends the route to the on-call recipient, not to the Overseer. Change route picks another route. urgent_page alerts the On-call HH MD node."
+  ],
+  "capacity": {"minutesPerSecond": 1},
+  "review": {
+    "autoPassConfidence": 1.01,
+    "autoPassMaxCost": 0,
+    "spotCheckRate": 0,
+    "waitWeight": 0.01,
+    "upNextCount": 5
+  },
+  "detailSections": ["Vignette", "Layer 1"],
+  "glossary": {
+    "home health": "Synthetic home-monitoring case. The Overseer (a physician) passes or changes Layer 1's route. The route goes to the on-call, not to the Overseer.",
+    "urgent page": "Layer 1 route urgent_page: pass a page to the On-call HH MD. The Overseer is not paged.",
+    "recipient": "Synthetic on-call person who receives this route. Night nurse, On-call hospice nurse, or On-call HH MD. Log only when no person is tasked.",
+    "device ticket": "Optional device_maintenance ticket from Layer 1. Not a clinical page. Clinical routes do not keep one.",
+    "bridge offline": "The localhost Layer 1 bridge is not running. The card shows the bundled snapshot from the same engine.",
+    "Layer 1": "Deterministic smart-trigger engine (v1.14.4, params 0.14.4-placeholder). Live badge means the bridge recomputed this case. Bundled means the snapshot shipped in the app.",
+    "route": "silent_log is log only. nurse_task goes to the Night nurse, or the On-call hospice nurse when goals say hospice. provider_task and urgent_page go to the On-call HH MD. None of them go to the Overseer.",
+    "plain reason": "Short reason text from Layer 1 for this decision.",
+    "Vignette": "Fact text copied from the synthetic case library. Not a real chart.",
+    "Layer 1 decision": "Route, owner, rule, and device ticket from Layer 1.",
+    "Case": "Library case id. Synthetic.",
+    "Who": "Age band, sex, and living situation from the library case.",
+    "Problems": "Problem list copied from the library case.",
+    "Medicines": "Medicines copied from the library case.",
+    "Devices": "Home devices copied from the library case.",
+    "Goals": "Patient goals copied from the library case.",
+    "Function": "Function baseline copied from the library case.",
+    "Baseline": "30-day baseline numbers copied from the library case. Placeholders, not validated.",
+    "Baseline status": "Learning or established phase copied from the library case.",
+    "Discharge": "Discharge field copied from the library case.",
+    "Device flags": "Artifact flags copied from the library case.",
+    "Trend": "Seven-day trend text copied from the library case.",
+    "Note": "Caregiver or nurse note copied from the library case.",
+    "Library file": "Which synthetic library file this case was copied from.",
+    "Route": "Layer 1 route id.",
+    "Means": "Plain-language definition of that route.",
+    "Owner": "Which Layer 1 rule owner produced the route.",
+    "Tier": "Trigger tier (ABSOLUTE, CONFIRM_FIRST, SUPPRESSED, ARTIFACT) when Layer 1 had one.",
+    "Rule": "Layer 1 rule id.",
+    "Reason": "Layer 1 reason code.",
+    "Plain reason": "One sentence from Layer 1.",
+    "Escalation target": "Who would be paged when Layer 1 names a target. Otherwise none.",
+    "Device ticket": "device_maintenance when Layer 1 files a ticket, otherwise none.",
+    "Ticket detail": "Why the ticket was filed, from Layer 1.",
+    "Ticket note": "Extra note when a ticket is conditional and not filed.",
+    "Decision source": "live bridge or the bundled snapshot.",
+    "Engine": "Layer 1 version string.",
+    "Params": "trigger_params.json version. Every threshold is a placeholder.",
+    "Library label": "The synthetic library's expected_route. Layer 1 does not read it. Shown so you can compare.",
+    "priority": "Higher cards sort above lower ones in Up next. The Now card stays until you decide it.",
+    "what happens next": "Where this route goes if you pass it, including a device ticket when Layer 1 filed one."
+  }
+}

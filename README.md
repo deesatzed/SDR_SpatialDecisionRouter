@@ -24,7 +24,7 @@ Landing page: https://deesatzed.github.io/SDR_SpatialDecisionRouter/
   - ED: chest pain, abdominal pain, head injury, and infection/antibiotics.
   - Outpatient AI-doc requests: URI/antibiotics, medication refills (including *labs first* when monitoring is overdue), GLP-1 weight loss, menopausal HRT, testosterone, and erectile dysfunction (PDE5).
 - **Queue simulation.** An in-app discrete-event model of ED crowding, rooms and inpatient beds (`Domains/EDTriage/EDCapacity.swift`). Each decision captures a snapshot of the current capacity.
-- **Three domains** (`Domains/`): **AI Doc Review** (default), **ED Triage**, and **WERIAM Principal** — the human is the real principal of the WERIAM agent simulator: approve once / decline / defer its requests (written by WERIAM's own hash-chained CLI) and shadow-label its gap-solver decisions as C/D-scorer training data. v2 adds a live pause (the agent waits for your label, and a timeout means WAIT), Ed25519-signed approvals, graded outcomes, Beta reliability and an optional Game mode. See [docs/WERIAM_PRINCIPAL.md](docs/WERIAM_PRINCIPAL.md).
+- **Domains** (`Domains/`): **AI Doc Review** (default), **ED Triage**, **Home health** (Layer 1 smart-trigger routes on synthetic library cases — see [docs/HOME_HEALTH.md](docs/HOME_HEALTH.md)), and **WERIAM Principal** — the human is the real principal of the WERIAM agent simulator: approve once / decline / defer its requests (written by WERIAM's own hash-chained CLI) and shadow-label its gap-solver decisions as C/D-scorer training data. v2 adds a live pause (the agent waits for your label, and a timeout means WAIT), Ed25519-signed approvals, graded outcomes, Beta reliability and an optional Game mode. See [docs/WERIAM_PRINCIPAL.md](docs/WERIAM_PRINCIPAL.md).
 - **Evolving categories.** The HITM can propose a new category. Categories go through trial, promotion and relegation, and each site keeps its own set (`Core/CategoryRegistry.swift`).
 
 ## Architecture
@@ -32,12 +32,14 @@ Landing page: https://deesatzed.github.io/SDR_SpatialDecisionRouter/
 SpatialDecisionRouter/            visionOS 27 app (SwiftUI + RealityKit, ImmersiveSpace)
   Core/        DomainKit · RouterEngine · CategoryRegistry · RoutingDecision · ReliabilityKit · ReviewKit · RouterViews · ProceduralEnvironment
   Domains/     EDTriage/ (EDTriageDomain, EDCapacity, EDReview)   AIDocReview/ (AIDocReviewDomain, OutpatientSpec, RiskClient, EncounterImporter)
+               HomeHealth/ (HomeHealthDomain, HomeHealthClient, homehealth_vignettes.json)
                WERIAMPrincipal/ (WERIAMPrincipalDomain, WERIAMClient, weriam_seed.json)
 weriam_bridge/                    localhost bridge to WERIAM (127.0.0.1:8766) + pytest
+homehealth/sdr_bridge/            localhost Layer 1 bridge (127.0.0.1:8767); no cloud model. Offline → bundled snapshot.
 UITests/                          XCUITest (real button taps, demo polish)
 risk_engine/                      pyAgrum Bayesian-network sidecar + params.yaml + pytest
-tools/  demo.sh · ipad.sh · weriam_demo.sh · to_training.py
-docs/   ADDING_A_DOMAIN.md · AI_DOC_REVIEW.md · WERIAM_PRINCIPAL.md · RISK_ENGINE.md · DEMO_SCRIPT.md · index.html (landing page)
+tools/  demo.sh · ipad.sh · homehealth_vision.sh · weriam_demo.sh · to_training.py
+docs/   ADDING_A_DOMAIN.md · AI_DOC_REVIEW.md · HOME_HEALTH.md · WERIAM_PRINCIPAL.md · RISK_ENGINE.md · DEMO_SCRIPT.md · index.html (landing page)
 screens/                          screenshots, sample routing logs, demo.mp4
 ```
 - **The domain framework is pluggable.** A domain supplies items, agents, categories and views through `DomainKit`. `RouterEngine` runs the handoffs, and every Pass/Flip/Change is recorded as a `RoutingDecision`. To add a new domain, such as DevSecOps, follow [docs/ADDING_A_DOMAIN.md](docs/ADDING_A_DOMAIN.md).
@@ -89,12 +91,14 @@ Requirements: macOS with Xcode 27, the visionOS 27 simulator runtime (and the iO
 xcodegen generate
 xcodebuild -scheme SpatialDecisionRouter -destination 'platform=visionOS Simulator,name=SDR-VisionPro' -derivedDataPath build build
 risk_engine/run_sidecar.sh          # optional; creates .venv, serves 127.0.0.1:8765
+homehealth/sdr_bridge/run_bridge.sh # optional Layer 1 for Home health (127.0.0.1:8767)
+tools/homehealth_vision.sh          # Vision Pro simulator, home-health review (bridge if Python is up)
 tools/demo.sh                       # sidecar + simulator + app in demo mode
 tools/demo.sh --auto                # auto-plays the 6 scripted steps
 tools/demo.sh --auto --record 185   # also records screens/demo.mp4
 tools/ipad.sh --demo                # iPad simulator (needs the iOS 27 simulator runtime)
 ```
-A 3–5 minute talk track is in [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md). The app also accepts the launch flags `-demo`, `-noSidecar`, `-forceTrigger`, `-freshLedger` (wipe the device ledger), `-testLedger` (throwaway ledger, used by UI tests) and `-ledgerPath <dir>`.
+A 3–5 minute talk track is in [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md). The app also accepts the launch flags `-demo`, `-noSidecar`, `-forceTrigger`, `-freshLedger` (wipe the device ledger), `-testLedger` (throwaway ledger, used by UI tests) and `-ledgerPath <dir>`. Home health: `-domain home_health` (do not combine with `-demo`), `-noHomeHealthBridge` to force the bundled snapshot. Steps: [docs/HOME_HEALTH.md](docs/HOME_HEALTH.md).
 
 Export the training data:
 ```bash
@@ -107,6 +111,8 @@ python3 tools/unified_export.py decision_ledger.jsonl -o out/ --strict        # 
 cd risk_engine && .venv/bin/python -m pytest -q       # BN engine
 xcodebuild test -scheme SpatialDecisionRouter -destination 'platform=visionOS Simulator,name=SDR-VisionPro'   # UI tests
 python3 -m pytest -q weriam_bridge/tests              # WERIAM bridge (needs the WERIAM checkout, WERIAM_ROOT)
+python3 -m pytest -q homehealth/sdr_bridge/test_sdr_bridge.py   # Layer 1 review pack + localhost bridge
+python3 -m pytest -q homehealth/trigger_engine homehealth/jev_baseline   # Layer 1 engine
 python3 -m pytest -q tools/tests                      # unified exporter (verifies a Swift-written signed ledger)
 xcodebuild test -scheme SpatialDecisionRouterPad -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M5)'   # ledger unit tests + iPad UI tests (incl. Symbiosis)
 ```
