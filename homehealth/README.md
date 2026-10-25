@@ -38,6 +38,15 @@ This folder holds the home-monitoring side of the Spatial Decision Router:
 - **v1.7 (2026-10-18):** hospice lows page urgently only when symptomatic (params 0.7-placeholder), and a new answer field `clinician_override` records a label tier the clinical owner set against the engine (engine unchanged; validated by grade_merge and surfaced by convert_casegen). First use: ST1-010 (engine band A ABSOLUTE → label CONFIRM_FIRST, patient_call 5 min). Fix-list repairs and the hand-derived ST1-011 partner come from `casegen/make_fix_cases.py` (`fix_cases.json`).
 - **v1.8 (2026-10-18):** learning-period rule formalised (params 0.8-placeholder): while no own baseline is learned, a reading beyond the population default band is CONFIRM_FIRST, never silent. `jev_baseline/` adds the Layer 2 decision-model baseline (default liquid/d1-ultra), a deterministic Layer 1 adapter for every library case and the Layer 1 + Jev router; results in `jev_baseline/results/` and `jev_baseline/results_v18/`.
 
+## Headset review (visionOS)
+
+`sdr_bridge/` serves this Layer 1 engine on `127.0.0.1:8767` for the Spatial Decision Router **Home health** domain. It recomputes a small pack of library cases (silent log, nurse task, provider task, urgent page, and one device-maintenance ticket). It does not call OpenRouter. If the bridge is down, the app shows the same decisions from `SpatialDecisionRouter/Domains/HomeHealth/homehealth_vignettes.json`. Simulator steps: [docs/HOME_HEALTH.md](../docs/HOME_HEALTH.md).
+
+```
+homehealth/sdr_bridge/run_bridge.sh
+python3 -m pytest -q homehealth/sdr_bridge/test_sdr_bridge.py
+```
+
 ## Running the tests
 From the repo root (Python 3.13; pytest only, no other dependencies):
 ```

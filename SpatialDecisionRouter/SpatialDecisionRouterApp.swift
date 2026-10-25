@@ -6,7 +6,7 @@ struct SpatialDecisionRouterApp: App {
     var body: some Scene {
         #if os(visionOS)
         WindowGroup(id: "main") { LauncherView().environment(engine) }
-            .defaultSize(width: 800, height: 360)
+            .defaultSize(width: 1180, height: 440)
         WindowGroup(id: "manifesto") { ManifestoView() }
             .defaultSize(width: 900, height: 760)
         WindowGroup(id: "promotion") { PromotionView().environment(engine) }

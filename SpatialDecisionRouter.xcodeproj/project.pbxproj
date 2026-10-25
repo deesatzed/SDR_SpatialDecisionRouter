@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07F7B690C2BE45C9ADA72C29 /* homehealth.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 9E42C1739AD34F84AD05FDC7 /* homehealth.domain.json */; };
+		049071E385324FA085E1AA7A /* homehealth_vignettes.json in Resources */ = {isa = PBXBuildFile; fileRef = 7951DC9A3CC44C489F980661 /* homehealth_vignettes.json */; };
+		EF3F329C90164C7E8A8E7FFB /* homehealth.domain.json in Resources */ = {isa = PBXBuildFile; fileRef = 9E42C1739AD34F84AD05FDC7 /* homehealth.domain.json */; };
+		78814CE9A8334E5F94A13DC4 /* homehealth_vignettes.json in Resources */ = {isa = PBXBuildFile; fileRef = 7951DC9A3CC44C489F980661 /* homehealth_vignettes.json */; };
+		72DBB871F5A241568A4AE8C6 /* HomeHealthDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E75C9F825E4B80B5EDE3BB /* HomeHealthDomain.swift */; };
+		EB2A6FEDBF814A90A639E60D /* HomeHealthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1FCAE6A4884928B339170F /* HomeHealthClient.swift */; };
+		7CA8A0B006AD4937A8547B43 /* HomeHealthDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E75C9F825E4B80B5EDE3BB /* HomeHealthDomain.swift */; };
+		288E8260D6054B6794B0D4AC /* HomeHealthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1FCAE6A4884928B339170F /* HomeHealthClient.swift */; };
 		0212BC76853E93A4C0449CE3 /* ReliabilityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */; };
 		0265FC53A9B21F66CC5DE87D /* Lineage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79846C3BAD472DDDAAA5BF44 /* Lineage.swift */; };
 		03402F7FC2C6B531D9A11462 /* OutpatientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529CA0AD12DB6DD996C972F9 /* OutpatientSpec.swift */; };
@@ -134,6 +142,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9E42C1739AD34F84AD05FDC7 /* homehealth.domain.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = homehealth.domain.json; sourceTree = "<group>"; };
+		7951DC9A3CC44C489F980661 /* homehealth_vignettes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = homehealth_vignettes.json; sourceTree = "<group>"; };
+		01E75C9F825E4B80B5EDE3BB /* HomeHealthDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHealthDomain.swift; sourceTree = "<group>"; };
+		4F1FCAE6A4884928B339170F /* HomeHealthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHealthClient.swift; sourceTree = "<group>"; };
 		0165402789A2697A94AF29EB /* GameViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViews.swift; sourceTree = "<group>"; };
 		0376247D9573184BA4F45192 /* replay_manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = replay_manifest.json; sourceTree = "<group>"; };
 		06FBF3CD1C286D2D26B46CAA /* LineageViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineageViews.swift; sourceTree = "<group>"; };
@@ -309,6 +321,7 @@
 			children = (
 				BBC7BB783659EB3FFAAB8CED /* AIDocReview */,
 				9BD3F5F668CCC9B648B9CE6D /* EDTriage */,
+				093A41C28F374672A2FA04FF /* HomeHealth */,
 				2B1CB89219993FBB693D6138 /* Symbiosis */,
 				10ACABE275D353CDB5FC4450 /* WERIAMPrincipal */,
 			);
@@ -321,6 +334,17 @@
 				2F4AC963464322CD39979A61 /* ReplaySeed */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		093A41C28F374672A2FA04FF /* HomeHealth */ = {
+			isa = PBXGroup;
+			children = (
+				4F1FCAE6A4884928B339170F /* HomeHealthClient.swift */,
+				01E75C9F825E4B80B5EDE3BB /* HomeHealthDomain.swift */,
+				9E42C1739AD34F84AD05FDC7 /* homehealth.domain.json */,
+				7951DC9A3CC44C489F980661 /* homehealth_vignettes.json */,
+			);
+			path = HomeHealth;
 			sourceTree = "<group>";
 		};
 		9BD3F5F668CCC9B648B9CE6D /* EDTriage */ = {
@@ -519,6 +543,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07F7B690C2BE45C9ADA72C29 /* homehealth.domain.json in Resources */,
+				049071E385324FA085E1AA7A /* homehealth_vignettes.json in Resources */,
 				30F4A59B1B0D110348C23F83 /* ai_doc_review.domain.json in Resources */,
 				54A07C8B60AB8DA32D03333C /* ai_studio_code.html in Resources */,
 				2994DB48E689DA0D95347583 /* digest.txt in Resources */,
@@ -537,6 +563,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF3F329C90164C7E8A8E7FFB /* homehealth.domain.json in Resources */,
+				78814CE9A8334E5F94A13DC4 /* homehealth_vignettes.json in Resources */,
 				1465DFFC8F8791B37C1ED521 /* ai_doc_review.domain.json in Resources */,
 				AD99FE7A4C6D32881FE5E676 /* ai_studio_code.html in Resources */,
 				39E1DE7E2F730450DBFCB097 /* digest.txt in Resources */,
@@ -558,6 +586,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB2A6FEDBF814A90A639E60D /* HomeHealthClient.swift in Sources */,
+				72DBB871F5A241568A4AE8C6 /* HomeHealthDomain.swift in Sources */,
 				8B0DA88EA08E8966E7DA4688 /* AIDocReviewDomain.swift in Sources */,
 				D3FA62D8D6A759EE389F4BDB /* CategoryRegistry.swift in Sources */,
 				C523EADE2B0DE8319F1F8FFF /* DecisionLedger.swift in Sources */,
@@ -597,6 +627,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				288E8260D6054B6794B0D4AC /* HomeHealthClient.swift in Sources */,
+				7CA8A0B006AD4937A8547B43 /* HomeHealthDomain.swift in Sources */,
 				1AB6C6774A4D482CD2B42974 /* AIDocReviewDomain.swift in Sources */,
 				667FA886A8D34AB8886D66D7 /* CategoryRegistry.swift in Sources */,
 				D3820012D7F604FCCA37A9AE /* DecisionLedger.swift in Sources */,

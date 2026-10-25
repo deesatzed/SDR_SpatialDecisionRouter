@@ -145,6 +145,27 @@ Current areas: **personal finance** and **ED triage** (a few synthetic cards eac
 
 ![Symbiosis card](img/manual/sym_01_card_ai_collapsed.jpg)
 
+### 4.5 Home health (smart triggers)
+**Home health** on the start screen reviews synthetic home-monitoring cases. Layer 1 proposes one route:
+
+| Route | What it means |
+|---|---|
+| **silent_log** | Log only. No one is tasked. |
+| **nurse_task** | Nurse contact within about a day. |
+| **provider_task** | Same-business-day clinician review. Not a page. |
+| **urgent_page** | Page someone now. |
+
+Some cases also show a **device ticket** (`device_maintenance`) when Layer 1 files one. A clinical route does not keep a ticket.
+
+**Pass** accepts the route. **Modify…** opens the other routes (this decision is not yes/no, so there is no Flip). Passing `urgent_page` alerts the Urgent page node.
+
+The badge on the card tells you where the decision came from:
+
+- **L1 live** — the Layer 1 bridge on this Mac recomputed the case.
+- **L1 bundled · bridge offline** — the bridge is not running. You still see the route from the snapshot shipped with the app. Nothing is sent to a cloud model.
+
+Every case is synthetic, copied from the case library. Open **Details** for the trend, the note, the rule, and the library's own label (Layer 1 does not read that label). ED triage is unchanged; use **Next Domain** or the other start buttons to leave home health.
+
 ---
 
 ## 5. Dials — how much the AI does on its own
@@ -258,6 +279,8 @@ sets, dial history, sharpness checks, promotion records and lineage files. The e
 
 **WERIAM cards say "bridge offline · seeded card · not sent".** The WERIAM connection isn't running; you're seeing a saved sample, and nothing you do is sent.
 
+**Home health says "L1 bundled · bridge offline".** The Layer 1 bridge isn't running. The route on the card is the bundled snapshot. Start the bridge and open Home health again for a live recompute. See [HOME_HEALTH.md](HOME_HEALTH.md).
+
 **The dials never move.** They need at least 5 outcome-checked decisions in that area first. Ratings alone don't count.
 
 **I tapped Approve once but nothing was promoted.** The test result was out of date (the champion changed) or didn't pass. Run the critic again.
@@ -318,11 +341,19 @@ tools/symbiosis_demo.sh --auto --fresh-ledger --export # Symbiosis demo (iPad), 
 tools/symbiosis_demo.sh --vision --auto                # same on Vision Pro
 tools/weriam_demo.sh --fresh --auto                    # WERIAM bridge + iPad demo
 risk_engine/run_sidecar.sh                             # optional risk calculator (127.0.0.1:8765)
+homehealth/sdr_bridge/run_bridge.sh                    # optional Layer 1 bridge (127.0.0.1:8767)
+tools/homehealth_vision.sh                             # Vision Pro simulator, home-health review
+```
+
+Home health can also be opened from the start screen (**Home health**) or with `-domain home_health`. Do not combine that with `-demo`. `-noHomeHealthBridge` forces the bundled snapshot. Full steps: [HOME_HEALTH.md](HOME_HEALTH.md).
+
+```bash
+python3 -m pytest -q homehealth/sdr_bridge/test_sdr_bridge.py
 python3 tools/import_cases.py data/templates/case_import_template.xlsx --validate-only
 python3 tools/unified_export.py decision_ledger.jsonl -o out/ --strict
 ```
 
-Useful launch options: `-demo`, `-demoAuto`, `-symbiosisDemo`, `-weriamDemo`, `-noBridge`, `-noSidecar`, `-forceTrigger`,
+Useful launch options: `-demo`, `-demoAuto`, `-symbiosisDemo`, `-weriamDemo`, `-domain home_health`, `-noHomeHealthBridge`, `-noBridge`, `-noSidecar`, `-forceTrigger`,
 `-freshLedger` (wipe the device ledger — demos), `-testLedger` (use a fresh throwaway ledger; the device ledger is untouched — UI tests),
 `-ledgerPath <dir>` (use `<dir>/decision_ledger.jsonl`), `-importItems <dir>`, `-importCSV <file>`, `-sharpRate`, `-sharpEvery`, `-sharpDetail`.
 

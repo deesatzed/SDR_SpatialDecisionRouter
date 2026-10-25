@@ -179,6 +179,17 @@ struct NowCard: View {
             }
         }
     }
+    static func badgeFill(_ b: String) -> Color {
+        if b.hasPrefix("BN") { return .indigo }
+        if b.hasPrefix("L1 live") { return .teal }
+        if b.hasPrefix("L1 bundled") { return .orange }
+        return Color.gray.opacity(0.6)
+    }
+    static func badgeKey(_ b: String) -> String {
+        if b.hasPrefix("BN") { return "BN" }
+        if b.hasPrefix("L1") { return "Layer 1" }
+        return "fallback"
+    }
     @ViewBuilder func content(_ h: Handoff) -> some View {
         let item = engine.items[h.itemId], t = engine.config.terminology
         let src = engine.agent(h.link.source)?.name ?? h.link.source, dst = engine.agent(h.link.dest)?.name ?? h.link.dest
@@ -202,7 +213,7 @@ struct NowCard: View {
                 Spacer()
                 if let item = engine.items[h.itemId], let b = engine.domain.riskBadge(item: item) {
                     Text(b).font(.headline.bold()).padding(.horizontal, 8).padding(.vertical, 2)
-                        .background(b.hasPrefix("BN") ? Color.indigo : Color.gray.opacity(0.6), in: Capsule()).gloss(b.hasPrefix("BN") ? "BN" : "fallback")
+                        .background(Self.badgeFill(b), in: Capsule()).gloss(Self.badgeKey(b))
                 }
                 Text(String(format: "priority %.2f", engine.livePriority(h))).font(.headline.monospacedDigit()).gloss("priority")
                 if engine.livePriority(h) >= 1.0 { Text("⚑").font(.title2).foregroundStyle(.red).gloss("priority") }
@@ -248,6 +259,9 @@ struct NowCard: View {
             if let item, item.fields["symbiosis"] == "1" {
                 SymbiosisPanel(item: item)
                 HStack { ManifestoButton(); PromotionButton(); LineageButton() }
+            }
+            if let item, item.fields["home_health"] == "1" {
+                HomeHealthCardNote(item: item)
             }
             if sharp { YourCallFirst(h: h) } else {
             HStack(alignment: .firstTextBaseline) {
@@ -648,9 +662,10 @@ struct LauncherView: View {
                 Button("Demo (auto-play)") { tap("demoAuto") }.tint(.orange)
                 Button("WERIAM Principal") { tap("weriamDemo") }.tint(.purple)
                 Button("Symbiosis") { tap("symbiosisDemo") }.tint(.orange)
+                Button("Home health") { tap("homeHealth") }.tint(.teal)
                 ManifestoButton()
             }.font(.title2)
-            Text("Demo: 6 scripted SYNTHETIC encounters · needs risk_engine sidecar for BN (else fallback badge)").font(.callout).foregroundStyle(.secondary)
+            Text("Demo: 6 scripted SYNTHETIC encounters · needs risk_engine sidecar for BN (else fallback badge). Home health uses Layer 1 (bridge on :8767, or the bundled snapshot).").font(.callout).foregroundStyle(.secondary)
             if !status.isEmpty { Text(status).font(.headline).foregroundStyle(status.hasPrefix("⚠") ? .red : .secondary) }
         }
         .padding(40)
@@ -676,6 +691,7 @@ struct LauncherView: View {
         case "demoAuto": engine.startDemo(auto: true)
         case "weriamDemo": DomainCatalog.demoId = "weriam_principal"; engine.startDemo(auto: false)
         case "symbiosisDemo": DomainCatalog.demoId = "symbiosis"; engine.startDemo(auto: DemoState.auto)
+        case "homeHealth": DemoState.on = false; engine.start(HomeHealthDomain())
         default: if DemoState.on { DemoState.on = false; engine.start(AIDocReviewDomain()) }
         }
         Task { await open() }
