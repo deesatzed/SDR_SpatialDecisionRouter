@@ -168,7 +168,11 @@ The card opens on **awareness**: who you are, who receives the route, a short pa
 
 The first card, **PX-COPD-01**, is a synthetic pattern example (not a library case). **Why now** names today’s dips: SpO2 84% sitting up and 85% at the commode, then back in band. The night SpO₂ on the patient chip is his baseline, not that alert. **This week** is the repeating pattern. Open **Patient details** and **Show** on **Trends** for the recent alerts, the SpO2 and heart-rate bars (orange means outside this patient’s band), and a note that this positional pattern is logged rather than paged. A longer line compares today with a rise in alerts about three months ago, before a pneumonia admission.
 
-The far spheres are the queues. **Overseer queue** is the cases waiting on you, larger when more are waiting. **On-call desk** and **On-call HH MD** are where a Pass goes. The one that would receive this case grows, a page largest, and the label names that person. **Show list** shows who is waiting or who was already sent.
+The far spheres are the queues, drawn as solid objects. **Overseer queue · N waiting** grows as the queue grows and glows while cases are waiting. **On-call desk · N sent** and **On-call HH MD · N sent** are where a Pass goes. The one that would receive this case grows, a page largest, glows, and adds a line **This pass ·** the synthetic recipient. **Show list**, or a look, shows who is waiting or who was already sent. Pass still flies to that sphere. You are not the recipient.
+
+In the expanded dossier, orange is why-now, an alert, or a vital outside this patient’s band. Cyan is baseline or the band. Sage is an action already taken or a log-only note. Other chart text stays white.
+
+Mouse, gaze, and scale in the visionOS Simulator: [VISIONOS_SIM_CONTROLS.md](VISIONOS_SIM_CONTROLS.md). Buttons here are look, then click.
 
 The badge on the card tells you where the decision came from:
 

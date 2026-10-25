@@ -821,6 +821,66 @@ enum HomeHealthBrief {
     }
 }
 
+/// Expanded-history ink. Few roles, full strength, so they stay readable on dark glass.
+/// Trigger and out-of-band are warm. Baseline and bands are cool. Actions and log-only notes are sage.
+enum HomeHealthInk {
+    static let trigger = Color.orange
+    static let baseline = Color.cyan
+    static let action = Color(red: 0.62, green: 0.86, blue: 0.70)
+    static let label = Color(red: 0.78, green: 0.86, blue: 0.94)
+
+    /// Patient-detail lines. Narrative stays white. Only a clear role picks up a color.
+    static func story(_ text: String) -> Color {
+        let l = text.lowercased()
+        if l.hasPrefix("baseline") || l.contains("spo2_night_min") { return baseline }
+        if l.hasPrefix("device flag") { return trigger }
+        if l.contains("day 0") && (l.contains("spo2") || l.contains("%")) { return trigger }
+        if l.contains("log only") || l.contains("no page") || l.contains("no handoff") { return action }
+        return .primary
+    }
+
+    static func rule(_ title: String, _ body: String) -> Color {
+        let t = title.lowercased()
+        if t.contains("usual") || t.contains("baseline") { return baseline }
+        if t.contains("device") || t.contains("paged") || t.contains("why the route") { return trigger }
+        let l = body.lowercased()
+        if l.contains("log only") || l.contains("no page") || l.contains("no handoff") || l.contains("no on-call") {
+            return action
+        }
+        return .primary
+    }
+
+    static func more(_ title: String, _ body: String) -> Color {
+        switch title {
+        case "Baseline": return baseline
+        case "Device ticket", "Device flags": return trigger
+        default: return story(body)
+        }
+    }
+
+    static func chartTitle(_ id: String, _ summary: String) -> Color {
+        if id == "baseline" { return baseline }
+        if id == "active", !summary.lowercased().hasPrefix("none") { return trigger }
+        return .primary
+    }
+
+    static func chartSummary(_ id: String, _ summary: String) -> Color {
+        if id == "baseline" { return baseline }
+        if id == "active" { return summary.lowercased().hasPrefix("none") ? .secondary : trigger }
+        return .secondary
+    }
+
+    static func chartBody(_ id: String, _ body: String) -> Color {
+        if id == "baseline" { return baseline }
+        if id == "active" {
+            let l = body.lowercased()
+            if l.hasPrefix("no ") || l.hasPrefix("nothing") { return .secondary }
+            return trigger
+        }
+        return .primary
+    }
+}
+
 /// L0 awareness. Pass and Modify stay here while story, rules, and the chart cascade beside the card.
 struct HomeHealthNowFace: View {
     @Environment(RouterEngine.self) private var engine
@@ -872,12 +932,17 @@ struct HomeHealthNowFace: View {
                 .padding(.horizontal, 14).padding(.vertical, 6)
                 .background(route == "silent_log" ? Color.gray.opacity(0.55) : Color.white.opacity(0.9), in: Capsule())
                 .gloss("recipient")
-            let chip = HomeHealthBrief.patientChip(item.fields)
-            if !chip.isEmpty {
-                Text(chip).font(.title3).foregroundStyle(.secondary).lineLimit(2).fixedSize(horizontal: false, vertical: true)
-            }
             let trigger = item.fields["pattern_trigger"] ?? ""
             let week = item.fields["pattern_headline"] ?? ""
+            let chip = HomeHealthBrief.patientChip(item.fields)
+            if !chip.isEmpty {
+                Text(chip)
+                    .font(.title3)
+                    .foregroundStyle(trigger.isEmpty ? Color.secondary : HomeHealthInk.baseline)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .help(trigger.isEmpty ? "Patient chip" : "Baseline on this chip. Why now is the line below.")
+            }
             if !trigger.isEmpty {
                 Text("Why now").font(.title3.bold()).foregroundStyle(.orange)
                 Text(trigger).font(.title).lineLimit(4)
@@ -976,10 +1041,10 @@ struct HomeHealthDossier: View {
                     Spacer()
                     Button("Collapse") { engine.homeCollapse() }.font(.title2.bold())
                 }
-                Text(hook).font(.title3).foregroundStyle(.secondary).lineLimit(3)
+                Text(hook).font(.title3).foregroundStyle(HomeHealthInk.trigger).lineLimit(3)
                 if level >= 1 {
                     ForEach(Array(HomeHealthBrief.story(item.fields).enumerated()), id: \.offset) { _, line in
-                        Text(line).font(.title2).fixedSize(horizontal: false, vertical: true)
+                        Text(line).font(.title2).foregroundStyle(HomeHealthInk.story(line)).fixedSize(horizontal: false, vertical: true)
                     }
                     if let pattern = (engine.domain as? HomeHealthDomain)?.pattern(for: item.id) {
                         HomeHealthTrends(pattern: pattern)
@@ -990,8 +1055,8 @@ struct HomeHealthDossier: View {
                     Text("Rules for this situation").font(.title2.bold())
                     ForEach(Array(HomeHealthBrief.rules(item.fields).enumerated()), id: \.offset) { _, row in
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(row.0).font(.title3.bold()).foregroundStyle(.secondary)
-                            Text(row.1).font(.title2).fixedSize(horizontal: false, vertical: true)
+                            Text(row.0).font(.title3.bold()).foregroundStyle(HomeHealthInk.label)
+                            Text(row.1).font(.title2).foregroundStyle(HomeHealthInk.rule(row.0, row.1)).fixedSize(horizontal: false, vertical: true)
                         }
                     }
                     if level < 3 {
@@ -1008,8 +1073,8 @@ struct HomeHealthDossier: View {
                     let extra = HomeHealthBrief.deep(item.fields).filter { !covered.contains($0.0) }
                     ForEach(Array(extra.enumerated()), id: \.offset) { _, row in
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(row.0).font(.title3.bold()).foregroundStyle(.secondary)
-                            Text(row.1).font(.title3).fixedSize(horizontal: false, vertical: true)
+                            Text(row.0).font(.title3.bold()).foregroundStyle(HomeHealthInk.label)
+                            Text(row.1).font(.title3).foregroundStyle(HomeHealthInk.more(row.0, row.1)).fixedSize(horizontal: false, vertical: true)
                         }
                     }
                 }
@@ -1030,13 +1095,13 @@ struct HomeHealthChart: View {
                 Button { engine.homeChartToggle(section.id) } label: {
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
-                            Text(section.title).font(.title3.bold())
+                            Text(section.title).font(.title3.bold()).foregroundStyle(HomeHealthInk.chartTitle(section.id, section.summary))
                             Spacer()
                             Text(open ? "Hide" : "Show").font(.title3).foregroundStyle(.secondary)
                         }
-                        Text(section.summary).font(.title3).foregroundStyle(.secondary).lineLimit(open ? 4 : 2)
+                        Text(section.summary).font(.title3).foregroundStyle(HomeHealthInk.chartSummary(section.id, section.summary)).lineLimit(open ? 4 : 2)
                         if open {
-                            Text(section.body).font(.title3).fixedSize(horizontal: false, vertical: true)
+                            Text(section.body).font(.title3).foregroundStyle(HomeHealthInk.chartBody(section.id, section.body)).fixedSize(horizontal: false, vertical: true)
                         }
                     }
                     .padding(12)
@@ -1072,24 +1137,24 @@ struct HomeHealthTrends: View {
             .accessibilityLabel(open ? "Collapse trends" : "Expand trends")
             if open {
                 Text(pattern.summary).font(.title3).fixedSize(horizontal: false, vertical: true)
-                Text(pattern.rule_note).font(.title3).fixedSize(horizontal: false, vertical: true)
+                Text(pattern.rule_note).font(.title3).foregroundStyle(HomeHealthInk.action).fixedSize(horizontal: false, vertical: true)
                 Text("Recent alerts and actions").font(.title3.bold())
                 ForEach(pattern.alerts) { event in
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("\(event.when) · \(event.what)").font(.title3.bold())
-                        Text(event.action).font(.title3).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+                        Text("\(event.when) · \(event.what)").font(.title3.bold()).foregroundStyle(HomeHealthInk.trigger)
+                        Text(event.action).font(.title3).foregroundStyle(HomeHealthInk.action).fixedSize(horizontal: false, vertical: true)
                     }
                 }
                 Text("Vitals against this patient's band").font(.title3.bold())
                 ForEach(pattern.vitals) { vital in
                     VStack(alignment: .leading, spacing: 4) {
                         Text(vital.name).font(.title3.bold())
-                        Text(vital.band).font(.title3).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+                        Text(vital.band).font(.title3).foregroundStyle(HomeHealthInk.baseline).fixedSize(horizontal: false, vertical: true)
                         HomeHealthSpark(points: vital.points, low: vital.low, high: vital.high)
-                        Text(vital.outside_note).font(.title3).foregroundStyle(.orange).fixedSize(horizontal: false, vertical: true)
+                        Text(vital.outside_note).font(.title3).foregroundStyle(HomeHealthInk.trigger).fixedSize(horizontal: false, vertical: true)
                     }
                 }
-                Text(pattern.horizon).font(.title3).fixedSize(horizontal: false, vertical: true)
+                Text(pattern.horizon).font(.title3).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
             }
         }
         .padding(12)

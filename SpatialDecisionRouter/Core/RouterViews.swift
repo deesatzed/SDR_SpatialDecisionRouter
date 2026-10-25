@@ -45,8 +45,8 @@ struct CrossroadsView: View {
         .onChange(of: layoutToken) { _, _ in }
     }
 
-    private func line(_ a: SIMD3<Float>, _ b: SIMD3<Float>) -> Entity {
-        let e = ModelEntity(mesh: .generateCylinder(height: simd_distance(a, b), radius: 0.003), materials: [UnlitMaterial(color: UIColor(white: 1, alpha: 0.22))])
+    private func line(_ a: SIMD3<Float>, _ b: SIMD3<Float>, alpha: CGFloat = 0.22) -> Entity {
+        let e = ModelEntity(mesh: .generateCylinder(height: simd_distance(a, b), radius: 0.003), materials: [UnlitMaterial(color: UIColor(white: 1, alpha: alpha))])
         e.position = (a + b) / 2; e.orientation = simd_quatf(from: [0, 1, 0], to: simd_normalize(b - a)); return e
     }
 
@@ -65,17 +65,23 @@ struct CrossroadsView: View {
         let home = cfg.id == "home_health"
         for (i, a) in cfg.agents.enumerated() {
             let p = engine.agentPosition(a.id)
-            // context nodes: quieter (smaller, translucent). Home-health outputs start small; sync lights the Pass target.
-            let dimOut = home && a.tier != 0
-            let node = ModelEntity(mesh: .generateSphere(radius: home ? 0.1 : (a.tier == 0 ? 0.08 : 0.1)),
-                                   materials: [SimpleMaterial(color: UIColor(hue: CGFloat(i) / CGFloat(cfg.agents.count + 1), saturation: dimOut ? 0.12 : 0.5, brightness: dimOut ? 0.45 : 0.9, alpha: dimOut ? 0.35 : 0.55), isMetallic: false)])
+            // Home spheres are solid work objects. Sync sizes them and lights the one that needs attention.
+            let radius: Float = home ? homeSphereRadius : (a.tier == 0 ? 0.08 : 0.1)
+            let node = ModelEntity(mesh: .generateSphere(radius: radius),
+                                   materials: [SimpleMaterial(color: UIColor(hue: CGFloat(i) / CGFloat(cfg.agents.count + 1), saturation: 0.5, brightness: 0.9, alpha: 0.55), isMetallic: false)])
             node.position = p; node.name = "agent-\(a.id)"; root.addChild(node)
-            if home { node.scale = SIMD3(repeating: a.tier == 0 ? 1.55 : 0.58) }
-            root.addChild(line(p, RouterEngine.hub))
+            if home {
+                node.scale = SIMD3(repeating: nodeRestScale(a.id))
+                let halo = ModelEntity(mesh: .generateSphere(radius: homeSphereRadius * 1.62),
+                                        materials: [UnlitMaterial(color: UIColor(white: 1, alpha: 0))])
+                halo.name = "halo"; halo.isEnabled = false; node.addChild(halo)
+            }
+            root.addChild(line(p, RouterEngine.hub, alpha: home ? 0.07 : 0.22))
             if let card = att.entity(for: "agent-\(a.id)") {
-                let sc: Float = home ? (a.tier == 0 ? 2.45 : 2.15) : 1.4
-                let dy: Float = home ? (a.tier == 0 ? -0.50 : 0.52) : (a.tier == 0 ? -0.2 : 0.24)
-                card.position = p + [0, dy, 0]; card.scale = [sc, sc, sc]
+                let sc: Float = home ? 1.7 : 1.4
+                let dy: Float = home ? homeLabelOffset(a, nodeRestScale(a.id)) : (a.tier == 0 ? -0.2 : 0.24)
+                card.name = home ? "label-\(a.id)" : "att-agent-\(a.id)"
+                card.position = p + [0, dy, home ? 0.06 : 0]; card.scale = [sc, sc, sc]
                 card.components.set(BillboardComponent()); root.addChild(card)
             }
         }
@@ -152,35 +158,72 @@ struct CrossroadsView: View {
         return "\(engine.config.id)|\(engine.focusStatusOpen)|\(engine.focusQueueOpen)|\(engine.detailOpen)|\(engine.homeShownLevel)|\(h?.id ?? "")|\(h?.proposal ?? "")|\(dest)|\(engine.stats.alertsFired)|\(engine.stats.corrections)|\(engine.packVersion)|\(moving)|\(load)|\(engine.homeSphereOpen ?? "")"
     }
 
-    private func highlightedDests() -> Set<String> {
-        var lit: Set<String> = []
-        if let h = engine.nowHandoff { lit.insert(engine.highlightedDest(h)) }
-        for h in engine.handoffs where engine.phase[h.id] == .outgoing {
-            lit.insert(engine.destFor[h.id] ?? h.link.dest)
-        }
-        return lit
-    }
+    /// Mesh radius for a home-health work sphere, before `nodeRestScale`.
+    private let homeSphereRadius: Float = 0.16
 
+    /// Queue load and route urgency. Idle destinations stay solid, just smaller.
     private func nodeRestScale(_ id: String) -> Float {
         guard engine.config.id == "home_health", let a = engine.agent(id) else { return 1 }
         if a.tier == 0 {
-            let n = Float(max(engine.queueCount(id), 1))
-            return min(1.85, 1.2 + 0.08 * (n - 1))
+            let n = Float(engine.queueCount(id))
+            return min(2.45, 1.35 + 0.16 * n)
         }
         let received = Float(engine.inbox[id] ?? 0)
-        if highlightedDests().contains(id) {
-            let route = engine.nowHandoff?.proposal ?? ""
+        if let route = attentionRoute(for: id) {
             let base: Float
             switch route {
-            case "urgent_page": base = 1.75
-            case "provider_task": base = 1.42
-            case "nurse_task": base = 1.28
-            case "silent_log": base = 1.05
-            default: base = 1.25
+            case "urgent_page": base = 2.2
+            case "provider_task": base = 1.85
+            case "nurse_task": base = 1.65
+            case "silent_log": base = 1.4
+            default: base = 1.55
             }
-            return min(2.0, base + 0.04 * received)
+            return min(2.55, base + 0.04 * received)
         }
-        return min(0.85, 0.48 + 0.05 * received)
+        return min(1.2, 0.95 + 0.06 * received)
+    }
+
+    /// The open case, or a Pass already in flight, is what makes a destination glow.
+    private func attentionRoute(for id: String) -> String? {
+        if let h = engine.nowHandoff, engine.highlightedDest(h) == id { return h.proposal }
+        return engine.handoffs.first {
+            engine.phase[$0.id] == .outgoing && (engine.destFor[$0.id] ?? $0.link.dest) == id
+        }?.proposal
+    }
+
+    private func homeLabelOffset(_ a: AgentSpec, _ scale: Float) -> Float {
+        let gap = homeSphereRadius * scale + 0.36
+        return a.tier == 0 ? -gap : gap
+    }
+
+    private struct SpherePaint {
+        var body: UIColor
+        var halo: UIColor
+        var haloAlpha: CGFloat
+        var haloScale: Float
+    }
+
+    /// Solid body. Halo only when this sphere needs a look: a waiting queue, or the destination of this Pass.
+    private func spherePaint(_ a: AgentSpec, route: String?) -> SpherePaint {
+        if a.tier == 0 {
+            let teal = UIColor(red: 0.10, green: 0.78, blue: 0.74, alpha: 1)
+            let waiting = engine.queueCount(a.id) > 0
+            return SpherePaint(body: teal, halo: teal, haloAlpha: waiting ? 0.40 : 0, haloScale: 1)
+        }
+        guard let route else {
+            return SpherePaint(body: UIColor(red: 0.58, green: 0.64, blue: 0.72, alpha: 1), halo: .white, haloAlpha: 0, haloScale: 1)
+        }
+        switch route {
+        case "urgent_page":
+            let c = UIColor(red: 0.96, green: 0.18, blue: 0.16, alpha: 1)
+            return SpherePaint(body: c, halo: c, haloAlpha: 0.55, haloScale: 1.2)
+        case "silent_log":
+            let c = UIColor(red: 0.16, green: 0.74, blue: 0.58, alpha: 1)
+            return SpherePaint(body: c, halo: c, haloAlpha: 0.34, haloScale: 1)
+        default:
+            let c = UIColor(red: 0.98, green: 0.58, blue: 0.12, alpha: 1)
+            return SpherePaint(body: c, halo: c, haloAlpha: 0.44, haloScale: 1.08)
+        }
     }
 
     private func moveAtt(_ e: Entity, _ p: SIMD3<Float>, _ sc: Float) {
@@ -214,23 +257,31 @@ struct CrossroadsView: View {
         }
     }
 
-    /// B: input nodes stay large. Output nodes stay small until this Pass would send the case there.
+    /// Work objects. Size follows queue load or the urgency of this Pass. Glow means look here.
     private func layoutHomeNodes() {
         let cfg = engine.config
-        let lit = highlightedDests()
-        for (i, a) in cfg.agents.enumerated() {
+        for a in cfg.agents {
             guard let n = root.findEntity(named: "agent-\(a.id)") as? ModelEntity else { continue }
             let want = nodeRestScale(a.id)
             let recent = pulsed[a.id].map { Date().timeIntervalSince($0) < 0.75 } ?? false
             if !recent, abs(n.scale.x - want) > 0.04 { n.scale = [want, want, want] }
-            let hue = CGFloat(i) / CGFloat(max(cfg.agents.count + 1, 1))
-            let isLit = lit.contains(a.id)
-            let alpha: CGFloat = a.tier == 0 ? 0.95 : (isLit ? 1 : 0.32)
-            let sat: CGFloat = a.tier == 0 ? 0.72 : (isLit ? 0.9 : 0.1)
-            let bri: CGFloat = a.tier == 0 ? 1 : (isLit ? 1 : 0.42)
+            let route = attentionRoute(for: a.id)
+            let paint = spherePaint(a, route: route)
             if var model = n.model {
-                model.materials = [UnlitMaterial(color: UIColor(hue: hue, saturation: sat, brightness: bri, alpha: alpha))]
+                model.materials = [UnlitMaterial(color: paint.body)]
                 n.model = model
+            }
+            if let halo = n.findEntity(named: "halo") as? ModelEntity {
+                halo.isEnabled = paint.haloAlpha > 0.02
+                if var model = halo.model {
+                    model.materials = [UnlitMaterial(color: paint.halo.withAlphaComponent(paint.haloAlpha))]
+                    halo.model = model
+                }
+                halo.scale = SIMD3(repeating: paint.haloScale)
+            }
+            if let card = root.findEntity(named: "label-\(a.id)") {
+                let dy = homeLabelOffset(a, want)
+                moveAtt(card, n.position + [0, dy, 0.06], 1.7)
             }
         }
     }
@@ -272,61 +323,84 @@ struct AgentCard: View {
     }
     #if os(visionOS)
     @State private var looking = false
-    private var lit: Bool {
-        guard agent.tier != 0 else { return false }
-        if let h = engine.nowHandoff, engine.highlightedDest(h) == agent.id { return true }
-        return engine.handoffs.contains { engine.phase[$0.id] == .outgoing && (engine.destFor[$0.id] ?? $0.link.dest) == agent.id }
-    }
-    /// Work object. Size is set on the sphere. The label names the queue or the on-call person, plus who is waiting.
+    /// Nameplate readable at distance: site plus count. Look or Show list opens who is waiting or who was sent.
     private var homeNode: some View {
-        let open = looking || engine.homeSphereOpen == agent.id
+        let pinned = engine.homeSphereOpen == agent.id
+        let open = looking || pinned
         let sent = engine.inbox[agent.id] ?? 0
-        let nowFields = engine.nowHandoff.flatMap { engine.items[$0.itemId]?.fields } ?? [:]
-        let nowRoute = engine.nowHandoff?.proposal ?? ""
-        let title: String = {
-            if agent.tier == 0 { return "Overseer queue" }
-            if lit { return HomeHealthSeat.recipientChip(route: nowRoute, fields: nowFields) }
-            return agent.name
-        }()
+        let count = agent.tier == 0 ? "\(queued) waiting" : "\(sent) sent"
+        let passHere = passRoute
+        let nowFields = passFields
         let lines = waitLines
-        return VStack(alignment: .leading, spacing: 6) {
-            Text(title).font(.title.bold()).lineLimit(2).frame(maxWidth: 340, alignment: .leading)
-            if agent.tier == 0 {
-                Text("\(queued) waiting").font(.title2.bold().monospacedDigit())
-                if let h = engine.nowHandoff {
-                    let why = HomeHealthBrief.hook(engine.items[h.itemId]?.fields ?? [:])
-                    if !why.isEmpty { Text(why).font(.title3).lineLimit(2).frame(maxWidth: 340, alignment: .leading) }
-                }
-            } else {
-                Text(lit ? "Pass sends here · not to you" : (sent == 0 ? "none sent yet" : "\(sent) sent"))
-                    .font(.title3)
-                    .foregroundStyle(lit ? Color.primary : Color.secondary)
-                    .lineLimit(2)
-                    .frame(maxWidth: 300, alignment: .leading)
-            }
-            if let first = lines.first {
-                Text(first).font(.title3).lineLimit(2).frame(maxWidth: 340, alignment: .leading)
+        return VStack(alignment: .leading, spacing: 8) {
+            Text("\(agent.name) · \(count)")
+                .font(.sdrHuge.bold())
+                .lineLimit(1)
+                .minimumScaleFactor(0.45)
+                .frame(maxWidth: 520, alignment: .leading)
+            if let passHere {
+                Text("This pass · \(HomeHealthSeat.recipientChip(route: passHere, fields: nowFields))")
+                    .font(.title.bold())
+                    .foregroundStyle(rim)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+                    .frame(maxWidth: 520, alignment: .leading)
             }
             if open {
-                ForEach(Array(lines.dropFirst().enumerated()), id: \.offset) { _, line in
-                    Text(line).font(.title3).foregroundStyle(.secondary).lineLimit(2).frame(maxWidth: 340, alignment: .leading)
+                Text(agent.tier == 0 ? "Waiting on you" : "Pass sends here. You are not the recipient.")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .frame(maxWidth: 460, alignment: .leading)
+                if lines.isEmpty {
+                    Text(agent.tier == 0 ? "Queue is clear" : "Nothing sent here yet")
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                }
+                ForEach(Array(lines.enumerated()), id: \.offset) { _, line in
+                    Text(line).font(.title3).lineLimit(2).frame(maxWidth: 460, alignment: .leading)
                 }
             }
-            if lines.count > 1 {
-                Button(open ? "Hide list" : "Show list") { engine.homeSphereToggle(agent.id) }
-                    .font(.title3.bold())
-                    .tint(.teal)
-            }
+            Button(pinned ? "Hide list" : "Show list") { engine.homeSphereToggle(agent.id) }
+                .font(.title2.bold())
+                .tint(.teal)
         }
         .padding(16)
         .sdrPanel()
-        .overlay(RoundedRectangle(cornerRadius: 18).stroke(lit ? Color.white.opacity(0.9) : Color.clear, lineWidth: 3))
-        .opacity(agent.tier == 0 || lit ? 1 : 0.9)
+        .overlay(RoundedRectangle(cornerRadius: 18).stroke(rim, lineWidth: passRoute != nil || (agent.tier == 0 && queued > 0) ? 4 : 1.5))
         .onContinuousHover { phase in
             switch phase {
             case .ended: looking = false
             default: looking = true
             }
+        }
+    }
+    /// Route that currently lights this destination: the open case, or a Pass in flight.
+    private var passRoute: String? {
+        guard agent.tier != 0 else { return nil }
+        if let h = engine.nowHandoff, engine.highlightedDest(h) == agent.id { return h.proposal }
+        return engine.handoffs.first {
+            engine.phase[$0.id] == .outgoing && (engine.destFor[$0.id] ?? $0.link.dest) == agent.id
+        }?.proposal
+    }
+    private var passFields: [String: String] {
+        if let h = engine.nowHandoff, engine.highlightedDest(h) == agent.id {
+            return engine.items[h.itemId]?.fields ?? [:]
+        }
+        if let h = engine.handoffs.first(where: {
+            engine.phase[$0.id] == .outgoing && (engine.destFor[$0.id] ?? $0.link.dest) == agent.id
+        }) {
+            return engine.items[h.itemId]?.fields ?? [:]
+        }
+        return [:]
+    }
+    private var rim: Color {
+        if agent.tier == 0 { return queued > 0 ? .teal : Color.white.opacity(0.35) }
+        guard let route = passRoute else { return Color.white.opacity(0.35) }
+        switch route {
+        case "urgent_page": return .red
+        case "silent_log": return .teal
+        default: return .orange
         }
     }
     private var waitLines: [String] {
