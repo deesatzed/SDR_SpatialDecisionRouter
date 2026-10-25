@@ -22,6 +22,10 @@ import SwiftUI
     private var counts: [String: Int] = [:]
     private var reviewed = 0
     private var urgentConfirmed = 0
+    /// Active review seat. The engine mirrors this on `homeReviewRole` so the face refreshes.
+    var reviewRole: HomeHealthRole = .overseer
+    /// Set for the duration of a Bedside or Nurse action so the ledger records that verb.
+    var pendingReviewAction: String?
 
     init() {
         config = (try? DomainLoader.config(named: "homehealth.domain"))
@@ -43,6 +47,8 @@ import SwiftUI
         counts = [:]
         reviewed = 0
         urgentConfirmed = 0
+        reviewRole = .overseer
+        pendingReviewAction = nil
         queue = []
         loadPatterns()
         if let pack = Self.loadPack() {
@@ -148,6 +154,7 @@ import SwiftUI
 
     func downstreamPreview(item: DomainItem, link: LinkSpec, answer: String) -> String? {
         guard link.id == "route" else { return nil }
+        if reviewRole != .overseer { return rolePreview(item: item, answer: answer) }
         let who = HomeHealthSeat.recipient(route: answer, fields: item.fields)
         let meaning = [
             "silent_log": "Log only. No page and no handoff. Nobody is tasked. The Overseer is not the recipient.",
@@ -166,6 +173,29 @@ import SwiftUI
             text += ". No device ticket"
         }
         return text
+    }
+
+    /// Bedside and Nurse previews name the action. Overseer keeps `downstreamPreview` above.
+    private func rolePreview(item: DomainItem, answer: String) -> String {
+        if let id = pendingReviewAction,
+           let action = HomeHealthVocabulary.action(role: reviewRole, id: id, fields: item.fields) {
+            return action.preview
+        }
+        return HomeHealthVocabulary.suggested(role: reviewRole, route: answer, fields: item.fields).preview
+    }
+
+    /// Ledger context. Overseer stays `review_role: overseer` with no action id.
+    /// Bedside and Nurse add `review_action` and the synthetic recipient for that action.
+    func ledgerFields(item: DomainItem) -> [String: String] {
+        var fields = item.fields
+        fields["review_role"] = reviewRole.rawValue
+        guard reviewRole != .overseer, let actionId = pendingReviewAction,
+              let action = HomeHealthVocabulary.action(role: reviewRole, id: actionId, fields: item.fields) else {
+            return fields
+        }
+        fields["review_action"] = action.id
+        fields["recipient"] = action.chip
+        return fields
     }
 
     func detail(item: DomainItem, section: String) -> [(String, String)]? {
@@ -294,7 +324,7 @@ import SwiftUI
             "decision_source": live == true ? "live" : "bundled",
             "engine_version": engineVersion,
             "params_version": paramsVersion,
-            "review_role": "overseer",
+            "review_role": "overseer", // replaced at decision time by the active seat
             "recipient": HomeHealthSeat.recipient(route: route, fields: [
                 "goals": v.goals, "route": route,
             ]) ?? "log only",
@@ -393,6 +423,248 @@ enum HomeHealthSeat {
     /// Same split the engine already uses: urgent_page flies to the page node, other routes to the desk.
     static func deskId(for route: String) -> String {
         route == "urgent_page" ? "urgent" : "routes"
+    }
+}
+
+/// One review seat. The face shows one of these at a time.
+enum HomeHealthRole: String, CaseIterable, Identifiable {
+    case overseer, bedside, nurse
+    var id: String { rawValue }
+    var title: String {
+        switch self {
+        case .overseer: "Overseer"
+        case .bedside: "Bedside"
+        case .nurse: "Nurse HITM"
+        }
+    }
+    /// Headline on the card and the status strip. Overseer text is the shipped line.
+    var framing: String {
+        switch self {
+        case .overseer: "Overseeing · routes to on-call"
+        case .bedside: "Bedside · covering clinician"
+        case .nurse: "Nurse HITM"
+        }
+    }
+    var badge: String {
+        switch self {
+        case .overseer: "Physician"
+        case .bedside: "Clinician"
+        case .nurse: "Nurse"
+        }
+    }
+    var blurb: String {
+        switch self {
+        case .overseer: ""
+        case .bedside: "Covering this patient. Not the regional overseer."
+        case .nurse: "Nursing actions for this patient. Not the physician router."
+        }
+    }
+    var help: String {
+        switch self {
+        case .overseer: "Physician router. Pass sends the route to on-call. You are not the recipient."
+        case .bedside: "Covering clinician for this patient. Your own actions, not an Overseer pass."
+        case .nurse: "Nurse HITM. Schedule, call, check a device, escalate, or log only."
+        }
+    }
+}
+
+/// One button in a role's action vocabulary. `route` is the Layer 1 answer the engine still records.
+struct HomeHealthAction: Identifiable, Equatable {
+    let id: String
+    let title: String
+    let route: String
+    let chip: String
+    let help: String
+    let preview: String
+    /// Tint when this action is not the one that fits the current route. The fit stays green.
+    var alternateTint: Color {
+        id == "page_on_call" || id == "escalate_on_call_md" ? .red : .blue
+    }
+}
+
+/// Bedside and Nurse verbs. Overseer display still goes through `HomeHealthSeat`.
+enum HomeHealthVocabulary {
+    static func actions(role: HomeHealthRole, fields: [String: String]) -> [HomeHealthAction] {
+        switch role {
+        case .overseer: []
+        case .bedside: bedside(fields)
+        case .nurse: nurse(fields)
+        }
+    }
+
+    static func action(role: HomeHealthRole, id: String, fields: [String: String]) -> HomeHealthAction? {
+        actions(role: role, fields: fields).first { $0.id == id }
+    }
+
+    /// The green button. Chosen from Layer 1's route so the lit sphere and the verb agree.
+    static func suggested(role: HomeHealthRole, route: String, fields: [String: String]) -> HomeHealthAction {
+        let all = actions(role: role, fields: fields)
+        let id = suggestedId(role: role, route: route, fields: fields)
+        if let match = all.first(where: { $0.id == id }) { return match }
+        if let first = all.first { return first }
+        let chip = HomeHealthSeat.recipientChip(route: route, fields: fields)
+        return HomeHealthAction(id: "overseer", title: "Pass", route: route, chip: chip, help: "", preview: chip)
+    }
+
+    static func faceChip(role: HomeHealthRole, route: String, fields: [String: String]) -> String {
+        if role == .overseer { return HomeHealthSeat.recipientChip(route: route, fields: fields) }
+        return suggested(role: role, route: route, fields: fields).chip
+    }
+
+    /// Sent-list line. Overseer recomputes the on-call label. Other roles use the logged chip.
+    static func sentChip(route: String, fields: [String: String]) -> String {
+        let role = HomeHealthRole(rawValue: fields["review_role"] ?? "") ?? .overseer
+        if role == .overseer { return HomeHealthSeat.recipientChip(route: route, fields: fields) }
+        if let chip = fields["recipient"], !chip.isEmpty { return chip }
+        return faceChip(role: role, route: route, fields: fields)
+    }
+
+    static func sphereTitle(role: HomeHealthRole, agent: AgentSpec) -> String {
+        if role == .overseer { return agent.name }
+        switch (role, agent.id) {
+        case (.bedside, "layer1"): return "Covering list"
+        case (.bedside, "routes"): return "Care tasks"
+        case (.bedside, "urgent"): return "On-call MD"
+        case (.nurse, "layer1"): return "Nurse list"
+        case (.nurse, "routes"): return "Visits and calls"
+        case (.nurse, "urgent"): return "On-call MD"
+        default: return agent.name
+        }
+    }
+
+    static func sphereNote(role: HomeHealthRole, tier: Int) -> String {
+        if role == .overseer {
+            return tier == 0 ? "Waiting on you" : "Pass sends here. You are not the recipient."
+        }
+        if tier == 0 {
+            return role == .bedside ? "Patients you are covering" : "Cases for nursing review"
+        }
+        return role == .bedside
+            ? "This action sends here. A page goes to the on-call physician, not to you."
+            : "This action sends here. You are not the on-call physician."
+    }
+
+    static func whoReceives(role: HomeHealthRole, fields: [String: String]) -> String {
+        let route = fields["route"] ?? ""
+        let action = suggested(role: role, route: route, fields: fields)
+        switch role {
+        case .overseer:
+            return action.chip
+        case .bedside:
+            return "\(action.chip). You are covering this patient. Not an Overseer pass."
+        case .nurse:
+            return "\(action.chip). Nursing action. Not an Overseer pass."
+        }
+    }
+
+    private static func suggestedId(role: HomeHealthRole, route: String, fields: [String: String]) -> String {
+        let ticket = fields["ticket_type"] ?? "none"
+        let device = !ticket.isEmpty && ticket != "none"
+        switch role {
+        case .overseer:
+            return "overseer"
+        case .bedside:
+            switch route {
+            case "urgent_page": return "page_on_call"
+            case "nurse_task": return "request_nurse_visit"
+            case "provider_task": return "document_plan"
+            default: return "acknowledge_continue"
+            }
+        case .nurse:
+            switch route {
+            case "urgent_page": return "escalate_on_call_md"
+            case "nurse_task": return "schedule_visit"
+            case "provider_task": return "call_patient"
+            default: return device ? "device_check" : "log_only"
+            }
+        }
+    }
+
+    private static func onCallNurse(_ fields: [String: String]) -> String {
+        HomeHealthSeat.recipient(route: "nurse_task", fields: fields) ?? "Night nurse"
+    }
+
+    private static func bedside(_ fields: [String: String]) -> [HomeHealthAction] {
+        let nurse = onCallNurse(fields)
+        return [
+            HomeHealthAction(
+                id: "acknowledge_continue",
+                title: "Acknowledge & continue",
+                route: "silent_log",
+                chip: "You continue care",
+                help: "You keep caring for this patient. No page and no handoff.",
+                preview: "Bedside acknowledges and continues. No page. The covering clinician keeps the case."),
+            HomeHealthAction(
+                id: "request_nurse_visit",
+                title: "Request nurse visit",
+                route: "nurse_task",
+                chip: "Nurse visit · \(nurse)",
+                help: "Ask \(nurse) for a visit or a check. You are not passing the case as the Overseer.",
+                preview: "Bedside requests a nurse visit for \(nurse). Not an Overseer pass."),
+            HomeHealthAction(
+                id: "document_plan",
+                title: "Document plan",
+                route: "silent_log",
+                chip: "Plan stays with you",
+                help: "Write the plan on this case. It stays with you. Not a pass to the On-call HH MD.",
+                preview: "Bedside documents the plan on this case. No page. Not passed to the On-call HH MD."),
+            HomeHealthAction(
+                id: "page_on_call",
+                title: "Page on-call",
+                route: "urgent_page",
+                chip: "Page · On-call HH MD",
+                help: "Page the On-call HH MD. You are not paged.",
+                preview: "Bedside pages the On-call HH MD. The covering clinician is not the recipient."),
+        ]
+    }
+
+    private static func nurse(_ fields: [String: String]) -> [HomeHealthAction] {
+        let nurse = onCallNurse(fields)
+        let hospice = nurse == "On-call hospice nurse"
+        return [
+            HomeHealthAction(
+                id: "schedule_visit",
+                title: "Schedule visit",
+                route: "nurse_task",
+                chip: hospice ? "Hospice visit · you schedule" : "Visit · you schedule",
+                help: "Schedule or confirm your visit. This is your visit, not a pass from the Overseer.",
+                preview: "Nurse HITM schedules or confirms the visit. The nurse owns the visit."),
+            HomeHealthAction(
+                id: "call_patient",
+                title: "Call patient",
+                route: "nurse_task",
+                chip: "Call · patient or caregiver",
+                help: "Call the patient or caregiver. Synthetic contact. Not a page to the on-call physician.",
+                preview: "Nurse HITM calls the patient or caregiver. Not a page to the On-call HH MD."),
+            HomeHealthAction(
+                id: "device_check",
+                title: "Device check",
+                route: "silent_log",
+                chip: "Device check · oximetry",
+                help: "Check the device or a resting oximetry reading. No page.",
+                preview: "Nurse HITM checks the device or oximetry. No page and no on-call handoff."),
+            HomeHealthAction(
+                id: "escalate_on_call_md",
+                title: "Escalate to on-call MD",
+                route: "urgent_page",
+                chip: "Escalate · On-call HH MD",
+                help: "Escalate to the On-call HH MD. You are not that physician.",
+                preview: "Nurse HITM escalates to the On-call HH MD. The nurse is not paged."),
+            HomeHealthAction(
+                id: "escalate_on_call_nurse",
+                title: "Escalate to on-call nurse",
+                route: "nurse_task",
+                chip: "Escalate · \(nurse)",
+                help: "Escalate to \(nurse). Different from scheduling your own visit.",
+                preview: "Nurse HITM escalates to \(nurse). Different from scheduling the nurse's own visit."),
+            HomeHealthAction(
+                id: "log_only",
+                title: "Log only",
+                route: "silent_log",
+                chip: "Log only",
+                help: "No visit, no call, and no page. The note is logged.",
+                preview: "Nurse HITM logs only. No page and no handoff."),
+        ]
     }
 }
 
@@ -510,7 +782,7 @@ enum HomeHealthBrief {
         return Array(bits.prefix(4).map(\.2))
     }
 
-    static func rules(_ f: [String: String]) -> [(String, String)] {
+    static func rules(_ f: [String: String], role: HomeHealthRole = .overseer) -> [(String, String)] {
         let s = signals(f)
         let oxygenLead = s.oxygen && !s.fall && !s.neuro && !s.chest
         var bits: [(Int, Int, String, String)] = []
@@ -533,10 +805,14 @@ enum HomeHealthBrief {
             || (s.chest && (rule.localizedCaseInsensitiveContains("chest") || reason.localizedCaseInsensitiveContains("angina")))
         if !body.isEmpty { add(matched ? 100 : 78, "Rule on this case", body) }
         let routeId = f["route"] ?? ""
-        if let who = HomeHealthSeat.recipient(route: routeId, fields: f) {
-            add(97, "Who receives it", "\(who). The Overseer reviews the route and does not receive it.")
+        if role == .overseer {
+            if let who = HomeHealthSeat.recipient(route: routeId, fields: f) {
+                add(97, "Who receives it", "\(who). The Overseer reviews the route and does not receive it.")
+            } else {
+                add(97, "Who receives it", "Log only. No on-call person is tasked.")
+            }
         } else {
-            add(97, "Who receives it", "Log only. No on-call person is tasked.")
+            add(97, "Who receives it", HomeHealthVocabulary.whoReceives(role: role, fields: f))
         }
         if s.homeGas, let q = quote(f, ["gold", "cannula", "commode", "litre", "liter"]) { add(96, "Oxygen setup", q) }
         if oxygenLead, let usual = usualOxygen(f) { add(92, "Their usual oxygen", usual) }
@@ -881,7 +1157,7 @@ enum HomeHealthInk {
     }
 }
 
-/// L0 awareness. Pass and Modify stay here while story, rules, and the chart cascade beside the card.
+/// L0 awareness. The active role's actions stay here while story, rules, and the chart cascade beside the card.
 struct HomeHealthNowFace: View {
     @Environment(RouterEngine.self) private var engine
     let handoff: Handoff
@@ -889,23 +1165,32 @@ struct HomeHealthNowFace: View {
     private let levels = ["Awareness", "Patient details", "Rules", "More"]
     var body: some View {
         let route = handoff.proposal
+        let role = engine.homeRole
         let ticket = item.fields["ticket_type"] ?? "none"
         let hook = HomeHealthBrief.hook(item.fields)
         let badge = engine.domain.riskBadge(item: item) ?? ""
         let shown = engine.homeShownLevel
         let pinned = engine.homePinnedLevel
+        let recipient = role == .overseer
+            ? HomeHealthSeat.recipientChip(route: route, fields: item.fields)
+            : HomeHealthVocabulary.faceChip(role: role, route: route, fields: item.fields)
         VStack(alignment: .leading, spacing: 16) {
             HStack(alignment: .center, spacing: 10) {
-                Text(HomeHealthSeat.framing).font(.title3.bold()).lineLimit(1)
+                Text(role.framing).font(.title3.bold()).lineLimit(1)
                 Spacer(minLength: 8)
-                Text("Physician").font(.headline.bold()).foregroundStyle(.black)
+                Text(role.badge).font(.headline.bold()).foregroundStyle(.black)
                     .padding(.horizontal, 10).padding(.vertical, 4)
                     .background(.white.opacity(0.85), in: Capsule())
             }
             HStack(spacing: 8) {
-                roleSlot("Overseer", selected: true, later: false)
-                roleSlot("Bedside", selected: false, later: true)
-                roleSlot("Nurse HITM", selected: false, later: true)
+                ForEach(HomeHealthRole.allCases) { seat in
+                    roleChip(seat, selected: seat == role)
+                }
+            }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("Review role, one at a time")
+            if role != .overseer {
+                Text(role.blurb).font(.title3).foregroundStyle(.secondary).lineLimit(2)
             }
             HStack(alignment: .center, spacing: 12) {
                 Text("NOW").font(.title3.bold()).padding(.horizontal, 12).padding(.vertical, 5)
@@ -926,12 +1211,12 @@ struct HomeHealthNowFace: View {
                         .gloss(NowCard.badgeKey(badge))
                 }
             }
-            Text(HomeHealthSeat.recipientChip(route: route, fields: item.fields))
-                .font(.title2.bold()).lineLimit(1)
+            Text(recipient)
+                .font(.title2.bold()).lineLimit(1).minimumScaleFactor(0.6)
                 .foregroundStyle(.black)
                 .padding(.horizontal, 14).padding(.vertical, 6)
-                .background(route == "silent_log" ? Color.gray.opacity(0.55) : Color.white.opacity(0.9), in: Capsule())
-                .gloss("recipient")
+                .background(recipientFill(role: role, route: route), in: Capsule())
+                .gloss(role == .overseer ? "recipient" : "role recipient")
             let trigger = item.fields["pattern_trigger"] ?? ""
             let week = item.fields["pattern_headline"] ?? ""
             let chip = HomeHealthBrief.patientChip(item.fields)
@@ -959,13 +1244,29 @@ struct HomeHealthNowFace: View {
                     .background(.orange, in: Capsule()).gloss("device ticket")
             }
             FlowRow(spacing: 12) {
-                Button(handoff.trigger != nil ? "Acknowledge ✓" : (handoff.link.id == engine.config.review.escalationLink ? "Sign off ✓" : HomeHealthSeat.passTitle(route: route, fields: item.fields))) { engine.pass(handoff.id) }
+                if role == .overseer {
+                    Button(handoff.trigger != nil ? "Acknowledge ✓" : (handoff.link.id == engine.config.review.escalationLink ? "Sign off ✓" : HomeHealthSeat.passTitle(route: route, fields: item.fields))) {
+                        if let seat = engine.domain as? HomeHealthDomain {
+                            seat.reviewRole = .overseer
+                            seat.pendingReviewAction = nil
+                        }
+                        engine.pass(handoff.id)
+                    }
                     .tint(.green)
                     .help(route == "silent_log" ? "No page and no handoff. Acknowledge and log the decision. Nobody is tasked." : "Sends the route to the on-call recipient. You are not the recipient.")
-                if handoff.link.answerType == .binary { Button("Flip") { engine.flip(handoff.id) }.tint(.orange) }
-                else if handoff.trigger == nil { Button("Change route…") { engine.openRing(handoff.id) }.tint(.blue) }
-                if handoff.trigger == nil, handoff.link.id == engine.config.review.escalationLink {
-                    Button("Escalate") { engine.escalate(handoff.id) }.tint(.red)
+                    if handoff.link.answerType == .binary { Button("Flip") { engine.flip(handoff.id) }.tint(.orange) }
+                    else if handoff.trigger == nil { Button("Change route…") { engine.openRing(handoff.id) }.tint(.blue) }
+                    if handoff.trigger == nil, handoff.link.id == engine.config.review.escalationLink {
+                        Button("Escalate") { engine.escalate(handoff.id) }.tint(.red)
+                    }
+                } else {
+                    let suggested = HomeHealthVocabulary.suggested(role: role, route: route, fields: item.fields).id
+                    ForEach(HomeHealthVocabulary.actions(role: role, fields: item.fields)) { action in
+                        Button(action.title) { commit(action, proposal: route, as: role) }
+                            .tint(action.id == suggested ? .green : action.alternateTint)
+                            .help(action.help)
+                            .accessibilityLabel(action.id == suggested ? "\(action.title), suggested" : action.title)
+                    }
                 }
                 if shown > pinned {
                     Button("Pin") { engine.homeCascade() }.tint(.teal)
@@ -989,7 +1290,7 @@ struct HomeHealthNowFace: View {
                     .accessibilityLabel(i < shown ? "Collapse to \(levels[i])" : (i == shown ? levels[i] : "Cascade to \(levels[i])"))
                 }
             }
-            Text(shown == 0 ? "Look to cascade. Expand pins the next layer. Logged for later training." : "Collapse peels one layer. The route controls stay here. You are not the recipient.")
+            Text(footer(role: role, shown: shown))
                 .font(.title3).foregroundStyle(.secondary).lineLimit(2)
         }
         .sdrWidth(860).padding(28).sdrPanel()
@@ -1008,18 +1309,56 @@ struct HomeHealthNowFace: View {
         }
         #endif
     }
-    private func roleSlot(_ title: String, selected: Bool, later: Bool) -> some View {
-        Button {} label: {
-            Text(later ? "\(title) · Later" : title)
+    private func commit(_ action: HomeHealthAction, proposal: String, as role: HomeHealthRole) {
+        guard role != .overseer, let seat = engine.domain as? HomeHealthDomain else { return }
+        seat.reviewRole = role
+        seat.pendingReviewAction = action.id
+        if action.route == proposal { engine.pass(handoff.id) }
+        else { engine.select(handoff.id, action.route) }
+        seat.pendingReviewAction = nil
+        seat.reviewRole = engine.homeRole
+    }
+    private func roleChip(_ role: HomeHealthRole, selected: Bool) -> some View {
+        Button { engine.homeSetRole(role.rawValue) } label: {
+            Text(role.title)
                 .font(.headline.bold())
+                .lineLimit(1)
                 .padding(.horizontal, 12).padding(.vertical, 6)
-                .foregroundStyle(selected ? Color.black : Color.secondary)
+                .foregroundStyle(selected ? Color.black : Color.primary)
                 .background(selected ? Color.white.opacity(0.9) : Color.white.opacity(0.08), in: Capsule())
-                .overlay(Capsule().stroke(Color.white.opacity(selected ? 0 : 0.25), lineWidth: 1))
+                .overlay(Capsule().stroke(Color.white.opacity(selected ? 0 : 0.35), lineWidth: 1))
         }
         .buttonStyle(.plain)
-        .disabled(later)
-        .accessibilityLabel(later ? "\(title), later" : title)
+        .help(role.help)
+        .accessibilityLabel(selected ? "\(role.title), selected" : "Switch to \(role.title)")
+        .accessibilityAddTraits(selected ? AccessibilityTraits.isSelected : AccessibilityTraits())
+    }
+    private func recipientFill(role: HomeHealthRole, route: String) -> Color {
+        if role == .overseer {
+            return route == "silent_log" ? Color.gray.opacity(0.55) : Color.white.opacity(0.9)
+        }
+        let id = HomeHealthVocabulary.suggested(role: role, route: route, fields: item.fields).id
+        switch id {
+        case "acknowledge_continue", "document_plan", "device_check", "log_only":
+            return Color.gray.opacity(0.55)
+        default:
+            return Color.white.opacity(0.9)
+        }
+    }
+    private func footer(role: HomeHealthRole, shown: Int) -> String {
+        if role == .overseer {
+            return shown == 0
+                ? "Look to cascade. Expand pins the next layer. Logged for later training."
+                : "Collapse peels one layer. The route controls stay here. You are not the recipient."
+        }
+        if shown == 0 {
+            return role == .bedside
+                ? "Green fits this route. You are covering this patient. Logged for later training."
+                : "Green fits this route. Nursing actions stay here. Logged for later training."
+        }
+        return role == .bedside
+            ? "Collapse peels one layer. Bedside actions stay on this face."
+            : "Collapse peels one layer. Nursing actions stay on this face."
     }
     private func shortBadge(_ b: String) -> String {
         if b.hasPrefix("L1 live") { return "L1 live" }
@@ -1053,7 +1392,7 @@ struct HomeHealthDossier: View {
                 if level >= 2 {
                     Divider()
                     Text("Rules for this situation").font(.title2.bold())
-                    ForEach(Array(HomeHealthBrief.rules(item.fields).enumerated()), id: \.offset) { _, row in
+                    ForEach(Array(HomeHealthBrief.rules(item.fields, role: engine.homeRole).enumerated()), id: \.offset) { _, row in
                         VStack(alignment: .leading, spacing: 4) {
                             Text(row.0).font(.title3.bold()).foregroundStyle(HomeHealthInk.label)
                             Text(row.1).font(.title2).foregroundStyle(HomeHealthInk.rule(row.0, row.1)).fixedSize(horizontal: false, vertical: true)

@@ -24,11 +24,17 @@ The six cases are copied from the synthetic library (fact text only):
 | LX4-009 | `provider_task` | none |
 | HK6-007 | `urgent_page` | none |
 
-**Log only** acknowledges a silent log: no page and no handoff. **Pass to …** sends a clinical route to the named on-call person. **Change route…** opens the other routes. This decision is a category, so Flip is not offered. Passing `urgent_page` sends the handoff to the On-call HH MD sphere. The Overseer is not that person.
+**Log only** acknowledges a silent log: no page and no handoff. **Pass to …** sends a clinical route to the named on-call person. **Change route…** opens the other routes. This decision is a category, so Flip is not offered. Passing `urgent_page` sends the handoff to the On-call HH MD sphere. The Overseer is not that person. Those three controls are the Overseer vocabulary. Bedside and Nurse HITM do not use them.
+
+## Review roles
+
+One role is active at a time. The card opens as **Overseer**. Chips on the face switch to **Bedside** or **Nurse HITM** and back. The case stays put. Layer 1's route chip does not change when you switch. Leaving Home health and opening it again starts on Overseer.
+
+Every decision writes `review_role` on the ledger context (`card_payload.review_role`): `overseer`, `bedside`, or `nurse`. Bedside and Nurse also write `review_action` (the verb id below) and set `recipient` to that action's synthetic chip. Overseer does not write `review_action`. The pass or route change is already the Overseer verb. Nothing in this build trains a model.
 
 ## Overseer role contract
 
-Home health in this app is one role: **Overseer**. The Overseer is always a physician. Bedside and Nurse HITM are visible on the card as **Later** and do nothing yet. One role is active at a time. A switcher can come later. It is not built here.
+The Overseer is always a physician, the regional router. Chrome reads **Overseeing · routes to on-call** and the badge reads **Physician**. Bedside and Nurse are active chips on the same row.
 
 The Overseer does not receive the clinical work. Pass records the physician's decision and routes it to the on-call for that setting:
 
@@ -42,7 +48,43 @@ The Overseer does not receive the clinical work. Pass records the physician's de
 
 Those names are synthetic labels. They are not staff at a named health system. Layer 1 still chooses the route. The labels only say who the route is for.
 
-Every Pass and route change is written to the existing decision ledger (`downstreamPreview` names the recipient, and the case context includes `review_role: overseer`). That log is for later training phases. Nothing in this build trains a model.
+Spheres stay **Overseer queue · N waiting**, **On-call desk · N sent**, and **On-call HH MD · N sent**. Pass still flies to the desk, or to On-call HH MD for a page. **This pass ·** is the same recipient chip. Log only does not page anyone.
+
+## Bedside
+
+Bedside is the covering clinician for **this** patient, not the multi-site router. Chrome reads **Bedside · covering clinician** and the badge reads **Clinician**. The line under the chips says you are covering this patient.
+
+There is no **Pass to on-call HH MD** button. The green button is the verb that fits Layer 1's route. The others are always there.
+
+| Button | When it is green | Route recorded | Recipient chip |
+|---|---|---|---|
+| Acknowledge & continue | `silent_log` | `silent_log` | You continue care |
+| Request nurse visit | `nurse_task` | `nurse_task` | Nurse visit · Night nurse, or On-call hospice nurse when goals say hospice or comfort-focused |
+| Document plan | `provider_task` | `silent_log` | Plan stays with you |
+| Page on-call | `urgent_page` | `urgent_page` | Page · On-call HH MD |
+
+`review_action` is `acknowledge_continue`, `request_nurse_visit`, `document_plan`, or `page_on_call`. A page still flies to the On-call HH MD sphere. You are not paged. A visit request flies to the care-tasks sphere (the same node as the Overseer's on-call desk). Acknowledge and Document plan stay with you and do not page.
+
+Sphere nameplates while Bedside is selected: **Covering list**, **Care tasks**, **On-call MD**. Switching back to Overseer restores the Overseer names.
+
+## Nurse HITM
+
+Nurse HITM is the nursing seat. Chrome reads **Nurse HITM** and the badge reads **Nurse**. The verbs are not the Overseer pass set.
+
+| Button | When it is green | Route recorded | Recipient chip |
+|---|---|---|---|
+| Schedule visit | `nurse_task` | `nurse_task` | Visit · you schedule (Hospice visit · you schedule when goals say hospice or comfort-focused) |
+| Call patient | `provider_task` | `nurse_task` | Call · patient or caregiver |
+| Device check | `silent_log` with a device ticket | `silent_log` | Device check · oximetry |
+| Escalate to on-call MD | `urgent_page` | `urgent_page` | Escalate · On-call HH MD |
+| Escalate to on-call nurse | not the default | `nurse_task` | Escalate · Night nurse, or On-call hospice nurse when goals say hospice or comfort-focused |
+| Log only | `silent_log` without a device ticket | `silent_log` | Log only |
+
+`review_action` is `schedule_visit`, `call_patient`, `device_check`, `escalate_on_call_md`, `escalate_on_call_nurse`, or `log_only`. Escalate to on-call MD flies to the On-call MD sphere. You are not that physician. Schedule, call, device check, escalate-to-nurse, and log only use the visits-and-calls sphere.
+
+Sphere nameplates while Nurse HITM is selected: **Nurse list**, **Visits and calls**, **On-call MD**.
+
+Patient or caregiver is a synthetic role label. It is not a name and not a phone number.
 
 ### Cascade
 
@@ -61,7 +103,7 @@ Active problems are problem-list lines that match this situation (atrial fibrill
 
 ### Trends
 
-`PX-COPD-01` is a synthetic pattern fixture and the first card in the queue. It is not one of the six library cases, and Layer 1 did not compute it. The badge says **Pattern fixture**. **Why now** on the face is today’s SpO2 84% (sit up) / 85% (commode), recovered to band. The patient chip’s night SpO₂ 91 is labeled **baseline**, not the alert. **This week** under that is the pattern: eight similar alerts, mostly on position change, resting SpO2 usually in band. The button is **Log only** (no page, no handoff).
+`PX-COPD-01` is a synthetic pattern fixture and the first card in the queue. It is not one of the six library cases, and Layer 1 did not compute it. The badge says **Pattern fixture**. **Why now** on the face is today’s SpO2 84% (sit up) / 85% (commode), recovered to band. The patient chip’s night SpO₂ 91 is labeled **baseline**, not the alert. **This week** under that is the pattern: eight similar alerts, mostly on position change, resting SpO2 usually in band. On Overseer the button is **Log only** (no page, no handoff). On Bedside the green button is **Acknowledge & continue**. On Nurse HITM it is **Log only**.
 
 **Patient details** shows **Trends** collapsed to that line. **Show** opens recent alerts and actions, SpO2 and heart-rate bars (teal inside this patient’s band, orange outside it), the note that the positional-desat preference was adjusted to log only, and a longer hint: a similar rise in exertion-related alerts about three months ago came before a pneumonia admission, and today’s alerts are not that pattern. **Hide** collapses it. The same scroller still moves the rest of the dossier.
 
@@ -75,11 +117,11 @@ The open case starts as **awareness**: what needs you, how serious the route chi
 
 | Layer | What you should see |
 |---|---|
-| Near, center | `HomeHealthNowFace` (L0). Overseer framing, case id, colored route chip, recipient chip, patient chip, and one clinical line for **this** situation (a fall on a blood thinner leads with the fall and the drug; a low oxygen reading leads with that reading). A pattern card adds **Why now** (the event) above **This week** (the pattern). **Log only** or **Pass to …** and **Change route…** stay on this face. |
+| Near, center | `HomeHealthNowFace` (L0). Role chips, then the active framing, case id, colored route chip, recipient chip, patient chip, and one clinical line for **this** situation (a fall on a blood thinner leads with the fall and the drug; a low oxygen reading leads with that reading). A pattern card adds **Why now** (the event) above **This week** (the pattern). Overseer keeps **Log only** or **Pass to …** and **Change route…** on this face. Bedside and Nurse HITM keep their own verbs on this face. |
 | Beside, when cascaded | `HomeHealthDossier` inside a fixed-height scroller. **Patient details**, then **Rules**, then the chart. **More** adds the note and the trend. |
-| Mid-left | `BoardView.homeStatus`: **Overseer**, then large **Reviewed**, **Alerts**, **Corrections**. **Show** opens the log. The strip moves up while a dossier is open. It grows and pulses only when Alerts or Corrections are above zero. |
+| Mid-left | `BoardView.homeStatus`: the active role title (**Overseer**, **Bedside**, or **Nurse HITM**), then large **Reviewed**, **Alerts**, **Corrections**. **Show** opens the log. The strip moves up while a dossier is open. It grows and pulses only when Alerts or Corrections are above zero. |
 | Mid-right | `UpNextStrip.homeQueue`: fat chips (case id + route). **Show** adds the clinical line and who it would go to. No priority float. |
-| Far | Three solid spheres, not a faint graph. Each nameplate is the site plus a count, large enough to read from the seat: **Overseer queue · N waiting**, **On-call desk · N sent**, **On-call HH MD · N sent**. The queue grows with how many cases are waiting and glows while any are waiting. A destination stays smaller until this Pass would send the open case there, then it grows (a page is the largest), glows, and adds **This pass ·** the synthetic recipient. Look or **Show list** opens who is waiting or who was already sent. Pass still flies to that sphere. The Overseer is not the recipient. |
+| Far | Three solid spheres, not a faint graph. Each nameplate is the site plus a count, large enough to read from the seat. On Overseer: **Overseer queue · N waiting**, **On-call desk · N sent**, **On-call HH MD · N sent**. Bedside and Nurse HITM rename those same three objects (see the role sections). The queue grows with how many cases are waiting and glows while any are waiting. A destination stays smaller until this action would send the open case there, then it grows (a page is the largest), glows, and adds **This pass ·** the synthetic recipient. Look or **Show list** opens who is waiting or who was already sent. The action still flies to that sphere. On Overseer, you are not the recipient. |
 
 ### Gestures
 
@@ -92,11 +134,12 @@ The visionOS simulator often does not deliver a real gaze hover. Use the buttons
 | **Pin** | Shows when a look has opened a layer you have not pinned yet. |
 | **More for this case** | Pins More (the note and the trend). Also on the rules panel. Chart sections are already on Patient details. |
 | **Collapse** | Peels one layer. **Awareness** on the row jumps straight back to the face. |
-| **Log only** / **Pass to …** / **Change route…** | Stay on the face at every layer. **Log only** does not page anyone. **Pass to …** names the on-call recipient. Neither sends the case to the Overseer. |
+| **Log only** / **Pass to …** / **Change route…** | Overseer only. Stay on the face at every layer. **Log only** does not page anyone. **Pass to …** names the on-call recipient. Neither sends the case to the Overseer. |
+| Bedside / Nurse verbs | Replace the Overseer buttons while that role is selected. Expand, Collapse, and Patient details stay. |
 
 Ordering is `HomeHealthBrief` in `HomeHealthDomain.swift`. It scores facts from the case fields already on the vignette (note, trend, meds, problems, goals, baseline, rule, reason). It does not use one who / problems / meds template for every card. A fall plus an anticoagulant leads with the fall, the drug, and the bleed lines in the note, then the other problems. An oxygen case leads with the Day 0 reading, then that patient's baseline `spo2_night_min`, then the human note. Home oxygen, GOLD, or a commode desaturation leads when those words are in the case text.
 
-Views to check after a Mac rebuild: `HomeHealthNowFace`, `HomeHealthDossier`, `HomeHealthChart`, `HomeHealthTrends`, `HomeHealthBrief`, `HomeHealthInk`, `HomeHealthSeat`; `AgentCard.homeNode`; `CrossroadsView.layoutHomeFocus`, `layoutHomeNodes`, and `nodeRestScale`; `SidePanel.homeCascade` (the scroller); `RouterEngine.homeCascade` / `homeCollapse` / `homeChartToggle`. Layer 1's route choice and the bridge are unchanged.
+Views to check after a Mac rebuild: `HomeHealthNowFace`, `HomeHealthDossier`, `HomeHealthChart`, `HomeHealthTrends`, `HomeHealthBrief`, `HomeHealthInk`, `HomeHealthSeat`, `HomeHealthRole`, `HomeHealthVocabulary`; `AgentCard.homeNode`; `CrossroadsView.layoutHomeFocus`, `layoutHomeNodes`, and `nodeRestScale`; `SidePanel.homeCascade` (the scroller); `RouterEngine.homeSetRole` / `homeCascade` / `homeCollapse` / `homeChartToggle`. Layer 1's route choice and the bridge are unchanged.
 
 `xcodegen generate` is only needed if you regenerate the project. `tools/homehealth_vision.sh` is still the one-shot simulator launch. This VM cannot run the visionOS simulator, so confirm the layout there.
 
@@ -159,6 +202,18 @@ python3 -m pytest -q homehealth/sdr_bridge/test_sdr_bridge.py
 ```
 
 The test fails if the committed snapshot drifts from the engine or from the library fact text. Do not hand-edit clinical numbers in the vignette file. `homehealth_patterns.json` is a display fixture and is not part of that snapshot.
+
+## Role switcher check (simulator)
+
+This VM cannot boot the visionOS simulator. On a Mac, after `tools/homehealth_vision.sh`:
+
+1. Home health opens on Overseer. Chips read Overseer, Bedside, Nurse HITM. None say Later. Only Overseer is filled.
+2. Framing is **Overseeing · routes to on-call**. Badge is **Physician**. Buttons are **Log only** or **Pass to …** and **Change route…**. PX-COPD-01 still leads with **Why now**, and **Patient details → Trends** still opens.
+3. Spheres read Overseer queue, On-call desk, On-call HH MD. **This pass ·** matches the recipient chip. Pass does not page you.
+4. Tap Bedside. The Overseer chip clears and Bedside fills. Framing becomes **Bedside · covering clinician**. Buttons are Acknowledge & continue, Request nurse visit, Document plan, Page on-call. There is no Pass to on-call HH MD.
+5. Tap Nurse HITM. Buttons are Schedule visit, Call patient, Device check, Escalate to on-call MD, Escalate to on-call nurse, Log only. Chrome says Nurse HITM.
+6. Tap Overseer again. The pass buttons and sphere names return. Expand still says **Patient details**.
+7. Decide one case in each role. Export. Each line's `card_payload.review_role` is the seat you used. Bedside and Nurse lines also have `review_action`.
 
 ## Later, not this build
 

@@ -155,7 +155,7 @@ struct CrossroadsView: View {
         let dest = h.map { engine.highlightedDest($0) } ?? ""
         let moving = engine.handoffs.map { engine.phase[$0.id] == .outgoing ? "1" : "0" }.joined()
         let load = engine.config.agents.map { "\($0.id):\(engine.queueCount($0.id)):\(engine.inbox[$0.id] ?? 0)" }.joined(separator: ",")
-        return "\(engine.config.id)|\(engine.focusStatusOpen)|\(engine.focusQueueOpen)|\(engine.detailOpen)|\(engine.homeShownLevel)|\(h?.id ?? "")|\(h?.proposal ?? "")|\(dest)|\(engine.stats.alertsFired)|\(engine.stats.corrections)|\(engine.packVersion)|\(moving)|\(load)|\(engine.homeSphereOpen ?? "")"
+        return "\(engine.config.id)|\(engine.focusStatusOpen)|\(engine.focusQueueOpen)|\(engine.detailOpen)|\(engine.homeShownLevel)|\(h?.id ?? "")|\(h?.proposal ?? "")|\(dest)|\(engine.stats.alertsFired)|\(engine.stats.corrections)|\(engine.packVersion)|\(moving)|\(load)|\(engine.homeSphereOpen ?? "")|\(engine.homeReviewRole)"
     }
 
     /// Mesh radius for a home-health work sphere, before `nodeRestScale`.
@@ -332,14 +332,19 @@ struct AgentCard: View {
         let passHere = passRoute
         let nowFields = passFields
         let lines = waitLines
+        let role = engine.homeRole
+        let sphereName = HomeHealthVocabulary.sphereTitle(role: role, agent: agent)
         return VStack(alignment: .leading, spacing: 8) {
-            Text("\(agent.name) · \(count)")
+            Text("\(sphereName) · \(count)")
                 .font(.sdrHuge.bold())
                 .lineLimit(1)
                 .minimumScaleFactor(0.45)
                 .frame(maxWidth: 520, alignment: .leading)
             if let passHere {
-                Text("This pass · \(HomeHealthSeat.recipientChip(route: passHere, fields: nowFields))")
+                let who = role == .overseer
+                    ? HomeHealthSeat.recipientChip(route: passHere, fields: nowFields)
+                    : HomeHealthVocabulary.faceChip(role: role, route: passHere, fields: nowFields)
+                Text("This pass · \(who)")
                     .font(.title.bold())
                     .foregroundStyle(rim)
                     .lineLimit(1)
@@ -347,7 +352,7 @@ struct AgentCard: View {
                     .frame(maxWidth: 520, alignment: .leading)
             }
             if open {
-                Text(agent.tier == 0 ? "Waiting on you" : "Pass sends here. You are not the recipient.")
+                Text(HomeHealthVocabulary.sphereNote(role: role, tier: agent.tier))
                     .font(.title3)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
@@ -404,17 +409,21 @@ struct AgentCard: View {
         }
     }
     private var waitLines: [String] {
+        let role = engine.homeRole
         if agent.tier == 0 {
             return engine.waiting.prefix(4).map { h in
                 let fields = engine.items[h.itemId]?.fields ?? [:]
-                return "\(h.itemId) · \(HomeHealthRoute.title(h.proposal)) · \(HomeHealthSeat.recipientChip(route: h.proposal, fields: fields))"
+                let who = role == .overseer
+                    ? HomeHealthSeat.recipientChip(route: h.proposal, fields: fields)
+                    : HomeHealthVocabulary.faceChip(role: role, route: h.proposal, fields: fields)
+                return "\(h.itemId) · \(HomeHealthRoute.title(h.proposal)) · \(who)"
             }
         }
         return engine.decisions
             .filter { $0.domain == "home_health" && HomeHealthSeat.deskId(for: $0.effectiveAnswer) == agent.id }
             .suffix(4)
             .reversed()
-            .map { d in "\(d.itemId) · \(HomeHealthSeat.recipientChip(route: d.effectiveAnswer, fields: d.context))" }
+            .map { d in "\(d.itemId) · \(HomeHealthVocabulary.sentChip(route: d.effectiveAnswer, fields: d.context))" }
     }
     #endif
     private var classic: some View {
@@ -716,8 +725,12 @@ struct UpNextStrip: View {
                             if ticket != "none" {
                                 Text("Device ticket").font(.title3.bold()).foregroundStyle(.orange)
                             }
-                            let who = HomeHealthSeat.recipientChip(route: h.proposal, fields: engine.items[h.itemId]?.fields ?? [:])
-                            Text("to \(who)").font(.title3).foregroundStyle(.secondary).lineLimit(1)
+                            let fields = engine.items[h.itemId]?.fields ?? [:]
+                            let role = engine.homeRole
+                            let who = role == .overseer
+                                ? HomeHealthSeat.recipientChip(route: h.proposal, fields: fields)
+                                : HomeHealthVocabulary.faceChip(role: role, route: h.proposal, fields: fields)
+                            Text(role == .overseer ? "to \(who)" : who).font(.title3).foregroundStyle(.secondary).lineLimit(1)
                         }
                     }
                     .padding(.vertical, 10)
@@ -858,7 +871,13 @@ struct OptionRing: View {
                     Text("Change route").font(.title.bold())
                     Text("Sends to the on-call. You stay the Overseer.").font(.title3).foregroundStyle(.secondary)
                     ForEach(opts, id: \.self) { o in
-                        Button { engine.select(h.id, o) } label: {
+                        Button {
+                            if let seat = engine.domain as? HomeHealthDomain {
+                                seat.reviewRole = .overseer
+                                seat.pendingReviewAction = nil
+                            }
+                            engine.select(h.id, o)
+                        } label: {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(HomeHealthRoute.title(o)).font(.title2.bold())
                                 Text(HomeHealthSeat.recipientChip(route: o, fields: fields)).font(.title3)
@@ -981,6 +1000,7 @@ struct BoardView: View {
         let open = engine.focusStatusOpen && !engine.detailOpen
         let attention = s.alertsFired > 0 || s.corrections > 0
         let reviewed = engine.domain.boardMetrics(s).first { $0.label == "Reviewed" }?.value ?? "\(s.completed)"
+        let role = engine.homeRole
         return TimelineView(.periodic(from: .now, by: attention && !open ? 0.12 : 1)) { timeline in
             let phase = timeline.date.timeIntervalSinceReferenceDate
             let pulse = (!open && attention) ? (1 + 0.045 * sin(phase * 2.6)) : 1.0
@@ -988,7 +1008,7 @@ struct BoardView: View {
                 HStack(alignment: .center, spacing: 14) {
                     Button { engine.focusStatusOpen.toggle() } label: {
                         HStack(spacing: 8) {
-                            Text(open ? "Status" : "Overseer").font(.title.bold())
+                            Text(open ? "Status" : role.title).font(.title.bold())
                             Text(open ? "Hide" : "Show").font(.title2).foregroundStyle(.secondary)
                         }
                     }
@@ -1003,7 +1023,7 @@ struct BoardView: View {
                     Spacer()
                     Button("Close") { Task { await dismissImmersiveSpace() } }.font(.title2.bold())
                 }
-                Text(HomeHealthSeat.framing).font(.title3).foregroundStyle(.secondary).lineLimit(1)
+                Text(role.framing).font(.title3).foregroundStyle(.secondary).lineLimit(1)
                 HStack(alignment: .top, spacing: 28) {
                     bigStat("Reviewed", reviewed)
                     bigStat("Alerts", "\(s.alertsFired)", hot: s.alertsFired > 0)

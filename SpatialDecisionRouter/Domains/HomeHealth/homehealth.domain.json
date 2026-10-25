@@ -52,7 +52,7 @@
     "Layer 1 alone decides the route. The headset does not call a cloud model.",
     "Routes, lowest to highest: silent_log, nurse_task, provider_task, urgent_page.",
     "A device_maintenance ticket is shown when Layer 1 files one. Clinical routes do not keep a ticket.",
-    "The reviewer is the Overseer, a physician. Pass sends the route to the on-call recipient, not to the Overseer. Change route picks another route. urgent_page alerts the On-call HH MD node."
+    "One role is active at a time: Overseer (physician router), Bedside (covering clinician), or Nurse HITM. The switcher is on the card. Overseer Pass sends the route to the on-call recipient, not to the Overseer. Bedside and Nurse HITM use their own actions. urgent_page still alerts the On-call HH MD node."
   ],
   "capacity": {"minutesPerSecond": 1},
   "review": {
@@ -64,7 +64,8 @@
   },
   "detailSections": ["Vignette", "Layer 1"],
   "glossary": {
-    "home health": "Synthetic home-monitoring case. The Overseer (a physician) passes or changes Layer 1's route. The route goes to the on-call, not to the Overseer.",
+    "home health": "Synthetic home-monitoring case. One role at a time: Overseer, Bedside, or Nurse HITM. The Overseer (a physician) passes or changes Layer 1's route. That route goes to the on-call, not to the Overseer.",
+    "role recipient": "Who this role's action is for. A synthetic label. Bedside keeps the case, requests a visit, or pages on-call. Nurse HITM schedules, calls, checks a device, escalates, or logs only.",
     "urgent page": "Layer 1 route urgent_page: pass a page to the On-call HH MD. The Overseer is not paged.",
     "recipient": "Synthetic on-call person who receives this route. Night nurse, On-call hospice nurse, or On-call HH MD. Log only when no person is tasked.",
     "device ticket": "Optional device_maintenance ticket from Layer 1. Not a clinical page. Clinical routes do not keep one.",
