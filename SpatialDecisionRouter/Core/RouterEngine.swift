@@ -242,6 +242,7 @@ struct Handoff: Identifiable, Hashable {
         inbox = Dictionary(uniqueKeysWithValues: d.config.agents.map { ($0.id, 0) })
         lastDelivered = [:]; ringFor = nil; spawnTimer = 99; sessionStart = Date(); packVersion += 1
         focusStatusOpen = false; focusQueueOpen = false
+        homePinnedLevel = 0; homeHoverLevel = 0; homeHoverStarted = nil; homeHoverSuppress = false
     }
     func nextDomain() {
         let all = DomainCatalog.all
@@ -327,6 +328,7 @@ struct Handoff: Identifiable, Hashable {
 
     // MARK: simulation
     func tick(_ dt0: Float) {
+        homeHoverTick()
         let dt = dt0 * speedup
         domain.advance(minutes: Double(dt) * domain.minutesPerSecond)
         spawnTimer += dt
@@ -389,6 +391,7 @@ struct Handoff: Identifiable, Hashable {
     private func resetDetailTelemetry() {
         sectionAcc = [:]; sectionsSeen = []; detailAcc = 0; detailUsed = detailOpen
         openSections = [:]; detailOpenedAt = detailOpen ? Date() : nil
+        homePinnedLevel = 0; homeHoverLevel = 0; homeHoverStarted = nil; homeHoverSuppress = false
     }
     func detailSections(_ h: Handoff) -> [DetailSection] {
         guard let item = items[h.itemId] else { return [] }
@@ -686,6 +689,55 @@ struct Handoff: Identifiable, Hashable {
     /// Home-health focus tunnel. False keeps the status strip and queue pulled back until tapped.
     var focusStatusOpen = false
     var focusQueueOpen = false
+    /// Home-health cascade. 0 awareness, 1 story, 2 rules, 3 chart. Hover can preview 1–2 without pinning.
+    var homePinnedLevel = 0
+    var homeHoverLevel = 0
+    var homeHoverStarted: Date?
+    var homeHoverSuppress = false
+    var homeShownLevel: Int { homeHoverSuppress ? homePinnedLevel : max(homePinnedLevel, homeHoverLevel) }
+    func homeHoverBegan() {
+        if homeHoverStarted == nil { homeHoverStarted = Date() }
+    }
+    func homeHoverEnded() {
+        homeHoverStarted = nil
+        homeHoverLevel = 0
+        homeHoverSuppress = false
+    }
+    func homeHoverTick() {
+        guard let t = homeHoverStarted, !homeHoverSuppress else { return }
+        let dt = Date().timeIntervalSince(t)
+        let next = dt >= 1.5 ? 2 : (dt >= 0.4 ? 1 : 0)
+        if next != homeHoverLevel { homeHoverLevel = next }
+    }
+    /// Pin the preview, or open the next layer. Stops at rules; the chart is explicit.
+    func homeCascade() {
+        let shown = homeShownLevel
+        if shown > homePinnedLevel { homePinnedLevel = min(2, shown) }
+        else if homePinnedLevel < 2 { homePinnedLevel += 1 }
+        homeHoverLevel = 0
+        homeHoverSuppress = true
+    }
+    func homeMore() {
+        homePinnedLevel = 3
+        homeHoverLevel = 0
+        homeHoverSuppress = true
+    }
+    /// Peel one layer toward the awareness face. Pass and Modify are untouched.
+    func homeCollapse() {
+        if homeHoverLevel > homePinnedLevel {
+            homeHoverLevel = 0
+            homeHoverSuppress = true
+            return
+        }
+        homePinnedLevel = max(0, homePinnedLevel - 1)
+        homeHoverLevel = 0
+        homeHoverSuppress = true
+    }
+    func homeJump(_ level: Int) {
+        homePinnedLevel = min(3, max(0, level))
+        homeHoverLevel = 0
+        homeHoverSuppress = true
+    }
     var demoRunning = false
     var demoStep = ""
     /// Reset demo: fresh deterministic sequence (seeded), optional auto-play.

@@ -89,7 +89,7 @@ struct PadRootView: View {
     }
 
     @ViewBuilder private func review(wide: Bool) -> some View {
-        let side = engine.spotCheckOpen || (engine.detailOpen && engine.nowHandoff != nil)
+        let side = engine.spotCheckOpen || (engine.detailOpen && engine.nowHandoff != nil) || (engine.config.id == "home_health" && engine.homeShownLevel > 0)
         if engine.domain.gameHUD() != nil { GameHUDStrip(); RevealBanner() }
         if wide && side {
             HStack(alignment: .top, spacing: 16) {

@@ -26,18 +26,34 @@ The six cases are copied from the synthetic library (fact text only):
 
 **Pass** accepts the route. **Modify…** opens the other three routes. This decision is a category, so Flip is not offered. Passing `urgent_page` sends the handoff to the Urgent page node.
 
-## Layout in the simulator (focus tunnel)
+## Layout in the simulator (focus tunnel + cascade)
 
-While a case is open, the near field is the decision. Status and the queue sit off to the side until you tap **Show**.
+The open case starts as **awareness**: what needs you, how serious the route chip is, and where a Pass would send it. Story, rules, and the chart stay collapsed until you cascade.
 
 | Layer | What you should see |
 |---|---|
-| Near, center | `HomeHealthNowFace`: case id, colored route chip, one reason line, the action, then **Pass ✓** / **Modify…**. Priority, the wait chip, and the bridge/params line are not on this face. **Details** still opens the vignette and the Layer 1 rule. |
-| Mid-left | `BoardView.homeStatus`: a strip with large **Reviewed**, **Alerts**, and **Corrections**. **Show** brings the log forward. The strip grows and pulses only when Alerts or Corrections are above zero. Opening **Details** parks the strip back so the vignette can sit on the left. |
-| Mid-right | `UpNextStrip.homeQueue`: up to four fat chips (case id + route). **Show** adds the one-line reason. No priority float. |
-| Far | Input node **Layer 1** is larger and shows the current reason. **Route desk** and **Urgent page** stay smaller and dimmer, and light up when Pass would send the case there (`urgent_page` lights Urgent page). |
+| Near, center | `HomeHealthNowFace` (L0). Case id, colored route chip, one clinical line for **this** situation (a fall on a blood thinner leads with the fall and the drug; a low oxygen reading leads with that reading, not a comfort slogan). **Pass ✓** and **Modify…** stay on this face. |
+| Beside, when cascaded | `HomeHealthDossier`. **Story** (L1) is the next 2–4 sentences, ordered by what makes this decision hard. **Rules** (L2) is only this patient's firing or held rule, oxygen band, anticoagulant, goals, or device policy. **More** (L3) is the full note, meds, trend, and the library label versus Layer 1. |
+| Mid-left | `BoardView.homeStatus`: large **Reviewed**, **Alerts**, **Corrections**. **Show** opens the log. The strip moves up while a dossier is open so it does not cover the story. It grows and pulses only when Alerts or Corrections are above zero. |
+| Mid-right | `UpNextStrip.homeQueue`: fat chips (case id + route). **Show** adds the same clinical line. No priority float. |
+| Far | **Layer 1** stays large and shows that clinical line. **Route desk** and **Urgent page** stay smaller until Pass would send the case there. |
 
-Views and placement to check after a Mac rebuild: `HomeHealthNowFace` and `HomeHealthRouteChip` in `HomeHealthDomain.swift`; `CrossroadsView.layoutHomeFocus` / `layoutHomeNodes`, `AgentCard.homeNode`, `BoardView.homeStatus`, `UpNextStrip.homeQueue` in `RouterViews.swift`. `RouterEngine.highlightedDest` is display-only. Pass, Modify, and the bridge are unchanged.
+### Gestures
+
+The visionOS simulator often does not deliver a real gaze hover. Use the buttons.
+
+| Action | Result |
+|---|---|
+| Look at the card for about 0.4 s | Unpinned **Story** opens on the left. About 1.5 s also opens **Rules**. Look away and it returns to the pinned level (usually awareness). |
+| **Expand** | Pins the next layer (awareness → story → rules). |
+| **Pin** | Shows when a look has opened a layer you have not pinned yet. |
+| **More for this case** | Pins the chart (L3). Also on the rules panel. |
+| **Collapse** | Peels one layer. **Awareness** on the row jumps straight back to the face. |
+| **Pass ✓** / **Modify…** | Unchanged, and they stay on the face at every layer. |
+
+Ordering is `HomeHealthBrief` in `HomeHealthDomain.swift`. It scores facts from the case fields already on the vignette (note, trend, meds, problems, goals, baseline, rule, reason). It does not use one who / problems / meds template for every card. A fall plus an anticoagulant leads with the fall, the drug, and the bleed lines in the note, then the other problems. An oxygen case leads with the Day 0 reading, then that patient's baseline `spo2_night_min`, then the human note. Home oxygen, GOLD, or a commode desaturation leads when those words are in the case text.
+
+Views to check after a Mac rebuild: `HomeHealthNowFace`, `HomeHealthDossier`, `HomeHealthBrief`; `CrossroadsView.layoutHomeFocus` (dossier beside the card); `RouterEngine.homeCascade` / `homeCollapse` / `homeHoverTick`. Pass, Modify, routing, and the bridge are unchanged.
 
 `xcodegen generate` is only needed if you regenerate the project. `tools/homehealth_vision.sh` is still the one-shot simulator launch. This VM cannot run the visionOS simulator, so confirm the layout there.
 
@@ -46,7 +62,7 @@ Views and placement to check after a Mac rebuild: `HomeHealthNowFace` and `HomeH
 - **L1 live** (teal) — `homehealth/sdr_bridge` recomputed the case on this Mac.
 - **L1 bundled · bridge offline** (orange) — the bridge did not answer. The card still shows the route from `homehealth_vignettes.json`, which the tests check against the same engine.
 
-Open **Details** for the library trend, the note, the rule, and the library label. Layer 1 does not read that label.
+**More for this case** has the full note, the trend, and the library label next to the Layer 1 route. Layer 1 does not read that label.
 
 ## Run on the visionOS Simulator (Mac)
 

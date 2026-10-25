@@ -159,14 +159,16 @@ Some cases also show a **device ticket** (`device_maintenance`) when Layer 1 fil
 
 **Pass** accepts the route. **Modify…** opens the other routes (this decision is not yes/no, so there is no Flip). Passing `urgent_page` alerts the Urgent page node.
 
-On the headset the open case stays in front: case id, route color, one reason, then Pass / Modify. The status strip (Reviewed, Alerts, Corrections) is up-left and the queue is up-right; tap **Show** on either one to bring it forward. Alerts and Corrections pulse when they are above zero. Layer 1 is the brighter far node and shows the same reason. Route desk and Urgent page stay dim until Pass would send the case there. The small badge is **L1 live** or **Bundled**; the version string is on hover and in Details.
+The card opens on **awareness**: case id, route color (how serious, and where a Pass sends it), and one clinical line for this situation. A fall on a blood thinner leads with the fall and that drug. A low oxygen reading leads with the reading. Pass and Modify stay on this face.
+
+**Expand** cascades the next layer into the space beside the card: **Story**, then **Rules** for this situation, then **More for this case**. **Collapse** peels one layer. **Awareness** jumps back to the face. Looking at the card for about half a second opens the story, and for about a second and a half opens the rules; looking away returns to the pinned layer. The simulator often misses that look, so use Expand. The status strip and the queue stay quiet until you tap Show.
 
 The badge on the card tells you where the decision came from:
 
 - **L1 live** — the Layer 1 bridge on this Mac recomputed the case.
 - **L1 bundled · bridge offline** — the bridge is not running. You still see the route from the snapshot shipped with the app. Nothing is sent to a cloud model.
 
-Every case is synthetic, copied from the case library. Open **Details** for the trend, the note, the rule, and the library's own label (Layer 1 does not read that label). ED triage is unchanged; use **Next Domain** or the other start buttons to leave home health.
+Every case is synthetic, copied from the case library. **More for this case** has the trend, the note, the rule, and the library's own label (Layer 1 does not read that label). ED triage is unchanged; use **Next Domain** or the other start buttons to leave home health.
 
 ---
 

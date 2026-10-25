@@ -130,7 +130,8 @@ struct CrossroadsView: View {
             Task { @MainActor in lastBurst = r.id }
         }
         root.findEntity(named: "environment")?.isEnabled = engine.fullImmersion
-        root.findEntity(named: "att-side")?.isEnabled = engine.detailOpen || engine.spotCheckOpen
+        let homeDossier = engine.config.id == "home_health" && engine.homeShownLevel > 0
+        root.findEntity(named: "att-side")?.isEnabled = engine.detailOpen || engine.spotCheckOpen || homeDossier
         root.findEntity(named: "ringAttachment")?.isEnabled = engine.ringFor != nil
         if engine.config.id == "home_health" {
             layoutHomeFocus()
@@ -147,7 +148,7 @@ struct CrossroadsView: View {
         let h = engine.nowHandoff
         let dest = h.map { engine.highlightedDest($0) } ?? ""
         let moving = engine.handoffs.map { engine.phase[$0.id] == .outgoing ? "1" : "0" }.joined()
-        return "\(engine.config.id)|\(engine.focusStatusOpen)|\(engine.focusQueueOpen)|\(engine.detailOpen)|\(h?.id ?? "")|\(h?.proposal ?? "")|\(dest)|\(engine.stats.alertsFired)|\(engine.stats.corrections)|\(engine.packVersion)|\(moving)"
+        return "\(engine.config.id)|\(engine.focusStatusOpen)|\(engine.focusQueueOpen)|\(engine.detailOpen)|\(engine.homeShownLevel)|\(h?.id ?? "")|\(h?.proposal ?? "")|\(dest)|\(engine.stats.alertsFired)|\(engine.stats.corrections)|\(engine.packVersion)|\(moving)"
     }
 
     private func highlightedDests() -> Set<String> {
@@ -174,12 +175,14 @@ struct CrossroadsView: View {
 
     /// A: decision stays near. Status and queue sit mid-field until Show.
     private func layoutHomeFocus() {
-        let statusOpen = engine.focusStatusOpen && !engine.detailOpen
+        let dossier = engine.homeShownLevel > 0
+        let statusOpen = engine.focusStatusOpen && !engine.detailOpen && !dossier
         let queueOpen = engine.focusQueueOpen
         let attention = engine.stats.alertsFired > 0 || engine.stats.corrections > 0
         if let e = root.findEntity(named: "att-now") { moveAtt(e, [0, 1.50, -1.18], 1.40) }
         if let e = root.findEntity(named: "att-board") {
-            if statusOpen { moveAtt(e, [-1.25, 1.62, -1.50], 1.48) }
+            if dossier { moveAtt(e, [0, 2.08, -1.92], 1.22) }
+            else if statusOpen { moveAtt(e, [-1.25, 1.62, -1.50], 1.48) }
             else { moveAtt(e, [-1.15, 1.78, -1.72], attention ? 1.55 : 1.38) }
         }
         if let e = root.findEntity(named: "att-upnext") {
@@ -187,7 +190,11 @@ struct CrossroadsView: View {
             else { moveAtt(e, [1.22, 1.42, -1.70], 1.32) }
         }
         if let e = root.findEntity(named: "ringAttachment") { moveAtt(e, [0, 0.88, -1.15], 1.15) }
-        if let e = root.findEntity(named: "att-side"), engine.detailOpen { moveAtt(e, [-0.98, 1.46, -1.22], 1.32) }
+        if let e = root.findEntity(named: "att-side") {
+            if engine.homeShownLevel > 0 { moveAtt(e, [-1.22, 1.46, -1.18], 1.30) }
+            else if engine.detailOpen { moveAtt(e, [-0.98, 1.46, -1.22], 1.32) }
+            else { moveAtt(e, RouterEngine.sidePos, 1.15) }
+        }
     }
 
     /// B: input nodes stay large. Output nodes stay small until this Pass would send the case there.
@@ -254,7 +261,7 @@ struct AgentCard: View {
     }
     /// Far layer. Input (tier 0) carries the current why. Outputs stay quiet until Pass would send the case there.
     private var homeNode: some View {
-        let why = engine.nowHandoff.flatMap { engine.items[$0.itemId]?.fields["plain_reason"] } ?? ""
+        let why = engine.nowHandoff.map { HomeHealthBrief.hook(engine.items[$0.itemId]?.fields ?? [:]) } ?? ""
         return VStack(alignment: .leading, spacing: 6) {
             Text(agent.name).font(.title.bold()).lineLimit(1)
             if agent.tier == 0 {
@@ -571,7 +578,7 @@ struct UpNextStrip: View {
                             HomeHealthRouteChip(route: h.proposal, prominent: false)
                         }
                         if open {
-                            let why = engine.items[h.itemId]?.fields["plain_reason"] ?? ""
+                            let why = HomeHealthBrief.hook(engine.items[h.itemId]?.fields ?? [:])
                             if !why.isEmpty {
                                 Text(why).font(.title3).foregroundStyle(.secondary).lineLimit(2)
                             }
@@ -633,7 +640,9 @@ struct SidePanel: View {
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { _ in
             ScrollView(.vertical) { Group {
-                if engine.spotCheckOpen { spot }
+                if engine.config.id == "home_health", engine.homeShownLevel > 0, let h = engine.nowHandoff, let item = engine.items[h.itemId] {
+                    HomeHealthDossier(item: item, level: engine.homeShownLevel)
+                } else if engine.spotCheckOpen { spot }
                 else if let h = engine.nowHandoff {
                     if engine.sideTab == "reliability" && !engine.reliability(h).isEmpty { ReliabilityPanel(h: h) }
                     else if engine.sideTab == "ask" && !engine.reliability(h).isEmpty { AskNextPanel(h: h) }

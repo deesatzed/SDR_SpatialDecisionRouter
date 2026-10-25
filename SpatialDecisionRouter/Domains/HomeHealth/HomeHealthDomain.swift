@@ -341,19 +341,309 @@ struct HomeHealthRouteChip: View {
     }
 }
 
-/// Near-field decision: case, route, one reason, Pass / Modify. Rule text stays in Details.
+/// Awareness first. Story, rules, and the chart cascade in the order this situation makes the call hard.
+enum HomeHealthBrief {
+    struct Signals {
+        var fall = false
+        var bleed = false
+        var oxygen = false
+        var homeGas = false
+        var exert = false
+        var neuro = false
+        var chest = false
+        var device = false
+        var goalsHold = false
+        var alone = false
+        var anticoag: [String] = []
+        var directedMeds: [String] = []
+    }
+
+    static func hook(_ f: [String: String]) -> String {
+        let s = signals(f)
+        if s.fall {
+            let event = first(f["note"], matching: ["floor", "fell", "fall", "impact"]) ?? firstSentence(f["note"] ?? "")
+            if let drug = s.anticoag.first, !event.isEmpty { return "\(stripPeriod(event)). On \(drug)." }
+            if !event.isEmpty { return event }
+        }
+        if s.neuro && !s.fall {
+            if let line = first(f["note"], matching: ["weak", "slur", "speech", "droop"]) { return line }
+        }
+        if s.chest && !s.fall {
+            let plain = f["plain_reason"] ?? ""
+            if !plain.isEmpty && !isSlogan(plain, reason: f["reason"] ?? "") { return plain }
+        }
+        if s.oxygen && !s.fall && !s.neuro {
+            let today = spo2Today(f["trend"] ?? "")
+            if !today.isEmpty { return today.prefix(2).joined(separator: " ") }
+            let plain = f["plain_reason"] ?? ""
+            if !plain.isEmpty { return plain }
+        }
+        let plain = f["plain_reason"] ?? ""
+        if !plain.isEmpty && !isSlogan(plain, reason: f["reason"] ?? "") { return plain }
+        let note = firstSentence(f["note"] ?? "")
+        return note.isEmpty ? plain : note
+    }
+
+    /// Next 2–4 sentences. Highest scores are the facts that make this decision hard, not a fixed chart order.
+    static func story(_ f: [String: String]) -> [String] {
+        let s = signals(f)
+        let lead = hook(f)
+        let oxygenLead = s.oxygen && !s.fall && !s.neuro && !s.chest
+        var bits: [(Int, Int, String)] = []
+        var order = 0
+        func add(_ score: Int, _ text: String) {
+            let t = tidy(text)
+            guard t.count > 2 else { return }
+            if t == "none" || t == "not recorded" || t == "—" { return }
+            if lead.localizedCaseInsensitiveContains(t) || t.localizedCaseInsensitiveContains(lead) { return }
+            if bits.contains(where: { $0.2.localizedCaseInsensitiveCompare(t) == .orderedSame }) { return }
+            bits.append((score, order, t))
+            order += 1
+        }
+        if s.bleed && (s.fall || s.neuro) {
+            for line in s.anticoag { add(96, "On \(line).") }
+        }
+        if s.chest {
+            for line in s.directedMeds { add(94, line) }
+        }
+        if s.fall {
+            let bleed = sentences(f["note"] ?? "").filter { contains($0, ["bleed", "consciousness", "scalp"]) }
+            if !bleed.isEmpty { add(90, bleed.joined(separator: " ")) }
+        }
+        if s.homeGas, let q = quote(f, ["gold", "cannula", "commode", "litre", "liter"]) { add(93, q) }
+        if oxygenLead, let usual = usualOxygen(f) { add(88, usual) }
+        if s.exert {
+            for line in sentences(f["trend"] ?? "") where contains(line, ["commode", "stair", "exert", "ambulat", "bus shelter"]) { add(84, line) }
+        }
+        if s.neuro && !s.fall {
+            let rest = sentences(f["note"] ?? "").filter { !lead.localizedCaseInsensitiveContains($0) }
+            if !rest.isEmpty { add(80, rest.joined(separator: " ")) }
+        }
+        if s.chest {
+            for line in sentences(f["note"] ?? "") { add(92, line) }
+        }
+        if let problems = problemsLine(f) {
+            let score = (s.oxygen && contains(problems, ["copd", "gold", "emphysema"])) ? 78 : ((s.bleed || s.neuro || s.chest) ? 74 : (s.oxygen ? 46 : 52))
+            add(score, problems)
+        }
+        if s.goalsHold, let g = goalsLine(f) { add(s.fall ? 68 : 64, g) }
+        if let who = whoLine(f) { add(s.alone && (s.fall || s.neuro || s.oxygen) ? 70 : 26, who) }
+        if oxygenLead {
+            for line in sentences(f["note"] ?? "") { add(62, line) }
+        } else if !s.fall && !s.neuro && !s.chest {
+            for line in sentences(f["note"] ?? "") { add(55, line) }
+        }
+        for line in sentences(f["trend"] ?? "") where line.lowercased().contains("day 0") { add(oxygenLead ? 58 : 48, line) }
+        if s.device, let flag = deviceFlag(f) { add((s.oxygen || s.fall) ? 60 : 36, flag) }
+        bits.sort { $0.0 == $1.0 ? $0.1 < $1.1 : $0.0 > $1.0 }
+        return Array(bits.prefix(4).map(\.2))
+    }
+
+    static func rules(_ f: [String: String]) -> [(String, String)] {
+        let s = signals(f)
+        let oxygenLead = s.oxygen && !s.fall && !s.neuro && !s.chest
+        var bits: [(Int, Int, String, String)] = []
+        var order = 0
+        func add(_ score: Int, _ title: String, _ body: String) {
+            let b = tidy(body)
+            guard b.count > 2, b != "none", b != "not recorded" else { return }
+            bits.append((score, order, title, b))
+            order += 1
+        }
+        let rule = f["rule"] ?? ""
+        let tier = f["tier"] ?? ""
+        let reason = f["reason"] ?? ""
+        let plain = f["plain_reason"] ?? ""
+        let head = [rule, tier, reason].filter { !$0.isEmpty }.joined(separator: " · ")
+        let body = plain.isEmpty ? head : (head.isEmpty ? plain : "\(head). \(plain)")
+        let matched = (s.fall && rule.localizedCaseInsensitiveContains("fall"))
+            || (s.oxygen && rule.localizedCaseInsensitiveContains("spo2"))
+            || (s.neuro && rule.localizedCaseInsensitiveContains("focal"))
+            || (s.chest && (rule.localizedCaseInsensitiveContains("chest") || reason.localizedCaseInsensitiveContains("angina")))
+        if !body.isEmpty { add(matched ? 100 : 78, "Rule on this case", body) }
+        if s.homeGas, let q = quote(f, ["gold", "cannula", "commode", "litre", "liter"]) { add(96, "Oxygen setup", q) }
+        if oxygenLead, let usual = usualOxygen(f) { add(92, "Their usual oxygen", usual) }
+        let ticket = f["ticket_type"] ?? ""
+        if !ticket.isEmpty, ticket != "none" {
+            let detail = f["ticket_detail"] ?? ""
+            add(94, "Device policy", detail.isEmpty ? ticket : "\(ticket). \(detail)")
+        } else if s.device, let raw = f["artifact_flags"], !raw.isEmpty, raw != "none" {
+            add((s.oxygen || s.fall) ? 86 : 48, "Device flag", raw)
+        }
+        if s.goalsHold, let g = goalsLine(f) { add(90, "Why the route changed", g) }
+        if s.bleed && (s.fall || s.neuro) {
+            for line in s.anticoag { add(88, "Anticoagulation", line) }
+        }
+        if s.chest {
+            for line in s.directedMeds { add(88, "Medicine in question", line) }
+        }
+        if s.oxygen, let pmh = f["pmh"], contains(pmh, ["copd", "gold", "emphysema"]) { add(76, "Lung disease", pmh) }
+        if let target = f["escalation_target"], !target.isEmpty { add(70, "Who would be paged", target) }
+        if let means = f["route_definition"], !means.isEmpty { add(40, "Where this route goes", means) }
+        bits.sort { $0.0 == $1.0 ? $0.1 < $1.1 : $0.0 > $1.0 }
+        return bits.map { ($0.2, $0.3) }
+    }
+
+    static func deep(_ f: [String: String]) -> [(String, String)] {
+        let s = signals(f)
+        var bits: [(Int, Int, String, String)] = []
+        var order = 0
+        func add(_ score: Int, _ title: String, _ body: String?) {
+            let b = tidy(body ?? "")
+            guard b.count > 2, b != "none", b != "not recorded" else { return }
+            bits.append((score, order, title, b))
+            order += 1
+        }
+        add((s.fall || s.neuro || s.chest) ? 100 : 72, "Note", f["note"])
+        add((s.oxygen || s.exert) ? 100 : 58, "Trend", f["trend"])
+        add((s.bleed || s.chest) ? 96 : 54, "Medicines", f["meds"])
+        let base = [f["baseline"], f["baseline_status"]].compactMap { $0 }.filter { !$0.isEmpty && $0 != "not recorded" && $0 != "none" }.joined(separator: ". ")
+        add(s.oxygen ? 94 : 38, "Baseline", base)
+        add(s.goalsHold ? 90 : 34, "Goals", f["goals"])
+        add((s.oxygen && contains(f["pmh"] ?? "", ["copd", "gold"])) ? 88 : 50, "Problems", f["pmh"])
+        let lib = f["library_label"] ?? ""
+        let route = f["route"] ?? ""
+        if !lib.isEmpty || !route.isEmpty {
+            let gap = lib == route ? "Library and Layer 1 both say \(route)." : "Library label \(lib.isEmpty ? "none" : lib). Layer 1 routed \(route.isEmpty ? "none" : route)."
+            add(82, "Library vs Layer 1", gap)
+        }
+        let ticket = f["ticket_type"] ?? ""
+        if !ticket.isEmpty, ticket != "none" {
+            let detail = f["ticket_detail"] ?? ""
+            add(92, "Device ticket", detail.isEmpty ? ticket : "\(ticket). \(detail)")
+        } else if let note = f["ticket_note"], !note.isEmpty {
+            add(70, "Device ticket", note)
+        }
+        add(s.device ? 74 : 22, "Device flags", f["artifact_flags"])
+        add(32, "Function", f["function"])
+        add(s.alone ? 44 : 24, "Who", whoLine(f))
+        add(26, "Devices", f["devices"])
+        add(18, "Discharge", f["discharge"])
+        bits.sort { $0.0 == $1.0 ? $0.1 < $1.1 : $0.0 > $1.0 }
+        return bits.map { ($0.2, $0.3) }
+    }
+
+    static func signals(_ f: [String: String]) -> Signals {
+        var s = Signals()
+        let note = (f["note"] ?? "").lowercased()
+        let trend = (f["trend"] ?? "").lowercased()
+        let blob = [f["note"], f["trend"], f["pmh"], f["meds"], f["goals"], f["plain_reason"], f["rule"], f["reason"], f["artifact_flags"], f["baseline"], f["devices"]]
+            .compactMap { $0 }.joined(separator: "\n").lowercased()
+        s.fall = contains(note + "\n" + trend, ["floor", "fell", " fall", "bed-sensor impact"])
+        s.anticoag = medLines(f["meds"] ?? "").filter { line in contains(line, ["apixaban", "rivaroxaban", "edoxaban", "dabigatran", "warfarin", "enoxaparin", "heparin", "doac"]) }
+        s.bleed = !s.anticoag.isEmpty
+        s.oxygen = contains(blob, ["spo2", "oxygen", "desat", "copd", "gold", "cannula"])
+        s.homeGas = contains(blob, ["cannula", "gold", "home oxygen", "nasal"]) || (s.oxygen && blob.range(of: #"\d+(\.\d+)?\s*l"#, options: .regularExpression) != nil)
+        s.exert = contains(blob, ["commode", "exert", "stair", "ambulat", "bus shelter"])
+        s.neuro = contains(blob, ["weak", "slur", "droop", "stroke", "speech", "focal"])
+        s.chest = contains(blob, ["angina", "gtn", "trinitrate"]) || contains((f["rule"] ?? "") + (f["reason"] ?? ""), ["CHEST", "ANGINA"])
+        let ticket = f["ticket_type"] ?? ""
+        let artifact = (f["artifact_flags"] ?? "").lowercased()
+        let reason = (f["reason"] ?? "").lowercased()
+        s.device = (!ticket.isEmpty && ticket != "none") || (!artifact.isEmpty && artifact != "none") || reason.contains("cleared") || artifact.contains("contact") || artifact.contains("motion")
+        let goals = (f["goals"] ?? "").lowercased()
+        s.goalsHold = f["reason"] == "goals_of_care" || goals.contains("hospice") || goals.contains("comfort")
+        s.alone = (f["living"] ?? "").lowercased() == "alone"
+        s.directedMeds = medLines(f["meds"] ?? "").filter { contains($0, ["trinitrate", "gtn", "spray", "nitro"]) }
+        return s
+    }
+
+    private static func isSlogan(_ plain: String, reason: String) -> Bool {
+        let p = plain.lowercased()
+        return reason == "goals_of_care" || p.contains("rather than") || p.hasPrefix("comfort-focused")
+    }
+    private static func tidy(_ text: String) -> String {
+        text.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    private static func stripPeriod(_ text: String) -> String {
+        var t = tidy(text)
+        if t.hasSuffix(".") { t.removeLast() }
+        return t
+    }
+    private static func contains(_ text: String, _ needles: [String]) -> Bool {
+        let l = text.lowercased()
+        return needles.contains { l.contains($0) }
+    }
+    private static func sentences(_ text: String) -> [String] {
+        let t = tidy(text)
+        if t.isEmpty || t == "none" || t == "not recorded" { return [] }
+        return t.components(separatedBy: ". ").map { part in
+            let s = part.trimmingCharacters(in: .whitespacesAndNewlines)
+            if s.isEmpty { return "" }
+            return s.hasSuffix(".") ? s : s + "."
+        }.filter { $0.count > 2 }
+    }
+    private static func firstSentence(_ text: String) -> String { sentences(text).first ?? "" }
+    private static func first(_ text: String?, matching needles: [String]) -> String? {
+        guard let text else { return nil }
+        return sentences(text).first { contains($0, needles) }
+    }
+    private static func medLines(_ meds: String) -> [String] {
+        meds.split(separator: ";").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
+    }
+    private static func spo2Today(_ trend: String) -> [String] {
+        sentences(trend).filter { line in
+            let l = line.lowercased()
+            return l.contains("day 0") && (l.contains("spo2") || l.contains("oximeter") || l.contains("oxygen"))
+        }
+    }
+    private static func usualOxygen(_ f: [String: String]) -> String? {
+        let base = f["baseline"] ?? ""
+        guard let r = base.range(of: "spo2_night_min ") else { return nil }
+        let num = base[r.upperBound...].prefix { $0.isNumber || $0 == "." }
+        guard !num.isEmpty else { return nil }
+        var line = "Baseline lists spo2_night_min \(num)."
+        let status = f["baseline_status"] ?? ""
+        if !status.isEmpty && status != "not recorded" { line += " \(status)." }
+        return line
+    }
+    private static func deviceFlag(_ f: [String: String]) -> String? {
+        let a = f["artifact_flags"] ?? ""
+        if a.isEmpty || a == "none" { return nil }
+        return "Device flag: \(a)."
+    }
+    private static func goalsLine(_ f: [String: String]) -> String? {
+        let g = f["goals"] ?? ""
+        if g.isEmpty || g == "not recorded" { return nil }
+        return "Goals: \(g)."
+    }
+    private static func problemsLine(_ f: [String: String]) -> String? {
+        let p = f["pmh"] ?? ""
+        if p.isEmpty || p == "not recorded" { return nil }
+        return "Problems: \(p)."
+    }
+    private static func whoLine(_ f: [String: String]) -> String? {
+        let age = f["age_band"] ?? ""
+        let sex = f["sex"] ?? ""
+        let living = f["living"] ?? ""
+        var line = [age, sex].filter { !$0.isEmpty }.joined(separator: " ")
+        if living == "alone" { line += line.isEmpty ? "Lives alone" : ", lives alone" }
+        else if !living.isEmpty && living != "not recorded" { line += line.isEmpty ? "Lives \(living)" : ", lives \(living)" }
+        if line.isEmpty { return nil }
+        return line.hasSuffix(".") ? line : line + "."
+    }
+    private static func quote(_ f: [String: String], _ needles: [String]) -> String? {
+        for key in ["note", "trend", "pmh", "goals", "baseline"] {
+            if let hit = first(f[key], matching: needles) { return hit }
+        }
+        return nil
+    }
+}
+
+/// L0 awareness. Pass and Modify stay here while story, rules, and the chart cascade beside the card.
 struct HomeHealthNowFace: View {
     @Environment(RouterEngine.self) private var engine
     let handoff: Handoff
     let item: DomainItem
+    private let levels = ["Awareness", "Story", "Rules", "More"]
     var body: some View {
         let route = handoff.proposal
         let ticket = item.fields["ticket_type"] ?? "none"
-        let plain = item.fields["plain_reason"] ?? ""
-        let note = item.fields["note"] ?? ""
-        let why = !plain.isEmpty ? plain : (note.isEmpty ? item.historyLine : note)
+        let hook = HomeHealthBrief.hook(item.fields)
         let badge = engine.domain.riskBadge(item: item) ?? ""
-        VStack(alignment: .leading, spacing: 18) {
+        let shown = engine.homeShownLevel
+        let pinned = engine.homePinnedLevel
+        VStack(alignment: .leading, spacing: 16) {
             HStack(alignment: .center, spacing: 12) {
                 Text("NOW").font(.title3.bold()).padding(.horizontal, 12).padding(.vertical, 5)
                     .background(.blue, in: Capsule())
@@ -368,20 +658,12 @@ struct HomeHealthNowFace: View {
                         .gloss(NowCard.badgeKey(badge))
                 }
             }
-            Text(why).font(.title).lineLimit(2).gloss("plain reason")
+            Text(hook).font(.title).lineLimit(3)
             if !ticket.isEmpty, ticket != "none" {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Device ticket").font(.title3.bold()).foregroundStyle(.black)
-                        .padding(.horizontal, 12).padding(.vertical, 5)
-                        .background(.orange, in: Capsule()).gloss("device ticket")
-                    if let detail = item.fields["ticket_detail"], !detail.isEmpty {
-                        Text(detail).font(.title3).foregroundStyle(.orange).lineLimit(2).gloss("device ticket")
-                    }
-                }
+                Text("Device ticket").font(.title3.bold()).foregroundStyle(.black)
+                    .padding(.horizontal, 12).padding(.vertical, 5)
+                    .background(.orange, in: Capsule()).gloss("device ticket")
             }
-            Text(HomeHealthRoute.action(route, ticket: ticket))
-                .font(.title2.bold()).foregroundStyle(.green).lineLimit(2)
-                .gloss("what happens next")
             ActionRow {
                 Button(handoff.trigger != nil ? "Acknowledge ✓" : (handoff.link.id == engine.config.review.escalationLink ? "Sign off ✓" : "Pass ✓")) { engine.pass(handoff.id) }.tint(.green)
                 if handoff.link.answerType == .binary { Button("Flip") { engine.flip(handoff.id) }.tint(.orange) }
@@ -389,20 +671,96 @@ struct HomeHealthNowFace: View {
                 if handoff.trigger == nil, handoff.link.id == engine.config.review.escalationLink {
                     Button("Escalate") { engine.escalate(handoff.id) }.tint(.red)
                 }
-                #if os(visionOS)
-                Spacer()
-                #endif
-                Button(engine.detailOpen ? "ⓘ Hide" : "ⓘ Details") { engine.sideTab = "details"; engine.toggleDetail() }.tint(.gray)
+                if shown > pinned {
+                    Button("Pin") { engine.homeCascade() }.tint(.teal)
+                } else if pinned >= 2 && pinned < 3 {
+                    Button("More for this case") { engine.homeMore() }.tint(.teal)
+                } else if pinned < 2 {
+                    Button("Expand") { engine.homeCascade() }.tint(.teal)
+                }
+                if shown > 0 { Button("Collapse") { engine.homeCollapse() }.tint(.gray) }
             }
             .font(.title.bold())
-            Text("\(Int(handoff.confidence * 100))% · Details has the note, rule, and library label")
-                .font(.title3).foregroundStyle(.secondary).lineLimit(1)
+            HStack(spacing: 8) {
+                ForEach(0..<levels.count, id: \.self) { i in
+                    Button { engine.homeJump(i) } label: {
+                        Text(levels[i]).font(.title3.bold())
+                            .padding(.horizontal, 12).padding(.vertical, 6)
+                            .background(i == shown ? Color.white.opacity(0.22) : Color.clear, in: Capsule())
+                            .overlay(Capsule().stroke(i <= shown ? Color.white.opacity(0.75) : Color.white.opacity(0.28), lineWidth: 1.5))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(i < shown ? "Collapse to \(levels[i])" : (i == shown ? levels[i] : "Cascade to \(levels[i])"))
+                }
+            }
+            Text(shown == 0 ? "Look to cascade. Expand pins the next layer." : "Collapse peels one layer. Awareness keeps Pass and Modify.")
+                .font(.title3).foregroundStyle(.secondary).lineLimit(2)
         }
         .sdrWidth(860).padding(28).sdrPanel()
+        .contentShape(RoundedRectangle(cornerRadius: 22))
+        #if os(visionOS)
+        .onContinuousHover { phase in
+            switch phase {
+            case .ended: engine.homeHoverEnded()
+            default: engine.homeHoverBegan()
+            }
+        }
+        .hoverEffect(.lift)
+        #else
+        .onHover { inside in
+            if inside { engine.homeHoverBegan() } else { engine.homeHoverEnded() }
+        }
+        #endif
     }
     private func shortBadge(_ b: String) -> String {
         if b.hasPrefix("L1 live") { return "L1 live" }
         if b.hasPrefix("L1 bundled") { return "Bundled" }
         return b
+    }
+}
+
+/// Cascaded layers beside the awareness card. Each step adds the next situation-ordered block.
+struct HomeHealthDossier: View {
+    @Environment(RouterEngine.self) private var engine
+    let item: DomainItem
+    let level: Int
+    var body: some View {
+        let hook = HomeHealthBrief.hook(item.fields)
+        VStack(alignment: .leading, spacing: 16) {
+                HStack {
+                    Text(level >= 3 ? "More" : (level == 2 ? "Rules" : "Story")).font(.title.bold())
+                    Spacer()
+                    Button("Collapse") { engine.homeCollapse() }.font(.title2.bold())
+                }
+                Text(hook).font(.title3).foregroundStyle(.secondary).lineLimit(3)
+                if level >= 1 {
+                    ForEach(Array(HomeHealthBrief.story(item.fields).enumerated()), id: \.offset) { _, line in
+                        Text(line).font(.title2).fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                if level >= 2 {
+                    Divider()
+                    Text("Rules for this situation").font(.title2.bold())
+                    ForEach(Array(HomeHealthBrief.rules(item.fields).enumerated()), id: \.offset) { _, row in
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(row.0).font(.title3.bold()).foregroundStyle(.secondary)
+                            Text(row.1).font(.title2).fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                    if level < 3 {
+                        Button("More for this case") { engine.homeMore() }.font(.title2.bold()).tint(.teal)
+                    }
+                }
+                if level >= 3 {
+                    Divider()
+                    ForEach(Array(HomeHealthBrief.deep(item.fields).enumerated()), id: \.offset) { _, row in
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(row.0).font(.title3.bold()).foregroundStyle(.secondary)
+                            Text(row.1).font(.title3).fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
