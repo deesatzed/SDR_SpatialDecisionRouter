@@ -814,7 +814,7 @@ struct Handoff: Identifiable, Hashable {
     func testDocReview(_ k: Int, _ h: Handoff) async {
         if h.trigger != nil { try? await Task.sleep(for: .seconds(3)); return }   // let the red banner be seen, then ack via pass
         let rel = reliability(h)
-        guard let low = rel.filter({ $0.ifWrong != nil }).max(by: { ($0.ifWrong!.riskHi) < ($1.ifWrong!.riskHi) }) else { return }
+        guard rel.contains(where: { $0.ifWrong != nil }) else { return }
         if k % 4 == 1 || k == 6 {
             sideTab = "reliability"; if !detailOpen { toggleDetail() }
             try? await Task.sleep(for: .seconds(k == 6 ? 12 : 1.5))
