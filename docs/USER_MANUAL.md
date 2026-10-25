@@ -159,6 +159,8 @@ Some cases also show a **device ticket** (`device_maintenance`) when Layer 1 fil
 
 **Pass** accepts the route. **Modify…** opens the other routes (this decision is not yes/no, so there is no Flip). Passing `urgent_page` alerts the Urgent page node.
 
+On the headset the open case stays in front: case id, route color, one reason, then Pass / Modify. The status strip (Reviewed, Alerts, Corrections) is up-left and the queue is up-right; tap **Show** on either one to bring it forward. Alerts and Corrections pulse when they are above zero. Layer 1 is the brighter far node and shows the same reason. Route desk and Urgent page stay dim until Pass would send the case there. The small badge is **L1 live** or **Bundled**; the version string is on hover and in Details.
+
 The badge on the card tells you where the decision came from:
 
 - **L1 live** — the Layer 1 bridge on this Mac recomputed the case.

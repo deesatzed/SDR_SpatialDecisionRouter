@@ -26,6 +26,21 @@ The six cases are copied from the synthetic library (fact text only):
 
 **Pass** accepts the route. **Modify…** opens the other three routes. This decision is a category, so Flip is not offered. Passing `urgent_page` sends the handoff to the Urgent page node.
 
+## Layout in the simulator (focus tunnel)
+
+While a case is open, the near field is the decision. Status and the queue sit off to the side until you tap **Show**.
+
+| Layer | What you should see |
+|---|---|
+| Near, center | `HomeHealthNowFace`: case id, colored route chip, one reason line, the action, then **Pass ✓** / **Modify…**. Priority, the wait chip, and the bridge/params line are not on this face. **Details** still opens the vignette and the Layer 1 rule. |
+| Mid-left | `BoardView.homeStatus`: a strip with large **Reviewed**, **Alerts**, and **Corrections**. **Show** brings the log forward. The strip grows and pulses only when Alerts or Corrections are above zero. Opening **Details** parks the strip back so the vignette can sit on the left. |
+| Mid-right | `UpNextStrip.homeQueue`: up to four fat chips (case id + route). **Show** adds the one-line reason. No priority float. |
+| Far | Input node **Layer 1** is larger and shows the current reason. **Route desk** and **Urgent page** stay smaller and dimmer, and light up when Pass would send the case there (`urgent_page` lights Urgent page). |
+
+Views and placement to check after a Mac rebuild: `HomeHealthNowFace` and `HomeHealthRouteChip` in `HomeHealthDomain.swift`; `CrossroadsView.layoutHomeFocus` / `layoutHomeNodes`, `AgentCard.homeNode`, `BoardView.homeStatus`, `UpNextStrip.homeQueue` in `RouterViews.swift`. `RouterEngine.highlightedDest` is display-only. Pass, Modify, and the bridge are unchanged.
+
+`xcodegen generate` is only needed if you regenerate the project. `tools/homehealth_vision.sh` is still the one-shot simulator launch. This VM cannot run the visionOS simulator, so confirm the layout there.
+
 ## Where the decision comes from
 
 - **L1 live** (teal) — `homehealth/sdr_bridge` recomputed the case on this Mac.

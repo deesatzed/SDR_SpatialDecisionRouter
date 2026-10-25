@@ -292,29 +292,117 @@ import SwiftUI
     }
 }
 
-/// Ticket and plain reason on the Now card, so the route is readable without opening the side panel.
-struct HomeHealthCardNote: View {
+enum HomeHealthRoute {
+    static func color(_ id: String) -> Color {
+        switch id {
+        case "urgent_page": .red
+        case "provider_task": .orange
+        case "nurse_task": .yellow
+        case "silent_log": .teal
+        default: .gray
+        }
+    }
+    static func title(_ id: String) -> String {
+        switch id {
+        case "silent_log": "Silent log"
+        case "nurse_task": "Nurse task"
+        case "provider_task": "Provider task"
+        case "urgent_page": "Urgent page"
+        default: id.replacingOccurrences(of: "_", with: " ")
+        }
+    }
+    /// One line for the decision face. Same meaning as the route previews; not a second router.
+    static func action(_ id: String, ticket: String) -> String {
+        let base: String
+        switch id {
+        case "silent_log": base = "Log only. No human task."
+        case "nurse_task": base = "Send a nurse task."
+        case "provider_task": base = "Send a provider task. Not a page."
+        case "urgent_page": base = "Page someone now."
+        default: base = "Pass accepts \(title(id))."
+        }
+        if id == "silent_log", !ticket.isEmpty, ticket != "none" { return base + " File a device ticket." }
+        return base
+    }
+}
+
+struct HomeHealthRouteChip: View {
+    let route: String
+    var prominent = true
+    var body: some View {
+        Text(HomeHealthRoute.title(route))
+            .font(prominent ? .title.bold() : .title3.bold())
+            .lineLimit(1)
+            .padding(.horizontal, prominent ? 14 : 12)
+            .padding(.vertical, prominent ? 8 : 6)
+            .foregroundStyle(.black)
+            .background(HomeHealthRoute.color(route), in: Capsule())
+            .gloss("route")
+    }
+}
+
+/// Near-field decision: case, route, one reason, Pass / Modify. Rule text stays in Details.
+struct HomeHealthNowFace: View {
+    @Environment(RouterEngine.self) private var engine
+    let handoff: Handoff
     let item: DomainItem
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            if let why = item.fields["plain_reason"], !why.isEmpty {
-                Text(why).font(.title3).foregroundStyle(.secondary).lineLimit(2).gloss("plain reason")
-            }
-            if let means = item.fields["route_definition"], !means.isEmpty {
-                Text(means).font(.headline).foregroundStyle(.cyan).lineLimit(2).gloss("route")
-            }
-            let ticket = item.fields["ticket_type"] ?? "none"
-            if ticket == "none" {
-                Text("Device ticket: none").font(.title3).foregroundStyle(.secondary).gloss("device ticket")
-            } else {
-                Text("Device ticket: \(ticket)").font(.title3.bold()).foregroundStyle(.orange).gloss("device ticket")
-                if let detail = item.fields["ticket_detail"], !detail.isEmpty {
-                    Text(detail).font(.headline).foregroundStyle(.orange).lineLimit(2).gloss("device ticket")
+        let route = handoff.proposal
+        let ticket = item.fields["ticket_type"] ?? "none"
+        let plain = item.fields["plain_reason"] ?? ""
+        let note = item.fields["note"] ?? ""
+        let why = !plain.isEmpty ? plain : (note.isEmpty ? item.historyLine : note)
+        let badge = engine.domain.riskBadge(item: item) ?? ""
+        VStack(alignment: .leading, spacing: 18) {
+            HStack(alignment: .center, spacing: 12) {
+                Text("NOW").font(.title3.bold()).padding(.horizontal, 12).padding(.vertical, 5)
+                    .background(.blue, in: Capsule())
+                Text(item.id).font(.sdrHuge.bold()).lineLimit(1).minimumScaleFactor(0.5)
+                HomeHealthRouteChip(route: route)
+                Spacer(minLength: 8)
+                if !badge.isEmpty {
+                    Text(shortBadge(badge)).font(.headline.bold()).lineLimit(1)
+                        .padding(.horizontal, 10).padding(.vertical, 4)
+                        .background(NowCard.badgeFill(badge), in: Capsule())
+                        .help(badge)
+                        .gloss(NowCard.badgeKey(badge))
                 }
             }
-            if let note = item.fields["ticket_note"], !note.isEmpty {
-                Text(note).font(.callout).foregroundStyle(.orange).lineLimit(3).gloss("Ticket note")
+            Text(why).font(.title).lineLimit(2).gloss("plain reason")
+            if !ticket.isEmpty, ticket != "none" {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Device ticket").font(.title3.bold()).foregroundStyle(.black)
+                        .padding(.horizontal, 12).padding(.vertical, 5)
+                        .background(.orange, in: Capsule()).gloss("device ticket")
+                    if let detail = item.fields["ticket_detail"], !detail.isEmpty {
+                        Text(detail).font(.title3).foregroundStyle(.orange).lineLimit(2).gloss("device ticket")
+                    }
+                }
             }
+            Text(HomeHealthRoute.action(route, ticket: ticket))
+                .font(.title2.bold()).foregroundStyle(.green).lineLimit(2)
+                .gloss("what happens next")
+            ActionRow {
+                Button(handoff.trigger != nil ? "Acknowledge ✓" : (handoff.link.id == engine.config.review.escalationLink ? "Sign off ✓" : "Pass ✓")) { engine.pass(handoff.id) }.tint(.green)
+                if handoff.link.answerType == .binary { Button("Flip") { engine.flip(handoff.id) }.tint(.orange) }
+                else if handoff.trigger == nil { Button("Modify…") { engine.openRing(handoff.id) }.tint(.blue) }
+                if handoff.trigger == nil, handoff.link.id == engine.config.review.escalationLink {
+                    Button("Escalate") { engine.escalate(handoff.id) }.tint(.red)
+                }
+                #if os(visionOS)
+                Spacer()
+                #endif
+                Button(engine.detailOpen ? "ⓘ Hide" : "ⓘ Details") { engine.sideTab = "details"; engine.toggleDetail() }.tint(.gray)
+            }
+            .font(.title.bold())
+            Text("\(Int(handoff.confidence * 100))% · Details has the note, rule, and library label")
+                .font(.title3).foregroundStyle(.secondary).lineLimit(1)
         }
+        .sdrWidth(860).padding(28).sdrPanel()
+    }
+    private func shortBadge(_ b: String) -> String {
+        if b.hasPrefix("L1 live") { return "L1 live" }
+        if b.hasPrefix("L1 bundled") { return "Bundled" }
+        return b
     }
 }
