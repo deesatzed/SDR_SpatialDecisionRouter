@@ -145,23 +145,28 @@ Current areas: **personal finance** and **ED triage** (a few synthetic cards eac
 
 ![Symbiosis card](img/manual/sym_01_card_ai_collapsed.jpg)
 
-### 4.5 Home health (smart triggers)
-**Home health** on the start screen reviews synthetic home-monitoring cases. Layer 1 proposes one route:
+### 4.5 Home health (Overseer)
 
-| Route | What it means |
-|---|---|
-| **silent_log** | Log only. No one is tasked. |
-| **nurse_task** | Nurse contact within about a day. |
-| **provider_task** | Same-business-day clinician review. Not a page. |
-| **urgent_page** | Page someone now. |
+**Home health** on the start screen is the **Overseer** role. The Overseer is a physician. You review synthetic home-monitoring cases. You do not receive the nurse task, the provider task, or the page. **Bedside** and **Nurse HITM** are on the card marked **Later**. They are not modes yet. One role is active at a time.
+
+Layer 1 proposes one route. The card names the synthetic person who would receive it:
+
+| Route | Recipient | What Pass does |
+|---|---|---|
+| **silent_log** | Log only | Records the log. No person is tasked. |
+| **nurse_task** | Night nurse, or On-call hospice nurse when the goals say hospice | Passes a nurse task to that nurse. |
+| **provider_task** | On-call HH MD | Passes a same-day review to that physician. Not a page. |
+| **urgent_page** | On-call HH MD | Passes a page to that physician. You are not paged. |
+
+The button reads **Record log** or **Pass to …** so it is not a task for you. **Change route…** lists the same recipients. The decision is stored for later training. This build does not train anything from it.
 
 Some cases also show a **device ticket** (`device_maintenance`) when Layer 1 files one. A clinical route does not keep a ticket.
 
-**Pass** accepts the route. **Modify…** opens the other routes (this decision is not yes/no, so there is no Flip). Passing `urgent_page` alerts the Urgent page node.
+The card opens on **awareness**: who you are, who receives the route, a short patient chip (age band, main conditions, main medicines, living situation, night oxygen minimum when the library has one), and one clinical line. A fall on a blood thinner leads with the fall and that drug. A low oxygen reading leads with the reading. The route buttons stay on this face.
 
-The card opens on **awareness**: case id, route color (how serious, and where a Pass sends it), and one clinical line for this situation. A fall on a blood thinner leads with the fall and that drug. A low oxygen reading leads with the reading. Pass and Modify stay on this face.
+**Expand** cascades the next layer into the space beside the card: **Story**, then **Rules** for this situation, then **More for this case**. Under the story, the chart is summaries you can open one at a time: problems, medicines, active problems, hospitalizations, baselines, goals. **Collapse** peels one layer. **Awareness** jumps back to the face. The side panel scrolls when More is taller than the panel. Looking at the card for about half a second opens the story, and for about a second and a half opens the rules; looking away returns to the pinned layer. The simulator often misses that look, so use Expand. The status strip and the queue stay quiet until you tap Show.
 
-**Expand** cascades the next layer into the space beside the card: **Story**, then **Rules** for this situation, then **More for this case**. **Collapse** peels one layer. **Awareness** jumps back to the face. Looking at the card for about half a second opens the story, and for about a second and a half opens the rules; looking away returns to the pinned layer. The simulator often misses that look, so use Expand. The status strip and the queue stay quiet until you tap Show.
+The far spheres are the queues. **Overseer queue** is the cases waiting on you, larger when more are waiting. **On-call desk** and **On-call HH MD** are where a Pass goes. The one that would receive this case grows, a page largest, and the label names that person. **Show list** shows who is waiting or who was already sent.
 
 The badge on the card tells you where the decision came from:
 
