@@ -48,7 +48,7 @@ The Overseer does not receive the clinical work. Pass records the physician's de
 
 Those names are synthetic labels. They are not staff at a named health system. Layer 1 still chooses the route. The labels only say who the route is for.
 
-Spheres stay **Overseer queue · N waiting**, **On-call desk · N sent**, and **On-call HH MD · N sent**. Pass still flies to the desk, or to On-call HH MD for a page. **This pass ·** is the same recipient chip. Log only does not page anyone.
+The far objects are small beacons. Pass still flies to the desk, or to On-call HH MD for a page. The reading sits on the mid node in that spoke: **This pass ·** the same recipient chip when that beacon is the lit target. Log only does not page anyone.
 
 ## Bedside
 
@@ -65,7 +65,7 @@ There is no **Pass to on-call HH MD** button. The green button is the verb that 
 
 `review_action` is `acknowledge_continue`, `request_nurse_visit`, `document_plan`, or `page_on_call`. A page still flies to the On-call HH MD sphere. You are not paged. A visit request flies to the care-tasks sphere (the same node as the Overseer's on-call desk). Acknowledge and Document plan stay with you and do not page.
 
-Sphere nameplates while Bedside is selected: **Covering list**, **Care tasks**, **On-call MD**. Switching back to Overseer restores the Overseer names.
+Mid-node titles while Bedside is selected: **Covering list**, **Care tasks**, **On-call MD**. The far beacons stay small. Switching back to Overseer restores the Overseer titles.
 
 ## Nurse HITM
 
@@ -82,7 +82,7 @@ Nurse HITM is the nursing seat. Chrome reads **Nurse HITM** and the badge reads 
 
 `review_action` is `schedule_visit`, `call_patient`, `device_check`, `escalate_on_call_md`, `escalate_on_call_nurse`, or `log_only`. Escalate to on-call MD flies to the On-call MD sphere. You are not that physician. Schedule, call, device check, escalate-to-nurse, and log only use the visits-and-calls sphere.
 
-Sphere nameplates while Nurse HITM is selected: **Nurse list**, **Visits and calls**, **On-call MD**.
+Mid-node titles while Nurse HITM is selected: **Nurse list**, **Visits and calls**, **On-call MD**. The far beacons stay small.
 
 Patient or caregiver is a synthetic role label. It is not a name and not a phone number.
 
@@ -121,7 +121,8 @@ The open case starts as **awareness**: what needs you, how serious the route chi
 | Beside, when cascaded | `HomeHealthDossier` inside a fixed-height scroller. **Patient details**, then **Rules**, then the chart. **More** adds the note and the trend. |
 | Mid-left | `BoardView.homeStatus`: the active role title (**Overseer**, **Bedside**, or **Nurse HITM**), then large **Reviewed**, **Alerts**, **Corrections**. **Show** opens the log. The strip moves up while a dossier is open. It grows and pulses only when Alerts or Corrections are above zero. |
 | Mid-right | `UpNextStrip.homeQueue`: fat chips (case id + route). **Show** adds the clinical line and who it would go to. No priority float. |
-| Far | Three solid spheres, not a faint graph. Each nameplate is the site plus a count, large enough to read from the seat. On Overseer: **Overseer queue · N waiting**, **On-call desk · N sent**, **On-call HH MD · N sent**. Bedside and Nurse HITM rename those same three objects (see the role sections). The queue grows with how many cases are waiting and glows while any are waiting. A destination stays smaller until this action would send the open case there, then it grows (a page is the largest), glows, and adds **This pass ·** the synthetic recipient. Look or **Show list** opens who is waiting or who was already sent. The action still flies to that sphere. On Overseer, you are not the recipient. |
+| On the spokes | A small glass card on the line between the NOW card and each beacon. Queue side: the next waiting case id and a one-line why-now. Destination side: **This pass ·** the recipient when that node is the lit target, otherwise the last case sent there. A colored pip (red page, orange task, teal log) marks the lit target. Patient chip, Trends, and Rules stay on the face cascade. |
+| Far | Three small beacons, not billboards. Color and a glow mark the queue and the lit pass target. A page beacon is the largest of the three and still small. The action still flies to that beacon. On Overseer, you are not the recipient. |
 
 ### Gestures
 
@@ -139,7 +140,7 @@ The visionOS simulator often does not deliver a real gaze hover. Use the buttons
 
 Ordering is `HomeHealthBrief` in `HomeHealthDomain.swift`. It scores facts from the case fields already on the vignette (note, trend, meds, problems, goals, baseline, rule, reason). It does not use one who / problems / meds template for every card. A fall plus an anticoagulant leads with the fall, the drug, and the bleed lines in the note, then the other problems. An oxygen case leads with the Day 0 reading, then that patient's baseline `spo2_night_min`, then the human note. Home oxygen, GOLD, or a commode desaturation leads when those words are in the case text.
 
-Views to check after a Mac rebuild: `HomeHealthNowFace`, `HomeHealthDossier`, `HomeHealthChart`, `HomeHealthTrends`, `HomeHealthBrief`, `HomeHealthInk`, `HomeHealthSeat`, `HomeHealthRole`, `HomeHealthVocabulary`; `AgentCard.homeNode`; `CrossroadsView.layoutHomeFocus`, `layoutHomeNodes`, and `nodeRestScale`; `SidePanel.homeCascade` (the scroller); `RouterEngine.homeSetRole` / `homeCascade` / `homeCollapse` / `homeChartToggle`. Layer 1's route choice and the bridge are unchanged.
+Views to check after a Mac rebuild: `HomeHealthNowFace`, `HomeHealthDossier`, `HomeHealthChart`, `HomeHealthTrends`, `HomeHealthBrief`, `HomeHealthInk`, `HomeHealthSeat`, `HomeHealthRole`, `HomeHealthVocabulary`; `AgentCard.homeNode`; `CrossroadsView.layoutHomeFocus`, `layoutHomeNodes`, `homeMidPosition`, and `nodeRestScale`; `SidePanel.homeCascade` (the scroller); `RouterEngine.homeSetRole` / `homeCascade` / `homeCollapse` / `homeChartToggle`. Layer 1's route choice and the bridge are unchanged.
 
 `xcodegen generate` is only needed if you regenerate the project. `tools/homehealth_vision.sh` is still the one-shot simulator launch. This VM cannot run the visionOS simulator, so confirm the layout there.
 
@@ -209,10 +210,10 @@ This VM cannot boot the visionOS simulator. On a Mac, after `tools/homehealth_vi
 
 1. Home health opens on Overseer. Chips read Overseer, Bedside, Nurse HITM. None say Later. Only Overseer is filled.
 2. Framing is **Overseeing · routes to on-call**. Badge is **Physician**. Buttons are **Log only** or **Pass to …** and **Change route…**. PX-COPD-01 still leads with **Why now**, and **Patient details → Trends** still opens.
-3. Spheres read Overseer queue, On-call desk, On-call HH MD. **This pass ·** matches the recipient chip. Pass does not page you.
+3. Far beacons are small. The queue spoke shows the next case id and a one-line why-now, not the patient chip. The lit destination spoke shows **This pass ·** the same recipient as the card, with a colored pip. Pass does not page you.
 4. Tap Bedside. The Overseer chip clears and Bedside fills. Framing becomes **Bedside · covering clinician**. Buttons are Acknowledge & continue, Request nurse visit, Document plan, Page on-call. There is no Pass to on-call HH MD.
 5. Tap Nurse HITM. Buttons are Schedule visit, Call patient, Device check, Escalate to on-call MD, Escalate to on-call nurse, Log only. Chrome says Nurse HITM.
-6. Tap Overseer again. The pass buttons and sphere names return. Expand still says **Patient details**.
+6. Tap Overseer again. The pass buttons and mid-node titles return. Expand still says **Patient details**. Trends still open only from that cascade.
 7. Decide one case in each role. Export. Each line's `card_payload.review_role` is the seat you used. Bedside and Nurse lines also have `review_action`.
 
 ## Later, not this build

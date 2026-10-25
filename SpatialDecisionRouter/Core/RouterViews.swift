@@ -65,7 +65,7 @@ struct CrossroadsView: View {
         let home = cfg.id == "home_health"
         for (i, a) in cfg.agents.enumerated() {
             let p = engine.agentPosition(a.id)
-            // Home spheres are solid work objects. Sync sizes them and lights the one that needs attention.
+            // Home beacons are small. The glance card sits on the spoke, not on the sphere.
             let radius: Float = home ? homeSphereRadius : (a.tier == 0 ? 0.08 : 0.1)
             let node = ModelEntity(mesh: .generateSphere(radius: radius),
                                    materials: [SimpleMaterial(color: UIColor(hue: CGFloat(i) / CGFloat(cfg.agents.count + 1), saturation: 0.5, brightness: 0.9, alpha: 0.55), isMetallic: false)])
@@ -76,12 +76,17 @@ struct CrossroadsView: View {
                                         materials: [UnlitMaterial(color: UIColor(white: 1, alpha: 0))])
                 halo.name = "halo"; halo.isEnabled = false; node.addChild(halo)
             }
-            root.addChild(line(p, RouterEngine.hub, alpha: home ? 0.07 : 0.22))
+            root.addChild(line(p, RouterEngine.hub, alpha: home ? 0.20 : 0.22))
             if let card = att.entity(for: "agent-\(a.id)") {
-                let sc: Float = home ? 1.7 : 1.4
-                let dy: Float = home ? homeLabelOffset(a, nodeRestScale(a.id)) : (a.tier == 0 ? -0.2 : 0.24)
+                let sc: Float = home ? 0.92 : 1.4
                 card.name = home ? "label-\(a.id)" : "att-agent-\(a.id)"
-                card.position = p + [0, dy, home ? 0.06 : 0]; card.scale = [sc, sc, sc]
+                if home {
+                    card.position = homeMidPosition(a)
+                } else {
+                    let dy: Float = a.tier == 0 ? -0.2 : 0.24
+                    card.position = p + [0, dy, 0]
+                }
+                card.scale = [sc, sc, sc]
                 card.components.set(BillboardComponent()); root.addChild(card)
             }
         }
@@ -120,7 +125,7 @@ struct CrossroadsView: View {
         for (agent, t) in engine.lastDelivered where pulsed[agent] != t {
             if let n = root.findEntity(named: "agent-\(agent)") {
                 let rest = nodeRestScale(agent)
-                let peak: Float = engine.config.id == "home_health" ? rest * 1.55 : 1.8
+                let peak: Float = engine.config.id == "home_health" ? rest * 1.22 : 1.8
                 let back: Float = engine.config.id == "home_health" ? rest : 1
                 var big = n.transform; big.scale = [peak, peak, peak]; n.move(to: big, relativeTo: root, duration: 0.18)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { var s = n.transform; s.scale = [back, back, back]; n.move(to: s, relativeTo: root, duration: 0.35) }
@@ -158,29 +163,37 @@ struct CrossroadsView: View {
         return "\(engine.config.id)|\(engine.focusStatusOpen)|\(engine.focusQueueOpen)|\(engine.detailOpen)|\(engine.homeShownLevel)|\(h?.id ?? "")|\(h?.proposal ?? "")|\(dest)|\(engine.stats.alertsFired)|\(engine.stats.corrections)|\(engine.packVersion)|\(moving)|\(load)|\(engine.homeSphereOpen ?? "")|\(engine.homeReviewRole)"
     }
 
-    /// Mesh radius for a home-health work sphere, before `nodeRestScale`.
-    private let homeSphereRadius: Float = 0.16
+    /// Mesh radius for a home-health beacon, before `nodeRestScale`. Small on purpose.
+    private let homeSphereRadius: Float = 0.055
 
-    /// Queue load and route urgency. Idle destinations stay solid, just smaller.
+    /// Beacons stay small. A lit pass target grows a little. The reading lives on the mid node.
     private func nodeRestScale(_ id: String) -> Float {
         guard engine.config.id == "home_health", let a = engine.agent(id) else { return 1 }
         if a.tier == 0 {
             let n = Float(engine.queueCount(id))
-            return min(2.45, 1.35 + 0.16 * n)
+            return min(1.25, 0.82 + 0.04 * n)
         }
-        let received = Float(engine.inbox[id] ?? 0)
         if let route = attentionRoute(for: id) {
-            let base: Float
             switch route {
-            case "urgent_page": base = 2.2
-            case "provider_task": base = 1.85
-            case "nurse_task": base = 1.65
-            case "silent_log": base = 1.4
-            default: base = 1.55
+            case "urgent_page": return 1.35
+            case "provider_task": return 1.15
+            case "nurse_task": return 1.08
+            case "silent_log": return 1.0
+            default: return 1.1
             }
-            return min(2.55, base + 0.04 * received)
         }
-        return min(1.2, 0.95 + 0.06 * received)
+        return 0.72
+    }
+
+    /// Glance card on the spoke between the NOW card and this beacon. Not a second panel.
+    private func homeMidPosition(_ a: AgentSpec) -> SIMD3<Float> {
+        let far = engine.agentPosition(a.id)
+        let anchor = SIMD3<Float>(0, 1.46, -1.26)
+        let t: Float = a.tier == 0 ? 0.48 : 0.42
+        var p = simd_mix(far, anchor, SIMD3(repeating: t))
+        if a.tier == 0 { p.y = min(p.y, 1.22) }
+        else { p.y = max(p.y, 1.64) }
+        return p
     }
 
     /// The open case, or a Pass already in flight, is what makes a destination glow.
@@ -189,11 +202,6 @@ struct CrossroadsView: View {
         return engine.handoffs.first {
             engine.phase[$0.id] == .outgoing && (engine.destFor[$0.id] ?? $0.link.dest) == id
         }?.proposal
-    }
-
-    private func homeLabelOffset(_ a: AgentSpec, _ scale: Float) -> Float {
-        let gap = homeSphereRadius * scale + 0.36
-        return a.tier == 0 ? -gap : gap
     }
 
     private struct SpherePaint {
@@ -257,7 +265,7 @@ struct CrossroadsView: View {
         }
     }
 
-    /// Work objects. Size follows queue load or the urgency of this Pass. Glow means look here.
+    /// Beacons stay small. The glance card rides the spoke, not the far sphere.
     private func layoutHomeNodes() {
         let cfg = engine.config
         for a in cfg.agents {
@@ -280,8 +288,7 @@ struct CrossroadsView: View {
                 halo.scale = SIMD3(repeating: paint.haloScale)
             }
             if let card = root.findEntity(named: "label-\(a.id)") {
-                let dy = homeLabelOffset(a, want)
-                moveAtt(card, n.position + [0, dy, 0.06], 1.7)
+                moveAtt(card, homeMidPosition(a), 0.92)
             }
         }
     }
@@ -322,63 +329,63 @@ struct AgentCard: View {
         #endif
     }
     #if os(visionOS)
-    @State private var looking = false
-    /// Nameplate readable at distance: site plus count. Look or Show list opens who is waiting or who was sent.
+    /// Glance on the spoke. One next case, or this pass / last sent. The dossier stays on the face.
     private var homeNode: some View {
-        let pinned = engine.homeSphereOpen == agent.id
-        let open = looking || pinned
         let sent = engine.inbox[agent.id] ?? 0
-        let count = agent.tier == 0 ? "\(queued) waiting" : "\(sent) sent"
-        let passHere = passRoute
-        let nowFields = passFields
-        let lines = waitLines
+        let count = agent.tier == 0 ? "\(queued)" : "\(sent)"
         let role = engine.homeRole
-        let sphereName = HomeHealthVocabulary.sphereTitle(role: role, agent: agent)
-        return VStack(alignment: .leading, spacing: 8) {
-            Text("\(sphereName) · \(count)")
-                .font(.sdrHuge.bold())
-                .lineLimit(1)
-                .minimumScaleFactor(0.45)
-                .frame(maxWidth: 520, alignment: .leading)
-            if let passHere {
-                let who = role == .overseer
-                    ? HomeHealthSeat.recipientChip(route: passHere, fields: nowFields)
-                    : HomeHealthVocabulary.faceChip(role: role, route: passHere, fields: nowFields)
-                Text("This pass · \(who)")
-                    .font(.title.bold())
-                    .foregroundStyle(rim)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.6)
-                    .frame(maxWidth: 520, alignment: .leading)
-            }
-            if open {
-                Text(HomeHealthVocabulary.sphereNote(role: role, tier: agent.tier))
-                    .font(.title3)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
-                    .frame(maxWidth: 460, alignment: .leading)
-                if lines.isEmpty {
-                    Text(agent.tier == 0 ? "Queue is clear" : "Nothing sent here yet")
-                        .font(.title3)
-                        .foregroundStyle(.secondary)
+        let title = HomeHealthVocabulary.sphereTitle(role: role, agent: agent)
+        let lit = passRoute != nil
+        return VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 8) {
+                if lit {
+                    Circle().fill(rim).frame(width: 12, height: 12)
+                        .accessibilityHidden(true)
                 }
-                ForEach(Array(lines.enumerated()), id: \.offset) { _, line in
-                    Text(line).font(.title3).lineLimit(2).frame(maxWidth: 460, alignment: .leading)
-                }
+                Text(title).font(.headline.bold()).lineLimit(1).minimumScaleFactor(0.7)
+                Spacer(minLength: 6)
+                Text(count).font(.headline.monospacedDigit())
+                Text(agent.tier == 0 ? "waiting" : "sent").font(.caption).foregroundStyle(.secondary)
             }
-            Button(pinned ? "Hide list" : "Show list") { engine.homeSphereToggle(agent.id) }
-                .font(.title2.bold())
-                .tint(.teal)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(lit ? "\(title), pass target, \(count) sent" : "\(title), \(count) \(agent.tier == 0 ? "waiting" : "sent")")
+            if agent.tier == 0 {
+                if let next = engine.queue.first {
+                    Text(next.itemId).font(.title3.bold()).lineLimit(1)
+                    Text(whyNow(next)).font(.callout).foregroundStyle(.secondary).lineLimit(2)
+                } else {
+                    Text("Queue clear").font(.callout).foregroundStyle(.secondary).lineLimit(1)
+                }
+            } else if lit {
+                Text("This pass · \(passWho)").font(.title3.bold()).foregroundStyle(rim).lineLimit(2)
+            } else if let last = lastSent {
+                Text("Last · \(last)").font(.callout).foregroundStyle(.secondary).lineLimit(2)
+            } else {
+                Text("Nothing sent").font(.callout).foregroundStyle(.secondary).lineLimit(1)
+            }
         }
-        .padding(16)
+        .padding(12)
+        .frame(maxWidth: 320, alignment: .leading)
         .sdrPanel()
-        .overlay(RoundedRectangle(cornerRadius: 18).stroke(rim, lineWidth: passRoute != nil || (agent.tier == 0 && queued > 0) ? 4 : 1.5))
-        .onContinuousHover { phase in
-            switch phase {
-            case .ended: looking = false
-            default: looking = true
-            }
-        }
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(lit ? rim : Color.white.opacity(0.22), lineWidth: lit ? 2.5 : 1))
+    }
+    private func whyNow(_ h: Handoff) -> String {
+        let fields = engine.items[h.itemId]?.fields ?? [:]
+        if let trigger = fields["pattern_trigger"], !trigger.isEmpty { return trigger }
+        let hook = HomeHealthBrief.hook(fields)
+        return hook.isEmpty ? HomeHealthRoute.title(h.proposal) : hook
+    }
+    private var passWho: String {
+        let role = engine.homeRole
+        guard let route = passRoute else { return "" }
+        if role == .overseer { return HomeHealthSeat.recipientChip(route: route, fields: passFields) }
+        return HomeHealthVocabulary.faceChip(role: role, route: route, fields: passFields)
+    }
+    private var lastSent: String? {
+        guard let d = engine.decisions.last(where: {
+            $0.domain == "home_health" && HomeHealthSeat.deskId(for: $0.effectiveAnswer) == agent.id
+        }) else { return nil }
+        return "\(d.itemId) · \(HomeHealthVocabulary.sentChip(route: d.effectiveAnswer, fields: d.context))"
     }
     /// Route that currently lights this destination: the open case, or a Pass in flight.
     private var passRoute: String? {
@@ -400,30 +407,12 @@ struct AgentCard: View {
         return [:]
     }
     private var rim: Color {
-        if agent.tier == 0 { return queued > 0 ? .teal : Color.white.opacity(0.35) }
         guard let route = passRoute else { return Color.white.opacity(0.35) }
         switch route {
         case "urgent_page": return .red
         case "silent_log": return .teal
         default: return .orange
         }
-    }
-    private var waitLines: [String] {
-        let role = engine.homeRole
-        if agent.tier == 0 {
-            return engine.waiting.prefix(4).map { h in
-                let fields = engine.items[h.itemId]?.fields ?? [:]
-                let who = role == .overseer
-                    ? HomeHealthSeat.recipientChip(route: h.proposal, fields: fields)
-                    : HomeHealthVocabulary.faceChip(role: role, route: h.proposal, fields: fields)
-                return "\(h.itemId) · \(HomeHealthRoute.title(h.proposal)) · \(who)"
-            }
-        }
-        return engine.decisions
-            .filter { $0.domain == "home_health" && HomeHealthSeat.deskId(for: $0.effectiveAnswer) == agent.id }
-            .suffix(4)
-            .reversed()
-            .map { d in "\(d.itemId) · \(HomeHealthVocabulary.sentChip(route: d.effectiveAnswer, fields: d.context))" }
     }
     #endif
     private var classic: some View {

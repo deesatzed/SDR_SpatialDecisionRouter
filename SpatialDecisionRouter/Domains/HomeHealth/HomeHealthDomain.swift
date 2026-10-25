@@ -532,18 +532,6 @@ enum HomeHealthVocabulary {
         }
     }
 
-    static func sphereNote(role: HomeHealthRole, tier: Int) -> String {
-        if role == .overseer {
-            return tier == 0 ? "Waiting on you" : "Pass sends here. You are not the recipient."
-        }
-        if tier == 0 {
-            return role == .bedside ? "Patients you are covering" : "Cases for nursing review"
-        }
-        return role == .bedside
-            ? "This action sends here. A page goes to the on-call physician, not to you."
-            : "This action sends here. You are not the on-call physician."
-    }
-
     static func whoReceives(role: HomeHealthRole, fields: [String: String]) -> String {
         let route = fields["route"] ?? ""
         let action = suggested(role: role, route: route, fields: fields)
