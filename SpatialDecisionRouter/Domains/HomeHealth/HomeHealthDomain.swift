@@ -298,6 +298,7 @@ import SwiftUI
             "recipient": HomeHealthSeat.recipient(route: route, fields: [
                 "goals": v.goals, "route": route,
             ]) ?? "log only",
+            "pattern_trigger": patterns[v.case_id]?.trigger ?? "",
             "pattern_headline": patterns[v.case_id]?.headline ?? "",
             "pattern_fixture": patterns[v.case_id]?.fixture == true ? "1" : "",
         ]
@@ -442,7 +443,7 @@ enum HomeHealthBrief {
             if !plain.isEmpty && !isSlogan(plain, reason: f["reason"] ?? "") { return plain }
         }
         if s.oxygen && !s.fall && !s.neuro && !s.chest {
-            if let headline = f["pattern_headline"], !headline.isEmpty { return headline }
+            if let trigger = f["pattern_trigger"], !trigger.isEmpty { return trigger }
             let today = spo2Today(f["trend"] ?? "")
             if !today.isEmpty { return today.prefix(2).joined(separator: " ") }
             let plain = f["plain_reason"] ?? ""
@@ -715,7 +716,10 @@ enum HomeHealthBrief {
         let meds = keyMedNames(f)
         if !meds.isEmpty { parts.append(meds.prefix(2).joined(separator: ", ")) }
         var tail = livingShort(f)
-        if let o2 = oxygenShort(f) { tail = tail.isEmpty ? o2 : "\(tail), \(o2)" }
+        if let o2 = oxygenShort(f) {
+            let bit = (f["pattern_trigger"] ?? "").isEmpty ? o2 : "baseline \(o2)"
+            tail = tail.isEmpty ? bit : "\(tail), \(bit)"
+        }
         if !tail.isEmpty { parts.append(tail) }
         return parts.joined(separator: " · ")
     }
@@ -872,7 +876,18 @@ struct HomeHealthNowFace: View {
             if !chip.isEmpty {
                 Text(chip).font(.title3).foregroundStyle(.secondary).lineLimit(2).fixedSize(horizontal: false, vertical: true)
             }
-            Text(hook).font(.title).lineLimit(4)
+            let trigger = item.fields["pattern_trigger"] ?? ""
+            let week = item.fields["pattern_headline"] ?? ""
+            if !trigger.isEmpty {
+                Text("Why now").font(.title3.bold()).foregroundStyle(.orange)
+                Text(trigger).font(.title).lineLimit(4)
+                if !week.isEmpty {
+                    Text("This week").font(.title3.bold()).foregroundStyle(.secondary)
+                    Text(week).font(.title3).foregroundStyle(.secondary).lineLimit(3)
+                }
+            } else {
+                Text(hook).font(.title).lineLimit(4)
+            }
             if !ticket.isEmpty, ticket != "none" {
                 Text("Device ticket").font(.title3.bold()).foregroundStyle(.black)
                     .padding(.horizontal, 12).padding(.vertical, 5)

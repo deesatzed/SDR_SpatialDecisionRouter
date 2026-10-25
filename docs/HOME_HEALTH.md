@@ -50,7 +50,7 @@ The case opens collapsed on awareness.
 
 | Level | What is open |
 |---|---|
-| L0 Awareness | Case id, route chip, recipient chip, compressed patient chip (age band, key conditions, key meds, living and night SpO₂ when the library has them), one clinical line, and the route controls. |
+| L0 Awareness | Case id, route chip, recipient chip, compressed patient chip (age band, key conditions, key meds, living, and a night SpO₂ labeled **baseline** when a pattern trigger is also on the card), the **Why now** line when this card has a pattern, then the week pattern as context, and the route controls. |
 | L1 Patient details | The next few sentences, ordered for this situation, then chart sections as summaries. **Trends**, when this case has a pattern, sits here collapsed to one line. |
 | L2 Rules | The rule that fired or was held, who receives it, and the oxygen, drug, goals, or device lines that apply to this patient. |
 | L3 More | The note, the trend, and the library label next to Layer 1. Chart sections stay. |
@@ -61,7 +61,7 @@ Active problems are problem-list lines that match this situation (atrial fibrill
 
 ### Trends
 
-`PX-COPD-01` is a synthetic pattern fixture and the first card in the queue. It is not one of the six library cases, and Layer 1 did not compute it. The badge says **Pattern fixture**. The face line is the week’s pattern, not a single low reading: eight similar SpO2 alerts, mostly on position change, resting SpO2 usually in band. The button is **Log only** (no page, no handoff).
+`PX-COPD-01` is a synthetic pattern fixture and the first card in the queue. It is not one of the six library cases, and Layer 1 did not compute it. The badge says **Pattern fixture**. **Why now** on the face is today’s SpO2 84% (sit up) / 85% (commode), recovered to band. The patient chip’s night SpO₂ 91 is labeled **baseline**, not the alert. **This week** under that is the pattern: eight similar alerts, mostly on position change, resting SpO2 usually in band. The button is **Log only** (no page, no handoff).
 
 **Patient details** shows **Trends** collapsed to that line. **Show** opens recent alerts and actions, SpO2 and heart-rate bars (teal inside this patient’s band, orange outside it), the note that the positional-desat preference was adjusted to log only, and a longer hint: a similar rise in exertion-related alerts about three months ago came before a pneumonia admission, and today’s alerts are not that pattern. **Hide** collapses it. The same scroller still moves the rest of the dossier.
 
@@ -73,7 +73,7 @@ The open case starts as **awareness**: what needs you, how serious the route chi
 
 | Layer | What you should see |
 |---|---|
-| Near, center | `HomeHealthNowFace` (L0). Overseer framing, case id, colored route chip, recipient chip, patient chip, one clinical line for **this** situation (a fall on a blood thinner leads with the fall and the drug; a low oxygen reading leads with that reading). **Log only** or **Pass to …** and **Change route…** stay on this face. |
+| Near, center | `HomeHealthNowFace` (L0). Overseer framing, case id, colored route chip, recipient chip, patient chip, and one clinical line for **this** situation (a fall on a blood thinner leads with the fall and the drug; a low oxygen reading leads with that reading). A pattern card adds **Why now** (the event) above **This week** (the pattern). **Log only** or **Pass to …** and **Change route…** stay on this face. |
 | Beside, when cascaded | `HomeHealthDossier` inside a fixed-height scroller. **Patient details**, then **Rules**, then the chart. **More** adds the note and the trend. |
 | Mid-left | `BoardView.homeStatus`: **Overseer**, then large **Reviewed**, **Alerts**, **Corrections**. **Show** opens the log. The strip moves up while a dossier is open. It grows and pulses only when Alerts or Corrections are above zero. |
 | Mid-right | `UpNextStrip.homeQueue`: fat chips (case id + route). **Show** adds the clinical line and who it would go to. No priority float. |

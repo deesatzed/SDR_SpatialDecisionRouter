@@ -95,6 +95,7 @@ struct HHPatternEntry: Decodable {
 struct HHPattern: Decodable, Equatable {
     var case_id: String
     var fixture: Bool
+    var trigger: String
     var headline: String
     var summary: String
     var rule_note: String

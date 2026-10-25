@@ -35,6 +35,7 @@
       "pattern": {
         "case_id": "PX-COPD-01",
         "fixture": true,
+        "trigger": "Today’s SpO2 84% (sit up) / 85% (commode), recovered to band.",
         "headline": "8 similar SpO2 alerts this week · often on position change · resting SpO2 usually in band",
         "summary": "These alerts are the same positional desats he already has. Resting SpO2 stays inside the band set for him. A new page is not what this pattern asks for.",
         "rule_note": "After repeated similar alerts, the preference for positional desat on this patient was adjusted to log only. A page is not the default for this pattern.",
