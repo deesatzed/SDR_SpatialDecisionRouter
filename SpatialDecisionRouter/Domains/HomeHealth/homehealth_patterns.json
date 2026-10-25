@@ -1,0 +1,69 @@
+{
+  "synthetic": true,
+  "note": "SYNTHETIC pattern fixture for the Overseer Trends section. Not a library case. Layer 1 does not read this file and did not choose the route.",
+  "cases": [
+    {
+      "vignette": {
+        "case_id": "PX-COPD-01",
+        "source": "synthetic pattern fixture",
+        "library_label": "pattern_fixture",
+        "age_band": "70-74",
+        "sex": "M",
+        "living": "alone",
+        "pmh": "severe COPD GOLD D, on home oxygen",
+        "meds": "tiotropium inhaler daily; home oxygen 2 L nasal cannula",
+        "devices": "home oxygen concentrator, fingertip oximeter, watch",
+        "goals": "wants treatment at home, hospital if breathing does not recover at rest",
+        "function": "walks indoors, desats when he stands or uses the commode, recovers at rest",
+        "baseline": "rest_hr 74, spo2_night_min 91, steps 900",
+        "baseline_status": "established, monitoring day 120",
+        "discharge": "pneumonia admission about 3 months ago, home after 4 days",
+        "trend": "Day -6 to -1: resting SpO2 91-93% inside his band, resting HR 70-78. Eight SpO2 alerts on position change, each back in band at rest. Day 0 06:10 SpO2 84% rolling to sit up, back to 92% at rest. Day 0 09:40 SpO2 85% walking to the commode, back to 91% at rest.",
+        "note": "He is on 2 L nasal cannula. Desats with position change are usual for him. No increase in sputum. Resting SpO2 is still in his band.",
+        "artifact_flags": "none",
+        "layer1": {
+          "route": "silent_log",
+          "owner": "pattern_fixture",
+          "tier": "",
+          "rule": "",
+          "reason": "positional_pattern",
+          "plain_reason": "Positional desats match this patient's known pattern. The preference for this pattern is log only, not a page.",
+          "route_definition": "Log only. No page and no handoff.",
+          "escalation_target": ""
+        }
+      },
+      "pattern": {
+        "case_id": "PX-COPD-01",
+        "fixture": true,
+        "headline": "8 similar SpO2 alerts this week · often on position change · resting SpO2 usually in band",
+        "summary": "These alerts are the same positional desats he already has. Resting SpO2 stays inside the band set for him. A new page is not what this pattern asks for.",
+        "rule_note": "After repeated similar alerts, the preference for positional desat on this patient was adjusted to log only. A page is not the default for this pattern.",
+        "horizon": "About 3 months ago, exertion-related alerts rose for two weeks while resting SpO2 stayed in band. That run came before a pneumonia admission. Today's alerts are positional, not that exertional rise.",
+        "alerts": [
+          {"when": "Day 0 06:10", "what": "SpO2 84% rolling to sit up", "action": "Logged. Same positional pattern. No page."},
+          {"when": "Day 0 09:40", "what": "SpO2 85% walking to the commode", "action": "Logged. Recovered to 91% at rest."},
+          {"when": "Day -1", "what": "6 similar position-change alerts", "action": "Logged. Resting readings stayed in band."},
+          {"when": "Day -6", "what": "Route preference reviewed", "action": "Positional desat preference set to log only after the same cluster."}
+        ],
+        "vitals": [
+          {
+            "name": "SpO2",
+            "band": "Resting band 90–94. Night minimum 91.",
+            "low": 90,
+            "high": 94,
+            "points": [92, 91, 93, 84, 92, 85, 91, 93, 90, 92],
+            "outside_note": "Two readings outside the band: 84% rolling over, 85% at the commode. Both returned to band at rest."
+          },
+          {
+            "name": "HR",
+            "band": "Usual resting 68–84.",
+            "low": 68,
+            "high": 84,
+            "points": [72, 74, 70, 96, 76, 98, 74, 73, 80, 75],
+            "outside_note": "Heart rate leaves the band only with the same position changes, then settles."
+          }
+        ]
+      }
+    }
+  ]
+}

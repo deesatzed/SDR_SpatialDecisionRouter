@@ -81,3 +81,41 @@ enum HomeHealthClient {
         return live
     }
 }
+
+/// Display-only pattern pack. Not a Layer 1 input and not part of the vignette snapshot.
+struct HHPatternPack: Decodable {
+    var cases: [HHPatternEntry]
+}
+
+struct HHPatternEntry: Decodable {
+    var vignette: HHVignette
+    var pattern: HHPattern
+}
+
+struct HHPattern: Decodable, Equatable {
+    var case_id: String
+    var fixture: Bool
+    var headline: String
+    var summary: String
+    var rule_note: String
+    var horizon: String
+    var alerts: [HHPatternEvent]
+    var vitals: [HHPatternVital]
+}
+
+struct HHPatternEvent: Decodable, Equatable, Identifiable {
+    var when: String
+    var what: String
+    var action: String
+    var id: String { when + what }
+}
+
+struct HHPatternVital: Decodable, Equatable, Identifiable {
+    var name: String
+    var band: String
+    var low: Int
+    var high: Int
+    var points: [Int]
+    var outside_note: String
+    var id: String { name }
+}

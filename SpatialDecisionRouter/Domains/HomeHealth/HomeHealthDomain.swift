@@ -10,6 +10,8 @@ import SwiftUI
     var minutesPerSecond: Double { config.capacity["minutesPerSecond"] ?? 1 }
 
     private var vignettes: [HHVignette] = []
+    private var patternCases: [HHVignette] = []
+    private var patterns: [String: HHPattern] = [:]
     private var queue: [DomainItem] = []
     private var ready = false
     private var live: Bool?
@@ -42,6 +44,7 @@ import SwiftUI
         reviewed = 0
         urgentConfirmed = 0
         queue = []
+        loadPatterns()
         if let pack = Self.loadPack() {
             vignettes = pack.cases
             engineVersion = pack.engine_version
@@ -60,10 +63,27 @@ import SwiftUI
             } else {
                 self.live = false
             }
-            self.queue = self.vignettes.enumerated().map { index, vignette in
-                self.item(vignette, arrival: Double(index))
-            }
+            self.rebuildQueue()
             self.ready = true
+        }
+    }
+
+    func pattern(for caseId: String) -> HHPattern? { patterns[caseId] }
+
+    private func loadPatterns() {
+        patternCases = []
+        patterns = [:]
+        guard let url = Bundle.main.url(forResource: "homehealth_patterns", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let pack = try? JSONDecoder().decode(HHPatternPack.self, from: data) else { return }
+        patternCases = pack.cases.map(\.vignette)
+        patterns = Dictionary(uniqueKeysWithValues: pack.cases.map { ($0.pattern.case_id, $0.pattern) })
+    }
+
+    private func rebuildQueue() {
+        let all = patternCases + vignettes
+        queue = all.enumerated().map { index, vignette in
+            item(vignette, arrival: Double(index))
         }
     }
 
@@ -130,7 +150,7 @@ import SwiftUI
         guard link.id == "route" else { return nil }
         let who = HomeHealthSeat.recipient(route: answer, fields: item.fields)
         let meaning = [
-            "silent_log": "Record a log only. No on-call person is tasked. The Overseer is not the recipient.",
+            "silent_log": "Log only. No page and no handoff. Nobody is tasked. The Overseer is not the recipient.",
             "nurse_task": "Pass a nurse task to \(who ?? "Night nurse"). Not to the Overseer.",
             "provider_task": "Pass a provider task to \(who ?? "On-call HH MD"). Not a page, and not to the Overseer.",
             "urgent_page": "Pass an urgent page to \(who ?? "On-call HH MD"). The Overseer is not paged.",
@@ -224,7 +244,7 @@ import SwiftUI
 
     func boardMetrics(_ s: EngineStats) -> [MetricValue] {
         [
-            MetricValue(label: "Reviewed", value: "\(reviewed)/\(vignettes.count)"),
+            MetricValue(label: "Reviewed", value: "\(reviewed)/\(vignettes.count + patternCases.count)"),
             MetricValue(label: "Urgent signed", value: "\(urgentConfirmed)"),
             MetricValue(label: "Bridge", value: live == true ? "live" : "bundled"),
         ]
@@ -278,6 +298,8 @@ import SwiftUI
             "recipient": HomeHealthSeat.recipient(route: route, fields: [
                 "goals": v.goals, "route": route,
             ]) ?? "log only",
+            "pattern_headline": patterns[v.case_id]?.headline ?? "",
+            "pattern_fixture": patterns[v.case_id]?.fixture == true ? "1" : "",
         ]
         let shown = route.isEmpty ? "no Layer 1 route" : route
         let ticketBit = ticket == "none" ? "no device ticket" : "ticket \(ticket)"
@@ -363,7 +385,7 @@ enum HomeHealthSeat {
             if goals.contains("hospice") || goals.contains("comfort-focused") { return "Pass to hospice nurse" }
             return "Pass to Night nurse"
         default:
-            return "Record log"
+            return "Log only"
         }
     }
 
@@ -419,7 +441,8 @@ enum HomeHealthBrief {
             let plain = f["plain_reason"] ?? ""
             if !plain.isEmpty && !isSlogan(plain, reason: f["reason"] ?? "") { return plain }
         }
-        if s.oxygen && !s.fall && !s.neuro {
+        if s.oxygen && !s.fall && !s.neuro && !s.chest {
+            if let headline = f["pattern_headline"], !headline.isEmpty { return headline }
             let today = spo2Today(f["trend"] ?? "")
             if !today.isEmpty { return today.prefix(2).joined(separator: " ") }
             let plain = f["plain_reason"] ?? ""
@@ -799,7 +822,7 @@ struct HomeHealthNowFace: View {
     @Environment(RouterEngine.self) private var engine
     let handoff: Handoff
     let item: DomainItem
-    private let levels = ["Awareness", "Story", "Rules", "More"]
+    private let levels = ["Awareness", "Patient details", "Rules", "More"]
     var body: some View {
         let route = handoff.proposal
         let ticket = item.fields["ticket_type"] ?? "none"
@@ -826,7 +849,12 @@ struct HomeHealthNowFace: View {
                 Text(item.id).font(.sdrHuge.bold()).lineLimit(1).minimumScaleFactor(0.5)
                 HomeHealthRouteChip(route: route)
                 Spacer(minLength: 8)
-                if !badge.isEmpty {
+                if item.fields["pattern_fixture"] == "1" {
+                    Text("Pattern fixture").font(.headline.bold()).lineLimit(1)
+                        .padding(.horizontal, 10).padding(.vertical, 4)
+                        .background(.yellow, in: Capsule())
+                        .help("Synthetic pattern card for the Trends section. Layer 1 did not compute this case.")
+                } else if !badge.isEmpty {
                     Text(shortBadge(badge)).font(.headline.bold()).lineLimit(1)
                         .padding(.horizontal, 10).padding(.vertical, 4)
                         .background(NowCard.badgeFill(badge), in: Capsule())
@@ -844,14 +872,16 @@ struct HomeHealthNowFace: View {
             if !chip.isEmpty {
                 Text(chip).font(.title3).foregroundStyle(.secondary).lineLimit(2).fixedSize(horizontal: false, vertical: true)
             }
-            Text(hook).font(.title).lineLimit(3)
+            Text(hook).font(.title).lineLimit(4)
             if !ticket.isEmpty, ticket != "none" {
                 Text("Device ticket").font(.title3.bold()).foregroundStyle(.black)
                     .padding(.horizontal, 12).padding(.vertical, 5)
                     .background(.orange, in: Capsule()).gloss("device ticket")
             }
             FlowRow(spacing: 12) {
-                Button(handoff.trigger != nil ? "Acknowledge ✓" : (handoff.link.id == engine.config.review.escalationLink ? "Sign off ✓" : HomeHealthSeat.passTitle(route: route, fields: item.fields))) { engine.pass(handoff.id) }.tint(.green)
+                Button(handoff.trigger != nil ? "Acknowledge ✓" : (handoff.link.id == engine.config.review.escalationLink ? "Sign off ✓" : HomeHealthSeat.passTitle(route: route, fields: item.fields))) { engine.pass(handoff.id) }
+                    .tint(.green)
+                    .help(route == "silent_log" ? "No page and no handoff. Acknowledge and log the decision. Nobody is tasked." : "Sends the route to the on-call recipient. You are not the recipient.")
                 if handoff.link.answerType == .binary { Button("Flip") { engine.flip(handoff.id) }.tint(.orange) }
                 else if handoff.trigger == nil { Button("Change route…") { engine.openRing(handoff.id) }.tint(.blue) }
                 if handoff.trigger == nil, handoff.link.id == engine.config.review.escalationLink {
@@ -867,7 +897,7 @@ struct HomeHealthNowFace: View {
                 if shown > 0 { Button("Collapse") { engine.homeCollapse() }.tint(.gray) }
             }
             .font(.title2.bold())
-            HStack(spacing: 8) {
+            FlowRow(spacing: 8) {
                 ForEach(0..<levels.count, id: \.self) { i in
                     Button { engine.homeJump(i) } label: {
                         Text(levels[i]).font(.title3.bold())
@@ -927,7 +957,7 @@ struct HomeHealthDossier: View {
         let hook = HomeHealthBrief.hook(item.fields)
         VStack(alignment: .leading, spacing: 16) {
                 HStack {
-                    Text(level >= 3 ? "More" : (level == 2 ? "Rules" : "Story")).font(.title.bold())
+                    Text(level >= 3 ? "More" : (level == 2 ? "Rules" : "Patient details")).font(.title.bold())
                     Spacer()
                     Button("Collapse") { engine.homeCollapse() }.font(.title2.bold())
                 }
@@ -935,6 +965,9 @@ struct HomeHealthDossier: View {
                 if level >= 1 {
                     ForEach(Array(HomeHealthBrief.story(item.fields).enumerated()), id: \.offset) { _, line in
                         Text(line).font(.title2).fixedSize(horizontal: false, vertical: true)
+                    }
+                    if let pattern = (engine.domain as? HomeHealthDomain)?.pattern(for: item.id) {
+                        HomeHealthTrends(pattern: pattern)
                     }
                 }
                 if level >= 2 {
@@ -999,5 +1032,75 @@ struct HomeHealthChart: View {
                 .accessibilityLabel(open ? "Collapse \(section.title)" : "Expand \(section.title)")
             }
         }
+    }
+}
+
+/// Recent pattern. Collapsed to one line until Show. Same one-open-section control as the chart.
+struct HomeHealthTrends: View {
+    @Environment(RouterEngine.self) private var engine
+    let pattern: HHPattern
+    private var open: Bool { engine.homeChartOpen == "trends" }
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Button { engine.homeChartToggle("trends") } label: {
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        Text("Trends").font(.title2.bold())
+                        Spacer()
+                        Text(open ? "Hide" : "Show").font(.title3).foregroundStyle(.secondary)
+                    }
+                    Text(pattern.headline).font(.title3).foregroundStyle(.secondary).lineLimit(open ? 4 : 2)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(open ? "Collapse trends" : "Expand trends")
+            if open {
+                Text(pattern.summary).font(.title3).fixedSize(horizontal: false, vertical: true)
+                Text(pattern.rule_note).font(.title3).fixedSize(horizontal: false, vertical: true)
+                Text("Recent alerts and actions").font(.title3.bold())
+                ForEach(pattern.alerts) { event in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(event.when) · \(event.what)").font(.title3.bold())
+                        Text(event.action).font(.title3).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                Text("Vitals against this patient's band").font(.title3.bold())
+                ForEach(pattern.vitals) { vital in
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(vital.name).font(.title3.bold())
+                        Text(vital.band).font(.title3).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+                        HomeHealthSpark(points: vital.points, low: vital.low, high: vital.high)
+                        Text(vital.outside_note).font(.title3).foregroundStyle(.orange).fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                Text(pattern.horizon).font(.title3).fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(12)
+        .background(open ? Color.white.opacity(0.08) : Color.clear, in: RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+/// Compact bars. Orange is outside the band set for this patient. Teal is inside it.
+struct HomeHealthSpark: View {
+    let points: [Int]
+    let low: Int
+    let high: Int
+    var body: some View {
+        let lo = min(low, points.min() ?? low)
+        let hi = max(high, points.max() ?? high)
+        let span = max(hi - lo, 1)
+        HStack(alignment: .bottom, spacing: 5) {
+            ForEach(Array(points.enumerated()), id: \.offset) { _, value in
+                let outside = value < low || value > high
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(outside ? Color.orange : Color.teal)
+                    .frame(width: 14, height: 8 + CGFloat(value - lo) / CGFloat(span) * 28)
+                    .accessibilityLabel(outside ? "\(value) outside band" : "\(value) in band")
+            }
+        }
+        .frame(height: 40, alignment: .bottom)
+        .accessibilityElement(children: .contain)
     }
 }

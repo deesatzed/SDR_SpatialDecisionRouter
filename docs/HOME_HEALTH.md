@@ -24,7 +24,7 @@ The six cases are copied from the synthetic library (fact text only):
 | LX4-009 | `provider_task` | none |
 | HK6-007 | `urgent_page` | none |
 
-**Record log** / **Pass to …** accepts the route and sends it to the named on-call person. **Change route…** opens the other routes. This decision is a category, so Flip is not offered. Passing `urgent_page` sends the handoff to the On-call HH MD sphere. The Overseer is not that person.
+**Log only** acknowledges a silent log: no page and no handoff. **Pass to …** sends a clinical route to the named on-call person. **Change route…** opens the other routes. This decision is a category, so Flip is not offered. Passing `urgent_page` sends the handoff to the On-call HH MD sphere. The Overseer is not that person.
 
 ## Overseer role contract
 
@@ -51,22 +51,30 @@ The case opens collapsed on awareness.
 | Level | What is open |
 |---|---|
 | L0 Awareness | Case id, route chip, recipient chip, compressed patient chip (age band, key conditions, key meds, living and night SpO₂ when the library has them), one clinical line, and the route controls. |
-| L1 Story | The next few sentences, ordered for this situation, then chart sections as summaries. |
+| L1 Patient details | The next few sentences, ordered for this situation, then chart sections as summaries. **Trends**, when this case has a pattern, sits here collapsed to one line. |
 | L2 Rules | The rule that fired or was held, who receives it, and the oxygen, drug, goals, or device lines that apply to this patient. |
 | L3 More | The note, the trend, and the library label next to Layer 1. Chart sections stay. |
 
 Chart sections, summary first, one open at a time: PMH, meds, active problems, recent hospitalizations, baselines / bands, goals of care. Order follows this situation. Show opens a section. Hide, or Show on another section, collapses it. The side panel has a fixed height so More can scroll.
 
-Active problems are problem-list lines that match this situation (atrial fibrillation on a blood thinner, prior stroke on a new deficit, coronary disease on a GTN case, COPD or GOLD when oxygen is the lead). If none match, the summary says none are tied to this situation. Hospitalizations use the library discharge field. In this pack that field is none.
+Active problems are problem-list lines that match this situation (atrial fibrillation on a blood thinner, prior stroke on a new deficit, coronary disease on a GTN case, COPD or GOLD when oxygen is the lead). If none match, the summary says none are tied to this situation. Hospitalizations use the library discharge field. In the six library cases that field is none.
+
+### Trends
+
+`PX-COPD-01` is a synthetic pattern fixture and the first card in the queue. It is not one of the six library cases, and Layer 1 did not compute it. The badge says **Pattern fixture**. The face line is the week’s pattern, not a single low reading: eight similar SpO2 alerts, mostly on position change, resting SpO2 usually in band. The button is **Log only** (no page, no handoff).
+
+**Patient details** shows **Trends** collapsed to that line. **Show** opens recent alerts and actions, SpO2 and heart-rate bars (teal inside this patient’s band, orange outside it), the note that the positional-desat preference was adjusted to log only, and a longer hint: a similar rise in exertion-related alerts about three months ago came before a pneumonia admission, and today’s alerts are not that pattern. **Hide** collapses it. The same scroller still moves the rest of the dossier.
+
+The bars and the alert list live in `homehealth_patterns.json`. They are not Layer 1 inputs.
 
 ## Layout in the simulator (focus tunnel + cascade)
 
-The open case starts as **awareness**: what needs you, how serious the route chip is, and where a Pass would send it. Story, rules, and the chart stay collapsed until you cascade.
+The open case starts as **awareness**: what needs you, how serious the route chip is, and where a Pass would send it. Patient details, rules, and the chart stay collapsed until you cascade.
 
 | Layer | What you should see |
 |---|---|
-| Near, center | `HomeHealthNowFace` (L0). Overseer framing, case id, colored route chip, recipient chip, patient chip, one clinical line for **this** situation (a fall on a blood thinner leads with the fall and the drug; a low oxygen reading leads with that reading). **Record log** or **Pass to …** and **Change route…** stay on this face. |
-| Beside, when cascaded | `HomeHealthDossier` inside a fixed-height scroller. **Story**, then **Rules**, then the chart. **More** adds the note and the trend. |
+| Near, center | `HomeHealthNowFace` (L0). Overseer framing, case id, colored route chip, recipient chip, patient chip, one clinical line for **this** situation (a fall on a blood thinner leads with the fall and the drug; a low oxygen reading leads with that reading). **Log only** or **Pass to …** and **Change route…** stay on this face. |
+| Beside, when cascaded | `HomeHealthDossier` inside a fixed-height scroller. **Patient details**, then **Rules**, then the chart. **More** adds the note and the trend. |
 | Mid-left | `BoardView.homeStatus`: **Overseer**, then large **Reviewed**, **Alerts**, **Corrections**. **Show** opens the log. The strip moves up while a dossier is open. It grows and pulses only when Alerts or Corrections are above zero. |
 | Mid-right | `UpNextStrip.homeQueue`: fat chips (case id + route). **Show** adds the clinical line and who it would go to. No priority float. |
 | Far | Three spheres. **Overseer queue** grows with how many cases are waiting and lists them. **On-call desk** and **On-call HH MD** stay smaller until a Pass would send the open case there, then the lit sphere grows with urgency (a page is the largest) and the label names the recipient. Look or **Show list** opens the waiting or sent lines. |
@@ -77,12 +85,12 @@ The visionOS simulator often does not deliver a real gaze hover. Use the buttons
 
 | Action | Result |
 |---|---|
-| Look at the card for about 0.4 s | Unpinned **Story** opens on the left. About 1.5 s also opens **Rules**. Look away and it returns to the pinned level (usually awareness). |
-| **Expand** | Pins the next layer (awareness → story → rules). |
+| Look at the card for about 0.4 s | Unpinned **Patient details** opens on the left. About 1.5 s also opens **Rules**. Look away and it returns to the pinned level (usually awareness). |
+| **Expand** | Pins the next layer (awareness → patient details → rules). |
 | **Pin** | Shows when a look has opened a layer you have not pinned yet. |
-| **More for this case** | Pins More (the note and the trend). Also on the rules panel. Chart sections are already on Story. |
+| **More for this case** | Pins More (the note and the trend). Also on the rules panel. Chart sections are already on Patient details. |
 | **Collapse** | Peels one layer. **Awareness** on the row jumps straight back to the face. |
-| **Record log** / **Pass to …** / **Change route…** | Stay on the face at every layer. They name the on-call recipient. They do not send the case to the Overseer. |
+| **Log only** / **Pass to …** / **Change route…** | Stay on the face at every layer. **Log only** does not page anyone. **Pass to …** names the on-call recipient. Neither sends the case to the Overseer. |
 
 Ordering is `HomeHealthBrief` in `HomeHealthDomain.swift`. It scores facts from the case fields already on the vignette (note, trend, meds, problems, goals, baseline, rule, reason). It does not use one who / problems / meds template for every card. A fall plus an anticoagulant leads with the fall, the drug, and the bleed lines in the note, then the other problems. An oxygen case leads with the Day 0 reading, then that patient's baseline `spo2_night_min`, then the human note. Home oxygen, GOLD, or a commode desaturation leads when those words are in the case text.
 
@@ -148,4 +156,8 @@ python3 homehealth/sdr_bridge/export_vignettes.py
 python3 -m pytest -q homehealth/sdr_bridge/test_sdr_bridge.py
 ```
 
-The test fails if the committed snapshot drifts from the engine or from the library fact text. Do not hand-edit clinical numbers in the vignette file.
+The test fails if the committed snapshot drifts from the engine or from the library fact text. Do not hand-edit clinical numbers in the vignette file. `homehealth_patterns.json` is a display fixture and is not part of that snapshot.
+
+## Later, not this build
+
+Repos worth another look, and what not to integrate, are in [Consider4LaterDev.md](Consider4LaterDev.md) (scan date 25 October 2026). None of them are wired into the Overseer.

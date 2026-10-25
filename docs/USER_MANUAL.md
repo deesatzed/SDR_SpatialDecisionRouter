@@ -158,13 +158,15 @@ Layer 1 proposes one route. The card names the synthetic person who would receiv
 | **provider_task** | On-call HH MD | Passes a same-day review to that physician. Not a page. |
 | **urgent_page** | On-call HH MD | Passes a page to that physician. You are not paged. |
 
-The button reads **Record log** or **Pass to …** so it is not a task for you. **Change route…** lists the same recipients. The decision is stored for later training. This build does not train anything from it.
+The button reads **Log only** or **Pass to …**. **Log only** means no page and no handoff: the decision is acknowledged and logged, and nobody is tasked. **Pass to …** names the on-call person. **Change route…** lists the same recipients. The decision is stored for later training. This build does not train anything from it.
 
 Some cases also show a **device ticket** (`device_maintenance`) when Layer 1 files one. A clinical route does not keep a ticket.
 
 The card opens on **awareness**: who you are, who receives the route, a short patient chip (age band, main conditions, main medicines, living situation, night oxygen minimum when the library has one), and one clinical line. A fall on a blood thinner leads with the fall and that drug. A low oxygen reading leads with the reading. The route buttons stay on this face.
 
-**Expand** cascades the next layer into the space beside the card: **Story**, then **Rules** for this situation, then **More for this case**. Under the story, the chart is summaries you can open one at a time: problems, medicines, active problems, hospitalizations, baselines, goals. **Collapse** peels one layer. **Awareness** jumps back to the face. The side panel scrolls when More is taller than the panel. Looking at the card for about half a second opens the story, and for about a second and a half opens the rules; looking away returns to the pinned layer. The simulator often misses that look, so use Expand. The status strip and the queue stay quiet until you tap Show.
+**Expand** cascades the next layer into the space beside the card: **Patient details**, then **Rules** for this situation, then **More for this case**. Under patient details, the chart is summaries you can open one at a time: problems, medicines, active problems, hospitalizations, baselines, goals. **Collapse** peels one layer. **Awareness** jumps back to the face. The side panel scrolls when More is taller than the panel. Looking at the card for about half a second opens patient details, and for about a second and a half opens the rules; looking away returns to the pinned layer. The simulator often misses that look, so use Expand. The status strip and the queue stay quiet until you tap Show.
+
+The first card, **PX-COPD-01**, is a synthetic pattern example (not a library case). Its face line is the week’s oxygen pattern. Open **Patient details** and **Show** on **Trends** for the recent alerts, the SpO2 and heart-rate bars (orange means outside this patient’s band), and a note that this positional pattern is logged rather than paged. A longer line compares today with a rise in alerts about three months ago, before a pneumonia admission.
 
 The far spheres are the queues. **Overseer queue** is the cases waiting on you, larger when more are waiting. **On-call desk** and **On-call HH MD** are where a Pass goes. The one that would receive this case grows, a page largest, and the label names that person. **Show list** shows who is waiting or who was already sent.
 
