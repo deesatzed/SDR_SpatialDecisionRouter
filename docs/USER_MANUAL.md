@@ -164,7 +164,7 @@ Layer 1 proposes one route. The card names the synthetic person who would receiv
 | **provider_task** | On-call HH MD | Passes a same-day review to that physician. Not a page. |
 | **urgent_page** | On-call HH MD | Passes a page to that physician. You are not paged. |
 
-The button reads **Log only** or **Pass to …**. **Log only** means no page and no handoff: the decision is acknowledged and logged, and nobody is tasked. **Pass to …** names the on-call person. **Change route…** lists the same recipients. **Wait for …** holds the route until a named observation would change it, and that wait does not page anyone. Pass never pages you. The decision is stored for later training, with `review_role` set to `overseer`. A wait, a revise, or a decision after the agent refused also stores `review_action`. This build does not train anything from it.
+The button reads **Log only** or **Pass to …**. **Log only** means no page and no handoff: the decision is acknowledged and logged, and nobody is tasked. **Pass to …** names the on-call person. **Change route…** lists the same recipients. **Wait for … · window** holds the route until a named observation would change it. The button shows the window (6h, 10m, or another visible duration). The on-call desk shows the time left. If that window passes and the observation has not arrived, the case comes back with an orange **OVERDUE** line. That return does not page anyone and does not auto-pass. You still choose. Pass never pages you. The decision is stored for later training, with `review_role` set to `overseer`. A wait, a revise, or a decision after the agent refused also stores `review_action`. This build does not train anything from it.
 
 #### Bedside
 
@@ -177,7 +177,7 @@ The button reads **Log only** or **Pass to …**. **Log only** means no page and
 | **Document plan** | The plan stays with you. It is not a pass to the On-call HH MD. |
 | **Page on-call** | Pages the On-call HH MD. You are not paged. |
 
-The green button is the one that fits the route on the card. **Wait for …** is there too. When the goals refuse hospital, an urgent proposal's green button is **Request nurse visit** and the page button is marked as constrained by those goals. The decision is stored with `review_role` `bedside`.
+The green button is the one that fits the route on the card. **Wait for … · window** is there too. The same timer and overdue return apply. When the goals refuse hospital, an urgent proposal's green button is **Request nurse visit** and the page button is marked as constrained by those goals. The decision is stored with `review_role` `bedside`.
 
 #### Nurse HITM
 
@@ -192,7 +192,7 @@ The green button is the one that fits the route on the card. **Wait for …** is
 | **Escalate to on-call nurse** | Escalates to the Night nurse, or the On-call hospice nurse when goals say hospice. This is not your own visit. |
 | **Log only** | No visit, no call, and no page. |
 
-The green button is the one that fits the route. A silent log with a device ticket suggests **Device check**. A silent log without one suggests **Log only**. **Wait for …** is there too. When the goals refuse hospital, an urgent proposal's green button is **Escalate to on-call nurse**. The decision is stored with `review_role` `nurse`.
+The green button is the one that fits the route. A silent log with a device ticket suggests **Device check**. A silent log without one suggests **Log only**. **Wait for … · window** is there too. The same timer and overdue return apply. When the goals refuse hospital, an urgent proposal's green button is **Escalate to on-call nurse**. The decision is stored with `review_role` `nurse`.
 
 The rest of this section is what you see on every role. **Patient details**, **Why now**, and **Trends** keep the same words.
 
@@ -202,7 +202,7 @@ The card opens on **awareness**: who you are, who receives the route, a short pa
 
 **Goals of care** is a line on this face, above the buttons. If the patient would refuse hospital, a page button says so, and the spoke of a lit page says **Goals constrain this page**.
 
-**Wait for …** names what you are waiting to see and what route that fact would switch to. **Revise prior** appears when a new vital or event falsifies the last Pass or Log only. The face reads the prior decision, the new evidence, and Revise. The queue spoke repeats that line.
+**Wait for … · window** names what you are waiting to see, how long you will wait, and what route that fact would switch to. The desk line reads **Held · Wait for … · 4h left** (or **OVERDUE**). When the window expires without that observation, the case returns to Now for you. It is not silently dropped. **Revise prior** appears when a new vital or event falsifies the last Pass or Log only. The face reads the prior decision, the new evidence, and Revise. The queue spoke repeats that line. An overdue wait turns the queue line orange.
 
 A red **Agent refused** banner means the proposing agent will not decide this card. You still choose **Log only**, **Pass**, or the verbs for your role. The card does not pass itself.
 

@@ -8,7 +8,7 @@ Liu et al. 2026 (BMJ Digital Health & AI, e000395) frames six dimensions of medi
 
 - Retained differential on L0 (**Still open**), separate from why-now and from baseline, including when the route is required before the list closes.
 - **Revise prior** when new evidence falsifies a Pass or Log only, logged on the decision.
-- **Wait for …** with the observation and the route that would flip, logged as `voi_wait`.
+- **Wait for …** with the observation, a timer, and the route that would flip, logged as `voi_wait`. An expired window returns the case for review (`voi_recheck`) and does not page or auto-pass.
 - Agent refusal that forces Overseer, Bedside, or Nurse HITM and does not auto-pass.
 - Synthetic outcome scoring (route, timing, downstream utility) beside expert-consensus agreement.
 - Goals of care on the Pass and page controls, logged with the decision.

@@ -24,6 +24,11 @@ TRACKED = (
     "voi_observation",
     "voi_flip_route",
     "voi_flip_if",
+    "voi_wait_minutes",
+    "voi_wait_deadline",
+    "voi_wait_deadline_iso",
+    "voi_wait_overdue",
+    "voi_recheck",
     "goals_constraint",
     "goals_blocks_escalation",
     "goals_kind",
@@ -75,6 +80,11 @@ def _flag(payload: dict, key: str) -> bool:
     return str(payload.get(key) or "") == "1"
 
 
+def _is_wait(payload: dict) -> bool:
+    action = payload.get("review_action")
+    return action in ("voi_wait", "voi_recheck") or bool(payload.get("voi_observation")) or _flag(payload, "voi_wait_overdue") or _flag(payload, "voi_recheck")
+
+
 def _row(payload: dict, keys: tuple[str, ...]) -> dict:
     row = {k: payload.get(k) or "" for k in keys}
     row["case_id"] = payload.get("case_id") or ""
@@ -99,7 +109,8 @@ def rollup(records: list[dict]) -> dict:
     overseer = [p for p in payloads if p.get("review_role") == "overseer"]
     refusals = [_row(p, ("refusal_reason", "uncertainty_differential")) for p in payloads if _flag(p, "agent_refused") or p.get("review_action") == "human_after_refusal"]
     revisits = [_row(p, ("prior_decision", "new_evidence")) for p in payloads if _flag(p, "revisit") or p.get("review_action") == "revisit_prior"]
-    waits = [_row(p, ("voi_observation", "voi_flip_route", "voi_flip_if")) for p in payloads if p.get("review_action") == "voi_wait" or p.get("voi_observation")]
+    wait_keys = ("voi_observation", "voi_flip_route", "voi_flip_if", "voi_wait_minutes", "voi_wait_deadline", "voi_wait_overdue", "voi_recheck")
+    waits = [_row(p, wait_keys) for p in payloads if _is_wait(p)]
     goals = [
         _row(p, ("goals_constraint", "goals_kind", "goals_blocks_escalation"))
         for p in payloads

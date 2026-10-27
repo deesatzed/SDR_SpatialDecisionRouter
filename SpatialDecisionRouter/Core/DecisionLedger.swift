@@ -203,6 +203,7 @@ extension UnifiedDecisionRecord {
         case "pass": return changed ? "modify" : "pass"
         case "flip": return "flip"
         case "escalate": return "escalate"
+        case "recheck": return "recheck"
         default: return changed ? "modify" : "pass"
         }
     }

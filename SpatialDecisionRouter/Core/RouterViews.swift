@@ -197,7 +197,7 @@ struct CrossroadsView: View {
     }
 
     /// The open case, or a Pass already in flight, is what makes a destination glow.
-    /// A wait paints as a held log on the desk, not as a page.
+    /// A wait paints as a held log on the desk, not as a page. A parked wait keeps that glow until it comes back.
     private func attentionRoute(for id: String) -> String? {
         func paint(_ h: Handoff) -> String {
             if engine.decisions.last(where: { $0.itemId == h.itemId })?.context["review_action"] == "voi_wait" {
@@ -209,7 +209,15 @@ struct CrossroadsView: View {
         if let h = engine.handoffs.first(where: {
             engine.phase[$0.id] == .outgoing && (engine.destFor[$0.id] ?? $0.link.dest) == id
         }) { return paint(h) }
+        if parkedWait(on: id) != nil { return "silent_log" }
         return nil
+    }
+
+    /// A wait still inside its window, sitting on this desk after the flight has landed.
+    private func parkedWait(on id: String) -> HomeHealthOpenWait? {
+        engine.homeOpenWaits.values.first { open in
+            !open.surfaced && (engine.destFor[open.handoffId] ?? "routes") == id
+        }
     }
 
     private struct SpherePaint {
@@ -343,7 +351,8 @@ struct AgentCard: View {
         let count = agent.tier == 0 ? "\(queued)" : "\(sent)"
         let role = engine.homeRole
         let title = HomeHealthVocabulary.sphereTitle(role: role, agent: agent)
-        let lit = passRoute != nil
+        let parked = parkedHoldLine
+        let lit = passRoute != nil || parked != nil
         return VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 8) {
                 if lit {
@@ -360,18 +369,25 @@ struct AgentCard: View {
             if agent.tier == 0 {
                 if let next = engine.queue.first {
                     Text(next.itemId).font(.title3.bold()).lineLimit(1)
-                    Text(whyNow(next)).font(.callout).foregroundStyle(.secondary).lineLimit(2)
+                    Text(whyNow(next)).font(.callout).foregroundStyle(waitOverdue(next) ? Color.orange : Color.secondary).lineLimit(2)
                     if let extra = glanceExtra(next) {
                         Text(extra).font(.callout).foregroundStyle(HomeHealthInk.uncertainty).lineLimit(2)
                     }
                 } else {
                     Text("Queue clear").font(.callout).foregroundStyle(.secondary).lineLimit(1)
                 }
-            } else if lit {
-                Text(passHeadline).font(.title3.bold()).foregroundStyle(rim).lineLimit(2)
-                if goalsConstrainPage && holdLine == nil {
+            } else if let held = holdLine {
+                Text(held).font(.title3.bold()).foregroundStyle(held.hasSuffix("OVERDUE") ? Color.orange : rim).lineLimit(3)
+            } else if passRoute != nil {
+                Text("This pass · \(passWho)").font(.title3.bold()).foregroundStyle(rim).lineLimit(2)
+                if goalsConstrainPage {
                     Text("Goals constrain this page").font(.callout).foregroundStyle(HomeHealthInk.goals).lineLimit(2)
                 }
+                if let parked {
+                    Text(parked).font(.callout).foregroundStyle(HomeHealthInk.action).lineLimit(2)
+                }
+            } else if let parked {
+                Text(parked).font(.title3.bold()).foregroundStyle(parked.hasSuffix("OVERDUE") ? Color.orange : HomeHealthInk.action).lineLimit(3)
             } else if let last = lastSent {
                 Text("Last · \(last)").font(.callout).foregroundStyle(.secondary).lineLimit(2)
             } else {
@@ -385,9 +401,13 @@ struct AgentCard: View {
     }
     private func whyNow(_ h: Handoff) -> String {
         let fields = engine.items[h.itemId]?.fields ?? [:]
+        if let line = fields["wait_overdue_line"], !line.isEmpty { return line }
         if let trigger = fields["pattern_trigger"], !trigger.isEmpty { return trigger }
         let hook = HomeHealthBrief.hook(fields)
         return hook.isEmpty ? HomeHealthRoute.title(h.proposal) : hook
+    }
+    private func waitOverdue(_ h: Handoff) -> Bool {
+        engine.items[h.itemId]?.fields["voi_wait_overdue"] == "1"
     }
     /// Queue spoke keeps why-now. A refusal or a falsified prior is a second line.
     private func glanceExtra(_ h: Handoff) -> String? {
@@ -401,11 +421,7 @@ struct AgentCard: View {
         guard route == "urgent_page" || route == "provider_task" else { return false }
         return HomeHealthMind.of(passFields).blocksEscalation
     }
-    private var passHeadline: String {
-        if let held = holdLine { return held }
-        return "This pass · \(passWho)"
-    }
-    /// In-flight wait. The route is held. Nobody was paged.
+    /// In-flight wait. The route is held. Nobody was paged. The clock is the time left in the window.
     private var holdLine: String? {
         let flight = engine.handoffs.first {
             engine.phase[$0.id] == .outgoing && (engine.destFor[$0.id] ?? $0.link.dest) == agent.id
@@ -413,8 +429,29 @@ struct AgentCard: View {
         guard let flight,
               let decision = engine.decisions.last(where: { $0.itemId == flight.itemId }),
               decision.context["review_action"] == "voi_wait" else { return nil }
-        let who = decision.context["recipient"] ?? "Wait"
-        return "Held · \(who)"
+        return heldText(itemId: flight.itemId, decision: decision)
+    }
+    /// A wait still inside its window, sitting on this desk after the flight has landed.
+    private func parkedWait(on id: String) -> HomeHealthOpenWait? {
+        engine.homeOpenWaits.values.first { open in
+            !open.surfaced && (engine.destFor[open.handoffId] ?? "routes") == id
+        }
+    }
+    /// Wait that has landed on this desk and is still inside its window.
+    private var parkedHoldLine: String? {
+        guard let open = parkedWait(on: agent.id) else { return nil }
+        let decision = engine.decisions.last { $0.itemId == open.itemId }
+        return heldText(itemId: open.itemId, decision: decision)
+    }
+    private func heldText(itemId: String, decision: RoutingDecision?) -> String {
+        let observation = engine.homeOpenWaits[itemId]?.observation
+            ?? decision?.context["voi_observation"]
+            ?? "the named observation"
+        let clock = engine.homeWaitFace[itemId] ?? decision.flatMap { row in
+            Int(row.context["voi_wait_minutes"] ?? "").map { HomeHealthWaitClock.faceLabel(minutes: $0) }
+        } ?? ""
+        if clock.isEmpty { return "Held · Wait for \(observation)" }
+        return "Held · Wait for \(observation) · \(clock)"
     }
     private var passWho: String {
         let role = engine.homeRole
@@ -453,6 +490,7 @@ struct AgentCard: View {
         return [:]
     }
     private var rim: Color {
+        if holdLine != nil || parkedHoldLine != nil { return .teal }
         guard let route = passRoute else { return Color.white.opacity(0.35) }
         switch route {
         case "urgent_page": return .red

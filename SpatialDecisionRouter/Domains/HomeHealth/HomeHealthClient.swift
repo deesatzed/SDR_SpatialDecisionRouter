@@ -103,6 +103,8 @@ struct HHMindNote: Decodable, Equatable {
     var new_evidence: String?
     var falsifies_prior: Bool?
     var wait_for: String?
+    /// Explicit window in minutes. Absent means the face derives one from the wait text or a situation default.
+    var wait_minutes: Int?
     var flip_route: String?
     var flip_if: String?
     var agent_refused: Bool?

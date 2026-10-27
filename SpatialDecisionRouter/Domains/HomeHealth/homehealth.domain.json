@@ -54,7 +54,7 @@
     "A device_maintenance ticket is shown when Layer 1 files one. Clinical routes do not keep a ticket.",
     "One role is active at a time: Overseer (physician router), Bedside (covering clinician), or Nurse HITM. The switcher is on the card. Overseer Pass sends the route to the on-call recipient, not to the Overseer. Bedside and Nurse HITM use their own actions. urgent_page still alerts the On-call HH MD node.",
     "Still open is the retained differential. It is separate from Why now and from the baseline chip. Act under uncertainty means the route is chosen before that list closes.",
-    "Wait for … holds the route and logs the observation that would flip it. A wait does not page anyone.",
+    "Wait for … holds the route, names the observation that would flip it, and shows a timer. If that window passes with no observation, the case comes back for a person. A wait does not page anyone and it does not auto-pass.",
     "Revise prior logs a correction when new evidence falsifies the last Pass or Log only.",
     "When the agent refuses, the card does not auto-pass. The human chooses Log only, Pass, or a role verb.",
     "Goals of care sit on the pass. Do-not-hospitalize or comfort-focused goals constrain a page."

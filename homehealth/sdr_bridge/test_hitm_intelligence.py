@@ -38,8 +38,13 @@ def test_pattern_fixtures_carry_the_seven_reads():
 
     wait = by_id["PX-WAIT-01"]["mind"]
     assert wait["wait_for"]
+    assert wait["wait_minutes"] == 360
     assert wait["flip_route"] == "nurse_task"
     assert wait["flip_if"]
+    assert by_id["PX-COPD-01"]["mind"]["wait_minutes"] == 120
+    assert by_id["PX-REVISE-01"]["mind"]["wait_minutes"] == 30
+    assert by_id["PX-REFUSE-01"]["mind"]["wait_minutes"] == 10
+    assert by_id["PX-DNH-01"]["mind"]["wait_minutes"] == 240
 
 
 def test_outcome_eval_separates_agreement_from_downstream_utility():
@@ -133,6 +138,8 @@ def test_learning_rollup_from_ledger_and_routing_context(tmp_path):
                 "voi_observation": "temperature and resting SpO2 over 6 hours",
                 "voi_flip_route": "nurse_task",
                 "voi_flip_if": "temperature reaches 38.5 C",
+                "voi_wait_minutes": "360",
+                "voi_wait_deadline": "360",
                 "uncertainty_differential": "viral illness · early pneumonia",
                 "goals_constraint": "Hospital is acceptable if home treatment does not recover.",
                 "goals_blocks_escalation": "0",
@@ -168,6 +175,10 @@ def test_learning_rollup_from_ledger_and_routing_context(tmp_path):
     assert len(shared["refusals"]) == 1
     assert len(shared["revisits"]) == 1
     assert shared["voi_waits"][0]["voi_flip_route"] == "nurse_task"
+    assert shared["voi_waits"][0]["voi_wait_minutes"] == "360"
+    assert shared["voi_waits"][0]["voi_wait_deadline"] == "360"
+    assert "voi_wait_minutes" in artifact["tracked_keys"]
+    assert "voi_recheck" in artifact["tracked_keys"]
     assert any(g["goals_blocks_escalation"] == "1" for g in shared["goals_constraints"])
     assert len(shared["uncertainty"]) == 4
 
@@ -181,3 +192,31 @@ def test_learning_rollup_from_ledger_and_routing_context(tmp_path):
     from_context = rollup(load_records(routing))
     assert from_context["overseer"]["n"] == 1
     assert from_context["shared_update"]["refusals"][0]["chosen_route"] == "silent_log"
+
+
+def test_overdue_wait_recheck_lands_in_the_rollup():
+    artifact = rollup([{
+        "kind": "decision",
+        "card_payload": {
+            "case_id": "PX-WAIT-01",
+            "review_role": "overseer",
+            "review_action": "voi_recheck",
+            "voi_observation": "temperature and resting SpO2 over 6 hours",
+            "voi_flip_route": "nurse_task",
+            "voi_flip_if": "temperature reaches 38.5 C or resting SpO2 leaves the band",
+            "voi_wait_minutes": "360",
+            "voi_wait_deadline": "360",
+            "voi_wait_overdue": "1",
+            "voi_recheck": "1",
+            "wait_overdue_line": "OVERDUE. Waited for temperature and resting SpO2 over 6 hours. The observation did not arrive.",
+        },
+        "human_decision": {"answer": "silent_log", "gesture": "recheck", "decided_by": "system"},
+    }])
+    row = artifact["shared_update"]["voi_waits"][0]
+    assert row["review_action"] == "voi_recheck"
+    assert row["voi_wait_minutes"] == "360"
+    assert row["voi_wait_deadline"] == "360"
+    assert row["voi_wait_overdue"] == "1"
+    assert row["voi_recheck"] == "1"
+    assert artifact["all_roles"]["by_review_action"]["voi_recheck"] == 1
+    assert row["chosen_route"] == "silent_log"

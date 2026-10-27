@@ -14,6 +14,10 @@ struct HomeHealthMind: Equatable {
     var waitFor: String
     var flipRoute: String
     var flipIf: String
+    /// Window for this wait, in minutes. Always set. Explicit fixture, then text, then a situation default.
+    var waitMinutes: Int
+    var waitOverdue: Bool
+    var overdueLine: String
     var agentRefused: Bool
     var refusalReason: String
     var goalsLine: String
@@ -29,7 +33,11 @@ struct HomeHealthMind: Equatable {
         return "Prior \(prior) → \(evidence) → Revise"
     }
 
-    var waitTitle: String { "Wait for \(waitFor)" }
+    var waitClockLabel: String {
+        waitOverdue ? "OVERDUE" : HomeHealthWaitClock.faceLabel(minutes: waitMinutes)
+    }
+
+    var waitTitle: String { "Wait for \(waitFor) · \(waitClockLabel)" }
 
     static func of(_ f: [String: String]) -> HomeHealthMind {
         let signals = HomeHealthBrief.signals(f)
@@ -41,6 +49,10 @@ struct HomeHealthMind: Equatable {
         let evidence = nonempty(f["mi_evidence"]) ?? ""
         let falsifies = overrideBool(f["mi_falsifies"]) ?? (!prior.isEmpty && !evidence.isEmpty)
         let wait = derivedWait(f, signals, goals)
+        let waitFor = nonempty(f["mi_wait_for"]) ?? wait.0
+        let flipIf = nonempty(f["mi_flip_if"]) ?? wait.2
+        let minutes = resolvedWaitMinutes(f, waitFor: waitFor, flipIf: flipIf, signals: signals, goals: goals)
+        let overdue = f["voi_wait_overdue"] == "1" || f["voi_recheck"] == "1"
         let blocks = overrideBool(f["mi_blocks"]) ?? goals.blocks
         let kind = nonempty(f["mi_goals_kind"]) ?? goals.kind
         let line = nonempty(f["mi_goals_line"]) ?? goals.line
@@ -52,9 +64,12 @@ struct HomeHealthMind: Equatable {
             priorDecision: prior,
             newEvidence: evidence,
             falsifiesPrior: falsifies,
-            waitFor: nonempty(f["mi_wait_for"]) ?? wait.0,
+            waitFor: waitFor,
             flipRoute: nonempty(f["mi_flip_route"]) ?? wait.1,
-            flipIf: nonempty(f["mi_flip_if"]) ?? wait.2,
+            flipIf: flipIf,
+            waitMinutes: minutes,
+            waitOverdue: overdue,
+            overdueLine: nonempty(f["wait_overdue_line"]) ?? (overdue ? HomeHealthWaitClock.overdueLine(waitFor) : ""),
             agentRefused: refused,
             refusalReason: nonempty(f["mi_refusal"]) ?? (refused ? defaultRefusal(f) : ""),
             goalsLine: line,
@@ -94,6 +109,7 @@ struct HomeHealthMind: Equatable {
         if let v = note.new_evidence { fields["mi_evidence"] = v }
         if let v = note.falsifies_prior { fields["mi_falsifies"] = v ? "1" : "0" }
         if let v = note.wait_for { fields["mi_wait_for"] = v }
+        if let v = note.wait_minutes, v > 0 { fields["mi_wait_minutes"] = String(v) }
         if let v = note.flip_route { fields["mi_flip_route"] = v }
         if let v = note.flip_if { fields["mi_flip_if"] = v }
         if let v = note.agent_refused { fields["mi_refused"] = v ? "1" : "0" }
@@ -173,6 +189,28 @@ struct HomeHealthMind: Equatable {
         return ("the next scheduled vital", "provider_task", "a new red-flag reading appears")
     }
 
+    /// Explicit `mi_wait_minutes`, else the first duration in the wait or flip text, else a situation default.
+    private static func resolvedWaitMinutes(_ f: [String: String], waitFor: String, flipIf: String, signals: HomeHealthBrief.Signals, goals: (kind: String, line: String, blocks: Bool)) -> Int {
+        if let raw = nonempty(f["mi_wait_minutes"]), let n = Int(raw), n > 0 { return n }
+        if let n = HomeHealthWaitClock.parseMinutes(waitFor) { return n }
+        if let n = HomeHealthWaitClock.parseMinutes(flipIf) { return n }
+        return defaultWaitMinutes(f, signals, goals)
+    }
+
+    /// Used when the wait text names no clock. Visible on the face as 10m, 30m, 2h, or 4h.
+    private static func defaultWaitMinutes(_ f: [String: String], _ s: HomeHealthBrief.Signals, _ goals: (kind: String, line: String, blocks: Bool)) -> Int {
+        if goals.blocks { return 240 }
+        if s.neuro { return 10 }
+        if s.chest { return 10 }
+        if s.fall && s.bleed { return 30 }
+        let cleared = (f["reason"] ?? "") == "cleared_by_repeat"
+        if s.oxygen && cleared { return 30 }
+        let positional = !(f["pattern_trigger"] ?? "").isEmpty || s.exert
+        if s.oxygen && positional { return 120 }
+        if s.oxygen { return 30 }
+        return 240
+    }
+
     private static func deriveGoals(_ f: [String: String]) -> (kind: String, line: String, blocks: Bool) {
         let raw = tidy(f["goals"] ?? "")
         let g = raw.lowercased()
@@ -219,5 +257,85 @@ struct HomeHealthMind: Equatable {
 
     private static func tidy(_ text: String) -> String {
         text.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+}
+
+/// Clock for a Wait. Pure so tests can check the window without the simulator.
+enum HomeHealthWaitClock {
+    /// First number with an hour or minute unit. "few minutes" is 10. A bare clinical number (38.5 C, 88%) is not a duration.
+    static func parseMinutes(_ text: String) -> Int? {
+        let pattern = #"(\d+(?:\.\d+)?)\s*(hours?|hrs?|minutes?|mins?)\b"#
+        if let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) {
+            let range = NSRange(text.startIndex..., in: text)
+            if let match = regex.firstMatch(in: text, options: [], range: range),
+               let numberRange = Range(match.range(at: 1), in: text),
+               let unitRange = Range(match.range(at: 2), in: text),
+               let value = Double(text[numberRange]) {
+                let unit = text[unitRange].lowercased()
+                let minutes = unit.hasPrefix("h") ? value * 60 : value
+                return max(1, Int(minutes.rounded()))
+            }
+        }
+        if text.range(of: #"\bfew\s+minutes?\b"#, options: [.regularExpression, .caseInsensitive]) != nil {
+            return 10
+        }
+        return nil
+    }
+
+    static func faceLabel(minutes: Int) -> String {
+        let minutes = max(1, minutes)
+        if minutes < 60 { return "\(minutes)m" }
+        let hours = minutes / 60
+        let rest = minutes % 60
+        if rest == 0 { return "\(hours)h" }
+        return "\(hours)h \(rest)m"
+    }
+
+    /// Sim-clock deadline. Whole minutes stay whole so the ledger string round-trips through `Double`.
+    static func deadlineString(now: Double, minutes: Int) -> String {
+        let value = now + Double(max(1, minutes))
+        if abs(value - value.rounded()) < 0.001 { return String(Int(value.rounded())) }
+        return String(format: "%.3f", value)
+    }
+
+    static func wallDeadlineISO(minutes: Int, from now: Date = Date()) -> String {
+        DecisionLedger.iso(now.addingTimeInterval(TimeInterval(max(1, minutes)) * 60))
+    }
+
+    static func parseISO(_ text: String) -> Date? {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+        return formatter.date(from: text)
+    }
+
+    static func remaining(now: Double, deadline: Double) -> String {
+        let left = deadline - now
+        if left <= 0 { return "OVERDUE" }
+        let mins = Int(ceil(left - 1e-9))
+        if mins <= 0 { return "OVERDUE" }
+        return "\(faceLabel(minutes: mins)) left"
+    }
+
+    /// True when either the domain clock or the wall clock has passed the window.
+    static func isOverdue(domainNow: Double, deadlineMinutes: Double, wallNow: Date, deadlineWall: Date) -> Bool {
+        domainNow >= deadlineMinutes || wallNow >= deadlineWall
+    }
+
+    static func overdueLine(_ observation: String) -> String {
+        let name = observation.trimmingCharacters(in: .whitespacesAndNewlines)
+        let who = name.isEmpty ? "the named observation" : name
+        return "OVERDUE. Waited for \(who). The observation did not arrive."
+    }
+
+    /// Payload for the automatic recheck. The route is unchanged. Nothing is paged.
+    static func recheckContext(_ context: [String: String], observation: String) -> [String: String] {
+        var next = context
+        let name = observation.isEmpty ? (context["voi_observation"] ?? "") : observation
+        next["review_action"] = "voi_recheck"
+        next["voi_observation"] = name
+        next["voi_wait_overdue"] = "1"
+        next["voi_recheck"] = "1"
+        next["wait_overdue_line"] = overdueLine(name)
+        return next
     }
 }

@@ -27,6 +27,17 @@ struct Handoff: Identifiable, Hashable {
     func hash(into h: inout Hasher) { h.combine(id) }
 }
 
+/// A home-health Wait parked on the desk until the window ends or a person resolves it.
+struct HomeHealthOpenWait: Equatable {
+    var itemId: String
+    var handoffId: String
+    var observation: String
+    var minutes: Int
+    var deadlineMinutes: Double
+    var deadlineWall: Date
+    var surfaced: Bool
+}
+
 /// Domain-agnostic crossroads engine: spatial queue, gestures → decisions, dependency graph, logging, export.
 @MainActor @Observable final class RouterEngine {
     static let head: SIMD3<Float> = [0, 1.5, 0]
@@ -247,6 +258,8 @@ struct Handoff: Identifiable, Hashable {
         homeSphereOpen = nil
         homeReviewRole = HomeHealthRole.overseer.rawValue
         homeArm = ""
+        homeOpenWaits = [:]
+        homeWaitFace = [:]
         (domain as? HomeHealthDomain)?.reviewRole = .overseer
         (domain as? HomeHealthDomain)?.clearArms()
     }
@@ -357,6 +370,8 @@ struct Handoff: Identifiable, Hashable {
         for id in domain.takeDirty() { refreshItem(id) }
         for (iid, truth) in domain.takeOutcomes() { applyLateTruth(iid, truth) }
         if let r = domain.takeReveal() { reveal = r }
+        recheckHomeWaits()
+        refreshHomeWaitFace()
         // hard triggers pre-empt the Now card
         if let t = waiting.first(where: { $0.trigger != nil }), nowHandoff?.trigger == nil, nowId != t.id {
             nowId = t.id; shownAt[t.id] = Date(); resetDetailTelemetry()
@@ -446,6 +461,10 @@ struct Handoff: Identifiable, Hashable {
     }
 
     private func deliver(_ h: Handoff) {
+        if let open = homeOpenWaits[h.itemId], open.handoffId == h.id, !open.surfaced {
+            // Park on the desk for the window. Do not complete the case and do not count a send.
+            return
+        }
         let dst = destFor[h.id] ?? h.link.dest
         inbox[dst, default: 0] += 1; deliveries += 1; lastDelivered[dst] = Date()
         guard let item = items[h.itemId] else { return }
@@ -583,9 +602,14 @@ struct Handoff: Identifiable, Hashable {
         let holdingForInfo = context["review_action"] == "voi_wait"
         if holdingForInfo {
             destFor[id] = h.link.dest
-        } else if h.trigger == nil && h.link.firesAlert && !trial && !h.link.alertNegative.contains(eff) {
-            alertsFired += 1; domain.alertFired(item: item, link: h.link)
-            if let ad = h.link.alertDest { destFor[id] = ad }
+            rememberHomeWait(itemId: item.id, handoffId: id, context: context)
+        } else {
+            homeOpenWaits.removeValue(forKey: item.id)
+            homeWaitFace.removeValue(forKey: item.id)
+            if h.trigger == nil && h.link.firesAlert && !trial && !h.link.alertNegative.contains(eff) {
+                alertsFired += 1; domain.alertFired(item: item, link: h.link)
+                if let ad = h.link.alertDest { destFor[id] = ad }
+            }
         }
         departFrom[id] = pos
         phase[id] = .outgoing; progress[id] = 0
@@ -604,6 +628,101 @@ struct Handoff: Identifiable, Hashable {
         aiDepthOpen = false
         domain.decided(item: item, link: h.link, answer: eff, latency: dd.latency, by: by)
         if config.id == "home_health" { homeArm = "" }
+    }
+
+    /// Remember the window from the wait that was just logged. A later Pass, Log, or Change clears it.
+    private func rememberHomeWait(itemId: String, handoffId: String, context: [String: String]) {
+        let minutes = Int(context["voi_wait_minutes"] ?? "") ?? HomeHealthWaitClock.parseMinutes(context["voi_observation"] ?? "") ?? 240
+        let deadline = Double(context["voi_wait_deadline"] ?? "") ?? (domain.now + Double(minutes))
+        let wall = context["voi_wait_deadline_iso"].flatMap(HomeHealthWaitClock.parseISO)
+            ?? Date().addingTimeInterval(TimeInterval(minutes) * 60)
+        homeOpenWaits[itemId] = HomeHealthOpenWait(
+            itemId: itemId, handoffId: handoffId,
+            observation: context["voi_observation"] ?? "",
+            minutes: minutes, deadlineMinutes: deadline, deadlineWall: wall, surfaced: false)
+        homeWaitFace[itemId] = HomeHealthWaitClock.remaining(now: domain.now, deadline: deadline)
+    }
+
+    private func refreshHomeWaitFace() {
+        var next: [String: String] = [:]
+        for (id, wait) in homeOpenWaits where !wait.surfaced {
+            next[id] = HomeHealthWaitClock.remaining(now: domain.now, deadline: wait.deadlineMinutes)
+        }
+        if next != homeWaitFace { homeWaitFace = next }
+    }
+
+    /// Bring an expired wait back to Now. Does not page and does not pass.
+    func recheckHomeWaits(wallNow: Date = Date()) {
+        guard config.id == "home_health" else { return }
+        let due = homeOpenWaits.values
+            .filter { wait in
+                !wait.surfaced && HomeHealthWaitClock.isOverdue(
+                    domainNow: domain.now, deadlineMinutes: wait.deadlineMinutes,
+                    wallNow: wallNow, deadlineWall: wait.deadlineWall)
+            }
+            .sorted { $0.deadlineMinutes < $1.deadlineMinutes }
+        guard !due.isEmpty else { return }
+        for wait in due { surfaceOverdueWait(wait) }
+        if let first = due.first {
+            nowId = first.handoffId
+            shownAt[first.handoffId] = Date()
+            resetDetailTelemetry()
+        }
+    }
+
+    private func surfaceOverdueWait(_ wait: HomeHealthOpenWait) {
+        guard var open = homeOpenWaits[wait.itemId], !open.surfaced,
+              let prior = decisions.last(where: { $0.itemId == wait.itemId && $0.context["review_action"] == "voi_wait" }),
+              var item = items[wait.itemId],
+              let index = handoffs.firstIndex(where: { $0.id == wait.handoffId }) else { return }
+        let line = HomeHealthWaitClock.overdueLine(wait.observation)
+        var fields = item.fields
+        fields["voi_wait_overdue"] = "1"
+        fields["voi_recheck"] = "1"
+        fields["wait_overdue_line"] = line
+        item = DomainItem(id: item.id, fields: fields, displayLine: item.displayLine, shortLine: item.shortLine, historyLine: item.historyLine, arrivalTime: item.arrivalTime)
+        items[item.id] = item
+        let handoff = handoffs[index]
+        handoffs[index].reasons = domain.reasons(item: item, link: handoff.link, proposal: handoff.proposal, upstream: handoff.upstream)
+        phase[wait.handoffId] = .waiting
+        progress[wait.handoffId] = 1
+        destFor.removeValue(forKey: wait.handoffId)
+        open.surfaced = true
+        homeOpenWaits[wait.itemId] = open
+        homeWaitFace.removeValue(forKey: wait.itemId)
+        logWaitRecheck(prior, item: item, observation: wait.observation)
+    }
+
+    private func logWaitRecheck(_ prior: RoutingDecision, item: DomainItem, observation: String) {
+        let now = Date()
+        let context = HomeHealthWaitClock.recheckContext(prior.context, observation: observation)
+        var decision = RoutingDecision(
+            domain: prior.domain, siteId: prior.siteId, registryVersion: prior.registryVersion,
+            itemId: prior.itemId, linkId: prior.linkId, sourceAgent: prior.sourceAgent, destAgent: prior.destAgent,
+            question: prior.question, displayLine: prior.displayLine, context: context, history: prior.history,
+            capacity: prior.capacity, upstream: prior.upstream, proposedAnswer: prior.proposedAnswer,
+            proposedConfidence: prior.proposedConfidence, answerType: prior.answerType, options: prior.options,
+            trialOptions: prior.trialOptions, routedAnswer: prior.routedAnswer, effectiveAnswer: prior.effectiveAnswer,
+            routedIsTrial: prior.routedIsTrial, newCategoryCreated: false, changed: false, gesture: "recheck",
+            priority: prior.priority, latency: 0, shownAt: now, decidedAt: now, position: prior.position,
+            distanceFromHead: prior.distanceFromHead, neighbors: prior.neighbors, queueDepth: prior.queueDepth,
+            groundTruth: prior.groundTruth, agreesWithGroundTruth: prior.agreesWithGroundTruth, downstreamOutcome: nil)
+        decision.decidedBy = "system"
+        decision.reasons = ["wait overdue"]
+        decision.downstreamPreview = "Wait expired without \(observation). Back for review. No page. No auto-pass."
+        decision.detailOpened = false
+        decision.sectionsOpened = []
+        decision.sectionDwell = [:]
+        decision.detailDwell = 0
+        decision.spotCheckSampled = false
+        decisions.append(decision)
+        appendLog(decision)
+        var ctx = domain.decisionContext(item: item)
+        if let cur = dials(ctx.domain) { ctx.dials = cur.dials; ctx.generation = cur.generation }
+        if let record = ledger.append(.from(decision, ctx: ctx, split: nil)) {
+            unified[decision.id] = record
+        }
+        lastAction = "recheck \(item.id): wait overdue"
     }
 
     // MARK: game layer + late truth
@@ -713,6 +832,10 @@ struct Handoff: Identifiable, Hashable {
     var homeRole: HomeHealthRole { HomeHealthRole(rawValue: homeReviewRole) ?? .overseer }
     /// Armed home-health verb that has not committed yet: `revisit` while Change route is open.
     var homeArm = ""
+    /// Open waits keyed by item id. The desk reads `homeWaitFace` for the remaining clock.
+    var homeOpenWaits: [String: HomeHealthOpenWait] = [:]
+    /// item id → "4h left" or "OVERDUE". Updated on the tick so the mid-spoke clock moves.
+    var homeWaitFace: [String: String] = [:]
     /// Switch the seat. One role at a time. Does not change Layer 1's proposal.
     func homeSetRole(_ raw: String) {
         guard let role = HomeHealthRole(rawValue: raw) else { return }

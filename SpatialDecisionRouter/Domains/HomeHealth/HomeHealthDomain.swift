@@ -158,6 +158,9 @@ import SwiftUI
         if mind.falsifiesPrior {
             chips.append(ReasonChip(text: "prior decision falsified", key: "revisit", severity: .warn))
         }
+        if mind.waitOverdue {
+            chips.append(ReasonChip(text: "wait overdue", key: "wait overdue", severity: .high))
+        }
         return chips
     }
 
@@ -175,7 +178,7 @@ import SwiftUI
         guard link.id == "route" else { return nil }
         if pendingReviewAction == "voi_wait" {
             let mind = HomeHealthMind.of(item.fields)
-            return "Wait for \(mind.waitFor). The route stays \(HomeHealthRoute.title(answer)). It flips to \(HomeHealthRoute.title(mind.flipRoute)) if \(mind.flipIf). The wait does not page anyone."
+            return "Wait for \(mind.waitFor) · \(mind.waitClockLabel). The route stays \(HomeHealthRoute.title(answer)). It flips to \(HomeHealthRoute.title(mind.flipRoute)) if \(mind.flipIf). If the window passes with no observation, the case comes back. It does not page anyone and it does not auto-pass."
         }
         if pendingRevisit {
             let mind = HomeHealthMind.of(item.fields)
@@ -221,11 +224,15 @@ import SwiftUI
         for (key, value) in HomeHealthMind.logFields(item.fields) { fields[key] = value }
         let mind = HomeHealthMind.of(item.fields)
         if pendingWait || pendingReviewAction == "voi_wait" {
+            let window = HomeHealthWaitClock.faceLabel(minutes: mind.waitMinutes)
             fields["review_action"] = "voi_wait"
             fields["voi_observation"] = mind.waitFor
             fields["voi_flip_route"] = mind.flipRoute
             fields["voi_flip_if"] = mind.flipIf
-            fields["recipient"] = "Wait · \(mind.waitFor)"
+            fields["voi_wait_minutes"] = String(mind.waitMinutes)
+            fields["voi_wait_deadline"] = HomeHealthWaitClock.deadlineString(now: now, minutes: mind.waitMinutes)
+            fields["voi_wait_deadline_iso"] = HomeHealthWaitClock.wallDeadlineISO(minutes: mind.waitMinutes)
+            fields["recipient"] = "Wait · \(mind.waitFor) · \(window)"
             return fields
         }
         if pendingRevisit {
@@ -246,7 +253,8 @@ import SwiftUI
     }
 
     func blocksAutoPass(item: DomainItem) -> Bool {
-        HomeHealthMind.of(item.fields).agentRefused
+        let mind = HomeHealthMind.of(item.fields)
+        return mind.agentRefused || mind.waitOverdue
     }
 
     func decided(item: DomainItem, link: LinkSpec, answer: String, latency: TimeInterval, by: String) {
@@ -892,7 +900,7 @@ enum HomeHealthBrief {
         if mind.actBeforeClosure { add(98, "Act under uncertainty", mind.actBanner) }
         if mind.falsifiesPrior { add(96, "Prior decision falsified", mind.revisitLine) }
         add(95, "Goals constraint", mind.goalsLine)
-        add(93, "What would change the route", "Wait for \(mind.waitFor). Flips to \(HomeHealthRoute.title(mind.flipRoute)) if \(mind.flipIf).")
+        add(93, "What would change the route", "Wait for \(mind.waitFor) · \(mind.waitClockLabel). Flips to \(HomeHealthRoute.title(mind.flipRoute)) if \(mind.flipIf). If that window passes with no observation, the case comes back for a person. It does not page and it does not auto-pass.")
         if mind.agentRefused { add(100, "Agent refused", mind.refusalReason) }
         let routeId = f["route"] ?? ""
         if role == .overseer {
@@ -1360,6 +1368,16 @@ struct HomeHealthNowFace: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityLabel("Act under uncertainty")
             }
+            if mind.waitOverdue {
+                Text("OVERDUE").font(.title3.bold()).foregroundStyle(.orange)
+                Text(mind.overdueLine)
+                    .font(.title)
+                    .foregroundStyle(.orange)
+                    .lineLimit(4)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityLabel(mind.overdueLine)
+                    .help("The wait window passed and the observation did not arrive. You choose. This does not page and it does not auto-pass.")
+            }
             if !trigger.isEmpty {
                 Text("Why now").font(.title3.bold()).foregroundStyle(.orange)
                 Text(trigger).font(.title).lineLimit(4)
@@ -1425,9 +1443,9 @@ struct HomeHealthNowFace: View {
                     }
                 }
                 Button(mind.waitTitle) { commitWait(as: role) }
-                    .tint(.purple)
-                    .help("Wait for \(mind.waitFor). Flips to \(HomeHealthRoute.title(mind.flipRoute)) if \(mind.flipIf). The wait does not page you.")
-                    .accessibilityLabel("\(mind.waitTitle). Flips to \(HomeHealthRoute.title(mind.flipRoute)) if \(mind.flipIf)")
+                    .tint(mind.waitOverdue ? .orange : .purple)
+                    .help("Wait for \(mind.waitFor) · \(mind.waitClockLabel). Flips to \(HomeHealthRoute.title(mind.flipRoute)) if \(mind.flipIf). If the window passes with no observation, the case comes back. It does not page you and it does not auto-pass.")
+                    .accessibilityLabel("\(mind.waitTitle). Flips to \(HomeHealthRoute.title(mind.flipRoute)) if \(mind.flipIf). Comes back if the window passes.")
                 if mind.falsifiesPrior {
                     Button(engine.homeArm == "revisit" ? "Revise prior · armed" : "Revise prior") { commitRevisit(as: role) }
                         .tint(.orange)
