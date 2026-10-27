@@ -9,7 +9,10 @@ targets:
     sources: [SpatialDecisionRouter]
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.wsatz.SpatialDecisionRouter
+        PRODUCT_NAME: SpatialHITM
+        PRODUCT_MODULE_NAME: SpatialDecisionRouter
+        PRODUCT_BUNDLE_IDENTIFIER: com.wsatz.SpatialHITM
+        INFOPLIST_KEY_CFBundleDisplayName: Spatial HITM
         GENERATE_INFOPLIST_FILE: YES
         SWIFT_VERSION: "5.0"
         CODE_SIGNING_ALLOWED: NO
@@ -17,6 +20,7 @@ targets:
     info:
       path: SpatialDecisionRouter/Info.plist
       properties:
+        CFBundleDisplayName: Spatial HITM
         NSAppTransportSecurity:
           NSAllowsLocalNetworking: true
   SpatialDecisionRouterUITests:
@@ -43,8 +47,10 @@ targets:
         excludes: [Info.plist]
     settings:
       base:
-        PRODUCT_NAME: SpatialDecisionRouter
-        PRODUCT_BUNDLE_IDENTIFIER: com.wsatz.SpatialDecisionRouter.pad
+        PRODUCT_NAME: SpatialHITM
+        PRODUCT_MODULE_NAME: SpatialDecisionRouter
+        PRODUCT_BUNDLE_IDENTIFIER: com.wsatz.SpatialHITM.pad
+        INFOPLIST_KEY_CFBundleDisplayName: Spatial HITM
         TARGETED_DEVICE_FAMILY: "2"
         SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: YES
         GENERATE_INFOPLIST_FILE: YES
@@ -54,7 +60,7 @@ targets:
     info:
       path: SupportFiles/Pad-Info.plist
       properties:
-        CFBundleDisplayName: SDR
+        CFBundleDisplayName: Spatial HITM
         UILaunchScreen: {}
         UISupportedInterfaceOrientations~ipad: [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
         NSAppTransportSecurity:
@@ -85,13 +91,13 @@ targets:
       base:
         GENERATE_INFOPLIST_FILE: YES
         PRODUCT_BUNDLE_IDENTIFIER: com.wsatz.SpatialDecisionRouterPadTests
-        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/SpatialDecisionRouter.app/SpatialDecisionRouter"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/SpatialHITM.app/SpatialHITM"
         BUNDLE_LOADER: "$(TEST_HOST)"
         TARGETED_DEVICE_FAMILY: "2"
         SWIFT_VERSION: "5.0"
         CODE_SIGN_IDENTITY: "-"
 schemes:
-  SpatialDecisionRouter:
+  SpatialHITM:
     build:
       targets:
         SpatialDecisionRouter: all

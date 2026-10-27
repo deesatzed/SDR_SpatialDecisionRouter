@@ -1,4 +1,6 @@
-# Spatial Decision Router — User Manual
+# Spatial HITM — User Manual
+
+The app on the simulator home screen and the start window is **Spatial HITM**. The project folder may still be named `SpatialDecisionRouter`, and the GitHub repository may still be `SDR_SpatialDecisionRouter`, until a later rename.
 
 *For reviewers and clinicians using the app on iPad or Apple Vision Pro. No programming needed (developer notes are in the appendix).*
 
@@ -10,7 +12,7 @@
 
 ## 1. What the app is
 
-AI agents now draft triage levels, care plans and other decisions at scale. Spatial Decision Router (SDR) puts **you** — the
+AI agents now draft triage levels, care plans and other decisions at scale. Spatial HITM puts **you** — the
 *human in the middle* — at the crossroads where one AI agent hands a decision to the next. Each decision arrives as a **card**.
 You confirm it, change it, or escalate it with a tap (iPad) or a look-and-pinch (Vision Pro). No typing.
 

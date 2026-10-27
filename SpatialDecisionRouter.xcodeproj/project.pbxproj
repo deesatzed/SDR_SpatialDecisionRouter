@@ -203,7 +203,7 @@
 		B610171194F963505DD303E1 /* replay_answers.jsonl */ = {isa = PBXFileReference; path = replay_answers.jsonl; sourceTree = "<group>"; };
 		C0CB92B88B680D53E686071A /* PromotionViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionViews.swift; sourceTree = "<group>"; };
 		C513BD7BEB8F6B6303D94803 /* weriam_seed.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = weriam_seed.json; sourceTree = "<group>"; };
-		C8D05C5F01797C6E4BE65D25 /* SpatialDecisionRouterPad.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouterPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8D05C5F01797C6E4BE65D25 /* SpatialHITM.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialHITM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0F7BEE96DD262AC9467CE84 /* DialsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialsUITests.swift; sourceTree = "<group>"; };
 		D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceduralEnvironment.swift; sourceTree = "<group>"; };
 		D2322AEB575C234507469E46 /* SpatialDecisionRouterPadTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SpatialDecisionRouterPadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,7 +212,7 @@
 		E6A5B3D1368B933F6EC15DF4 /* DialEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialEngine.swift; sourceTree = "<group>"; };
 		E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WERIAMPrincipalDomain.swift; sourceTree = "<group>"; };
 		E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskClient.swift; sourceTree = "<group>"; };
-		F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3970F479E7D26B549DCCE1E /* SpatialHITM.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialHITM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F407AADF547B37D02BC17A63 /* SpatialDecisionRouterUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SpatialDecisionRouterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5B7A1658348EE6C11BF2E6C /* SpatialDecisionRouterPadUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SpatialDecisionRouterPadUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterViews.swift; sourceTree = "<group>"; };
@@ -247,8 +247,8 @@
 		13AEE49A568B5C2826A2D767 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */,
-				C8D05C5F01797C6E4BE65D25 /* SpatialDecisionRouterPad.app */,
+				F3970F479E7D26B549DCCE1E /* SpatialHITM.app */,
+				C8D05C5F01797C6E4BE65D25 /* SpatialHITM.app */,
 				D2322AEB575C234507469E46 /* SpatialDecisionRouterPadTests.xctest */,
 				F5B7A1658348EE6C11BF2E6C /* SpatialDecisionRouterPadUITests.xctest */,
 				F407AADF547B37D02BC17A63 /* SpatialDecisionRouterUITests.xctest */,
@@ -434,7 +434,7 @@
 			packageProductDependencies = (
 			);
 			productName = SpatialDecisionRouterPad;
-			productReference = C8D05C5F01797C6E4BE65D25 /* SpatialDecisionRouterPad.app */;
+			productReference = C8D05C5F01797C6E4BE65D25 /* SpatialHITM.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A45BDA8C2E449C86BAC73620 /* SpatialDecisionRouterPadTests */ = {
@@ -470,7 +470,7 @@
 			packageProductDependencies = (
 			);
 			productName = SpatialDecisionRouter;
-			productReference = F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */;
+			productReference = F3970F479E7D26B549DCCE1E /* SpatialHITM.app */;
 			productType = "com.apple.product-type.application";
 		};
 		E29C9C340DA8F7DC3EBCCFB0 /* SpatialDecisionRouterPadUITests */ = {
@@ -750,8 +750,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouter.pad;
-				PRODUCT_NAME = SpatialDecisionRouter;
+				INFOPLIST_KEY_CFBundleDisplayName = "Spatial HITM";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialHITM.pad;
+				PRODUCT_MODULE_NAME = SpatialDecisionRouter;
+				PRODUCT_NAME = SpatialHITM;
 				SDKROOT = iphoneos;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
@@ -775,7 +777,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpatialDecisionRouter.app/SpatialDecisionRouter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpatialHITM.app/SpatialHITM";
 			};
 			name = Debug;
 		};
@@ -793,8 +795,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouter.pad;
-				PRODUCT_NAME = SpatialDecisionRouter;
+				INFOPLIST_KEY_CFBundleDisplayName = "Spatial HITM";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialHITM.pad;
+				PRODUCT_MODULE_NAME = SpatialDecisionRouter;
+				PRODUCT_NAME = SpatialHITM;
 				SDKROOT = iphoneos;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
@@ -834,7 +838,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouter;
+				INFOPLIST_KEY_CFBundleDisplayName = "Spatial HITM";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialHITM;
+				PRODUCT_MODULE_NAME = SpatialDecisionRouter;
+				PRODUCT_NAME = SpatialHITM;
 				SDKROOT = xros;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
@@ -894,7 +901,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouter;
+				INFOPLIST_KEY_CFBundleDisplayName = "Spatial HITM";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialHITM;
+				PRODUCT_MODULE_NAME = SpatialDecisionRouter;
+				PRODUCT_NAME = SpatialHITM;
 				SDKROOT = xros;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
@@ -992,7 +1002,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpatialDecisionRouter.app/SpatialDecisionRouter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpatialHITM.app/SpatialHITM";
 			};
 			name = Release;
 		};

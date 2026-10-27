@@ -6,8 +6,8 @@
 # SIM_NAME overrides the simulator (default "iPad Pro 13-inch (M5)"). Needs the iOS 27 simulator runtime.
 set -u
 cd "$(dirname "$0")/.."
-NAME=${SIM_NAME:-"iPad Pro 13-inch (M5)"}; BUNDLE=com.wsatz.SpatialDecisionRouter.pad
-APP=build/pad/Build/Products/Debug-iphonesimulator/SpatialDecisionRouter.app
+NAME=${SIM_NAME:-"iPad Pro 13-inch (M5)"}; BUNDLE=com.wsatz.SpatialHITM.pad
+APP=build/pad/Build/Products/Debug-iphonesimulator/SpatialHITM.app
 ARGS=()
 case "${1:-}" in --demo) ARGS=(-demo);; --auto) ARGS=(-demo -demoAuto);; esac
 UDID=$(xcrun simctl list devices available | grep -F "$NAME (" | head -1 | grep -oE '[0-9A-F-]{36}')

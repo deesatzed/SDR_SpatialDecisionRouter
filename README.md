@@ -1,8 +1,10 @@
-# Spatial Decision Router — AI Doc Review (visionOS)
+# Spatial HITM — AI Doc Review (visionOS)
+
+The app that installs and launches is **Spatial HITM** (`com.wsatz.SpatialHITM`, scheme `SpatialHITM`, product `SpatialHITM.app`). The Xcode target and Swift module stay `SpatialDecisionRouter` so existing imports keep building. This checkout and the GitHub repository may still be named `SpatialDecisionRouter` / `SDR_SpatialDecisionRouter` until a later repo rename.
 
 > **Research prototype. All encounters are synthetic. Every risk-engine parameter is `source: placeholder` and the numbers are only illustrative. Not for clinical use.**
 
-AI "doctors" now take histories and draft plans at scale. In this setting the main failure mode is usually bad *information*, not bad medicine. Patients leave things out, get things wrong, or sometimes tell a different story on purpose. **Spatial Decision Router** puts a physician, the *human-in-the-middle* (HITM), at the crossroads between narrow decision agents. Each AI decision arrives as a card, and the physician can **Pass**, **Flip** (for binary decisions) or **Change** (to pick another category) with no typing. Each decision is logged as it happens, so the fine-tune data comes from live supervision rather than biased retrospective labeling.
+AI "doctors" now take histories and draft plans at scale. In this setting the main failure mode is usually bad *information*, not bad medicine. Patients leave things out, get things wrong, or sometimes tell a different story on purpose. **Spatial HITM** puts a physician, the *human-in-the-middle* (HITM), at the crossroads between narrow decision agents. Each AI decision arrives as a card, and the physician can **Pass**, **Flip** (for binary decisions) or **Change** (to pick another category) with no typing. Each decision is logged as it happens, so the fine-tune data comes from live supervision rather than biased retrospective labeling.
 
 Landing page: https://deesatzed.github.io/SDR_SpatialDecisionRouter/
 
@@ -54,7 +56,7 @@ screens/                          screenshots, sample routing logs, demo.mp4
 ## Platforms
 | Platform | Target / scheme | What you get |
 |---|---|---|
-| visionOS 27 (Vision Pro + simulator) | `SpatialDecisionRouter` | Full spatial crossroads in an `ImmersiveSpace` (RealityKit agents, moving handoffs, option ring). |
+| visionOS 27 (Vision Pro + simulator) | scheme `SpatialHITM` (target `SpatialDecisionRouter`) | Full spatial crossroads in an `ImmersiveSpace` (RealityKit agents, moving handoffs, option ring). The home screen reads **Spatial HITM**. |
 | iPadOS 27 | `SpatialDecisionRouterPad` | Flat, touch-first crossroads: Now card, Pass / Modify (category sheet) / Flip / Escalate, Rate trust, Ask next (VOI), escalation banners, review queue sidebar, results board. Split view adapts to landscape and portrait. |
 | macOS ("Designed for iPad") | `SpatialDecisionRouterPad` → *My Mac (Designed for iPad)* | Same iPad app on Apple-silicon Macs. Builds; running needs a signing team set in Xcode. |
 
@@ -89,7 +91,7 @@ tools/symbiosis_demo.sh --auto --fresh-ledger --export   # iPad demo, then verif
 Requirements: macOS with Xcode 27, the visionOS 27 simulator runtime (and the iOS 27 runtime for iPad), xcodegen, and Python 3.
 ```bash
 xcodegen generate
-xcodebuild -scheme SpatialDecisionRouter -destination 'platform=visionOS Simulator,name=SDR-VisionPro' -derivedDataPath build build
+xcodebuild -scheme SpatialHITM -destination 'platform=visionOS Simulator,name=SDR-VisionPro' -derivedDataPath build build
 risk_engine/run_sidecar.sh          # optional; creates .venv, serves 127.0.0.1:8765
 homehealth/sdr_bridge/run_bridge.sh # optional Layer 1 for Home health (127.0.0.1:8767)
 tools/homehealth_vision.sh          # Vision Pro simulator, home-health review (bridge if Python is up)
@@ -109,7 +111,7 @@ python3 tools/unified_export.py decision_ledger.jsonl -o out/ --strict        # 
 ## Tests
 ```bash
 cd risk_engine && .venv/bin/python -m pytest -q       # BN engine
-xcodebuild test -scheme SpatialDecisionRouter -destination 'platform=visionOS Simulator,name=SDR-VisionPro'   # UI tests
+xcodebuild test -scheme SpatialHITM -destination 'platform=visionOS Simulator,name=SDR-VisionPro'   # UI tests
 python3 -m pytest -q weriam_bridge/tests              # WERIAM bridge (needs the WERIAM checkout, WERIAM_ROOT)
 python3 -m pytest -q homehealth/sdr_bridge/test_sdr_bridge.py   # Layer 1 review pack + localhost bridge
 python3 -m pytest -q homehealth/trigger_engine homehealth/jev_baseline   # Layer 1 engine

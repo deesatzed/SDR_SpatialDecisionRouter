@@ -10,8 +10,8 @@ set -u
 cd "$(dirname "$0")/.."
 NAME=${SIM_NAME:-SDR-VisionPro}
 UDID=${SIM_UDID:-}
-BUNDLE=com.wsatz.SpatialDecisionRouter
-APP=build/Build/Products/Debug-xrsimulator/SpatialDecisionRouter.app
+BUNDLE=com.wsatz.SpatialHITM
+APP=build/Build/Products/Debug-xrsimulator/SpatialHITM.app
 
 if ! curl -s -m 1 http://127.0.0.1:8767/health >/dev/null; then
   nohup homehealth/sdr_bridge/run_bridge.sh > /tmp/homehealth_l1.log 2>&1 &
@@ -35,7 +35,7 @@ fi
 xcrun simctl boot "$UDID" 2>/dev/null || true
 open -a "$(xcode-select -p)/Applications/Simulator.app" 2>/dev/null || true
 if [ ! -d "$APP" ]; then
-  xcodebuild -project SpatialDecisionRouter.xcodeproj -scheme SpatialDecisionRouter \
+  xcodebuild -project SpatialDecisionRouter.xcodeproj -scheme SpatialHITM \
     -destination "id=$UDID" -derivedDataPath build build
 fi
 xcrun simctl terminate "$UDID" "$BUNDLE" 2>/dev/null || true

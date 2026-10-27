@@ -1,6 +1,6 @@
 # homehealth/ — smart hard-trigger engine and synthetic case library
 
-This folder holds the home-monitoring side of the Spatial Decision Router:
+This folder holds the home-monitoring side of **Spatial HITM** (the repo folder may still be `SpatialDecisionRouter` until a later rename):
 - a deterministic **trigger engine** that decides whether a hard-trigger alert should page now, confirm first, or be suppressed or logged
 - the **case-generation pipeline** (prompts, merge and grade scripts)
 - the resulting **synthetic case library** in SDR Cases/Outcomes CSV format
@@ -40,7 +40,7 @@ This folder holds the home-monitoring side of the Spatial Decision Router:
 
 ## Headset review (visionOS)
 
-`sdr_bridge/` serves this Layer 1 engine on `127.0.0.1:8767` for the Spatial Decision Router **Home health** domain. It recomputes a small pack of library cases (silent log, nurse task, provider task, urgent page, and one device-maintenance ticket). It does not call OpenRouter. If the bridge is down, the app shows the same decisions from `SpatialDecisionRouter/Domains/HomeHealth/homehealth_vignettes.json`. Simulator steps: [docs/HOME_HEALTH.md](../docs/HOME_HEALTH.md).
+`sdr_bridge/` serves this Layer 1 engine on `127.0.0.1:8767` for the Spatial HITM **Home health** domain. It recomputes a small pack of library cases (silent log, nurse task, provider task, urgent page, and one device-maintenance ticket). It does not call OpenRouter. If the bridge is down, the app shows the same decisions from `SpatialDecisionRouter/Domains/HomeHealth/homehealth_vignettes.json`. Simulator steps: [docs/HOME_HEALTH.md](../docs/HOME_HEALTH.md).
 
 ```
 homehealth/sdr_bridge/run_bridge.sh

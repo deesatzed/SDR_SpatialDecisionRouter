@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3E5F7AFEC516A4CB2A393E4F"
-               BuildableName = "SpatialDecisionRouter.app"
+               BuildableName = "SpatialHITM.app"
                BlueprintName = "SpatialDecisionRouterPad"
                ReferencedContainer = "container:SpatialDecisionRouter.xcodeproj">
             </BuildableReference>
@@ -31,7 +31,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3E5F7AFEC516A4CB2A393E4F"
-            BuildableName = "SpatialDecisionRouter.app"
+            BuildableName = "SpatialHITM.app"
             BlueprintName = "SpatialDecisionRouterPad"
             ReferencedContainer = "container:SpatialDecisionRouter.xcodeproj">
          </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3E5F7AFEC516A4CB2A393E4F"
-            BuildableName = "SpatialDecisionRouter.app"
+            BuildableName = "SpatialHITM.app"
             BlueprintName = "SpatialDecisionRouterPad"
             ReferencedContainer = "container:SpatialDecisionRouter.xcodeproj">
          </BuildableReference>
@@ -92,7 +92,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3E5F7AFEC516A4CB2A393E4F"
-            BuildableName = "SpatialDecisionRouter.app"
+            BuildableName = "SpatialHITM.app"
             BlueprintName = "SpatialDecisionRouterPad"
             ReferencedContainer = "container:SpatialDecisionRouter.xcodeproj">
          </BuildableReference>

@@ -1,6 +1,6 @@
 # Symbiosis Plan
 
-Pinned spec for the Symbiosis layer of Spatial Decision Router (SDR).
+Pinned spec for the Symbiosis layer of **Spatial HITM**. The repo folder may still be `SpatialDecisionRouter`, and the GitHub repository may still be `SDR_SpatialDecisionRouter`, until a later rename.
 Written 2026-10-15 so we do not drift. Update this file when the plan
 changes; do not invent behavior that contradicts the non-negotiables.
 

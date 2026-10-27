@@ -1,6 +1,6 @@
 # Consider for later development
 
-Scan date: 25 October 2026. These are external Vision Pro repositories worth another look. None of them are dependencies of the Spatial Decision Router, and none should be bolted into the Overseer.
+Scan date: 25 October 2026. These are external Vision Pro repositories worth another look. None of them are dependencies of **Spatial HITM**, and none should be bolted into the Overseer. The repo folder may still be `SpatialDecisionRouter`, and the GitHub repository may still be `SDR_SpatialDecisionRouter`, until a later rename.
 
 ## Shipped on the home-health HITM
 

@@ -1,5 +1,7 @@
 # Home health on visionOS
 
+This is the **Spatial HITM** app (`com.wsatz.SpatialHITM`, scheme `SpatialHITM`, `SpatialHITM.app`). The source folder may still be `SpatialDecisionRouter`, and the GitHub repository may still be `SDR_SpatialDecisionRouter`, until a later rename. The Swift module name is unchanged.
+
 The **Home health** domain reviews Layer 1 smart-trigger routes on synthetic library cases. ED triage is a separate domain and is unchanged.
 
 Layer 1 (homehealth v1.14.4, params `0.14.4-placeholder`) proposes one of:
@@ -169,17 +171,17 @@ tools/homehealth_vision.sh
 
 `tools/homehealth_vision.sh` uses the simulator named `SDR-VisionPro` unless `SIM_NAME` or `SIM_UDID` is set. The README quickstart uses that name. If your runtime calls it **Apple Vision Pro**, set `SIM_NAME`.
 
-Manual launch, after a successful `xcodebuild` of scheme `SpatialDecisionRouter`:
+Manual launch, after a successful `xcodebuild` of scheme `SpatialHITM`:
 
 ```bash
-xcodebuild -scheme SpatialDecisionRouter \
+xcodebuild -scheme SpatialHITM \
   -destination 'platform=visionOS Simulator,name=SDR-VisionPro' \
   -derivedDataPath build build
 
 xcrun simctl boot "SDR-VisionPro"
 open -a Simulator
-xcrun simctl install booted build/Build/Products/Debug-xrsimulator/SpatialDecisionRouter.app
-xcrun simctl launch booted com.wsatz.SpatialDecisionRouter \
+xcrun simctl install booted build/Build/Products/Debug-xrsimulator/SpatialHITM.app
+xcrun simctl launch booted com.wsatz.SpatialHITM \
   -domain home_health -autoOpenImmersive -freshRegistry
 ```
 
@@ -191,7 +193,7 @@ The visionOS simulator shares the Mac's `127.0.0.1`, so the bridge is reachable.
 
 ## iPad
 
-The same sources build `SpatialDecisionRouterPad`. The start screen has **Home health**. The iPad simulator also uses `127.0.0.1:8767`.
+The same sources build the iPad scheme `SpatialDecisionRouterPad`. The installed app is still **Spatial HITM** (`com.wsatz.SpatialHITM.pad`). The start screen has **Home health**. The iPad simulator also uses `127.0.0.1:8767`.
 
 ## Regenerate the snapshot
 

@@ -1,5 +1,7 @@
 # Home-health HITM and medical intelligence
 
+This note is about **Spatial HITM**. Source paths under `SpatialDecisionRouter/` are the app folder in this checkout. The GitHub repository may still be `SDR_SpatialDecisionRouter` until a later rename.
+
 Liu et al., *Medical superintelligence: foundations and aspirations*, BMJ Digital Health & AI 2026;2:e000395. <https://bmjdigitalhealth.bmj.com/content/2/1/e000395>
 
 The paper's six dimensions describe medical intelligence across the arc of care. This app's home-health seat is the **coordination layer**: a physician, a covering clinician, or a nurse decides a route while the case is still open. It is not a vignette solver, and a match to a library label is not the score that matters.

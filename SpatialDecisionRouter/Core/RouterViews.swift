@@ -1197,7 +1197,7 @@ struct CategoriesStrip: View {
 }
 
 import os
-let uiLog = Logger(subsystem: "com.wsatz.SpatialDecisionRouter", category: "launcher")
+let uiLog = Logger(subsystem: "com.wsatz.SpatialHITM", category: "launcher")
 
 #if os(visionOS)
 
@@ -1210,7 +1210,8 @@ struct LauncherView: View {
     @State private var status = ""
     var body: some View {
         VStack(spacing: 14) {
-            Text(engine.config.title).font(.sdrHuge)
+            Text("Spatial HITM").font(.sdrHuge)
+            Text(engine.config.title).font(.title2).foregroundStyle(.secondary)
             Text(engine.config.agents.filter { $0.tier == 0 }.map(\.name).joined(separator: " · "))
             if engine.config.synthetic { Text(engine.config.terminology.syntheticBanner).foregroundStyle(.yellow) }
             HStack(spacing: 20) {
