@@ -197,11 +197,19 @@ struct CrossroadsView: View {
     }
 
     /// The open case, or a Pass already in flight, is what makes a destination glow.
+    /// A wait paints as a held log on the desk, not as a page.
     private func attentionRoute(for id: String) -> String? {
-        if let h = engine.nowHandoff, engine.highlightedDest(h) == id { return h.proposal }
-        return engine.handoffs.first {
+        func paint(_ h: Handoff) -> String {
+            if engine.decisions.last(where: { $0.itemId == h.itemId })?.context["review_action"] == "voi_wait" {
+                return "silent_log"
+            }
+            return h.proposal
+        }
+        if let h = engine.nowHandoff, engine.highlightedDest(h) == id { return paint(h) }
+        if let h = engine.handoffs.first(where: {
             engine.phase[$0.id] == .outgoing && (engine.destFor[$0.id] ?? $0.link.dest) == id
-        }?.proposal
+        }) { return paint(h) }
+        return nil
     }
 
     private struct SpherePaint {
@@ -353,11 +361,17 @@ struct AgentCard: View {
                 if let next = engine.queue.first {
                     Text(next.itemId).font(.title3.bold()).lineLimit(1)
                     Text(whyNow(next)).font(.callout).foregroundStyle(.secondary).lineLimit(2)
+                    if let extra = glanceExtra(next) {
+                        Text(extra).font(.callout).foregroundStyle(HomeHealthInk.uncertainty).lineLimit(2)
+                    }
                 } else {
                     Text("Queue clear").font(.callout).foregroundStyle(.secondary).lineLimit(1)
                 }
             } else if lit {
-                Text("This pass · \(passWho)").font(.title3.bold()).foregroundStyle(rim).lineLimit(2)
+                Text(passHeadline).font(.title3.bold()).foregroundStyle(rim).lineLimit(2)
+                if goalsConstrainPage && holdLine == nil {
+                    Text("Goals constrain this page").font(.callout).foregroundStyle(HomeHealthInk.goals).lineLimit(2)
+                }
             } else if let last = lastSent {
                 Text("Last · \(last)").font(.callout).foregroundStyle(.secondary).lineLimit(2)
             } else {
@@ -375,6 +389,33 @@ struct AgentCard: View {
         let hook = HomeHealthBrief.hook(fields)
         return hook.isEmpty ? HomeHealthRoute.title(h.proposal) : hook
     }
+    /// Queue spoke keeps why-now. A refusal or a falsified prior is a second line.
+    private func glanceExtra(_ h: Handoff) -> String? {
+        let mind = HomeHealthMind.of(engine.items[h.itemId]?.fields ?? [:])
+        if mind.agentRefused { return "Agent refused · you choose" }
+        if mind.falsifiesPrior { return mind.revisitLine }
+        return nil
+    }
+    private var goalsConstrainPage: Bool {
+        guard let route = passRoute else { return false }
+        guard route == "urgent_page" || route == "provider_task" else { return false }
+        return HomeHealthMind.of(passFields).blocksEscalation
+    }
+    private var passHeadline: String {
+        if let held = holdLine { return held }
+        return "This pass · \(passWho)"
+    }
+    /// In-flight wait. The route is held. Nobody was paged.
+    private var holdLine: String? {
+        let flight = engine.handoffs.first {
+            engine.phase[$0.id] == .outgoing && (engine.destFor[$0.id] ?? $0.link.dest) == agent.id
+        }
+        guard let flight,
+              let decision = engine.decisions.last(where: { $0.itemId == flight.itemId }),
+              decision.context["review_action"] == "voi_wait" else { return nil }
+        let who = decision.context["recipient"] ?? "Wait"
+        return "Held · \(who)"
+    }
     private var passWho: String {
         let role = engine.homeRole
         guard let route = passRoute else { return "" }
@@ -383,9 +424,14 @@ struct AgentCard: View {
     }
     private var lastSent: String? {
         guard let d = engine.decisions.last(where: {
-            $0.domain == "home_health" && HomeHealthSeat.deskId(for: $0.effectiveAnswer) == agent.id
+            $0.domain == "home_health" && sentDesk(d) == agent.id
         }) else { return nil }
         return "\(d.itemId) · \(HomeHealthVocabulary.sentChip(route: d.effectiveAnswer, fields: d.context))"
+    }
+    /// A wait holds the route and lands on the desk. It does not count as a page sent.
+    private func sentDesk(_ d: RoutingDecision) -> String {
+        if d.context["review_action"] == "voi_wait" { return "routes" }
+        return HomeHealthSeat.deskId(for: d.effectiveAnswer)
     }
     /// Route that currently lights this destination: the open case, or a Pass in flight.
     private var passRoute: String? {

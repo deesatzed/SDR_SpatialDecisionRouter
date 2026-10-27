@@ -12,6 +12,7 @@ import SwiftUI
     private var vignettes: [HHVignette] = []
     private var patternCases: [HHVignette] = []
     private var patterns: [String: HHPattern] = [:]
+    private var minds: [String: HHMindNote] = [:]
     private var queue: [DomainItem] = []
     private var ready = false
     private var live: Bool?
@@ -25,7 +26,10 @@ import SwiftUI
     /// Active review seat. The engine mirrors this on `homeReviewRole` so the face refreshes.
     var reviewRole: HomeHealthRole = .overseer
     /// Set for the duration of a Bedside or Nurse action so the ledger records that verb.
+    /// Also set for Overseer wait, revisit, and a decision after the agent refused.
     var pendingReviewAction: String?
+    var pendingWait = false
+    var pendingRevisit = false
 
     init() {
         config = (try? DomainLoader.config(named: "homehealth.domain"))
@@ -48,7 +52,7 @@ import SwiftUI
         reviewed = 0
         urgentConfirmed = 0
         reviewRole = .overseer
-        pendingReviewAction = nil
+        clearArms()
         queue = []
         loadPatterns()
         if let pack = Self.loadPack() {
@@ -84,6 +88,10 @@ import SwiftUI
               let pack = try? JSONDecoder().decode(HHPatternPack.self, from: data) else { return }
         patternCases = pack.cases.map(\.vignette)
         patterns = Dictionary(uniqueKeysWithValues: pack.cases.map { ($0.pattern.case_id, $0.pattern) })
+        minds = Dictionary(uniqueKeysWithValues: pack.cases.compactMap { entry in
+            guard let mind = entry.mind else { return nil }
+            return (entry.pattern.case_id, mind)
+        })
     }
 
     private func rebuildQueue() {
@@ -111,8 +119,12 @@ import SwiftUI
 
     func propose(item: DomainItem, link: LinkSpec, routed: [String: String]) -> Proposal {
         let route = item.fields["route"] ?? ""
+        let answer = link.options.contains(route) ? route : (link.options.first ?? "silent_log")
+        if HomeHealthMind.of(item.fields).agentRefused {
+            return Proposal(answer: answer, confidence: 0.15)
+        }
         if link.options.contains(route) { return Proposal(answer: route, confidence: 0.93) }
-        return Proposal(answer: link.options.first ?? "silent_log", confidence: 0.45)
+        return Proposal(answer: answer, confidence: 0.45)
     }
 
     /// The human is the reviewer. Layer 1's route is the proposal, not a second ground truth.
@@ -139,6 +151,13 @@ import SwiftUI
         if live == false {
             chips.append(ReasonChip(text: "bridge offline", key: "bridge offline", severity: .warn))
         }
+        let mind = HomeHealthMind.of(item.fields)
+        if mind.agentRefused {
+            chips.append(ReasonChip(text: "agent refused", key: "agent refused", severity: .high))
+        }
+        if mind.falsifiesPrior {
+            chips.append(ReasonChip(text: "prior decision falsified", key: "revisit", severity: .warn))
+        }
         return chips
     }
 
@@ -154,6 +173,15 @@ import SwiftUI
 
     func downstreamPreview(item: DomainItem, link: LinkSpec, answer: String) -> String? {
         guard link.id == "route" else { return nil }
+        if pendingReviewAction == "voi_wait" {
+            let mind = HomeHealthMind.of(item.fields)
+            return "Wait for \(mind.waitFor). The route stays \(HomeHealthRoute.title(answer)). It flips to \(HomeHealthRoute.title(mind.flipRoute)) if \(mind.flipIf). The wait does not page anyone."
+        }
+        if pendingRevisit {
+            let mind = HomeHealthMind.of(item.fields)
+            let prior = mind.priorDecision.isEmpty ? "the prior decision" : mind.priorDecision
+            return "Revise. Prior \(prior). New evidence: \(mind.newEvidence). Corrected route \(HomeHealthRoute.title(answer))."
+        }
         if reviewRole != .overseer { return rolePreview(item: item, answer: answer) }
         let who = HomeHealthSeat.recipient(route: answer, fields: item.fields)
         let meaning = [
@@ -184,18 +212,63 @@ import SwiftUI
         return HomeHealthVocabulary.suggested(role: reviewRole, route: answer, fields: item.fields).preview
     }
 
-    /// Ledger context. Overseer stays `review_role: overseer` with no action id.
-    /// Bedside and Nurse add `review_action` and the synthetic recipient for that action.
+    /// Ledger context. Ordinary Overseer Pass still omits `review_action`.
+    /// Wait, revisit, and a decision after refusal write `review_action` on every seat, including Overseer.
+    /// Bedside and Nurse also write `review_action` and the synthetic recipient for that verb.
     func ledgerFields(item: DomainItem) -> [String: String] {
         var fields = item.fields
         fields["review_role"] = reviewRole.rawValue
-        guard reviewRole != .overseer, let actionId = pendingReviewAction,
-              let action = HomeHealthVocabulary.action(role: reviewRole, id: actionId, fields: item.fields) else {
+        for (key, value) in HomeHealthMind.logFields(item.fields) { fields[key] = value }
+        let mind = HomeHealthMind.of(item.fields)
+        if pendingWait || pendingReviewAction == "voi_wait" {
+            fields["review_action"] = "voi_wait"
+            fields["voi_observation"] = mind.waitFor
+            fields["voi_flip_route"] = mind.flipRoute
+            fields["voi_flip_if"] = mind.flipIf
+            fields["recipient"] = "Wait · \(mind.waitFor)"
             return fields
         }
-        fields["review_action"] = action.id
-        fields["recipient"] = action.chip
+        if pendingRevisit {
+            fields["revisit"] = "1"
+            fields["prior_decision"] = mind.priorDecision
+            fields["new_evidence"] = mind.newEvidence
+        }
+        if reviewRole != .overseer, let actionId = pendingReviewAction,
+           let action = HomeHealthVocabulary.action(role: reviewRole, id: actionId, fields: item.fields) {
+            fields["review_action"] = action.id
+            fields["recipient"] = action.chip
+        } else if pendingRevisit {
+            fields["review_action"] = "revisit_prior"
+        } else if mind.agentRefused {
+            fields["review_action"] = "human_after_refusal"
+        }
         return fields
+    }
+
+    func blocksAutoPass(item: DomainItem) -> Bool {
+        HomeHealthMind.of(item.fields).agentRefused
+    }
+
+    func decided(item: DomainItem, link: LinkSpec, answer: String, latency: TimeInterval, by: String) {
+        clearArms()
+    }
+
+    func clearArms() {
+        pendingReviewAction = nil
+        pendingWait = false
+        pendingRevisit = false
+    }
+
+    func armWait() {
+        pendingRevisit = false
+        pendingWait = true
+        pendingReviewAction = "voi_wait"
+    }
+
+    func armRevisit() {
+        pendingWait = false
+        pendingRevisit = true
+        pendingReviewAction = "revisit_prior"
     }
 
     func detail(item: DomainItem, section: String) -> [(String, String)]? {
@@ -332,12 +405,14 @@ import SwiftUI
             "pattern_headline": patterns[v.case_id]?.headline ?? "",
             "pattern_fixture": patterns[v.case_id]?.fixture == true ? "1" : "",
         ]
+        var stamped = fields
+        HomeHealthMind.apply(minds[v.case_id], onto: &stamped)
         let shown = route.isEmpty ? "no Layer 1 route" : route
         let ticketBit = ticket == "none" ? "no device ticket" : "ticket \(ticket)"
         let history = v.note.isEmpty ? v.trend : v.note
         return DomainItem(
             id: v.case_id,
-            fields: fields,
+            fields: stamped,
             displayLine: "[SYNTHETIC] \(v.case_id) · \(v.age_band) \(v.sex) · \(shown) · \(ticketBit)",
             shortLine: "\(v.case_id) \(shown)",
             historyLine: history,
@@ -409,8 +484,8 @@ enum HomeHealthSeat {
     /// Button title. Names the other person so Pass does not read as sending the case to the Overseer.
     static func passTitle(route: String, fields: [String: String]) -> String {
         switch route {
-        case "urgent_page": return "Pass page to On-call MD"
-        case "provider_task": return "Pass to On-call MD"
+        case "urgent_page": return constrained("Pass page to On-call MD", route: route, fields: fields)
+        case "provider_task": return constrained("Pass to On-call MD", route: route, fields: fields)
         case "nurse_task":
             let goals = (fields["goals"] ?? "").lowercased()
             if goals.contains("hospice") || goals.contains("comfort-focused") { return "Pass to hospice nurse" }
@@ -418,6 +493,15 @@ enum HomeHealthSeat {
         default:
             return "Log only"
         }
+    }
+
+    /// Page and provider pass name the goals constraint on the button when escalation fights stated goals.
+    private static func constrained(_ title: String, route: String, fields: [String: String]) -> String {
+        let mind = HomeHealthMind.of(fields)
+        if mind.blocksEscalation && (route == "urgent_page" || route == "provider_task") {
+            return title + " · goals constrain"
+        }
+        return title
     }
 
     /// Same split the engine already uses: urgent_page flies to the page node, other routes to the desk.
@@ -513,6 +597,7 @@ enum HomeHealthVocabulary {
 
     /// Sent-list line. Overseer recomputes the on-call label. Other roles use the logged chip.
     static func sentChip(route: String, fields: [String: String]) -> String {
+        if fields["review_action"] == "voi_wait", let chip = fields["recipient"], !chip.isEmpty { return chip }
         let role = HomeHealthRole(rawValue: fields["review_role"] ?? "") ?? .overseer
         if role == .overseer { return HomeHealthSeat.recipientChip(route: route, fields: fields) }
         if let chip = fields["recipient"], !chip.isEmpty { return chip }
@@ -548,6 +633,14 @@ enum HomeHealthVocabulary {
     private static func suggestedId(role: HomeHealthRole, route: String, fields: [String: String]) -> String {
         let ticket = fields["ticket_type"] ?? "none"
         let device = !ticket.isEmpty && ticket != "none"
+        let mind = HomeHealthMind.of(fields)
+        if mind.blocksEscalation && (route == "urgent_page" || route == "provider_task") {
+            switch role {
+            case .bedside: return "request_nurse_visit"
+            case .nurse: return "escalate_on_call_nurse"
+            case .overseer: break
+            }
+        }
         switch role {
         case .overseer:
             return "overseer"
@@ -792,6 +885,15 @@ enum HomeHealthBrief {
             || (s.neuro && rule.localizedCaseInsensitiveContains("focal"))
             || (s.chest && (rule.localizedCaseInsensitiveContains("chest") || reason.localizedCaseInsensitiveContains("angina")))
         if !body.isEmpty { add(matched ? 100 : 78, "Rule on this case", body) }
+        let mind = HomeHealthMind.of(f)
+        if !mind.differential.isEmpty {
+            add(99, "Still open", "\(mind.differentialLine). \(mind.confidence)")
+        }
+        if mind.actBeforeClosure { add(98, "Act under uncertainty", mind.actBanner) }
+        if mind.falsifiesPrior { add(96, "Prior decision falsified", mind.revisitLine) }
+        add(95, "Goals constraint", mind.goalsLine)
+        add(93, "What would change the route", "Wait for \(mind.waitFor). Flips to \(HomeHealthRoute.title(mind.flipRoute)) if \(mind.flipIf).")
+        if mind.agentRefused { add(100, "Agent refused", mind.refusalReason) }
         let routeId = f["route"] ?? ""
         if role == .overseer {
             if let who = HomeHealthSeat.recipient(route: routeId, fields: f) {
@@ -884,6 +986,7 @@ enum HomeHealthBrief {
         s.device = (!ticket.isEmpty && ticket != "none") || (!artifact.isEmpty && artifact != "none") || reason.contains("cleared") || artifact.contains("contact") || artifact.contains("motion")
         let goals = (f["goals"] ?? "").lowercased()
         s.goalsHold = f["reason"] == "goals_of_care" || goals.contains("hospice") || goals.contains("comfort")
+            || goals.contains("do-not-hospital") || goals.contains("do not hospital")
         s.alone = (f["living"] ?? "").lowercased() == "alone"
         s.directedMeds = medLines(f["meds"] ?? "").filter { contains($0, ["trinitrate", "gtn", "spray", "nitro"]) }
         return s
@@ -1092,6 +1195,10 @@ enum HomeHealthInk {
     static let baseline = Color.cyan
     static let action = Color(red: 0.62, green: 0.86, blue: 0.70)
     static let label = Color(red: 0.78, green: 0.86, blue: 0.94)
+    /// Retained differential. Distinct from why-now orange and baseline cyan.
+    static let uncertainty = Color(red: 0.73, green: 0.64, blue: 0.98)
+    /// Goals that constrain a page. Distinct from why-now orange.
+    static let goals = Color(red: 0.93, green: 0.45, blue: 0.55)
 
     /// Patient-detail lines. Narrative stays white. Only a clear role picks up a color.
     static func story(_ text: String) -> Color {
@@ -1159,6 +1266,7 @@ struct HomeHealthNowFace: View {
         let badge = engine.domain.riskBadge(item: item) ?? ""
         let shown = engine.homeShownLevel
         let pinned = engine.homePinnedLevel
+        let mind = HomeHealthMind.of(item.fields)
         let recipient = role == .overseer
             ? HomeHealthSeat.recipientChip(route: route, fields: item.fields)
             : HomeHealthVocabulary.faceChip(role: role, route: route, fields: item.fields)
@@ -1179,6 +1287,19 @@ struct HomeHealthNowFace: View {
             .accessibilityLabel("Review role, one at a time")
             if role != .overseer {
                 Text(role.blurb).font(.title3).foregroundStyle(.secondary).lineLimit(2)
+            }
+            if mind.agentRefused {
+                Text("Agent refused. You choose.")
+                    .font(.title2.bold())
+                    .foregroundStyle(.black)
+                    .padding(.horizontal, 12).padding(.vertical, 6)
+                    .background(.red, in: Capsule())
+                    .accessibilityLabel("Agent refused. Human must choose.")
+                Text(mind.refusalReason)
+                    .font(.title3)
+                    .foregroundStyle(.red)
+                    .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             HStack(alignment: .center, spacing: 12) {
                 Text("NOW").font(.title3.bold()).padding(.horizontal, 12).padding(.vertical, 5)
@@ -1214,7 +1335,30 @@ struct HomeHealthNowFace: View {
                     .foregroundStyle(trigger.isEmpty ? Color.secondary : HomeHealthInk.baseline)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
-                    .help(trigger.isEmpty ? "Patient chip" : "Baseline on this chip. Why now is the line below.")
+                    .help(trigger.isEmpty ? "Patient chip" : "Baseline on this chip. Why now is the line below. Still open is separate.")
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Still open").font(.title3.bold()).foregroundStyle(HomeHealthInk.uncertainty)
+                Text(mind.differentialLine)
+                    .font(.title3)
+                    .foregroundStyle(HomeHealthInk.uncertainty)
+                    .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(mind.confidence)
+                    .font(.title3)
+                    .foregroundStyle(HomeHealthInk.uncertainty.opacity(0.9))
+                    .lineLimit(2)
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Still open. \(mind.differentialLine). \(mind.confidence)")
+            .help("Retained differential. Separate from why now and from the baseline chip.")
+            if mind.actBeforeClosure {
+                Text(mind.actBanner)
+                    .font(.title3.bold())
+                    .foregroundStyle(HomeHealthInk.uncertainty)
+                    .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityLabel("Act under uncertainty")
             }
             if !trigger.isEmpty {
                 Text("Why now").font(.title3.bold()).foregroundStyle(.orange)
@@ -1226,6 +1370,29 @@ struct HomeHealthNowFace: View {
             } else {
                 Text(hook).font(.title).lineLimit(4)
             }
+            if mind.falsifiesPrior {
+                Text("Prior \(mind.priorDecision)")
+                    .font(.title3.bold())
+                    .foregroundStyle(HomeHealthInk.action)
+                    .lineLimit(2)
+                Text(mind.newEvidence)
+                    .font(.title3)
+                    .foregroundStyle(HomeHealthInk.trigger)
+                    .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text("Revise")
+                    .font(.title3.bold())
+                    .foregroundStyle(HomeHealthInk.action)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(mind.revisitLine)
+            }
+            Text(mind.goalsLine)
+                .font(.title3.bold())
+                .foregroundStyle(mind.blocksEscalation ? HomeHealthInk.goals : Color.secondary)
+                .lineLimit(3)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityLabel("Goals of care. \(mind.goalsLine)")
+                .help(mind.blocksEscalation ? "Goals constrain a page and a hospital pass." : "Goals of care for this pass.")
             if !ticket.isEmpty, ticket != "none" {
                 Text("Device ticket").font(.title3.bold()).foregroundStyle(.black)
                     .padding(.horizontal, 12).padding(.vertical, 5)
@@ -1236,12 +1403,13 @@ struct HomeHealthNowFace: View {
                     Button(handoff.trigger != nil ? "Acknowledge ✓" : (handoff.link.id == engine.config.review.escalationLink ? "Sign off ✓" : HomeHealthSeat.passTitle(route: route, fields: item.fields))) {
                         if let seat = engine.domain as? HomeHealthDomain {
                             seat.reviewRole = .overseer
-                            seat.pendingReviewAction = nil
+                            seat.pendingWait = false
+                            if engine.homeArm != "revisit" { seat.clearArms() }
                         }
                         engine.pass(handoff.id)
                     }
-                    .tint(.green)
-                    .help(route == "silent_log" ? "No page and no handoff. Acknowledge and log the decision. Nobody is tasked." : "Sends the route to the on-call recipient. You are not the recipient.")
+                    .tint(mind.blocksEscalation && (route == "urgent_page" || route == "provider_task") ? Color.orange : Color.green)
+                    .help(passHelp(route: route, mind: mind))
                     if handoff.link.answerType == .binary { Button("Flip") { engine.flip(handoff.id) }.tint(.orange) }
                     else if handoff.trigger == nil { Button("Change route…") { engine.openRing(handoff.id) }.tint(.blue) }
                     if handoff.trigger == nil, handoff.link.id == engine.config.review.escalationLink {
@@ -1255,6 +1423,15 @@ struct HomeHealthNowFace: View {
                             .help(action.help)
                             .accessibilityLabel(action.id == suggested ? "\(action.title), suggested" : action.title)
                     }
+                }
+                Button(mind.waitTitle) { commitWait(as: role) }
+                    .tint(.purple)
+                    .help("Wait for \(mind.waitFor). Flips to \(HomeHealthRoute.title(mind.flipRoute)) if \(mind.flipIf). The wait does not page you.")
+                    .accessibilityLabel("\(mind.waitTitle). Flips to \(HomeHealthRoute.title(mind.flipRoute)) if \(mind.flipIf)")
+                if mind.falsifiesPrior {
+                    Button(engine.homeArm == "revisit" ? "Revise prior · armed" : "Revise prior") { commitRevisit(as: role) }
+                        .tint(.orange)
+                        .help("Prior \(mind.priorDecision). New evidence: \(mind.newEvidence). The next decision is logged as a revisit.")
                 }
                 if shown > pinned {
                     Button("Pin") { engine.homeCascade() }.tint(.teal)
@@ -1299,12 +1476,37 @@ struct HomeHealthNowFace: View {
     }
     private func commit(_ action: HomeHealthAction, proposal: String, as role: HomeHealthRole) {
         guard role != .overseer, let seat = engine.domain as? HomeHealthDomain else { return }
+        let revisiting = seat.pendingRevisit || engine.homeArm == "revisit"
         seat.reviewRole = role
+        seat.pendingWait = false
+        seat.pendingRevisit = revisiting
         seat.pendingReviewAction = action.id
         if action.route == proposal { engine.pass(handoff.id) }
         else { engine.select(handoff.id, action.route) }
-        seat.pendingReviewAction = nil
         seat.reviewRole = engine.homeRole
+    }
+    private func commitWait(as role: HomeHealthRole) {
+        guard let seat = engine.domain as? HomeHealthDomain else { return }
+        seat.reviewRole = role
+        seat.armWait()
+        engine.pass(handoff.id)
+        seat.reviewRole = engine.homeRole
+    }
+    private func commitRevisit(as role: HomeHealthRole) {
+        guard let seat = engine.domain as? HomeHealthDomain else { return }
+        seat.reviewRole = role
+        seat.armRevisit()
+        engine.homeArm = "revisit"
+        if role == .overseer { engine.openRing(handoff.id) }
+    }
+    private func passHelp(route: String, mind: HomeHealthMind) -> String {
+        if mind.blocksEscalation && (route == "urgent_page" || route == "provider_task") {
+            return "Goals constrain this pass. \(mind.goalsLine) You are not the recipient."
+        }
+        if route == "silent_log" {
+            return "No page and no handoff. Acknowledge and log the decision. Nobody is tasked."
+        }
+        return "Sends the route to the on-call recipient. You are not the recipient."
     }
     private func roleChip(_ role: HomeHealthRole, selected: Bool) -> some View {
         Button { engine.homeSetRole(role.rawValue) } label: {
@@ -1334,6 +1536,15 @@ struct HomeHealthNowFace: View {
         }
     }
     private func footer(role: HomeHealthRole, shown: Int) -> String {
+        let mind = HomeHealthMind.of(item.fields)
+        if mind.agentRefused {
+            return "Agent refused. Choose Log only, Pass, or a role verb. This card does not auto-pass."
+        }
+        if engine.homeArm == "revisit" {
+            return role == .overseer
+                ? "Revise is armed. Change route logs the correction. You are not the recipient."
+                : "Revise is armed. The next verb logs the correction."
+        }
         if role == .overseer {
             return shown == 0
                 ? "Look to cascade. Expand pins the next layer. Logged for later training."

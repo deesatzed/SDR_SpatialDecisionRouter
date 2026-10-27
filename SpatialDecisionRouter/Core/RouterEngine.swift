@@ -246,8 +246,9 @@ struct Handoff: Identifiable, Hashable {
         homeChartOpen = nil
         homeSphereOpen = nil
         homeReviewRole = HomeHealthRole.overseer.rawValue
+        homeArm = ""
         (domain as? HomeHealthDomain)?.reviewRole = .overseer
-        (domain as? HomeHealthDomain)?.pendingReviewAction = nil
+        (domain as? HomeHealthDomain)?.clearArms()
     }
     func nextDomain() {
         let all = DomainCatalog.all
@@ -368,6 +369,7 @@ struct Handoff: Identifiable, Hashable {
 
     private func maybeAutoPass(_ h: Handoff) {
         let r = config.review
+        guard let item = items[h.itemId], !domain.blocksAutoPass(item: item) else { return }
         guard h.confidence >= r.autoPassConfidence, h.link.costWeight <= r.autoPassMaxCost,
               !reasons(h).contains(where: { $0.severity == .high }) else { return }
         route(h.id, answer: nil, gesture: "auto-pass", by: "auto")
@@ -537,10 +539,11 @@ struct Handoff: Identifiable, Hashable {
         let pos = position(h), now = Date(), shown = shownAt[id] ?? h.createdAt
         let others = active.filter { $0.id != id }
         let agrees: Bool? = custom ? nil : h.groundTruth.map { $0 == ans }
+        let context = domain.ledgerFields(item: item)
         let d = RoutingDecision(
             domain: config.id, siteId: siteId, registryVersion: registry.version, itemId: item.id, linkId: h.link.id,
             sourceAgent: h.link.source, destAgent: h.link.dest, question: h.link.question,
-            displayLine: item.displayLine, context: domain.ledgerFields(item: item), history: item.historyLine, capacity: h.capacity,
+            displayLine: item.displayLine, context: context, history: item.historyLine, capacity: h.capacity,
             upstream: h.upstream, proposedAnswer: h.proposal, proposedConfidence: h.confidence,
             answerType: h.link.answerType, options: registry.mainOptions(h.link), trialOptions: registry.trialOptions(h.link),
             routedAnswer: ans, effectiveAnswer: eff, routedIsTrial: trial, newCategoryCreated: isNew,
@@ -577,7 +580,10 @@ struct Handoff: Identifiable, Hashable {
         if !ev.isEmpty || isNew { saveRegistry() }
         routed[id] = ans
         effective[item.id, default: [:]][h.link.id] = eff
-        if h.trigger == nil && h.link.firesAlert && !trial && !h.link.alertNegative.contains(eff) {
+        let holdingForInfo = context["review_action"] == "voi_wait"
+        if holdingForInfo {
+            destFor[id] = h.link.dest
+        } else if h.trigger == nil && h.link.firesAlert && !trial && !h.link.alertNegative.contains(eff) {
             alertsFired += 1; domain.alertFired(item: item, link: h.link)
             if let ad = h.link.alertDest { destFor[id] = ad }
         }
@@ -597,6 +603,7 @@ struct Handoff: Identifiable, Hashable {
         }
         aiDepthOpen = false
         domain.decided(item: item, link: h.link, answer: eff, latency: dd.latency, by: by)
+        if config.id == "home_health" { homeArm = "" }
     }
 
     // MARK: game layer + late truth
@@ -704,14 +711,17 @@ struct Handoff: Identifiable, Hashable {
     /// Home-health review seat. One of overseer, bedside, nurse. Overseer is the default.
     var homeReviewRole = HomeHealthRole.overseer.rawValue
     var homeRole: HomeHealthRole { HomeHealthRole(rawValue: homeReviewRole) ?? .overseer }
+    /// Armed home-health verb that has not committed yet: `revisit` while Change route is open.
+    var homeArm = ""
     /// Switch the seat. One role at a time. Does not change Layer 1's proposal.
     func homeSetRole(_ raw: String) {
         guard let role = HomeHealthRole(rawValue: raw) else { return }
         homeReviewRole = role.rawValue
+        homeArm = ""
         if role != .overseer { ringFor = nil }
         guard let seat = domain as? HomeHealthDomain else { return }
         seat.reviewRole = role
-        seat.pendingReviewAction = nil
+        seat.clearArms()
     }
     /// Which sphere's waiting or sent list is pinned open.
     var homeSphereOpen: String?
