@@ -424,7 +424,7 @@ struct AgentCard: View {
     }
     private var lastSent: String? {
         guard let d = engine.decisions.last(where: {
-            $0.domain == "home_health" && sentDesk(d) == agent.id
+            $0.domain == "home_health" && sentDesk($0) == agent.id
         }) else { return nil }
         return "\(d.itemId) · \(HomeHealthVocabulary.sentChip(route: d.effectiveAnswer, fields: d.context))"
     }
