@@ -90,6 +90,28 @@ struct HHPatternPack: Decodable {
 struct HHPatternEntry: Decodable {
     var vignette: HHVignette
     var pattern: HHPattern
+    var mind: HHMindNote?
+}
+
+/// Optional fixture override for the L0 intelligence read. Absent keys are derived.
+struct HHMindNote: Decodable, Equatable {
+    var differential: [String]?
+    var confidence: String?
+    var act_under_uncertainty: Bool?
+    var act_banner: String?
+    var prior_decision: String?
+    var new_evidence: String?
+    var falsifies_prior: Bool?
+    var wait_for: String?
+    /// Explicit window in minutes. Absent means the face derives one from the wait text or a situation default.
+    var wait_minutes: Int?
+    var flip_route: String?
+    var flip_if: String?
+    var agent_refused: Bool?
+    var refusal_reason: String?
+    var goals_line: String?
+    var goals_kind: String?
+    var blocks_escalation: Bool?
 }
 
 struct HHPattern: Decodable, Equatable {

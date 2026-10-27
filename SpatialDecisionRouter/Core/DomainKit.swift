@@ -155,6 +155,8 @@ struct EngineStats {
     func takeOutcomes() -> [(String, String)]
     func demoAnswer(item: DomainItem, link: LinkSpec) -> String?
     func decided(item: DomainItem, link: LinkSpec, answer: String, latency: TimeInterval, by: String)
+    /// Home-health refusals set this so a confident proposal cannot auto-pass.
+    func blocksAutoPass(item: DomainItem) -> Bool
     // unified decision record (defaults in SymbiosisKit.swift)
     func decisionContext(item: DomainItem) -> DecisionContext
 }

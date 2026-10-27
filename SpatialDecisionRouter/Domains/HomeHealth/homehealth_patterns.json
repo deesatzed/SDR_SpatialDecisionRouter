@@ -64,6 +64,297 @@
             "outside_note": "Heart rate leaves the band only with the same position changes, then settles."
           }
         ]
+      },
+      "mind": {
+        "differential": ["positional desaturation", "early infection", "device artifact"],
+        "confidence": "Pattern favored. Not a closed diagnosis.",
+        "act_under_uncertainty": false,
+        "prior_decision": "",
+        "new_evidence": "",
+        "falsifies_prior": false,
+        "wait_for": "resting SpO2 back in band",
+        "wait_minutes": 120,
+        "flip_route": "urgent_page",
+        "flip_if": "resting SpO2 stays below the band",
+        "agent_refused": false,
+        "goals_line": "Hospital is acceptable if rest does not recover.",
+        "goals_kind": "hospital_if_needed",
+        "blocks_escalation": false
+      }
+    },
+    {
+      "vignette": {
+        "case_id": "PX-REVISE-01",
+        "source": "synthetic pattern fixture",
+        "library_label": "pattern_fixture",
+        "age_band": "70-74",
+        "sex": "F",
+        "living": "with spouse",
+        "pmh": "COPD, on home oxygen",
+        "meds": "home oxygen 2 L nasal cannula",
+        "devices": "home oxygen concentrator, fingertip oximeter",
+        "goals": "wants hospital care if breathing does not recover at rest",
+        "function": "walks indoors, usual desat on standing, recovers at rest",
+        "baseline": "spo2_night_min 91, rest_hr 76",
+        "baseline_status": "established, monitoring day 80",
+        "discharge": "none",
+        "trend": "Yesterday the same positional dips were logged only. Today resting SpO2 is 86% for 20 minutes and has not returned to band.",
+        "note": "Spouse reports more sputum this morning. The positional log from yesterday no longer matches a resting reading.",
+        "artifact_flags": "none",
+        "layer1": {
+          "route": "nurse_task",
+          "owner": "pattern_fixture",
+          "tier": "",
+          "rule": "",
+          "reason": "resting_desat_after_log",
+          "plain_reason": "Resting oxygen is below band after a log-only positional pattern.",
+          "route_definition": "Nurse contact. The prior log is no longer the whole story.",
+          "escalation_target": ""
+        }
+      },
+      "pattern": {
+        "case_id": "PX-REVISE-01",
+        "fixture": true,
+        "trigger": "Resting SpO2 86% for 20 minutes. Not back in band.",
+        "headline": "Yesterday: log only for positional dips. Today the resting reading left the band.",
+        "summary": "The prior log-only decision was for dips that recovered at rest. This resting reading does not recover.",
+        "rule_note": "Revise the prior log. The new resting reading is the evidence that changes it.",
+        "horizon": "One prior Pass or Log only is on this card so the correction can be logged.",
+        "alerts": [
+          {"when": "Yesterday", "what": "Positional SpO2 dips, recovered at rest", "action": "Log only. No page."},
+          {"when": "Today", "what": "Resting SpO2 86% for 20 minutes", "action": "Prior log no longer fits. Revise."}
+        ],
+        "vitals": [
+          {
+            "name": "SpO2",
+            "band": "Resting band 90–94.",
+            "low": 90,
+            "high": 94,
+            "points": [92, 91, 93, 86, 86, 85],
+            "outside_note": "The last three readings are resting and outside the band."
+          }
+        ]
+      },
+      "mind": {
+        "differential": ["infection or exacerbation", "retained secretion", "cardiac congestion"],
+        "confidence": "Prior log is falsified. The cause is not closed.",
+        "act_under_uncertainty": true,
+        "act_banner": "Act under uncertainty. Revise the route before naming one cause.",
+        "prior_decision": "Log only for positional desats",
+        "new_evidence": "Resting SpO2 86% for 20 minutes, sputum up",
+        "falsifies_prior": true,
+        "wait_for": "a repeat resting SpO2 after the nurse is with her",
+        "wait_minutes": 30,
+        "flip_route": "urgent_page",
+        "flip_if": "resting SpO2 is still below 88% with the nurse present",
+        "agent_refused": false,
+        "goals_line": "Hospital is acceptable if rest does not recover.",
+        "goals_kind": "hospital_if_needed",
+        "blocks_escalation": false
+      }
+    },
+    {
+      "vignette": {
+        "case_id": "PX-REFUSE-01",
+        "source": "synthetic pattern fixture",
+        "library_label": "pattern_fixture",
+        "age_band": "80-84",
+        "sex": "M",
+        "living": "alone",
+        "pmh": "heart failure",
+        "meds": "furosemide 40 mg daily",
+        "devices": "watch, fingertip oximeter",
+        "goals": "not recorded",
+        "function": "walks indoors",
+        "baseline": "spo2_night_min 94",
+        "baseline_status": "established",
+        "discharge": "none",
+        "trend": "Day 0 watch SpO2 70% with a poor waveform. No fingertip repeat. One note says unresponsive. A second note, same hour, says he is talking and looks pink.",
+        "note": "The two notes disagree and the only oxygen number has a poor waveform. The proposing agent refuses to pick a route.",
+        "artifact_flags": "poor waveform; conflicting notes",
+        "layer1": {
+          "route": "urgent_page",
+          "owner": "pattern_fixture",
+          "tier": "",
+          "rule": "",
+          "reason": "agent_refused",
+          "plain_reason": "Conflicting notes and an incomplete oxygen trace. No route is owned.",
+          "route_definition": "Shown only so a human can replace it. The agent does not pass this.",
+          "escalation_target": ""
+        }
+      },
+      "pattern": {
+        "case_id": "PX-REFUSE-01",
+        "fixture": true,
+        "trigger": "SpO2 70% poor waveform, and two notes that disagree.",
+        "headline": "Incomplete trace. One note says unresponsive. The other says talking and pink.",
+        "summary": "The agent does not close this. A human chooses Log only, Pass, or a role verb.",
+        "rule_note": "Refusal is logged. Nothing on this card auto-passes.",
+        "horizon": "A later resting waveform, or a person in the room, is what would let someone else decide.",
+        "alerts": [
+          {"when": "Day 0", "what": "Watch SpO2 70%, poor waveform", "action": "Agent refused. No auto-pass."}
+        ],
+        "vitals": [
+          {
+            "name": "SpO2",
+            "band": "Usual night minimum 94. This trace is not a resting band.",
+            "low": 92,
+            "high": 97,
+            "points": [94, 95, 70],
+            "outside_note": "70% is a poor waveform. It is not a confirmed resting reading."
+          }
+        ]
+      },
+      "mind": {
+        "differential": ["true deterioration", "device artifact", "a mismatched note"],
+        "confidence": "The agent will not choose. The list stays open.",
+        "act_under_uncertainty": true,
+        "act_banner": "Act under uncertainty only after you choose. The agent refused to pass this.",
+        "falsifies_prior": false,
+        "wait_for": "a person in the room and a fingertip waveform",
+        "wait_minutes": 10,
+        "flip_route": "urgent_page",
+        "flip_if": "he is hard to rouse or the fingertip stays under 88%",
+        "agent_refused": true,
+        "refusal_reason": "The proposing agent refused. Notes conflict and the oxygen trace is incomplete. You choose Log only, Pass, or a role action. This card does not auto-pass.",
+        "goals_line": "Goals of care are not recorded.",
+        "goals_kind": "unstated",
+        "blocks_escalation": false
+      }
+    },
+    {
+      "vignette": {
+        "case_id": "PX-DNH-01",
+        "source": "synthetic pattern fixture",
+        "library_label": "pattern_fixture",
+        "age_band": "85-89",
+        "sex": "F",
+        "living": "with daughter",
+        "pmh": "advanced dementia, recurrent aspiration",
+        "meds": "acetaminophen as needed",
+        "devices": "watch",
+        "goals": "do-not-hospitalize, comfort-focused, would refuse ambulance and hospital",
+        "function": "chair-bound, family at the bedside",
+        "baseline": "rest_hr 78, spo2_night_min 93",
+        "baseline_status": "established",
+        "discharge": "none",
+        "trend": "Day 0 temperature 38.4 C and new confusion beyond her baseline. SpO2 92% at rest.",
+        "note": "Daughter is present. The written goals refuse hospital and ambulance. Comfort at home is the plan.",
+        "artifact_flags": "none",
+        "layer1": {
+          "route": "urgent_page",
+          "owner": "pattern_fixture",
+          "tier": "",
+          "rule": "",
+          "reason": "fever_confusion",
+          "plain_reason": "Fever and new confusion. The page is constrained by do-not-hospitalize goals.",
+          "route_definition": "A page is on the card so the goals constraint is visible. It is not an aligned default.",
+          "escalation_target": ""
+        }
+      },
+      "pattern": {
+        "case_id": "PX-DNH-01",
+        "fixture": true,
+        "trigger": "Temperature 38.4 C and confusion beyond baseline.",
+        "headline": "Do-not-hospitalize. Comfort at home. Family is present.",
+        "summary": "The urgent-page chip is what a symptom rule would send. The goals line constrains that page.",
+        "rule_note": "A page that leads to hospital fights the stated refusal. The aligned action is a comfort check at home.",
+        "horizon": "Goals were written before this fever. They still constrain tonight's pass.",
+        "alerts": [
+          {"when": "Day 0", "what": "Fever 38.4 C, new confusion", "action": "Goals constrain a hospital page."}
+        ],
+        "vitals": [
+          {
+            "name": "SpO2",
+            "band": "Resting around 93.",
+            "low": 90,
+            "high": 96,
+            "points": [93, 92, 92],
+            "outside_note": "Oxygen is near baseline. The constraint is the goals, not this number."
+          }
+        ]
+      },
+      "mind": {
+        "differential": ["aspiration or infection", "dehydration", "medication effect"],
+        "confidence": "Cause open. Goals already constrain the page.",
+        "act_under_uncertainty": true,
+        "act_banner": "Act under uncertainty inside the goals. Comfort at home comes before a hospital label.",
+        "falsifies_prior": false,
+        "wait_for": "a hospice symptom check",
+        "wait_minutes": 240,
+        "flip_route": "nurse_task",
+        "flip_if": "distress they would want treated at home",
+        "agent_refused": false,
+        "goals_line": "Would refuse hospital and ambulance. Do-not-hospitalize, comfort-focused.",
+        "goals_kind": "dnh",
+        "blocks_escalation": true
+      }
+    },
+    {
+      "vignette": {
+        "case_id": "PX-WAIT-01",
+        "source": "synthetic pattern fixture",
+        "library_label": "pattern_fixture",
+        "age_band": "65-69",
+        "sex": "M",
+        "living": "with spouse",
+        "pmh": "hypertension",
+        "meds": "lisinopril 10 mg daily",
+        "devices": "watch, thermometer",
+        "goals": "wants hospital care if needed, prefers to stay at home",
+        "function": "walks outdoors",
+        "baseline": "spo2_night_min 96, rest_hr 68",
+        "baseline_status": "established",
+        "discharge": "none",
+        "trend": "Day 0 cough for one day. Temperature 37.6 C. Resting SpO2 96%, inside band. No exam recorded.",
+        "note": "Spouse says he is drinking and talking. No chest pain. The missing piece is whether the temperature or the oxygen moves.",
+        "artifact_flags": "none",
+        "layer1": {
+          "route": "silent_log",
+          "owner": "pattern_fixture",
+          "tier": "",
+          "rule": "",
+          "reason": "voi_wait",
+          "plain_reason": "Hold for a temperature and a resting oxygen. Name what would change the route.",
+          "route_definition": "Log only unless the waited observation flips the route.",
+          "escalation_target": ""
+        }
+      },
+      "pattern": {
+        "case_id": "PX-WAIT-01",
+        "fixture": true,
+        "trigger": "Cough one day, temperature 37.6 C, resting SpO2 still 96%.",
+        "headline": "Incomplete exam. Oxygen is in band. The useful next fact is named.",
+        "summary": "Wait is the action. The button names the observation, the 6 hour window, and the route that would flip.",
+        "rule_note": "A wait logs the expected information, a 6 hour timer, and the route that would replace this one. If that window passes with no observation, the case comes back. It does not page and it does not auto-pass.",
+        "horizon": "Six hours of temperature and resting SpO2 is the window on this fixture.",
+        "alerts": [
+          {"when": "Day 0", "what": "Temperature 37.6 C, SpO2 96%", "action": "Wait. No page."}
+        ],
+        "vitals": [
+          {
+            "name": "SpO2",
+            "band": "Resting band 94–98.",
+            "low": 94,
+            "high": 98,
+            "points": [96, 97, 96, 96],
+            "outside_note": "Every reading is inside the band."
+          }
+        ]
+      },
+      "mind": {
+        "differential": ["viral illness", "early pneumonia", "heart failure"],
+        "confidence": "Low concern while oxygen holds. The list is not closed.",
+        "act_under_uncertainty": false,
+        "falsifies_prior": false,
+        "wait_for": "temperature and resting SpO2 over 6 hours",
+        "wait_minutes": 360,
+        "flip_route": "nurse_task",
+        "flip_if": "temperature reaches 38.5 C or resting SpO2 leaves the band",
+        "agent_refused": false,
+        "goals_line": "Hospital is acceptable if home treatment does not recover.",
+        "goals_kind": "hospital_if_needed",
+        "blocks_escalation": false
       }
     }
   ]

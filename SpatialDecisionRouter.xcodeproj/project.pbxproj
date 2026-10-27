@@ -14,8 +14,10 @@
 		B72D5F3081A64C9E9F0A2B18 /* homehealth_patterns.json in Resources */ = {isa = PBXBuildFile; fileRef = A91C4E2B7D0F4A63B8E15C07 /* homehealth_patterns.json */; };
 		C83E604192B74D0FA1B3C29A /* homehealth_patterns.json in Resources */ = {isa = PBXBuildFile; fileRef = A91C4E2B7D0F4A63B8E15C07 /* homehealth_patterns.json */; };
 		72DBB871F5A241568A4AE8C6 /* HomeHealthDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E75C9F825E4B80B5EDE3BB /* HomeHealthDomain.swift */; };
+		A1B2C3D4E5F6478990ABCD02 /* HomeHealthMind.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6478990ABCD01 /* HomeHealthMind.swift */; };
 		EB2A6FEDBF814A90A639E60D /* HomeHealthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1FCAE6A4884928B339170F /* HomeHealthClient.swift */; };
 		7CA8A0B006AD4937A8547B43 /* HomeHealthDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E75C9F825E4B80B5EDE3BB /* HomeHealthDomain.swift */; };
+		A1B2C3D4E5F6478990ABCD03 /* HomeHealthMind.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6478990ABCD01 /* HomeHealthMind.swift */; };
 		288E8260D6054B6794B0D4AC /* HomeHealthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1FCAE6A4884928B339170F /* HomeHealthClient.swift */; };
 		0212BC76853E93A4C0449CE3 /* ReliabilityKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DFE2248BD549B2CF8A5604 /* ReliabilityKit.swift */; };
 		0265FC53A9B21F66CC5DE87D /* Lineage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79846C3BAD472DDDAAA5BF44 /* Lineage.swift */; };
@@ -81,6 +83,7 @@
 		A50771A1BF416D740C123325 /* replay_manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 0376247D9573184BA4F45192 /* replay_manifest.json */; };
 		A8E53AF7B06879027699BE32 /* EncounterImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04144225277F2C1929F0B76 /* EncounterImporter.swift */; };
 		ABACBB5EF66BD42DA1D5575A /* TestTemp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A19DA74CD37EAC7BC1EE50 /* TestTemp.swift */; };
+		B1B2C3D4E5F6478990ABCD12 /* HomeHealthMindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B2C3D4E5F6478990ABCD11 /* HomeHealthMindTests.swift */; };
 		AD99FE7A4C6D32881FE5E676 /* ai_studio_code.html in Resources */ = {isa = PBXBuildFile; fileRef = 6923C6811412C542A4A33B3A /* ai_studio_code.html */; };
 		AE3820AEDAF667A07932FCB0 /* replay_cases.jsonl in Resources */ = {isa = PBXBuildFile; fileRef = 1F467D54BBBDA1FBF6DDD85C /* replay_cases.jsonl */; };
 		B081598B6A307B19D0ADD2A7 /* LineageViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06FBF3CD1C286D2D26B46CAA /* LineageViews.swift */; };
@@ -148,6 +151,8 @@
 		7951DC9A3CC44C489F980661 /* homehealth_vignettes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = homehealth_vignettes.json; sourceTree = "<group>"; };
 		A91C4E2B7D0F4A63B8E15C07 /* homehealth_patterns.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = homehealth_patterns.json; sourceTree = "<group>"; };
 		01E75C9F825E4B80B5EDE3BB /* HomeHealthDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHealthDomain.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6478990ABCD01 /* HomeHealthMind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHealthMind.swift; sourceTree = "<group>"; };
+		B1B2C3D4E5F6478990ABCD11 /* HomeHealthMindTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHealthMindTests.swift; sourceTree = "<group>"; };
 		4F1FCAE6A4884928B339170F /* HomeHealthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHealthClient.swift; sourceTree = "<group>"; };
 		0165402789A2697A94AF29EB /* GameViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViews.swift; sourceTree = "<group>"; };
 		0376247D9573184BA4F45192 /* replay_manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = replay_manifest.json; sourceTree = "<group>"; };
@@ -198,7 +203,7 @@
 		B610171194F963505DD303E1 /* replay_answers.jsonl */ = {isa = PBXFileReference; path = replay_answers.jsonl; sourceTree = "<group>"; };
 		C0CB92B88B680D53E686071A /* PromotionViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionViews.swift; sourceTree = "<group>"; };
 		C513BD7BEB8F6B6303D94803 /* weriam_seed.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = weriam_seed.json; sourceTree = "<group>"; };
-		C8D05C5F01797C6E4BE65D25 /* SpatialDecisionRouterPad.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouterPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8D05C5F01797C6E4BE65D25 /* SpatialHITM.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialHITM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0F7BEE96DD262AC9467CE84 /* DialsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialsUITests.swift; sourceTree = "<group>"; };
 		D216B0B19FDBA03ECB9D9221 /* ProceduralEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceduralEnvironment.swift; sourceTree = "<group>"; };
 		D2322AEB575C234507469E46 /* SpatialDecisionRouterPadTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SpatialDecisionRouterPadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -207,7 +212,7 @@
 		E6A5B3D1368B933F6EC15DF4 /* DialEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialEngine.swift; sourceTree = "<group>"; };
 		E6B1D6DCFDD06B9588661A75 /* WERIAMPrincipalDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WERIAMPrincipalDomain.swift; sourceTree = "<group>"; };
 		E6BE7F07B675C463EC6F79C1 /* RiskClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskClient.swift; sourceTree = "<group>"; };
-		F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialDecisionRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3970F479E7D26B549DCCE1E /* SpatialHITM.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SpatialHITM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F407AADF547B37D02BC17A63 /* SpatialDecisionRouterUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SpatialDecisionRouterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5B7A1658348EE6C11BF2E6C /* SpatialDecisionRouterPadUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SpatialDecisionRouterPadUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5F928B6AB7487E2DAC67F45 /* RouterViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterViews.swift; sourceTree = "<group>"; };
@@ -242,8 +247,8 @@
 		13AEE49A568B5C2826A2D767 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */,
-				C8D05C5F01797C6E4BE65D25 /* SpatialDecisionRouterPad.app */,
+				F3970F479E7D26B549DCCE1E /* SpatialHITM.app */,
+				C8D05C5F01797C6E4BE65D25 /* SpatialHITM.app */,
 				D2322AEB575C234507469E46 /* SpatialDecisionRouterPadTests.xctest */,
 				F5B7A1658348EE6C11BF2E6C /* SpatialDecisionRouterPadUITests.xctest */,
 				F407AADF547B37D02BC17A63 /* SpatialDecisionRouterUITests.xctest */,
@@ -315,6 +320,7 @@
 				2CAF88ED28879F2266F51F90 /* PromotionGateTests.swift */,
 				739E3E6383C542BEB2CC7D60 /* PromotionTests.swift */,
 				23A19DA74CD37EAC7BC1EE50 /* TestTemp.swift */,
+				B1B2C3D4E5F6478990ABCD11 /* HomeHealthMindTests.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -344,6 +350,7 @@
 			children = (
 				4F1FCAE6A4884928B339170F /* HomeHealthClient.swift */,
 				01E75C9F825E4B80B5EDE3BB /* HomeHealthDomain.swift */,
+				A1B2C3D4E5F6478990ABCD01 /* HomeHealthMind.swift */,
 				9E42C1739AD34F84AD05FDC7 /* homehealth.domain.json */,
 				7951DC9A3CC44C489F980661 /* homehealth_vignettes.json */,
 				A91C4E2B7D0F4A63B8E15C07 /* homehealth_patterns.json */,
@@ -427,7 +434,7 @@
 			packageProductDependencies = (
 			);
 			productName = SpatialDecisionRouterPad;
-			productReference = C8D05C5F01797C6E4BE65D25 /* SpatialDecisionRouterPad.app */;
+			productReference = C8D05C5F01797C6E4BE65D25 /* SpatialHITM.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A45BDA8C2E449C86BAC73620 /* SpatialDecisionRouterPadTests */ = {
@@ -463,7 +470,7 @@
 			packageProductDependencies = (
 			);
 			productName = SpatialDecisionRouter;
-			productReference = F3970F479E7D26B549DCCE1E /* SpatialDecisionRouter.app */;
+			productReference = F3970F479E7D26B549DCCE1E /* SpatialHITM.app */;
 			productType = "com.apple.product-type.application";
 		};
 		E29C9C340DA8F7DC3EBCCFB0 /* SpatialDecisionRouterPadUITests */ = {
@@ -594,6 +601,7 @@
 			files = (
 				EB2A6FEDBF814A90A639E60D /* HomeHealthClient.swift in Sources */,
 				72DBB871F5A241568A4AE8C6 /* HomeHealthDomain.swift in Sources */,
+				A1B2C3D4E5F6478990ABCD02 /* HomeHealthMind.swift in Sources */,
 				8B0DA88EA08E8966E7DA4688 /* AIDocReviewDomain.swift in Sources */,
 				D3FA62D8D6A759EE389F4BDB /* CategoryRegistry.swift in Sources */,
 				C523EADE2B0DE8319F1F8FFF /* DecisionLedger.swift in Sources */,
@@ -635,6 +643,7 @@
 			files = (
 				288E8260D6054B6794B0D4AC /* HomeHealthClient.swift in Sources */,
 				7CA8A0B006AD4937A8547B43 /* HomeHealthDomain.swift in Sources */,
+				A1B2C3D4E5F6478990ABCD03 /* HomeHealthMind.swift in Sources */,
 				1AB6C6774A4D482CD2B42974 /* AIDocReviewDomain.swift in Sources */,
 				667FA886A8D34AB8886D66D7 /* CategoryRegistry.swift in Sources */,
 				D3820012D7F604FCCA37A9AE /* DecisionLedger.swift in Sources */,
@@ -681,6 +690,7 @@
 				E8AD73C6FFEFBEDDBF624E28 /* PromotionGateTests.swift in Sources */,
 				E9574116A35BE4156A58EE74 /* PromotionTests.swift in Sources */,
 				ABACBB5EF66BD42DA1D5575A /* TestTemp.swift in Sources */,
+				B1B2C3D4E5F6478990ABCD12 /* HomeHealthMindTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -740,8 +750,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouter.pad;
-				PRODUCT_NAME = SpatialDecisionRouter;
+				INFOPLIST_KEY_CFBundleDisplayName = "Spatial HITM";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialHITM.pad;
+				PRODUCT_MODULE_NAME = SpatialDecisionRouter;
+				PRODUCT_NAME = SpatialHITM;
 				SDKROOT = iphoneos;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
@@ -765,7 +777,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpatialDecisionRouter.app/SpatialDecisionRouter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpatialHITM.app/SpatialHITM";
 			};
 			name = Debug;
 		};
@@ -783,8 +795,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouter.pad;
-				PRODUCT_NAME = SpatialDecisionRouter;
+				INFOPLIST_KEY_CFBundleDisplayName = "Spatial HITM";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialHITM.pad;
+				PRODUCT_MODULE_NAME = SpatialDecisionRouter;
+				PRODUCT_NAME = SpatialHITM;
 				SDKROOT = iphoneos;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
@@ -824,7 +838,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouter;
+				INFOPLIST_KEY_CFBundleDisplayName = "Spatial HITM";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialHITM;
+				PRODUCT_MODULE_NAME = SpatialDecisionRouter;
+				PRODUCT_NAME = SpatialHITM;
 				SDKROOT = xros;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
@@ -884,7 +901,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialDecisionRouter;
+				INFOPLIST_KEY_CFBundleDisplayName = "Spatial HITM";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wsatz.SpatialHITM;
+				PRODUCT_MODULE_NAME = SpatialDecisionRouter;
+				PRODUCT_NAME = SpatialHITM;
 				SDKROOT = xros;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 7;
@@ -982,7 +1002,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpatialDecisionRouter.app/SpatialDecisionRouter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpatialHITM.app/SpatialHITM";
 			};
 			name = Release;
 		};

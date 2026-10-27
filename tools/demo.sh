@@ -5,8 +5,8 @@
 #   tools/demo.sh --auto --record [seconds]   # also screen-record to screens/demo.mp4 (fallback if live demo fails)
 set -u
 cd "$(dirname "$0")/.."
-UDID=${SIM_UDID:-3FFE2D71-92D8-43D5-9418-7E3A2AF131F5}; BUNDLE=com.wsatz.SpatialDecisionRouter
-APP=build/Build/Products/Debug-xrsimulator/SpatialDecisionRouter.app
+UDID=${SIM_UDID:-3FFE2D71-92D8-43D5-9418-7E3A2AF131F5}; BUNDLE=com.wsatz.SpatialHITM
+APP=build/Build/Products/Debug-xrsimulator/SpatialHITM.app
 AUTO=""; REC=""; SECS=150
 while [ $# -gt 0 ]; do case "$1" in --auto) AUTO="-demoAuto";; --record) REC=1; [[ "${2:-}" =~ ^[0-9]+$ ]] && { SECS=$2; shift; };; esac; shift; done
 
@@ -20,7 +20,7 @@ else echo "⚠ risk sidecar NOT reachable — app will show 'fallback · sidecar
 
 # 2) simulator + app
 xcrun simctl boot "$UDID" 2>/dev/null; open -a "$(xcode-select -p)/Applications/Simulator.app" 2>/dev/null
-[ -d "$APP" ] || xcodebuild -project SpatialDecisionRouter.xcodeproj -scheme SpatialDecisionRouter -destination "id=$UDID" -derivedDataPath build build -quiet
+[ -d "$APP" ] || xcodebuild -project SpatialDecisionRouter.xcodeproj -scheme SpatialHITM -destination "id=$UDID" -derivedDataPath build build -quiet
 xcrun simctl terminate "$UDID" "$BUNDLE" 2>/dev/null
 xcrun simctl install "$UDID" "$APP"
 (caffeinate -dimsu -t $((SECS + 60)) &)

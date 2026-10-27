@@ -46,6 +46,7 @@ extension DomainModule {
     func downstreamPreview(item: DomainItem, link: LinkSpec, answer: String) -> String? { nil }
     func ledgerFields(item: DomainItem) -> [String: String] { item.fields }
     func detail(item: DomainItem, section: String) -> [(String, String)]? { nil }
+    func blocksAutoPass(item: DomainItem) -> Bool { false }
 }
 
 /// Engine-side helpers that combine config templates with domain hooks.

@@ -127,7 +127,8 @@ struct PadStartView: View {
             PadBackdrop()
             VStack(spacing: 22) {
                 Image(systemName: "arrow.triangle.branch").font(.system(size: 64, weight: .semibold)).foregroundStyle(.teal)
-                Text(engine.config.title).font(.sdrHuge).multilineTextAlignment(.center)
+                Text("Spatial HITM").font(.sdrHuge).multilineTextAlignment(.center)
+                Text(engine.config.title).font(.title2).foregroundStyle(.secondary).multilineTextAlignment(.center)
                 Text(engine.config.agents.filter { $0.tier == 0 }.map(\.name).joined(separator: " · ")).font(.title3).foregroundStyle(.secondary)
                 if engine.config.synthetic { Text(engine.config.terminology.syntheticBanner).foregroundStyle(.yellow) }
                 HStack(spacing: 18) {

@@ -1,4 +1,6 @@
-# Spatial Decision Router — User Manual
+# Spatial HITM — User Manual
+
+The app on the simulator home screen and the start window is **Spatial HITM**. The project folder may still be named `SpatialDecisionRouter`, and the GitHub repository may still be `SDR_SpatialDecisionRouter`, until a later rename.
 
 *For reviewers and clinicians using the app on iPad or Apple Vision Pro. No programming needed (developer notes are in the appendix).*
 
@@ -10,7 +12,7 @@
 
 ## 1. What the app is
 
-AI agents now draft triage levels, care plans and other decisions at scale. Spatial Decision Router (SDR) puts **you** — the
+AI agents now draft triage levels, care plans and other decisions at scale. Spatial HITM puts **you** — the
 *human in the middle* — at the crossroads where one AI agent hands a decision to the next. Each decision arrives as a **card**.
 You confirm it, change it, or escalate it with a tap (iPad) or a look-and-pinch (Vision Pro). No typing.
 
@@ -164,7 +166,7 @@ Layer 1 proposes one route. The card names the synthetic person who would receiv
 | **provider_task** | On-call HH MD | Passes a same-day review to that physician. Not a page. |
 | **urgent_page** | On-call HH MD | Passes a page to that physician. You are not paged. |
 
-The button reads **Log only** or **Pass to …**. **Log only** means no page and no handoff: the decision is acknowledged and logged, and nobody is tasked. **Pass to …** names the on-call person. **Change route…** lists the same recipients. Pass never pages you. The decision is stored for later training, with `review_role` set to `overseer`. This build does not train anything from it.
+The button reads **Log only** or **Pass to …**. **Log only** means no page and no handoff: the decision is acknowledged and logged, and nobody is tasked. **Pass to …** names the on-call person. **Change route…** lists the same recipients. **Wait for … · window** holds the route until a named observation would change it. The button shows the window (6h, 10m, or another visible duration). The on-call desk shows the time left. If that window passes and the observation has not arrived, the case comes back with an orange **OVERDUE** line. That return does not page anyone and does not auto-pass. You still choose. Pass never pages you. The decision is stored for later training, with `review_role` set to `overseer`. A wait, a revise, or a decision after the agent refused also stores `review_action`. This build does not train anything from it.
 
 #### Bedside
 
@@ -177,7 +179,7 @@ The button reads **Log only** or **Pass to …**. **Log only** means no page and
 | **Document plan** | The plan stays with you. It is not a pass to the On-call HH MD. |
 | **Page on-call** | Pages the On-call HH MD. You are not paged. |
 
-The green button is the one that fits the route on the card. The decision is stored with `review_role` `bedside`.
+The green button is the one that fits the route on the card. **Wait for … · window** is there too. The same timer and overdue return apply. When the goals refuse hospital, an urgent proposal's green button is **Request nurse visit** and the page button is marked as constrained by those goals. The decision is stored with `review_role` `bedside`.
 
 #### Nurse HITM
 
@@ -192,21 +194,27 @@ The green button is the one that fits the route on the card. The decision is sto
 | **Escalate to on-call nurse** | Escalates to the Night nurse, or the On-call hospice nurse when goals say hospice. This is not your own visit. |
 | **Log only** | No visit, no call, and no page. |
 
-The green button is the one that fits the route. A silent log with a device ticket suggests **Device check**. A silent log without one suggests **Log only**. The decision is stored with `review_role` `nurse`.
+The green button is the one that fits the route. A silent log with a device ticket suggests **Device check**. A silent log without one suggests **Log only**. **Wait for … · window** is there too. The same timer and overdue return apply. When the goals refuse hospital, an urgent proposal's green button is **Escalate to on-call nurse**. The decision is stored with `review_role` `nurse`.
 
 The rest of this section is what you see on every role. **Patient details**, **Why now**, and **Trends** keep the same words.
 
 Some cases also show a **device ticket** (`device_maintenance`) when Layer 1 files one. A clinical route does not keep a ticket.
 
-The card opens on **awareness**: who you are, who receives the route, a short patient chip (age band, main conditions, main medicines, living situation, night oxygen minimum when the library has one), and one clinical line. A fall on a blood thinner leads with the fall and that drug. A low oxygen reading leads with the reading. The route buttons stay on this face.
+The card opens on **awareness**: who you are, who receives the route, a short patient chip (age band, main conditions, main medicines, living situation, night oxygen minimum when the library has one), **Still open**, and one clinical line. **Still open** is the list of explanations that still fit, with a confidence line. It stays a list. A fall on a blood thinner leads with the fall and that drug. A low oxygen reading leads with the reading. Those lines are **Why now** when the card has a pattern. They are not the baseline on the patient chip, and they are not **Still open**. When a route is required before that list closes, the face says **Act under uncertainty**. The route buttons stay on this face.
+
+**Goals of care** is a line on this face, above the buttons. If the patient would refuse hospital, a page button says so, and the spoke of a lit page says **Goals constrain this page**.
+
+**Wait for … · window** names what you are waiting to see, how long you will wait, and what route that fact would switch to. The desk line reads **Held · Wait for … · 4h left** (or **OVERDUE**). When the window expires without that observation, the case returns to Now for you. It is not silently dropped. **Revise prior** appears when a new vital or event falsifies the last Pass or Log only. The face reads the prior decision, the new evidence, and Revise. The queue spoke repeats that line. An overdue wait turns the queue line orange.
+
+A red **Agent refused** banner means the proposing agent will not decide this card. You still choose **Log only**, **Pass**, or the verbs for your role. The card does not pass itself.
 
 **Expand** cascades the next layer into the space beside the card: **Patient details**, then **Rules** for this situation, then **More for this case**. Under patient details, the chart is summaries you can open one at a time: problems, medicines, active problems, hospitalizations, baselines, goals. **Collapse** peels one layer. **Awareness** jumps back to the face. The side panel scrolls when More is taller than the panel. Looking at the card for about half a second opens patient details, and for about a second and a half opens the rules; looking away returns to the pinned layer. The simulator often misses that look, so use Expand. The status strip and the queue stay quiet until you tap Show.
 
 The first card, **PX-COPD-01**, is a synthetic pattern example (not a library case). **Why now** names today’s dips: SpO2 84% sitting up and 85% at the commode, then back in band. The night SpO₂ on the patient chip is his baseline, not that alert. **This week** is the repeating pattern. Open **Patient details** and **Show** on **Trends** for the recent alerts, the SpO2 and heart-rate bars (orange means outside this patient’s band), and a note that this positional pattern is logged rather than paged. A longer line compares today with a rise in alerts about three months ago, before a pneumonia admission.
 
-Three small beacons mark the queue and the two places a Pass can go. The words sit on the line between the card and each beacon, not on the beacon itself. The queue line names the next waiting case and one line of why it is waiting. A destination line says **This pass ·** who would receive it when that beacon is lit, and otherwise the last case sent there. A red, orange, or teal pip marks the lit target. Pass still flies to that beacon. You are not the recipient. Bedside titles on those lines are **Covering list**, **Care tasks**, and **On-call MD**. Nurse HITM titles are **Nurse list**, **Visits and calls**, and **On-call MD**. Switching back to Overseer restores **Overseer queue**, **On-call desk**, and **On-call HH MD**. The patient chip, Trends, and Rules stay on the card when you expand it.
+Three small beacons mark the queue and the two places a Pass can go. The words sit on the line between the card and each beacon, not on the beacon itself. The queue line names the next waiting case and one line of why it is waiting. A refusal or a falsified prior adds a second line on that spoke. A destination line says **This pass ·** who would receive it when that beacon is lit, and otherwise the last case sent there. A wait in flight says **Held** on the desk spoke and does not light the page beacon. A red, orange, or teal pip marks the lit target. Pass still flies to that beacon. You are not the recipient. Bedside titles on those lines are **Covering list**, **Care tasks**, and **On-call MD**. Nurse HITM titles are **Nurse list**, **Visits and calls**, and **On-call MD**. Switching back to Overseer restores **Overseer queue**, **On-call desk**, and **On-call HH MD**. The patient chip, Trends, and Rules stay on the card when you expand it.
 
-In the expanded dossier, orange is why-now, an alert, or a vital outside this patient’s band. Cyan is baseline or the band. Sage is an action already taken or a log-only note. Other chart text stays white.
+In the expanded dossier, orange is why-now, an alert, or a vital outside this patient’s band. Cyan is baseline or the band. Sage is an action already taken or a log-only note. On the face, lilac is **Still open**. A goals line that constrains a page is rose. Other chart text stays white.
 
 Mouse, gaze, and scale in the visionOS Simulator: [VISIONOS_SIM_CONTROLS.md](VISIONOS_SIM_CONTROLS.md). Buttons here are look, then click.
 

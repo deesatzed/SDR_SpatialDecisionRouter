@@ -1,6 +1,18 @@
 # Consider for later development
 
-Scan date: 25 October 2026. These are external Vision Pro repositories worth another look. None of them are dependencies of the Spatial Decision Router, and none should be bolted into the Overseer.
+Scan date: 25 October 2026. These are external Vision Pro repositories worth another look. None of them are dependencies of **Spatial HITM**, and none should be bolted into the Overseer. The repo folder may still be `SpatialDecisionRouter`, and the GitHub repository may still be `SDR_SpatialDecisionRouter`, until a later rename.
+
+## Shipped on the home-health HITM
+
+Liu et al. 2026 (BMJ Digital Health & AI, e000395) frames six dimensions of medical intelligence. The home-health seat uses that framing as a coordination layer, not as a vignette exam. The slices below are in the app. They are not later work. The note is [HOME_HEALTH_INTELLIGENCE.md](HOME_HEALTH_INTELLIGENCE.md).
+
+- Retained differential on L0 (**Still open**), separate from why-now and from baseline, including when the route is required before the list closes.
+- **Revise prior** when new evidence falsifies a Pass or Log only, logged on the decision.
+- **Wait for …** with the observation, a timer, and the route that would flip, logged as `voi_wait`. An expired window returns the case for review (`voi_recheck`) and does not page or auto-pass.
+- Agent refusal that forces Overseer, Bedside, or Nurse HITM and does not auto-pass.
+- Synthetic outcome scoring (route, timing, downstream utility) beside expert-consensus agreement.
+- Goals of care on the Pass and page controls, logged with the decision.
+- A local rollup of those logs for a later shared update (`homehealth/sdr_bridge/learning_export.py`).
 
 ## Worth attention
 

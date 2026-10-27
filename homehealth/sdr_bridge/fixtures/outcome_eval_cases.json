@@ -1,0 +1,134 @@
+{
+  "synthetic": true,
+  "note": "SYNTHETIC outcome targets. Consensus is an expert-fixture label, not a patient. A route can beat that label on the downstream utility. Agreement-only scoring would call the beat an error. Stress tags mark incomplete, conflicting, or misleading information.",
+  "cases": [
+    {
+      "case_id": "EV-COMFORT-FALL",
+      "stress": [],
+      "proposal": "urgent_page",
+      "consensus_route": "nurse_task",
+      "consensus_timing": "same_shift",
+      "appropriate_routes": ["nurse_task"],
+      "outcome": {
+        "label": "stayed home, scalp bump checked, comfort held",
+        "by_route": {
+          "silent_log": {"utility": 0.35, "note": "nobody looked at the scalp"},
+          "nurse_task": {"utility": 0.86, "note": "hospice nurse visit matched the goals"},
+          "provider_task": {"utility": 0.55, "note": "same-day review without a comfort visit"},
+          "urgent_page": {"utility": 0.15, "note": "ambulance and hospital against stated goals"}
+        }
+      },
+      "timing_penalty": {"immediate": 0.05, "same_shift": 0.0, "next_day": 0.25}
+    },
+    {
+      "case_id": "EV-STROKE",
+      "stress": [],
+      "proposal": "urgent_page",
+      "consensus_route": "urgent_page",
+      "consensus_timing": "immediate",
+      "appropriate_routes": ["urgent_page"],
+      "outcome": {
+        "label": "reached a stroke team while the deficit was still new",
+        "by_route": {
+          "silent_log": {"utility": 0.05, "note": "deficit untreated"},
+          "nurse_task": {"utility": 0.25, "note": "visit too slow for a new deficit"},
+          "provider_task": {"utility": 0.3, "note": "same-day review misses the window"},
+          "urgent_page": {"utility": 0.9, "note": "page while last-known-well is recent"}
+        }
+      },
+      "timing_penalty": {"immediate": 0.0, "same_shift": 0.35, "next_day": 0.7}
+    },
+    {
+      "case_id": "EV-ARTIFACT",
+      "stress": ["misleading"],
+      "proposal": "silent_log",
+      "consensus_route": "silent_log",
+      "consensus_timing": "same_shift",
+      "appropriate_routes": ["silent_log"],
+      "outcome": {
+        "label": "fingertip repeat 95%, patient breathing normally",
+        "by_route": {
+          "silent_log": {"utility": 0.88, "note": "artifact cleared, no false page"},
+          "nurse_task": {"utility": 0.6, "note": "extra visit after a cleared repeat"},
+          "provider_task": {"utility": 0.45, "note": "same-day review of a cleared artifact"},
+          "urgent_page": {"utility": 0.1, "note": "page on a motion-flagged wrist reading"}
+        }
+      },
+      "timing_penalty": {"immediate": 0.0, "same_shift": 0.0, "next_day": 0.05}
+    },
+    {
+      "case_id": "EV-CONFLICT",
+      "stress": ["conflicting"],
+      "proposal": "urgent_page",
+      "consensus_route": "urgent_page",
+      "consensus_timing": "immediate",
+      "appropriate_routes": ["urgent_page", "provider_task"],
+      "outcome": {
+        "label": "confirmed resting SpO2 86% despite a reassuring sentence",
+        "by_route": {
+          "silent_log": {"utility": 0.12, "note": "reassuring sentence outweighed a confirmed low reading"},
+          "nurse_task": {"utility": 0.45, "note": "visit, but the low reading was already confirmed"},
+          "provider_task": {"utility": 0.7, "note": "same-day clinician review of a confirmed low reading"},
+          "urgent_page": {"utility": 0.84, "note": "page on the confirmed reading, not the reassuring sentence"}
+        }
+      },
+      "timing_penalty": {"immediate": 0.0, "same_shift": 0.15, "next_day": 0.4}
+    },
+    {
+      "case_id": "EV-INCOMPLETE-BEATS",
+      "stress": ["incomplete", "misleading"],
+      "proposal": "urgent_page",
+      "consensus_route": "urgent_page",
+      "consensus_timing": "immediate",
+      "appropriate_routes": ["silent_log", "nurse_task"],
+      "outcome": {
+        "label": "the missing fingertip repeat was 95%; the single low number was motion",
+        "by_route": {
+          "silent_log": {"utility": 0.8, "note": "held for the missing repeat, which cleared"},
+          "nurse_task": {"utility": 0.62, "note": "a check without a hospital transfer"},
+          "provider_task": {"utility": 0.5, "note": "same-day review of an artifact"},
+          "urgent_page": {"utility": 0.18, "note": "paged on one incomplete number"}
+        }
+      },
+      "timing_penalty": {"immediate": 0.1, "same_shift": 0.0, "next_day": 0.05},
+      "note": "Consensus pages immediately. The synthetic outcome favors holding for the missing repeat. Agreement-only scoring marks that hold as an error."
+    },
+    {
+      "case_id": "EV-DNH-FEVER",
+      "stress": ["conflicting"],
+      "proposal": "urgent_page",
+      "consensus_route": "urgent_page",
+      "consensus_timing": "immediate",
+      "appropriate_routes": ["nurse_task"],
+      "outcome": {
+        "label": "fever eased at home with a comfort visit; hospital was refused",
+        "by_route": {
+          "silent_log": {"utility": 0.3, "note": "nobody checked comfort"},
+          "nurse_task": {"utility": 0.87, "note": "comfort visit inside do-not-hospitalize"},
+          "provider_task": {"utility": 0.5, "note": "review without a bedside comfort check"},
+          "urgent_page": {"utility": 0.12, "note": "transfer the patient had refused"}
+        }
+      },
+      "timing_penalty": {"immediate": 0.05, "same_shift": 0.0, "next_day": 0.3},
+      "note": "Consensus treats fever as a page. The outcome is better when the route follows the refusal. That disagreement looks like an error on an agreement score."
+    },
+    {
+      "case_id": "EV-LATE",
+      "stress": ["incomplete"],
+      "proposal": "nurse_task",
+      "consensus_route": "nurse_task",
+      "consensus_timing": "same_shift",
+      "appropriate_routes": ["nurse_task"],
+      "outcome": {
+        "label": "same-shift visit caught a worsening cough",
+        "by_route": {
+          "silent_log": {"utility": 0.2, "note": "no visit"},
+          "nurse_task": {"utility": 0.84, "note": "visit while the change was still small"},
+          "provider_task": {"utility": 0.6, "note": "review without the visit"},
+          "urgent_page": {"utility": 0.4, "note": "page for a change that a visit covered"}
+        }
+      },
+      "timing_penalty": {"immediate": 0.0, "same_shift": 0.0, "next_day": 0.45}
+    }
+  ]
+}

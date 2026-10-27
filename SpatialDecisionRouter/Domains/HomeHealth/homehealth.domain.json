@@ -52,7 +52,12 @@
     "Layer 1 alone decides the route. The headset does not call a cloud model.",
     "Routes, lowest to highest: silent_log, nurse_task, provider_task, urgent_page.",
     "A device_maintenance ticket is shown when Layer 1 files one. Clinical routes do not keep a ticket.",
-    "One role is active at a time: Overseer (physician router), Bedside (covering clinician), or Nurse HITM. The switcher is on the card. Overseer Pass sends the route to the on-call recipient, not to the Overseer. Bedside and Nurse HITM use their own actions. urgent_page still alerts the On-call HH MD node."
+    "One role is active at a time: Overseer (physician router), Bedside (covering clinician), or Nurse HITM. The switcher is on the card. Overseer Pass sends the route to the on-call recipient, not to the Overseer. Bedside and Nurse HITM use their own actions. urgent_page still alerts the On-call HH MD node.",
+    "Still open is the retained differential. It is separate from Why now and from the baseline chip. Act under uncertainty means the route is chosen before that list closes.",
+    "Wait for … holds the route, names the observation that would flip it, and shows a timer. If that window passes with no observation, the case comes back for a person. A wait does not page anyone and it does not auto-pass.",
+    "Revise prior logs a correction when new evidence falsifies the last Pass or Log only.",
+    "When the agent refuses, the card does not auto-pass. The human chooses Log only, Pass, or a role verb.",
+    "Goals of care sit on the pass. Do-not-hospitalize or comfort-focused goals constrain a page."
   ],
   "capacity": {"minutesPerSecond": 1},
   "review": {
@@ -105,6 +110,10 @@
     "Params": "trigger_params.json version. Every threshold is a placeholder.",
     "Library label": "The synthetic library's expected_route. Layer 1 does not read it. Shown so you can compare.",
     "priority": "Higher cards sort above lower ones in Up next. The Now card stays until you decide it.",
-    "what happens next": "Where this route goes if you pass it, including a device ticket when Layer 1 filed one."
+    "what happens next": "Where this route goes if you pass it, including a device ticket when Layer 1 filed one.",
+    "agent refused": "The proposing agent declined to decide. You choose Log only, Pass, or a role verb. This card does not auto-pass.",
+    "revisit": "New evidence falsifies the prior Pass or Log only. Revise prior logs the correction.",
+    "still open": "Retained differential and confidence. Separate from why now and from the baseline chip.",
+    "goals constraint": "What this patient would refuse. Comfort-focused or do-not-hospitalize constrains a page."
   }
 }
